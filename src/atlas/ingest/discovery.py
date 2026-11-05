@@ -68,6 +68,14 @@ class FieldMapping(Strict):
     evidence: Ids = Field(min_length=1)
 
 
+class FailedFetch(Strict):
+    """A page that could not be fetched; recorded, never worked around (e.g. no TLS bypass)."""
+
+    url: SafeUrl
+    attempted_at: UtcDatetime
+    error: str = Field(min_length=5)
+
+
 class Discovery(Strict):
     source_id: SourceId
     state: StateId
@@ -90,6 +98,7 @@ class Discovery(Strict):
     field_map: list[FieldMapping] = Field(min_length=1)
     dependents: list[str]
     retry_condition: str | None
+    failed_fetches: list[FailedFetch] = Field(default_factory=list)
 
 
 LICENCE = {"open", "restricted", "unverified"}

@@ -1,0 +1,132 @@
+# Discovery record for S43 (plan task T085). Evidence IDs refer to tests/fixtures/s43/manifest.json;
+# the evidence files stay in data/raw/S43. See docs/sources/s43.md.
+source_id: S43
+state: ka
+name: "Official shelters and flood impact labels"
+verify_task: T085
+discovered_at: "2026-11-05T09:49:42Z"
+outcome: blocked
+landing_url: "https://data.opencity.in/"
+publisher: "No official publisher of dated ward-level flood impacts or open relief camps was found; checked OpenCity, KSNDMC and Bengaluru Megha Sandesha (KSNDMC)"
+no_card: true
+account_required: false
+
+access:
+  status: no_official_incident_release
+  detail: >-
+    Searched official and portal releases for dated Bengaluru flood impacts and shelters. OpenCity
+    has only static flood-prone maps (e02, e03, e05). KSNDMC has a statewide 2022 flood summary and
+    rainfall reports (e09, e10). Bengaluru Megha Sandesha shows ward rainfall, not flood impacts
+    (e11). No relief camp or shelter dataset was found (e06). The BBMP and GBA websites could not
+    be checked: both failed TLS certificate verification (see failed_fetches). TLS checks were not
+    bypassed. Everything checked opens without an account or card.
+  evidence: [e02, e03, e05, e06, e09, e10, e11]
+
+licence:
+  status: unverified
+  detail: >-
+    No licensed official incident data exists to use. For reference: the static flood-prone maps
+    are "Other (Public Domain)", Source KSRSAC (e03). The I Change My City complaints log is
+    "Creative Commons Attribution Share-Alike", Source Janaagraha, a civic NGO (e07); anything
+    derived from it and published would have to be shared under the same licence.
+  evidence: [e03, e07]
+
+provider_quota:
+  status: crawl_delay_10s
+  detail: "OpenCity robots.txt sets Crawl-Delay 10 and disallows /api/ (e01); KSNDMC publishes no quota (e10)."
+  evidence: [e01, e10]
+
+history:
+  status: not_public
+  detail: >-
+    No official dated, ward-level flood impact series was found. The only dated ward-level records
+    are citizen complaints in the I Change My City log (e07, e08): 16,071 complaints from
+    1 Jan 2019 to 31 Jul 2022 across 198 wards. Of these, 226 are "Flooding/Waterlogging Of Roads
+    And Footpaths", on 215 ward-days; 136 ward-days fall in June to November (2019: 52, 2020: 34,
+    2021: 35, 2022: 15, with 2022 ending on 31 Jul) on 116 distinct days. Use of the portal fell
+    from 7,383 complaints in 2019 to 1,551 in 2022.
+  evidence: [e07, e08]
+earliest_date: null  # no official series; the complaints log runs 2019-01-01 to 2022-07-31
+latest_date: null
+
+units:
+  status: not_applicable
+  detail: >-
+    Labels are event counts, not measurements. The flood-prone KML has 70 named points with only an
+    OBJECTID: no date, ward or depth (e04). The complaints log writes dates in two formats
+    ("1-1-2019 06:33" and "1/13/2019 7:34"). Read month-first, all 16,071 rows parse and run in
+    time order; read day-first, they do not. T086 must keep this rule (e08).
+  evidence: [e04, e08]
+
+source_check:
+  status: fail
+  detail: >-
+    No OSM shelter tag is taken as an open relief camp, and no evacuee records exist or are sought.
+    No ward label is made from rainfall: Megha Sandesha ward rainfall is a feature source, not a
+    label (e11). GATE-CORE check C2 needs at least 100 documented positive ward-days across at
+    least 3 monsoon seasons, plus an explicit coverage rule for negatives. No official source
+    meets it. The complaints log reaches the count (136 June-November ward-days in 4 seasons), but
+    it is citizen-reported, not independently documented inundation. It has no coverage rule (a
+    ward-day without a complaint is not a verified dry day), 125 of the 226 complaints are still
+    "Open", and falling portal use biases later years (e07, e08).
+  evidence: [e04, e07, e08, e11]
+
+field_map:
+  - canonical: record_id
+    upstream: null
+    unit_status: absent
+    detail: "No official record ID exists; the complaints log has no complaint ID column."
+    evidence: [e08]
+  - canonical: place_id
+    upstream: "ward_id, ward_title (complaints log, 198 BBMP wards)"
+    unit_status: not_applicable
+    detail: "Would join to the BBMP 2015 ward map from S40, which has no licence (local use only)."
+    evidence: [e08]
+  - canonical: kind
+    upstream: "sub_category_title (complaints log)"
+    unit_status: not_applicable
+    detail: "Only 'Flooding/Waterlogging Of Roads And Footpaths' describes inundation; drain repair categories do not."
+    evidence: [e08]
+  - canonical: valid_at
+    upstream: "created_at (complaints log)"
+    unit_status: not_applicable
+    detail: "Complaint time, month-first, local time with no zone; it is when a complaint was filed, not when water rose."
+    evidence: [e08]
+  - canonical: geometry
+    upstream: "latitude, longitude (complaints log); KML Point (flood-prone map)"
+    unit_status: not_applicable
+    detail: "Points; the flood-prone map points carry no date and are static features at most."
+    evidence: [e04, e08]
+  - canonical: status
+    upstream: "complaint_status_title (complaints log)"
+    unit_status: not_applicable
+    detail: "Open, Resolved, On-the-Job or Re-opened: complaint handling status, not flood verification."
+    evidence: [e08]
+  - canonical: capacity
+    upstream: null
+    unit_status: absent
+    detail: "No shelter or relief camp data was found, so there is no capacity field."
+    evidence: [e06]
+  - canonical: evidence_url
+    upstream: null
+    unit_status: absent
+    detail: "Neither source links a complaint or location to an official incident report."
+    evidence: [e04, e08]
+
+# M01 needs these labels; they stay blocked while S43 is blocked. S43 stays enabled: false.
+dependents: [T086, T089, T090, T091]
+retry_condition: >-
+  Re-run T085 when one of these holds: (1) GBA, BBMP, KSNDMC or KSDMA publish dated ward-level
+  flood incident records, for example control-room logs released on OpenCity; (2) the BBMP and GBA
+  websites pass TLS verification, so their releases can be checked; or (3) at T222 the owner
+  decides to accept the I Change My City complaints as non-official, citizen-reported labels with a
+  written coverage rule for negatives, recorded in the decisions log. Without one of these, the
+  C2 fallback applies.
+
+failed_fetches:
+  - url: "https://bbmp.gov.in/"
+    attempted_at: "2026-11-05T09:49:42Z"
+    error: "ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate"
+  - url: "https://gba.karnataka.gov.in/"
+    attempted_at: "2026-11-05T09:49:42Z"
+    error: "ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate"
