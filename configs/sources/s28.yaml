@@ -1,0 +1,117 @@
+# Discovery record for S28 (plan task T008). Evidence IDs refer to tests/fixtures/s28/manifest.json;
+# the evidence files themselves stay in data/raw/S28 (not redistributed). See docs/sources/s28.md.
+source_id: S28
+state: ka
+name: "KWRIS reservoirs and rainfall"
+verify_task: T008
+discovered_at: "2026-11-05T09:29:24Z"
+outcome: blocked
+landing_url: "https://water.karnataka.gov.in/"
+publisher: "Karnataka Water Resources Information System (KWRIS), Water Resources Department, Government of Karnataka; run by ACIWRM and KSWIC"
+no_card: true
+account_required: true
+
+access:
+  status: public_snapshot_only
+  detail: >-
+    Without an account, the only reservoir data is the public map layer reservoir_landing, whose URL
+    the home page script publishes (e01, e07). The Web API (POST /api/data/GetToken) needs a user ID
+    and password (e02). An account needs a registration form asking for name, email, mobile number,
+    organisation, designation and reason for joining (e03). The agent does not create accounts, so
+    the API was not tried. No payment is asked for anywhere.
+  evidence: [e01, e02, e03, e07]
+
+licence:
+  status: restricted
+  detail: >-
+    The footer states "All Rights Reserved" (e01). The Home, About and Web API pages show no open
+    licence or terms of use (e01, e02, e04). The GeoServer fields Fees NONE and AccessConstraints
+    NONE are software defaults, not a licence (e05). Redistribution is not permitted: raw files stay
+    in data/raw and are never published.
+  evidence: [e01, e02, e04, e05]
+
+provider_quota:
+  status: not_published
+  detail: >-
+    No rate limit or quota is published on the Web API page or the WFS capabilities (e02, e05).
+    The plan's engineering cap of 0.03 GB/year applies.
+  evidence: [e02, e05]
+
+history:
+  status: not_public
+  detail: >-
+    The public layer keeps one latest row per reservoir: filtering it to K.R.Sagara (ReservoirID 6)
+    returns a single row dated 05 Nov 2026 (e08). The 36 rows carry dates from 23 Oct 2021 to
+    05 Nov 2026: 22 rows dated 05 Nov 2026, 4 dated 04 Nov 2026, 9 dated 31 Jan 2026 and 1 dated
+    23 Oct 2021, so 10 readings are stale by more than nine months (e07). No daily series, export
+    or archive of reservoir readings is published. The Rainfall Analytics page has year selectors
+    from 1971 to 2026, but its data loads through undocumented page methods, with no documented
+    export or licence (e09). Rainfall comes from other sources (S27, S29, IMD, ERA5).
+  evidence: [e07, e08, e09]
+earliest_date: "2021-10-23"  # oldest "latest reading" in the public layer, not the start of a series
+latest_date: "2026-11-05"
+
+units:
+  status: unlabelled
+  detail: >-
+    The layer schema and the map page give no units (e01, e06). Reservior_Level values range from
+    29.49 (Kadra Dam) to 2897.2 (Hemavathy Dam). The field name TMC_GrossCapacity suggests TMC, but
+    no unit or datum is stated for level, storage or flow. No unit is assumed, so no value is
+    converted to the canonical metres, million cubic metres or m3/s.
+  evidence: [e01, e06, e07]
+
+source_check:
+  status: fail
+  detail: >-
+    FIRST feasibility check (historical span and units) fails: there is no public daily history
+    and no stated units (e07, e08). GATE-CORE check C1 (at least 5 reservoirs with daily level or
+    storage for at least 3 monsoon seasons, known units and datum) cannot pass on S28. Inflow is
+    never derived from level. Of the 36 rows, Flow_Inflow is null for 4 and 0 for 18; a reported 0
+    cannot be told apart from a missing reading, so nulls stay null and no zero is filled in (e07).
+  evidence: [e07, e08]
+
+field_map:
+  - canonical: reservoir_id
+    upstream: ReservoirID
+    unit_status: not_applicable
+    detail: "Integer ID; ReservoirName and BasinName are kept as attributes."
+    evidence: [e06, e07]
+  - canonical: date_local
+    upstream: Date
+    unit_status: not_applicable
+    detail: "String such as '05 Nov 2026' (day, English month, year); no time of day or time zone."
+    evidence: [e06, e07]
+  - canonical: level_m
+    upstream: Reservior_Level
+    unit_status: unlabelled
+    detail: "Decimal with no unit or datum; not converted to metres."
+    evidence: [e06, e07]
+  - canonical: storage_mcm
+    upstream: TMC_GrossCapacity
+    unit_status: unlabelled
+    detail: "Decimal; the name suggests TMC but no unit is stated; not converted to million cubic metres."
+    evidence: [e06, e07]
+  - canonical: inflow_m3s
+    upstream: Flow_Inflow
+    unit_status: unlabelled
+    detail: "Decimal or null with no unit; zero and missing are ambiguous; not converted to m3/s."
+    evidence: [e06, e07]
+  - canonical: outflow_m3s
+    upstream: Flow_OutFlow
+    unit_status: unlabelled
+    detail: "Decimal or null with no unit; not converted to m3/s."
+    evidence: [e06, e07]
+  - canonical: capacity_mcm
+    upstream: StorageCapacity_AsPerDesign
+    unit_status: unlabelled
+    detail: "Design capacity with no unit; PercentFull is reported separately as an integer."
+    evidence: [e06, e07]
+
+# Tasks that need S28 history; they stay blocked while S28 is blocked. S28 stays enabled: false.
+dependents: [T027, T092, T095, T167]
+retry_condition: >-
+  Re-run T008 when one of these holds: (1) the owner chooses to register a KWRIS account (a new
+  human-only step: the form asks for personal details), and the Web API terms then allow research
+  use and the API returns daily reservoir history with units; (2) ACIWRM answers a data request to
+  the helpdesk address published on the site with daily history, units and a licence; or (3) the
+  public site starts publishing a reservoir history or export.

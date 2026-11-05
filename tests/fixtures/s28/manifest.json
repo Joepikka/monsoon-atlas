@@ -1,0 +1,104 @@
+{
+  "source_id": "S28",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://water.karnataka.gov.in/",
+      "fetched_at": "2026-11-05T09:29:22.231455Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "1be9fc6aa54c9e9171ff547443bfe3bb23bc61f2d739111b1869306e035632a1",
+      "bytes": 192740,
+      "raw_path": "S28/2026-11-05/1be9fc6aa54c9e9171ff547443bfe3bb23bc61f2d739111b1869306e035632a1.html",
+      "shows": "Home page: publisher names (Water Resources Department, ACIWRM, KSWIC), footer '\u00a9 KWRIS. All Rights Reserved', links to Web API and sign-in, and the reservoir_landing map layer URL in its script"
+    },
+    {
+      "id": "e02",
+      "url": "https://water.karnataka.gov.in/Web_Api.aspx",
+      "fetched_at": "2026-11-05T09:29:22.395347Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "cb24419879f36628eb6c734f09fbd22c68f71004c3487c46867337dac7ed9115",
+      "bytes": 120165,
+      "raw_path": "S28/2026-11-05/cb24419879f36628eb6c734f09fbd22c68f71004c3487c46867337dac7ed9115.html",
+      "shows": "Web API page: POST /api/data/GetToken generates a token from a userid and password; no public data call is listed"
+    },
+    {
+      "id": "e03",
+      "url": "https://water.karnataka.gov.in/Credentials",
+      "fetched_at": "2026-11-05T09:29:22.604303Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "65361731ed22a7d57a0c1782a4b381d19e1b26c154e7f2eec57fe71c9ba76003",
+      "bytes": 255366,
+      "raw_path": "S28/2026-11-05/65361731ed22a7d57a0c1782a4b381d19e1b26c154e7f2eec57fe71c9ba76003.html",
+      "shows": "Sign-in and registration form: name, email, user ID, password, mobile number, organisation, designation, department, user type and reason for joining"
+    },
+    {
+      "id": "e04",
+      "url": "https://water.karnataka.gov.in/About",
+      "fetched_at": "2026-11-05T09:29:22.778822Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "1c72563dbf2651a3f35d955c279504d49df0038d2772c3ea01929b8fd46aa02d",
+      "bytes": 172365,
+      "raw_path": "S28/2026-11-05/1c72563dbf2651a3f35d955c279504d49df0038d2772c3ea01929b8fd46aa02d.html",
+      "shows": "About page: KWRIS is the Karnataka Water Resources Information System of the Water Resources Department; no licence or terms of use"
+    },
+    {
+      "id": "e05",
+      "url": "https://water.karnataka.gov.in/geoserver/KA/ows?service=WFS&version=1.0.0&request=GetCapabilities",
+      "fetched_at": "2026-11-05T09:29:22.847538Z",
+      "status": 200,
+      "media_type": "application/xml",
+      "sha256": "5b2390c2a10e51869e621f06f00d20f3b646a1d8935583d1ddefb9a8a78ccf53",
+      "bytes": 84397,
+      "raw_path": "S28/2026-11-05/5b2390c2a10e51869e621f06f00d20f3b646a1d8935583d1ddefb9a8a78ccf53.xml",
+      "shows": "GeoServer WFS capabilities: list of public layers incl. reservoir_landing and mstReservoir_View; Fees NONE and AccessConstraints NONE are GeoServer default fields, not a licence"
+    },
+    {
+      "id": "e06",
+      "url": "https://water.karnataka.gov.in/geoserver/KA/ows?service=WFS&version=1.0.0&request=DescribeFeatureType&typeName=KA:reservoir_landing",
+      "fetched_at": "2026-11-05T09:29:22.902623Z",
+      "status": 200,
+      "media_type": "text/xml",
+      "sha256": "eccd87b051c694b990965a777872482b9391ed02eb9101716a44b7e3e75de232",
+      "bytes": 1932,
+      "raw_path": "S28/2026-11-05/eccd87b051c694b990965a777872482b9391ed02eb9101716a44b7e3e75de232.xml",
+      "shows": "reservoir_landing schema: ReservoirID, ReservoirName, Date (string), PercentFull, Reservior_Level, StorageCapacity_AsPerDesign, TMC_GrossCapacity, Flow_Inflow, Flow_OutFlow, BasinName; no unit metadata"
+    },
+    {
+      "id": "e07",
+      "url": "https://water.karnataka.gov.in/geoserver/KA/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=KA%3Areservoir_landing&maxFeatures=50&outputFormat=application%2Fjson",
+      "fetched_at": "2026-11-05T09:29:23.049927Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "bb436ffaad9284b14bb54badcc2fd8ff47fb526cf4de7a5f453af83c2c4e2225",
+      "bytes": 15126,
+      "raw_path": "S28/2026-11-05/bb436ffaad9284b14bb54badcc2fd8ff47fb526cf4de7a5f453af83c2c4e2225.json",
+      "shows": "Map-layer URL exactly as published in the home page script: one latest row per reservoir (36 reservoirs)"
+    },
+    {
+      "id": "e08",
+      "url": "https://water.karnataka.gov.in/geoserver/KA/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=KA%3Areservoir_landing&outputFormat=application%2Fjson&CQL_FILTER=ReservoirID%3D6",
+      "fetched_at": "2026-11-05T09:29:23.153375Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "98b769b6cf524b8c6f504e03698eee1ebffa2b43bf691592c9637b6e682dea73",
+      "bytes": 624,
+      "raw_path": "S28/2026-11-05/98b769b6cf524b8c6f504e03698eee1ebffa2b43bf691592c9637b6e682dea73.json",
+      "shows": "Same layer filtered to K.R.Sagara (ReservoirID 6): one row, so the layer keeps only the latest reading, not a history"
+    },
+    {
+      "id": "e09",
+      "url": "https://water.karnataka.gov.in/RainfallAnalytics.aspx",
+      "fetched_at": "2026-11-05T09:29:24.962792Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "6bbdd9565f3562434a260e47083ca33322e6af088b0b711c200efede6c320a9d",
+      "bytes": 558386,
+      "raw_path": "S28/2026-11-05/6bbdd9565f3562434a260e47083ca33322e6af088b0b711c200efede6c320a9d.html",
+      "shows": "Rainfall Analytics page: year selectors 1971-2026 with map, table and graph views loaded by undocumented page methods; no documented export endpoint or licence"
+    }
+  ]
+}
