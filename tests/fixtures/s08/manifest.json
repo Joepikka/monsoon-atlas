@@ -66,6 +66,17 @@
       "bytes": 25425900,
       "raw_path": "S08/2026-11-05/b4fa5ffb389496c0fa7d5a468d1cb47e4db0bcabcd11be4f273c0e6cfa7d611d.bin",
       "shows": "Year file ind2025_rfp25.grd: offered by the form though the page text ends at 2024"
+    },
+    {
+      "id": "e07",
+      "url": "https://www.imdpune.gov.in/cmpg/Griddata/ref_paper_MAUSAM.pdf",
+      "fetched_at": "2026-11-05T12:43:46.780014Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "3163c0f98d32102e6c9b3b2868149dd4efeb0a722c6e199ffbc8dcbc7dcf1974",
+      "bytes": 1120937,
+      "raw_path": "S08/2026-11-05/3163c0f98d32102e6c9b3b2868149dd4efeb0a722c6e199ffbc8dcbc7dcf1974.pdf",
+      "shows": "Pai et al. (2014) method paper linked from the gridded page: no 24-hour window stated"
     }
   ]
 }

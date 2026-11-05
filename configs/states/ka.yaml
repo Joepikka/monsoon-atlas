@@ -58,7 +58,9 @@ sources:
     name: "IMD Pune gridded rainfall 1901-2024"
     verify_task: T057
     cost: free
-    enabled: false
+    schedule: "yearly check"
+    enabled: true
+    verified_by: configs/sources/s08.yaml
   - source_id: S09
     name: "NDMA Sachet CAP alerts"
     verify_task: T013

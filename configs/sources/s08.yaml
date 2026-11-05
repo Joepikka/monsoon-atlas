@@ -78,8 +78,10 @@ field_map:
   - canonical: date_local
     upstream: "Record number in the year file (1 to 365 or 366) plus the year in the file name"
     unit_status: not_applicable
-    detail: "The page does not state the 24-hour window; T058 takes it from Pai et al. (2014)."
-    evidence: [e03, e04]
+    detail: >-
+      Neither the page nor Pai et al. (2014) states the 24-hour window (e03, e07), so T058 sets
+      valid_at to the latest possible end, 08:30 IST on the next day, and no daily feature leaks.
+    evidence: [e03, e04, e07]
   - canonical: rain_mm
     upstream: "float32 value per cell and day"
     unit_status: labelled
