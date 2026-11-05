@@ -1,6 +1,7 @@
 """T003 acceptance: reject unknown source, bad CRS and paid-provider config; CLI help exits 0;
 unimplemented commands exit 2."""
 
+import os
 import subprocess
 import sys
 from datetime import UTC, date, datetime, timedelta, timezone
@@ -208,8 +209,12 @@ IMPLEMENTED = ["quota"]  # T006
 
 
 def test_cli_help_exits_0():
-    result = subprocess.run(
-        [sys.executable, "-m", "atlas", "--help"], capture_output=True, text=True, check=False
+    result = subprocess.run(  # pin the child's encoding: help text has box-drawing characters
+        [sys.executable, "-m", "atlas", "--help"],
+        capture_output=True,
+        encoding="utf-8",
+        env={**os.environ, "PYTHONIOENCODING": "utf-8"},
+        check=False,
     )
     assert result.returncode == 0
     for name in [*COMMANDS, *IMPLEMENTED]:
