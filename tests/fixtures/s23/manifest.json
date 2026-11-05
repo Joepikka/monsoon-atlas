@@ -1,0 +1,38 @@
+{
+  "source_id": "S23",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?format=json&limit=10&offset=0",
+      "fetched_at": "2026-11-05T17:24:50.096945Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "3965a01d74df40d02324842c2d677d66d7752a579d965d2967aca60df9383e60",
+      "bytes": 6815,
+      "raw_path": "S23/2026-11-05/3965a01d74df40d02324842c2d677d66d7752a579d965d2967aca60df9383e60.json",
+      "shows": "API sample, first 10 records: metadata (title, org, update dates, total) and field list"
+    },
+    {
+      "id": "e02",
+      "url": "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?filters%5Bstate.keyword%5D=Karnataka&format=json&limit=100&offset=0",
+      "fetched_at": "2026-11-05T17:25:11.216039Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "04a697abd18dc49c5f27fa0e6f0a816cfb6c696c2e5bec55cc50904093c43715",
+      "bytes": 40888,
+      "raw_path": "S23/2026-11-05/04a697abd18dc49c5f27fa0e6f0a816cfb6c696c2e5bec55cc50904093c43715.json",
+      "shows": "Karnataka filter, first 100 records of the day"
+    },
+    {
+      "id": "e03",
+      "url": "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?filters%5Bstate.keyword%5D=Karnataka&format=json&limit=100&offset=100",
+      "fetched_at": "2026-11-05T17:25:14.594426Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "aee99392a5a7398af8b6cae30d3203aa84dde09ce939d3963c1ab18396493837",
+      "bytes": 40933,
+      "raw_path": "S23/2026-11-05/aee99392a5a7398af8b6cae30d3203aa84dde09ce939d3963c1ab18396493837.json",
+      "shows": "Karnataka filter, second page (offset 100): pagination check"
+    }
+  ]
+}
