@@ -110,7 +110,8 @@ sources:
     verify_task: T017
     cost: free
     schedule: "once per release"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s16.yaml
   - source_id: S17
     name: "geoBoundaries administrative boundaries"
     verify_task: T019

@@ -1,0 +1,14 @@
+{
+  "$comment": "S16 WorldPop India population (T018). Measure columns added to the common envelope (common.json). Field map: configs/sources/s16.yaml.",
+  "source_id": "S16",
+  "schema_version": 1,
+  "mapping_version": "s16-v1",
+  "fields": [
+    {"name": "raster_id", "type": "string", "nullable": false, "meaning": "WP00840-<release>-<year>-<iso3>-1km"},
+    {"name": "reference_year", "type": "int64", "nullable": false, "meaning": "popyear; years after the release are projections"},
+    {"name": "cell_id", "type": "string", "nullable": false, "meaning": "wp1km_r<row>_c<col> in the national grid"},
+    {"name": "population", "type": "float64", "nullable": false, "meaning": "People in the cell (a count, not a density)"},
+    {"name": "resolution_m", "type": "int64", "nullable": false, "meaning": "Nominal 1000 (30 arc seconds)"}
+  ],
+  "clip": "Native cells whose centre lies in the S17 ADM1 state polygon; nodata cells are not rows; no resampling, so totals are conserved"
+}
