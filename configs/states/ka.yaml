@@ -117,7 +117,8 @@ sources:
     cost: free
     storage_crs: EPSG:4326
     schedule: "yearly check"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s17.yaml
   - source_id: S18
     name: "Geofabrik OSM extracts"
     verify_task: T021

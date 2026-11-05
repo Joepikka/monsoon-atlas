@@ -1,0 +1,15 @@
+{
+  "$comment": "S17 geoBoundaries administrative boundaries (T020). Measure columns added to the common envelope (common.json), whose place_id is gb-IND-ADM2-<shapeID> and boundary_version geoboundaries-IND-ADM2-<release>. Field map: configs/sources/s17.yaml.",
+  "source_id": "S17",
+  "schema_version": 1,
+  "mapping_version": "s17-v1",
+  "fields": [
+    {"name": "source_place_id", "type": "string", "nullable": false, "meaning": "shapeID"},
+    {"name": "name", "type": "string", "nullable": false, "meaning": "shapeName (old spellings, for example Bangalore)"},
+    {"name": "admin_level", "type": "string", "nullable": false, "meaning": "shapeType, ADM2"},
+    {"name": "parent_id", "type": "string", "nullable": true, "meaning": "gb-IND-ADM1-<shapeID> of the state containing an interior point"},
+    {"name": "valid_from", "type": "date32", "nullable": true, "meaning": "Not published; null"},
+    {"name": "valid_to", "type": "date32", "nullable": true, "meaning": "Not published; null"},
+    {"name": "geometry", "type": "binary", "nullable": false, "meaning": "WKB MultiPolygon, lon/lat, holes kept"}
+  ]
+}
