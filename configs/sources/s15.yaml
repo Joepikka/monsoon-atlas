@@ -1,0 +1,90 @@
+# Discovery record for S15 (plan task T015). Evidence IDs refer to tests/fixtures/s15/manifest.json;
+# the files stay in data/raw/S15. See docs/sources/s15.md.
+source_id: S15
+state: ka
+name: "OpenFreeMap basemap"
+verify_task: T015
+discovered_at: "2026-11-05T13:12:33Z"
+outcome: available
+landing_url: "https://openfreemap.org/quick_start/"
+publisher: "OpenFreeMap (Hyperknot Software Kft.), serving OpenMapTiles vector tiles built from OpenStreetMap"
+no_card: true
+account_required: false
+
+access:
+  status: public_tiles_no_key
+  detail: >-
+    The public instance is free with "no limits on the number of map views or requests" and "no
+    registration, no user database, no API keys, and no cookies" (e02). The quick start names the
+    style URLs (e04); the style, TileJSON and a vector tile download without an account (e05, e06,
+    e07). The website robots.txt allows all paths (e01); the tile host's robots.txt returns 403
+    (see failed_fetches). Requests were spaced 3 seconds apart.
+  evidence: [e01, e02, e04, e05, e06, e07]
+
+licence:
+  status: open
+  detail: >-
+    The TileJSON attribution, which must be shown on every map, credits OpenFreeMap, "©
+    OpenMapTiles" and "Data from OpenStreetMap" (e06); OpenStreetMap data is ODbL. The Terms of
+    Service forbid collecting data "in automated ways, except for offline downloads" of at most
+    3,000 tiles or 50 MB, with at most 4 parallel requests and a unique User-Agent, and require
+    whoever integrates the public service into a site to be at least 18 (e03). Maps are drawn in
+    the viewer's browser, so the project does not bulk-download tiles.
+  evidence: [e03, e06]
+
+provider_quota:
+  status: published
+  detail: >-
+    No limit on map views (e02); automated downloads at most 3,000 tiles or 50 MB each, at most 4
+    parallel requests (e03).
+  evidence: [e02, e03]
+
+history:
+  status: partial
+  detail: >-
+    Tiles are served from a dated revision path; on 5 Nov 2026 the TileJSON pointed at
+    20261101_080013_pt (OpenMapTiles schema 3.16.0) (e06). Only the current revision is
+    advertised, so the style and its attribution are saved at each release (e05, e06).
+  evidence: [e05, e06]
+earliest_date: "2026-11-01"
+latest_date: "2026-11-01"
+
+units:
+  status: not_applicable
+  detail: "Vector tiles have no measured units; zoom 0 to 14 (e06)."
+  evidence: [e06]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: retain OSM and OpenMapTiles attribution; check style and tile availability. The
+    attribution string comes from the TileJSON and is stored with each style revision (e06). The
+    Liberty style points its openmaptiles source at the planet TileJSON and names glyph and sprite
+    URLs (e05). A zoom 6 tile over Karnataka (6/45/29) returned 157,188 bytes of
+    application/vnd.mapbox-vector-tile from the current revision (e07).
+  evidence: [e05, e06, e07]
+
+field_map:
+  - canonical: style_url
+    upstream: "Style URL from the quick start, for example https://tiles.openfreemap.org/styles/liberty"
+    unit_status: not_applicable
+    detail: "Liberty, bright and positron are published (e04)."
+    evidence: [e04, e05]
+  - canonical: revision
+    upstream: "Dated path segment in TileJSON tiles[0], for example 20261101_080013_pt"
+    unit_status: not_applicable
+    detail: "Changes about weekly; stored with each release."
+    evidence: [e06]
+  - canonical: attribution
+    upstream: "TileJSON attribution (HTML)"
+    unit_status: not_applicable
+    detail: "Shown unchanged on every map."
+    evidence: [e06]
+
+dependents: [T016, T039]
+retry_condition: null
+
+failed_fetches:
+  - url: "https://tiles.openfreemap.org/robots.txt"
+    attempted_at: "2026-11-05T13:12:34Z"
+    error: "HTTP 403: the tile host refuses robots.txt"
