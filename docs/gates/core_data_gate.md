@@ -10,6 +10,10 @@ locally in `data/raw` with their SHA256 in the committed manifests.
 (KSEB daily water level), then T119 (Kerala 2018 flood dataset). In parallel, the owner asks
 ACIWRM for KWRIS daily reservoir history.
 
+**Update (5 Nov 2026): decision D29, core C2 is M05.** M08's fallback labels failed in T119 and
+T121, so the second A4 fallback applies (see the last section). Next task: T057 (S08 IMD Pune
+gridded rainfall).
+
 | Check | Result | Evidence |
 |---|---|---|
 | C1 KWRIS daily history | **Fail** | [s28.yaml](../../configs/sources/s28.yaml), [s28.md](../sources/s28.md), [manifest](../../tests/fixtures/s28/manifest.json) |
@@ -98,3 +102,25 @@ Also proposed:
   T008, and M02 can return as a second reservoir model.
 - **Use the complaints log for C2 instead of M08**: needs a written coverage rule for negatives
   and is recorded as non-official labels. Not recommended (see C2 above).
+
+## Decision D29: core C2 is M05 (the owner delegated the H11 choice)
+
+M08's labels fail for forecasting. Kaggle needs a sign-in and states no licence (T119,
+[s35.md](../sources/s35.md)). The KSDMA memoranda have dated district flood labels for 2018 only,
+and few of them, with no independent positives and negatives before 2018 (T121,
+[s36.md](../sources/s36.md)). M08's card then allows only a descriptive replay with no accuracy
+claim, so the second fallback in A4 applies.
+
+| Change | Tasks |
+|---|---|
+| **M05 Karnataka taluk drought outlook** becomes core C2: next-month SPI-3 and drought probability, on district or H3 cells (labelled) because no taluk polygons were found | T057 and T058 (S08 IMD Pune gridded rainfall), then T101 to T103, pulled into P1 |
+| M08 stays as a non-core descriptive 2018 replay, with no accuracy claim | T122, T129 and T133 to T135 stay in P3 |
+
+Why M05:
+
+1. It can make a forecasting claim: a locked 2020 to 2024 test, compared with strong simple
+   baselines (SPI persistence and month climatology).
+2. Its rain record starts in 1901, more than the 30 years the card needs.
+3. It is a Karnataka model, so it follows the build order (Karnataka first).
+
+Risk: S08 is unverified. T057 runs first, so a failing fallback shows up in one session.

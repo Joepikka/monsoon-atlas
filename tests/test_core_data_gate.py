@@ -51,3 +51,17 @@ def test_d17_recorded_when_a_check_fails():
         assert "reserved" not in d17
         assert "M07" in d17 and "M08" in d17
         assert "H11" in d17  # owner approval is still required
+
+
+def test_d29_follows_the_m08_label_discoveries():
+    """A4: if M08's labels also fail, C2 becomes M05. Both label sources are recorded."""
+    for source in ("s35", "s36"):
+        d = load_yaml(ROOT / "configs" / "sources" / f"{source}.yaml", Discovery)
+        assert {"T133", "T134", "T135"} <= set(d.dependents), source
+    d29 = next(
+        line
+        for line in (ROOT / "docs" / "decisions.md").read_text("utf-8").splitlines()
+        if line.startswith("| D29 |")
+    )
+    assert "M05" in d29 and "H11" in d29 and "T057" in d29
+    assert "Decision D29" in GATE.read_text("utf-8")
