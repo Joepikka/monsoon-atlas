@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 5 Nov 2026, after T020 (commit `c0a2c6b`, branch `p1/gate-core`).
+Last updated: 5 Nov 2026, after T017 (commit `4a5735e`, branch `p1/gate-core`).
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
 Read it fully, then read `AGENTS.md`, then the documents listed in section 2. Keep this file up to
@@ -160,6 +160,7 @@ and a YAML block `- id: T057`.
 | T016 | `94903c4` | S15 adapter: style + TileJSON to one row (style_url, revision, attribution); no tile downloads; enabled |
 | T019 | `56c3b4c` | S17 geoBoundaries: **available**; ADM2 2021 ODbL has 735 districts (not 736), Karnataka 30 (no Vijayanagara); ADM1 2011; no disputed-boundary field (owner check vs India mapping guidance) |
 | T020 | `c0a2c6b` | S17 adapter: 30 Karnataka districts, place_id gb-IND-ADM2-<id>, boundary_version with release, parent by point-in-polygon, WKB; enabled |
+| T017 | `4a5735e` | S16 WorldPop: **available**, R2025A 1 km counts 2015-2030, CC BY 4.0; alpha release, post-2025 are projections; LZW BigTIFF needs rasterio (geo lock) for T018 |
 
 ## 8. Current state
 
