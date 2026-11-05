@@ -1,4 +1,4 @@
-# Discovery record for S34 (plan task T117, pulled into P1 by decision D17). Evidence IDs refer to
+# Discovery record for S34 (plan task T117, run in P1 by decision D28). Evidence IDs refer to
 # tests/fixtures/s34/manifest.json; the files stay in data/raw/S34. See docs/sources/s34.md.
 source_id: S34
 state: kl

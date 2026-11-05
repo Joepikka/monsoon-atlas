@@ -60,6 +60,15 @@ def test_rejects_claim_without_evidence(base):
         _with(d, history=d.history.model_dump() | {"evidence": []})
 
 
+@pytest.mark.parametrize(("status", "ok"), [(304, True), (302, False), (404, False)])
+def test_evidence_status_must_be_stored_200_or_304(base, status, ok):
+    d, manifest = base
+    first = manifest.evidence[0].model_copy(update={"status": status})
+    changed = manifest.model_copy(update={"evidence": [first, *manifest.evidence[1:]]})
+    problems = check(d, changed, source_enabled=False)
+    assert (not any("200 or 304" in p for p in problems)) is ok
+
+
 def test_rejects_manifest_for_another_source(base):
     d, manifest = base
     other = manifest.model_copy(update={"source_id": "S40"})

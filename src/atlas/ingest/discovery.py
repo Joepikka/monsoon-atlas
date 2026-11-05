@@ -174,8 +174,11 @@ def check(d: Discovery, manifest: EvidenceManifest, *, source_enabled: bool) -> 
             if eid not in known:
                 problems.append(f"{name} cites {eid}, which is not in the evidence manifest")
     for e in manifest.evidence:
-        if e.status != 200:
-            problems.append(f"{e.id}: evidence must be a stored 200 response, got {e.status}")
+        # 304: the server confirmed the stored copy (fetched earlier, same SHA256) is current
+        if e.status not in (200, 304):
+            problems.append(
+                f"{e.id}: evidence must be a stored 200 or 304 response, got {e.status}"
+            )
     if d.licence.status not in LICENCE:
         problems.append(f"licence status must be one of {sorted(LICENCE)}")
     if d.history.status not in HISTORY:
