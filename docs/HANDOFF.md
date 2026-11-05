@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 5 Nov 2026, after T103 (commit `bea3eb9`, branch `p1/gate-core`).
+Last updated: 5 Nov 2026, after T103 approval (commit `7f3780e`, branch `p1/gate-core`).
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
 Read it fully, then read `AGENTS.md`, then the documents listed in section 2. Keep this file up to
@@ -176,6 +176,7 @@ and a YAML block `- id: T057`.
 | T025 | `f1af6cd` | S23 data.gov.in mandi: API works with owner key (current-day snapshot, Karnataka 565 rows, checks pass) but **blocked on licence**: owner to read licence + unit from Catalog Info |
 | T102 | `e6cb916` | M05 fit (src/atlas/models/m05.py): tune 2017-2018 MAE persistence 0.736, ridge 0.585, LightGBM 0.571 (gain not significant) -> ridge provisional; deterministic, test rows refused, artifacts in data/models (D41) |
 | T103 | `bea3eb9` | M05 locked test 2020-2024: ridge beats persistence on all gates (MAE 0.732 vs 0.808, CI lower 0.003, PR-AUC 0.217, Brier skill 0.116, CRPS lower); release v1 candidate_eligible, **owner approval pending**; intervals under-cover (65%) so not published (D42). Report: reports/models/m05.md |
+| T103 approval | `7f3780e` | Owner approved M05 v1 (D43): ridge is the champion; outputs labelled hindcast, no intervals |
 
 ## 8. Current state
 
@@ -242,8 +243,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
 4. **T101 is done** (the S08 1981-2024 files are in data/raw; re-fetch with the S08 adapter if missing).
 5. **C2 = M05 is evaluated** (T102, T103; report `reports/models/m05.md`, release
    `models/registry/M05/v1.json`). Ridge passed every gate on 2020-2024; status
-   `candidate_eligible`, approval pending. **Owner step:** read the report, then approve or reject
-   with `atlas.models.registry.approve(Path("models/registry"), "M05", "v1", "approved", by="owner")`.
+   `candidate_eligible`, **approved by the owner (D43)**: ridge is the champion.
    Before publishing intervals, recalibrate them (they cover 65%, not 80%).
 6. **C1 = M07 (Kerala):** T129 creates `configs/states/kl.yaml` (needed before any Kerala
    source can be enabled), T114 (S32 adapter), T118 (OCR for S34; pin a free OCR such as
