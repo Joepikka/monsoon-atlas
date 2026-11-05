@@ -1,0 +1,115 @@
+{
+  "source_id": "S01",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://open-meteo.com/robots.txt",
+      "fetched_at": "2026-11-05T12:54:35.001416Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "44f3f8eafdf064cf69acb05f23ee4dfc9ab5b3d67d81c64246bc29f7e438789a",
+      "bytes": 22,
+      "raw_path": "S01/2026-11-05/44f3f8eafdf064cf69acb05f23ee4dfc9ab5b3d67d81c64246bc29f7e438789a.bin",
+      "shows": "Website robots.txt: allows all paths"
+    },
+    {
+      "id": "e02",
+      "url": "https://api.open-meteo.com/robots.txt",
+      "fetched_at": "2026-11-05T12:54:38.851963Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "efdb5938a9736727f5cce2b60355588e4fa541d19d022d222d8a09b8efd5dcce",
+      "bytes": 25,
+      "raw_path": "S01/2026-11-05/efdb5938a9736727f5cce2b60355588e4fa541d19d022d222d8a09b8efd5dcce.bin",
+      "shows": "API host robots.txt: disallows all paths for crawlers"
+    },
+    {
+      "id": "e03",
+      "url": "https://open-meteo.com/en/terms",
+      "fetched_at": "2026-11-05T12:54:42.827017Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "681b88577798406fdd5fdb7498c2ba23721d5355ccbd5481b4a4e12086824e98",
+      "bytes": 38673,
+      "raw_path": "S01/2026-11-05/681b88577798406fdd5fdb7498c2ba23721d5355ccbd5481b4a4e12086824e98.html",
+      "shows": "Terms: free API for non-commercial use, 600/min, 5,000/h, 10,000/day"
+    },
+    {
+      "id": "e04",
+      "url": "https://open-meteo.com/en/licence",
+      "fetched_at": "2026-11-05T12:54:46.279358Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "06178f27a1fff1dced571f7e825b351355ff54d3fe7806388e5021fe0ae938c4",
+      "bytes": 40502,
+      "raw_path": "S01/2026-11-05/06178f27a1fff1dced571f7e825b351355ff54d3fe7806388e5021fe0ae938c4.html",
+      "shows": "Licence page: API data under CC BY 4.0, with attribution"
+    },
+    {
+      "id": "e05",
+      "url": "https://open-meteo.com/en/docs",
+      "fetched_at": "2026-11-05T12:54:49.763917Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "e139623064b3e226a41093950fd86cc2b77a32b0fbe33f4cd623e40bd0965054",
+      "bytes": 621218,
+      "raw_path": "S01/2026-11-05/e139623064b3e226a41093950fd86cc2b77a32b0fbe33f4cd623e40bd0965054.html",
+      "shows": "Forecast API docs: parameters, units, forecast_days 0-16, past_days 0-92"
+    },
+    {
+      "id": "e06",
+      "url": "https://open-meteo.com/en/docs/model-updates",
+      "fetched_at": "2026-11-05T12:54:53.190106Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "b77bbc5b3efe49107191d2789f9a2b9dce16f79520231a6d6dfee3f5ff96f2f0",
+      "bytes": 51374,
+      "raw_path": "S01/2026-11-05/b77bbc5b3efe49107191d2789f9a2b9dce16f79520231a6d6dfee3f5ff96f2f0.html",
+      "shows": "Model Updates page: per-model last_run_initialisation_time and availability time"
+    },
+    {
+      "id": "e07",
+      "url": "https://open-meteo.com/_app/immutable/nodes/73.CMtpKCnE.js",
+      "fetched_at": "2026-11-05T12:54:57.244825Z",
+      "status": 200,
+      "media_type": "application/javascript",
+      "sha256": "b5a293253384583203588aaae34554b3d2c6dccf0893d6bfd6d912943c9b7ecf",
+      "bytes": 22932,
+      "raw_path": "S01/2026-11-05/b5a293253384583203588aaae34554b3d2c6dccf0893d6bfd6d912943c9b7ecf.bin",
+      "shows": "Model Updates page script: builds https://api.open-meteo.com/data/<model>/static/meta.json"
+    },
+    {
+      "id": "e08",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=12.97&longitude=77.59&hourly=temperature_2m,precipitation,relative_humidity_2m,wind_speed_10m&temperature_unit=celsius&wind_speed_unit=ms&precipitation_unit=mm&timezone=GMT&forecast_days=16&models=ecmwf_ifs025",
+      "fetched_at": "2026-11-05T12:55:01.914727Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "5f20841e707fecf6ff84049cf0051e04324d9cd9240f962afe940aee61ca08ba",
+      "bytes": 14640,
+      "raw_path": "S01/2026-11-05/5f20841e707fecf6ff84049cf0051e04324d9cd9240f962afe940aee61ca08ba.json",
+      "shows": "Sample: Bengaluru, ECMWF IFS 0.25, 16 days hourly, units requested explicitly"
+    },
+    {
+      "id": "e09",
+      "url": "https://api.open-meteo.com/data/ecmwf_ifs025/static/meta.json",
+      "fetched_at": "2026-11-05T12:55:05.271710Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "258b5c2081be8263ae7e2afbec787da382d6e017ae3c7a77f46ed398f6151754",
+      "bytes": 596,
+      "raw_path": "S01/2026-11-05/258b5c2081be8263ae7e2afbec787da382d6e017ae3c7a77f46ed398f6151754.json",
+      "shows": "ECMWF IFS 0.25 metadata: run initialisation and availability times (Unix seconds)"
+    },
+    {
+      "id": "e10",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=12.97&longitude=77.59&hourly=temperature_2m,precipitation,relative_humidity_2m,wind_speed_10m&temperature_unit=celsius&wind_speed_unit=ms&precipitation_unit=mm&timezone=GMT&forecast_days=16",
+      "fetched_at": "2026-11-05T12:55:08.626327Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "296e2b23e916c2dcabfb271b0586dc47896e550592a5b8805e7e9a31981bc2dd",
+      "bytes": 14610,
+      "raw_path": "S01/2026-11-05/296e2b23e916c2dcabfb271b0586dc47896e550592a5b8805e7e9a31981bc2dd.json",
+      "shows": "Sample with the default best-match model: the response names no model or run time"
+    }
+  ]
+}

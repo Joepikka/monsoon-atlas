@@ -1,0 +1,107 @@
+# Discovery record for S01 (plan task T009). Evidence IDs refer to tests/fixtures/s01/manifest.json;
+# the files stay in data/raw/S01. See docs/sources/s01.md.
+source_id: S01
+state: ka
+name: "Open-Meteo weather forecast"
+verify_task: T009
+discovered_at: "2026-11-05T12:55:08Z"
+outcome: available
+landing_url: "https://open-meteo.com/en/docs"
+publisher: "Open-Meteo, serving national weather service models (here ECMWF IFS 0.25)"
+no_card: true
+account_required: false
+
+access:
+  status: public_api_no_key
+  detail: >-
+    GET https://api.open-meteo.com/v1/forecast works without a key or account (e08, e10). The
+    website robots.txt allows all paths (e01). The API host robots.txt disallows all paths (e02);
+    decision D31 reads that as guidance for crawlers, and API calls follow the published API terms
+    and limits instead (e03). Requests were spaced 3 seconds apart.
+  evidence: [e01, e02, e03, e08, e10]
+
+licence:
+  status: open
+  detail: >-
+    "API data are offered under Attribution 4.0 International (CC BY 4.0)" (e04). The free API may
+    be used only for non-commercial purposes, and using it means accepting CC BY 4.0 (e03). Monsoon
+    Atlas is a non-commercial portfolio project; credit Open-Meteo and the model provider (ECMWF).
+  evidence: [e03, e04]
+
+provider_quota:
+  status: published
+  detail: >-
+    Free non-commercial API: fewer than 10,000 calls per day, 5,000 per hour and 600 per minute,
+    and 300,000 per month in the plan table (e03).
+  evidence: [e03]
+
+history:
+  status: partial
+  detail: >-
+    A forecast call returns up to 16 forecast days (forecast_days 0 to 16) and up to 92 past days
+    (past_days 0 to 92) (e05). Past days are not kept forecast vintages, so the project must store
+    each run itself (plan decision D07). The ECMWF IFS 0.25 run of 2026-11-05 00:00 UTC ends at
+    2026-11-20 03:00 UTC (e09).
+  evidence: [e05, e09]
+earliest_date: null
+latest_date: null
+
+units:
+  status: labelled
+  detail: >-
+    Units are requested explicitly (temperature_unit=celsius, wind_speed_unit=ms,
+    precipitation_unit=mm, timezone=GMT) and echoed in hourly_units: °C, mm, %, m/s and iso8601
+    (e05, e08). The default wind unit would be km/h (e05).
+  evidence: [e05, e08]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: rain >= 0, humidity 0 to 100, forecast issue time known, units explicitly requested.
+    In the ECMWF IFS 0.25 sample, precipitation is 0.0 to 1.9 mm and humidity 36 to 99% (e08). The
+    forecast response itself carries no run time (e08, e10). The issue time is known only when one
+    model is requested: its metadata gives last_run_initialisation_time 2026-11-05 00:00 UTC and
+    last_run_availability_time 09:04:15 UTC (e09), from the URL pattern the Model Updates page
+    uses (e06, e07). The default best-match response names no model, so its issue time is unknown
+    and it is not used (e10). Units are requested explicitly (e08).
+  evidence: [e06, e07, e08, e09, e10]
+
+field_map:
+  - canonical: cell_id
+    upstream: "latitude, longitude in the response"
+    unit_status: not_applicable
+    detail: "Snapped to the model grid: 12.97, 77.59 returns 13.0, 77.5 for IFS 0.25."
+    evidence: [e08]
+  - canonical: valid_at
+    upstream: "hourly.time"
+    unit_status: labelled
+    detail: "ISO 8601 without offset; UTC because timezone=GMT is requested."
+    evidence: [e05, e08]
+  - canonical: temperature_c
+    upstream: "temperature_2m"
+    unit_status: labelled
+    detail: "°C, requested with temperature_unit=celsius."
+    evidence: [e08]
+  - canonical: rain_mm
+    upstream: "precipitation"
+    unit_status: labelled
+    detail: "mm, total precipitation over the preceding hour."
+    evidence: [e05, e08]
+  - canonical: humidity_pct
+    upstream: "relative_humidity_2m"
+    unit_status: labelled
+    detail: "%, instant value at 2 m."
+    evidence: [e05, e08]
+  - canonical: wind_ms
+    upstream: "wind_speed_10m"
+    unit_status: labelled
+    detail: "m/s, requested with wind_speed_unit=ms (default is km/h)."
+    evidence: [e05, e08]
+  - canonical: model
+    upstream: "the models request parameter (not echoed in the response)"
+    unit_status: not_applicable
+    detail: "Always one named model, for example ecmwf_ifs025; best_match is not used."
+    evidence: [e08, e10]
+
+dependents: [T010]
+retry_condition: null
