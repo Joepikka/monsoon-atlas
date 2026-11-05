@@ -210,7 +210,8 @@ sources:
     cost: free
     storage_crs: EPSG:4326
     schedule: "one-off then boundary revision"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s40.yaml
   - source_id: S43
     name: "Official shelters and flood impact labels"
     verify_task: T085

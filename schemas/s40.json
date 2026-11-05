@@ -1,0 +1,14 @@
+{
+  "$comment": "S40 GBA Wards Delimitation 2025 (T031). Measure columns added to the common envelope (common.json), whose place_id is gba2025-c<corporation_id>-w<ward_id> and boundary_version gba-2025-final-369. Field map: configs/sources/s40.yaml. Older BBMP maps are not parsed (no licence).",
+  "source_id": "S40",
+  "schema_version": 1,
+  "mapping_version": "s40-v1",
+  "fields": [
+    {"name": "name", "type": "string", "nullable": false, "meaning": "ward_name"},
+    {"name": "level", "type": "string", "nullable": false, "meaning": "Always ward"},
+    {"name": "parent_id", "type": "string", "nullable": false, "meaning": "gba2025-c<corporation_id>"},
+    {"name": "parent_name", "type": "string", "nullable": false, "meaning": "Corporation (Central, East, North, South, West)"},
+    {"name": "valid_from", "type": "date32", "nullable": true, "meaning": "Not published; null"},
+    {"name": "geometry", "type": "binary", "nullable": false, "meaning": "WKB MultiPolygon, lon/lat"}
+  ]
+}
