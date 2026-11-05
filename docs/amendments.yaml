@@ -1,0 +1,61 @@
+amendments_version: 1
+date: 2026-11-05
+new_tasks:
+  - id: T222
+    title: "GATE-CORE: core data availability report"
+    phase: P1
+    state: KA
+    depends_on: [T008, T030, T085]
+    files: [docs/gates/core_data_gate.md]
+    steps:
+      - "Summarise T008/T030/T085 evidence"
+      - "Apply A4 pass criteria"
+      - "Record D17 fallback decision if any check fails"
+    acceptance: >-
+      docs/gates/core_data_gate.md lists each A4 check as pass or fail
+      with evidence links; D17 recorded when needed
+    hours: 2
+  - id: T223
+    title: "Power BI report (PBIP from code)"
+    phase: P2
+    state: KA
+    depends_on: [T046]
+    files: [powerbi/, reports/powerbi/]
+    acceptance: "PBIP opens in Power BI Desktop; PNG and PDF exports committed"
+    hours: 3
+  - id: T224
+    title: "SQL insights report"
+    phase: P2
+    state: KA
+    depends_on: [T046]
+    files: [sql/insights/, reports/sql_insights.md]
+    acceptance: "10 queries run with duckdb and results match reports/sql_insights.md"
+    hours: 3
+  - id: T225
+    title: "Core case studies (C1, C2, C3)"
+    phase: P1
+    state: KA
+    depends_on: [T094, T091, T181]
+    files: [reports/models/m02.md, reports/models/m01.md, reports/models/ask.md]
+    acceptance: "Each follows the plan section 17 case-study outline with real numbers only"
+    hours: 3
+moved_tasks:
+  - ids: [T092, T093, T094, T089, T090, T091, T179, T180, T181]
+    from: [P2, P5]
+    to: P1
+    before: T046
+  - {ids: [T085, T086], from: P2, to: P1, after: T030}
+changed_tasks:
+  - {id: T001, change: "Also copy docs/amendments.md and docs/amendments.yaml"}
+  - {id: T002, change: "Default 16 GB; DuckDB 4 GB/4 threads if measured >= 16 GB"}
+  - {id: T046, change: "Add A3 extra acceptance checks; depends on T225"}
+  - {id: T181, change: "MVP uses the English subset; add >= 10 Kannada questions before Kannada UI"}
+  - {id: T189-T208, change: "Owner reviews >= 20% of each batch and all test items (H13)"}
+fallbacks:
+  C1: {primary: M02, fallback: M07, pull_forward: [T113, T114, T130, T131, T132]}
+  C2:
+    primary: M01
+    fallback: M08
+    pull_forward: [T119, T129, T133, T134, T135]
+    second_fallback: M05
+    second_pull_forward: [T101, T102, T103]
