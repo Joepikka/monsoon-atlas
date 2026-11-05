@@ -1,0 +1,9 @@
+# Deep learning pins from docs/plan.pdf section 5. CPU lock for local export/inference checks only;
+# GPU training uses a separate Colab/Kaggle environment recorded at run time (section 5).
+-c core.txt
+torch==2.15.0
+transformers==5.22.1
+sentence-transformers==6.2.0
+safetensors==0.8.0
+onnx==1.23.2
+onnxruntime==1.31.1

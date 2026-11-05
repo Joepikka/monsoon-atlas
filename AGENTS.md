@@ -22,7 +22,7 @@ This repository is built by an AI coding agent following a fixed plan. Read this
 
 - Windows 10, 15.7 GB RAM, 4 cores, NVIDIA MX450 (2 GB, too small for deep learning; train on Kaggle or Colab).
 - **Python 3.12 only** (never 3.14) in `.venv`. **DuckDB 1.x only** (2.0.0 corrupted files in an earlier project).
-- Repository lives on drive D (drive C has under 20 GB free).
+- **Everything stays on drive D** (drive C is nearly full; decision D26). The repository is `D:\monsoon-atlas`; Python 3.12.14 is in `.tools/python`; pip, pip-tools and uv caches are in `.cache/`, pytest temp files in `.pytest-tmp/`. Before any command that downloads, set `TEMP` and `TMP` to `D:\monsoon-atlas\.cache\tmp`. Never write caches, models or datasets to drive C.
 - DuckDB settings: `memory_limit=4GB`, `threads=4` (amendment A2).
 
 ## How to work on a task

@@ -1,0 +1,216 @@
+# Karnataka (state 1). Source IDs and verify tasks from docs/plan.pdf sections 6 and 16.
+# Every source starts disabled. Enable one only after its verify task passes and
+# verified_by points to that evidence. Secrets: env var NAMES only, never values.
+state_id: ka
+name: Karnataka
+storage_tz: UTC
+display_tz: Asia/Kolkata
+paths:
+  raw_root: data/raw/ka
+  clean_root: data/clean/ka
+  publish_root: data/publish/ka
+sources:
+  - source_id: S01
+    name: "Open-Meteo weather forecast"
+    verify_task: T009
+    cost: free
+    storage_crs: EPSG:4326
+    schedule: "every 6 hours"
+    enabled: false
+  - source_id: S02
+    name: "Open-Meteo historical weather / ERA5"
+    verify_task: T011
+    cost: free
+    storage_crs: EPSG:4326
+    schedule: "backfill once; daily delayed updates"
+    enabled: false
+  - source_id: S03
+    name: "Open-Meteo GloFAS river discharge"
+    verify_task: T047
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S04
+    name: "Open-Meteo CAMS air-quality estimates"
+    verify_task: T049
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S05
+    name: "Open-Meteo ensemble"
+    verify_task: T051
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S06
+    name: "Open-Meteo climate projections"
+    verify_task: T053
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S07
+    name: "NASA POWER daily point"
+    verify_task: T055
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S08
+    name: "IMD Pune gridded rainfall 1901-2024"
+    verify_task: T057
+    cost: free
+    enabled: false
+  - source_id: S09
+    name: "NDMA Sachet CAP alerts"
+    verify_task: T013
+    cost: free
+    storage_crs: EPSG:4326
+    schedule: "every 15 minutes"
+    enabled: false
+  - source_id: S10
+    name: "adsb.lol live aircraft"
+    verify_task: T059
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S11
+    name: "OpenSky flight fallback"
+    verify_task: T061
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S12
+    name: "CelesTrak orbit elements"
+    verify_task: T063
+    cost: free
+    enabled: false
+  - source_id: S13
+    name: "NASA GIBS satellite imagery"
+    verify_task: T065
+    cost: free
+    enabled: false
+  - source_id: S14
+    name: "AWS Terrarium terrain"
+    verify_task: T067
+    cost: free
+    enabled: false
+  - source_id: S15
+    name: "OpenFreeMap basemap"
+    verify_task: T015
+    cost: free
+    schedule: "static, on demand"
+    enabled: false
+  - source_id: S16
+    name: "WorldPop India population"
+    verify_task: T017
+    cost: free
+    schedule: "once per release"
+    enabled: false
+  - source_id: S17
+    name: "geoBoundaries administrative boundaries"
+    verify_task: T019
+    cost: free
+    storage_crs: EPSG:4326
+    schedule: "yearly check"
+    enabled: false
+  - source_id: S18
+    name: "Geofabrik OSM extracts"
+    verify_task: T021
+    cost: free
+    storage_crs: EPSG:4326
+    schedule: "monthly clipped update"
+    enabled: false
+  - source_id: S19
+    name: "Google Open Buildings"
+    verify_task: T069
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S20
+    name: "USGS earthquakes"
+    verify_task: T071
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S21
+    name: "Datameet railway schedules"
+    verify_task: T073
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S22
+    name: "India Data Portal Agmarknet / existing price data"
+    verify_task: T023
+    cost: free
+    schedule: "backfill; daily if permitted"
+    enabled: false
+  - source_id: S23
+    name: "data.gov.in mandi prices"
+    verify_task: T025
+    cost: free_with_key
+    secret_env: DATA_GOV_IN_API_KEY
+    schedule: "daily"
+    enabled: false
+  - source_id: S25
+    name: "NASA FIRMS active fires"
+    verify_task: T075
+    cost: free_with_key
+    storage_crs: EPSG:4326
+    secret_env: NASA_FIRMS_MAP_KEY
+    schedule: "every 6 hours"
+    enabled: false
+  - source_id: S27
+    name: "KSNDMC gauges"
+    verify_task: T077
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S28
+    name: "KWRIS reservoirs and rainfall"
+    verify_task: T008
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S29
+    name: "OpenCity KSNDMC hobli rainfall 2017-2023"
+    verify_task: T079
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S30
+    name: "BMTC and Namma Metro static GTFS"
+    verify_task: T028
+    cost: free
+    storage_crs: EPSG:4326
+    schedule: "weekly"
+    enabled: false
+  - source_id: S31
+    name: "Karnataka RERA projects"
+    verify_task: T081
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S39
+    name: "Telegram Bot API"
+    verify_task: T083
+    cost: free_with_key
+    secret_env: TELEGRAM_BOT_TOKEN
+    schedule: "on official alert change; daily brief"
+    enabled: false
+  - source_id: S40
+    name: "Ward / taluk polygons and crosswalks"
+    verify_task: T030
+    cost: free
+    storage_crs: EPSG:4326
+    schedule: "one-off then boundary revision"
+    enabled: false
+  - source_id: S43
+    name: "Official shelters and flood impact labels"
+    verify_task: T085
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S44
+    name: "District crime statistics"
+    verify_task: T087
+    cost: free
+    enabled: false

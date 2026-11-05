@@ -6,6 +6,9 @@ secrets/
 
 # Python
 .venv/
+.cache/
+.tools/
+.pytest-tmp/
 __pycache__/
 *.py[cod]
 *.egg-info/

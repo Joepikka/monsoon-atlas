@@ -1,0 +1,42 @@
+# Project caps from docs/plan.pdf section 5 ("Free tiers, budgets and zero-cost fallbacks").
+# These are engineering caps kept below each provider's free limit. Never enable billing.
+cloudflare_pages:
+  builds_per_month: 120
+  max_files: 10000
+  max_file_mib: 20
+cloudflare_workers:
+  requests_per_day: 20000
+  cron_triggers: 2
+workers_ai:
+  neurons_per_day: 8000
+  ask_requests_per_day: 100
+cloudflare_d1:
+  reads_per_day: 100000
+  writes_per_day: 10000
+  database_mb: 400
+  hot_retention_days: 7
+hugging_face:
+  public_gb: 20
+  files_per_repo: 10000
+  shard_mb: 64
+github_actions:
+  daily_pipeline_minutes: 10
+  feed_job_minutes_per_hour: 15
+  artifacts_mb: 400
+  artifact_retention_days: 7
+open_meteo:
+  calls_per_day: 2000
+  calls_per_hour: 200
+  calls_per_minute: 30
+  calls_per_month: 50000
+colab:
+  checkpoint_every_hours: 2
+duckdb:
+  # Amendment A2: 4 GB / 4 threads on the 15.7 GB laptop.
+  memory_limit_gb: 4
+  threads: 4
+storage:
+  preflight_min_free_gb: 20
+  archive_budget_gb: 20
+  warn_at_fraction: 0.8
+  stop_at_fraction: 0.95
