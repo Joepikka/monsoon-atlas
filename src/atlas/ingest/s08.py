@@ -58,7 +58,9 @@ def read_grid(raw: RawArtifact) -> tuple[int, np.ndarray]:
         )
     grid = np.frombuffer(data, dtype="<f4").reshape(days, NY, NX)
     land = grid[0] != UNDEF
-    if ((grid == UNDEF) != ~land).any():
+    # -999 on a land cell is a missing day (12 Oct 2023: 79 cells, D40); a sea cell that gains a
+    # value is a real mask change and fails.
+    if ((grid != UNDEF) & ~land).any():
         raise IngestError(f"{SOURCE_ID} {year}: land mask changes within the year")
     return year, grid
 
@@ -102,7 +104,8 @@ class S08:
         days = grid.shape[0]
         rows, cols, cells = state_cells(self.state, grid[0] != UNDEF)
         values = grid[:, rows, cols].astype(np.float64).ravel()  # day-major, cell-minor
-        bad = ~np.isfinite(values) | (values < 0)
+        missing = values == UNDEF
+        bad = missing | ~np.isfinite(values) | (values < 0)
 
         n = len(values)
         day_list = [date(year, 1, 1) + timedelta(d) for d in range(days)]
@@ -135,14 +138,22 @@ class S08:
             "mapping_version": pa.array([MAPPING_VERSION] * n),
             "provenance": pa.array(["official"] * n),
             "quality_flags": pa.array(
-                [["out_of_range"] if b else [] for b in bad], pa.list_(pa.string())
+                [
+                    ["missing"] if m else ["out_of_range"] if b else []
+                    for m, b in zip(missing, bad, strict=True)
+                ],
+                pa.list_(pa.string()),
             ),
             "licence_id": pa.array([LICENCE_ID] * n),
             "redistribution_allowed": pa.array([False] * n),
             "place_id": pa.nulls(n, pa.string()),
             "boundary_version": pa.nulls(n, pa.string()),
             "missing_reason": pa.array(
-                ["quality_rejected" if b else None for b in bad], pa.string()
+                [
+                    "not_reported" if m else "quality_rejected" if b else None
+                    for m, b in zip(missing, bad, strict=True)
+                ],
+                pa.string(),
             ),
         }
         measures = {
