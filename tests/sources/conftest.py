@@ -12,9 +12,12 @@ ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / "data" / "raw"
 
 
-def enabled(source_id: str) -> bool:
-    ka = load_state(ROOT / "configs" / "states" / "ka.yaml")
-    return next(s for s in ka.sources if s.source_id == source_id).enabled
+def enabled(source_id: str, state: str) -> bool:
+    path = ROOT / "configs" / "states" / f"{state}.yaml"
+    if not path.exists():
+        return False  # no state config yet (for example Kerala before T129), so nothing is enabled
+    sources = load_state(path).sources
+    return any(s.source_id == source_id and s.enabled for s in sources)
 
 
 class Record:
@@ -26,7 +29,8 @@ class Record:
         self.source_id = source_id
 
     def problems(self) -> list[str]:
-        return check(self.discovery, self.manifest, source_enabled=enabled(self.source_id))
+        d = self.discovery
+        return check(d, self.manifest, source_enabled=enabled(self.source_id, d.state))
 
     def committed_files(self) -> list[str]:
         return sorted(p.name for p in self.fixture_dir.iterdir())
