@@ -16,7 +16,8 @@ sources:
     cost: free
     storage_crs: EPSG:4326
     schedule: "every 6 hours"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s01.yaml
   - source_id: S02
     name: "Open-Meteo historical weather / ERA5"
     verify_task: T011

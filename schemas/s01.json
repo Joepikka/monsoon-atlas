@@ -1,0 +1,18 @@
+{
+  "$comment": "S01 Open-Meteo weather forecast (T010). Measure columns added to the common envelope (common.json). Field map: configs/sources/s01.yaml.",
+  "source_id": "S01",
+  "schema_version": 1,
+  "mapping_version": "s01-v1",
+  "fields": [
+    {"name": "cell_id", "type": "string", "nullable": false, "meaning": "om_<model>_<lat>N_<lon>E, the model grid point the API snapped to"},
+    {"name": "model", "type": "string", "nullable": false, "meaning": "The one named model requested, for example ecmwf_ifs025"},
+    {"name": "temperature_c", "type": "float64", "nullable": true, "meaning": "temperature_2m in °C"},
+    {"name": "rain_mm", "type": "float64", "nullable": true, "meaning": "precipitation over the preceding hour in mm"},
+    {"name": "humidity_pct", "type": "float64", "nullable": true, "meaning": "relative_humidity_2m in %"},
+    {"name": "wind_ms", "type": "float64", "nullable": true, "meaning": "wind_speed_10m in m/s"}
+  ],
+  "valid_at": "hourly.time, UTC (timezone=GMT is requested)",
+  "issued_at": "last_run_initialisation_time from the model metadata, read before and after the forecast call",
+  "available_at": "the later of last_run_availability_time + 10 minutes and the fetch time",
+  "missing": "An hour with any measure missing becomes an all-null row with missing_reason out_of_coverage"
+}
