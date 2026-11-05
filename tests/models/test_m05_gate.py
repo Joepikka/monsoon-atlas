@@ -19,7 +19,9 @@ REPORT = (ROOT / "reports" / "models" / "m05.md").read_text("utf-8")
 
 
 def test_release_records_gate_decision_and_hashes():
-    assert RELEASE.model_id == "M05" and RELEASE.approval == "pending"
+    assert (
+        RELEASE.model_id == "M05" and RELEASE.approval == "pending"
+    )  # the release file never changes
     assert RELEASE.status == EVALUATION["status"]
     assert (RELEASE.status == "candidate_eligible") == all(EVALUATION["gates"].values())
     assert RELEASE.cutoffs["test"] == "2020-01-01/2024-12-31"
@@ -46,7 +48,13 @@ def test_report_shows_achieved_scores_not_targets():
 def test_unapproved_or_failing_model_stays_disabled(tmp_path):
     root = tmp_path / "registry"
     shutil.copytree(REGISTRY, root)
-    assert champion(root, "M05") == RELEASE.baseline  # pending approval: the baseline serves
+    approval = root / "M05" / "v1.approval.json"
+    if (
+        approval.exists()
+    ):  # the owner approved v1 (D43): ridge serves; check the unapproved case too
+        assert champion(root, "M05") == RELEASE.candidate
+        approval.unlink()
+    assert champion(root, "M05") == RELEASE.baseline  # without approval the baseline serves
     failing = RELEASE.model_copy(
         update={"version": "v2", "status": "baseline_only", "reason": "a failing candidate"}
     )
