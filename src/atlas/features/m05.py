@@ -94,16 +94,21 @@ def district_monthly_rain(raws: list[RawArtifact], districts: pa.Table) -> pa.Ta
             raise IngestError(f"S08 {year}: land mask differs from the first year")
         daily = grid[:, rows, cols].astype(np.float64)
         starts = [(date(year, m, 1) - date(year, 1, 1)).days for m in range(1, 13)]
-        monthly = np.add.reduceat(daily, starts, axis=0)  # 12 x cells
+        absent = np.add.reduceat(daily == UNDEF, starts, axis=0) > 0  # cell-months with a gap
+        monthly = np.add.reduceat(np.where(daily == UNDEF, 0.0, daily), starts, axis=0)
         for d, (idx, m2) in weights.items():
             if not idx:
                 raise IngestError(f"district {d} has no S08 land cells")
-            values = monthly[:, idx] @ np.asarray(m2) / sum(m2)
+            w = np.where(absent[:, idx], 0.0, np.asarray(m2))  # drop gappy cells, D40
+            share = w.sum(axis=1)
+            values = np.where(
+                share > 0, (monthly[:, idx] * w).sum(axis=1) / np.where(share > 0, share, 1), np.nan
+            )
             for m in range(12):
                 out["place_id"].append(d)
                 out["name"].append(names[d])
                 out["month"].append(date(year, m + 1, 1))
-                out["rain_mm"].append(float(values[m]))
+                out["rain_mm"].append(None if np.isnan(values[m]) else float(values[m]))
     return pa.table(
         out,
         schema=pa.schema(
@@ -143,7 +148,7 @@ def spi_table(monthly: pa.Table) -> pa.Table:
     out = []
     for series in by_district.values():
         series.sort(key=lambda r: r["month"])
-        rain = np.array([r["rain_mm"] for r in series])
+        rain = np.array([np.nan if r["rain_mm"] is None else r["rain_mm"] for r in series])
         months = np.array([r["month"].month for r in series])
         years = np.array([r["month"].year for r in series])
         for k in SCALES:

@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 5 Nov 2026, after T023 (commit `41c763e`, branch `p1/gate-core`).
+Last updated: 5 Nov 2026, after T103 approval (commit `7f3780e`, branch `p1/gate-core`).
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
 Read it fully, then read `AGENTS.md`, then the documents listed in section 2. Keep this file up to
@@ -172,6 +172,11 @@ and a YAML block `- id: T057`.
 | T033 | `680f65e` | Feature framework (src/atlas/features/base.py, models/base.py, models/splits.py): as-of features with __known_at + assert_as_of, hindcast lag rule, rolling-origin/spatial-block splits with purge, hashed manifests, train-only scaler, strict evaluators (D37) |
 | T034 | `e3f07bb` | Release framework (models/uncertainty.py, evaluate.py, registry.py): block bootstrap seed 42, validation-only intervals/thresholds, decide() gates, immutable release JSON + owner approval file, optional MLflow (D38) |
 | T023 | `41c763e` | S22 India Data Portal: **blocked** (client-side app, no link or licence in HTML, robots 403, browser unavailable); retry with a browser render; T025 data.gov.in is the other route |
+| T101 | `bbe7c25` | M05 target + features pass on IMD 1981-2024 (30 districts, SPI-3 ~N(0,1) on 1981-2010, lag and mutation checks, gate, purged manifest); 2023 missing day handled (D40) |
+| T025 | `f1af6cd` | S23 data.gov.in mandi: API works with owner key (current-day snapshot, Karnataka 565 rows, checks pass) but **blocked on licence**: owner to read licence + unit from Catalog Info |
+| T102 | `e6cb916` | M05 fit (src/atlas/models/m05.py): tune 2017-2018 MAE persistence 0.736, ridge 0.585, LightGBM 0.571 (gain not significant) -> ridge provisional; deterministic, test rows refused, artifacts in data/models (D41) |
+| T103 | `bea3eb9` | M05 locked test 2020-2024: ridge beats persistence on all gates (MAE 0.732 vs 0.808, CI lower 0.003, PR-AUC 0.217, Brier skill 0.116, CRPS lower); release v1 candidate_eligible, **owner approval pending**; intervals under-cover (65%) so not published (D42). Report: reports/models/m05.md |
+| T103 approval | `7f3780e` | Owner approved M05 v1 (D43): ridge is the champion; outputs labelled hindcast, no intervals |
 
 ## 8. Current state
 
@@ -180,7 +185,7 @@ and a YAML block `- id: T057`.
 | Slot | Model | Status |
 |---|---|---|
 | C1 | **M07 Kerala seven-day dam forecast** (D17) | Data: S34 KSDMA daily reports from Jun 2020 (scanned; needs OCR, T118) and S32 KSEB from Oct 2023 (T114 adapter). Model tasks T130 to T132 |
-| C2 | **M05 Karnataka drought outlook** (D29): SPI-3 of the issue month and drought probability, per district | T101 code is committed (`src/atlas/features/m05.py`, `configs/models/m05.yaml`) but its acceptance test waits for the S08 1981-2024 backfill (see section 9). Evaluated as a hindcast (D39). Then T102 (baselines + LightGBM/ridge) and T103 (evaluate and publish) |
+| C2 | **M05 Karnataka drought outlook** (D29): SPI-3 of the issue month and drought probability, per district | T101 is done (`src/atlas/features/m05.py`, `configs/models/m05.yaml`); evaluated as a hindcast (D39). Then T102 (baselines + LightGBM/ridge) and T103 (evaluate and publish) |
 | C3 | Ask (question answering, English first) | T179 to T181; uses Cloudflare Workers AI free tier with an extractive fallback (D08) |
 
 Blocked with retry conditions: M01 (Bengaluru ward floods), M02 (KWRIS reservoirs), M03.
@@ -235,15 +240,11 @@ Amendments A8 order, with the D17 and D29 fallbacks:
 2. **A8 step 4, core sources:** T027 (KWRIS) and T086 stay blocked (skip with a note);
    T011/T012 if not done in step 1.
 3. **A8 step 5, frameworks:** done (T033, T034).
-4. **Finish T101 (in progress).** The S08 1981-2024 backfill was started on 5 Nov 2026 with a
-   scratch script (IMD served about 120 KB/s, about 5 minutes per 25 MB year). To resume or
-   redo it, fetch each year with the S08 adapter: `S08('ka', range(1981, 2025), Fetcher(RawStore(Path('data/raw')), HOSTS)).fetch(ctx)`
-   with a `FetchContext` budget of about 200 requests and 1.3 GB (years already stored are
-   re-validated with 304). Then run `.\.venv\Scripts\python -m pytest tests/models/test_m05_features.py -q`;
-   fix anything it finds, commit as `T101: ...` and add the work-log row.
-5. **C2 = M05:** T102 (baselines SPI-3 persistence and month climatology on identical rows, then
-   ridge and LightGBM; the ml lock is installed), T103 (evaluate with `models/evaluate.decide`,
-   write the release with `models/registry`; promotion needs the owner's approval file).
+4. **T101 is done** (the S08 1981-2024 files are in data/raw; re-fetch with the S08 adapter if missing).
+5. **C2 = M05 is evaluated** (T102, T103; report `reports/models/m05.md`, release
+   `models/registry/M05/v1.json`). Ridge passed every gate on 2020-2024; status
+   `candidate_eligible`, **approved by the owner (D43)**: ridge is the champion.
+   Before publishing intervals, recalibrate them (they cover 65%, not 80%).
 6. **C1 = M07 (Kerala):** T129 creates `configs/states/kl.yaml` (needed before any Kerala
    source can be enabled), T114 (S32 adapter), T118 (OCR for S34; pin a free OCR such as
    Tesseract and record it in decisions; the owner reviews an OCR sample), T130 to T132. T130

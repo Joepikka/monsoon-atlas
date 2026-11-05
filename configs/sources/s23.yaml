@@ -1,0 +1,101 @@
+# Discovery record for S23 (plan task T025). Evidence IDs refer to tests/fixtures/s23/manifest.json;
+# the files stay in data/raw/S23. The API key is sent only in requests (secret parameter), never
+# stored. See docs/sources/s23.md.
+source_id: S23
+state: ka
+name: "data.gov.in mandi prices"
+verify_task: T025
+discovered_at: "2026-11-05T17:25:44Z"
+outcome: blocked
+landing_url: "https://www.data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi"
+publisher: "Ministry of Agriculture and Farmers Welfare, Department of Agriculture and Farmers Welfare, on data.gov.in"
+no_card: true
+account_required: true
+
+access:
+  status: api_key
+  detail: >-
+    The owner signed up, generated a free API key and read the resource ID
+    9ef84268-d588-465a-a308-a864a43d0070 from the dataset's API tab (OAS 2.0) on 5 Nov 2026. The API
+    confirms it: index_name is that ID and the title is "Current Daily Price of Various Commodities
+    from Various Markets (Mandi)" (e01). Without a key the API answers "Authorization field missing";
+    with the key it returned 502 twice at 16:30 UTC, then 200 (e01 to e03). The website itself
+    refuses automated clients (Akamai "Access Denied", see failed_fetches).
+  evidence: [e01, e02, e03]
+
+licence:
+  status: unverified
+  detail: >-
+    The API response names the publisher and sector but carries no licence (e01). The website's
+    dataset and terms pages refuse automated clients, so no licence text could be captured (see
+    failed_fetches). Until it is, raw responses stay local and nothing is redistributed.
+  evidence: [e01]
+
+provider_quota:
+  status: not_published
+  detail: "The responses publish no rate limit (e01, e02)."
+  evidence: [e01, e02]
+
+history:
+  status: partial
+  detail: >-
+    A current-day snapshot: on 5 Nov 2026 all 17,718 records were dated 05/11/2026, updated
+    2026-11-05T17:00:45Z (e01); Karnataka had 565 (e02, e03). History exists only by polling daily.
+  evidence: [e01, e02, e03]
+earliest_date: "2026-11-05"
+latest_date: "2026-11-05"
+
+units:
+  status: unlabelled
+  detail: >-
+    Fields are min_price, max_price and modal_price as numbers with no unit in the response (e01);
+    Agmarknet's usual unit (Rs per quintal) is not stated here. No arrivals field is exposed (e01).
+  evidence: [e01]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: pagination counts, date parsing, late reports, no invented resource UUID. The ID comes
+    from the publisher's API tab and the API echoes it (e01). Pagination: total 565 on both pages,
+    count 100 each, 200 distinct rows (e02, e03). Dates parse as DD/MM/YYYY, all 05/11/2026 (e02,
+    e03). 0 < min <= modal <= max holds in all 200 Karnataka rows (e02, e03). Late reports cannot be
+    seen in a one-day snapshot; daily polling must keep each day's snapshot.
+  evidence: [e01, e02, e03]
+
+field_map:
+  - canonical: market_id
+    upstream: "state + district + market"
+    unit_status: not_applicable
+    detail: "Names only; a versioned crosswalk maps them to IDs (T026)."
+    evidence: [e02]
+  - canonical: commodity_id
+    upstream: "commodity + variety + grade"
+    unit_status: not_applicable
+    detail: "Names only, for example Green Chilli / Green Chilly / FAQ."
+    evidence: [e01]
+  - canonical: date_local
+    upstream: "arrival_date (DD/MM/YYYY)"
+    unit_status: labelled
+    detail: "Day of the market report."
+    evidence: [e02]
+  - canonical: modal_inr_quintal
+    upstream: "modal_price"
+    unit_status: unlabelled
+    detail: "No unit in the response; unit must be confirmed before use."
+    evidence: [e01]
+  - canonical: arrivals_tonnes
+    upstream: null
+    unit_status: absent
+    detail: "Not exposed by this API resource."
+    evidence: [e01]
+
+dependents: [T026, T035, T036, T037]
+retry_condition: >-
+  Capture the dataset licence: the owner opens the dataset's Catalog Info (or the site's terms page)
+  and records the licence name and link, or a browser render captures it. If it is an open licence
+  (for example GODL-India) and the price unit is stated, re-run T025 to make S23 available.
+
+failed_fetches:
+  - url: "https://www.data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi"
+    attempted_at: "2026-11-05T17:25:44Z"
+    error: "HTTP 403: Akamai 'Access Denied' for automated clients"

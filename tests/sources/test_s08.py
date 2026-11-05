@@ -108,13 +108,27 @@ def test_malformed_copy_rejected(tmp_path):
 
 
 def test_changed_land_mask_rejected(tmp_path):
-    def hole(grid):
+    def grow(grid):
         g = grid.reshape(366, 129, 135)
-        g[100, round((13.0 - 6.5) / 0.25), round((77.5 - 66.5) / 0.25)] = -999.0
+        g[100, 0, 0] = 1.0  # a sea cell (6.5N 66.5E) that gains a value
         return g
 
     with pytest.raises(IngestError, match="land mask"):
-        S08("ka", [2024]).parse(edited_copy(tmp_path, "e04", hole), CONFIG)
+        S08("ka", [2024]).parse(edited_copy(tmp_path, "e04", grow), CONFIG)
+
+
+def test_missing_day_on_land_is_null_not_reported(tmp_path):
+    def gap(grid):
+        g = grid.reshape(366, 129, 135)
+        g[
+            100, round((13.0 - 6.5) / 0.25), round((77.5 - 66.5) / 0.25)
+        ] = -999.0  # as on 12 Oct 2023
+        return g
+
+    table = S08("ka", [2024]).parse(edited_copy(tmp_path, "e04", gap), CONFIG)
+    rows = table.filter(pc.equal(table["missing_reason"], "not_reported")).to_pylist()
+    assert len(rows) == 1 and rows[0]["rain_mm"] is None and rows[0]["quality_flags"] == ["missing"]
+    assert rows[0]["date_local"] == date(2024, 4, 10)
 
 
 def test_empty_response_rejected(tmp_path):
