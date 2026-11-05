@@ -10,6 +10,7 @@ MLflow (ml lock) is optional local tracking that mirrors the same fields.
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
@@ -77,7 +78,7 @@ def champion(root: Path, model_id: str) -> str:
         (
             Release.model_validate_json(p.read_text("utf-8"))
             for p in folder.glob("v*.json")
-            if ".approval" not in p.name
+            if re.fullmatch(r"v\d+\.json", p.name)
         ),
         key=lambda r: int(r.version[1:]),
     )

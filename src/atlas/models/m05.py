@@ -233,3 +233,102 @@ def log_mlflow(result: Fit, tracking_uri: str, split_sha256: str, dataset_sha256
         )
         mlflow.log_metrics({f"tune_mae_{k}": v for k, v in result.tune_mae.items()})
         return run.info.run_id
+
+
+MONSOON = {6, 7, 8, 9}
+GATES = {"mae_ratio_max": 0.95, "brier_skill_min": 0.0}
+
+
+def _gauss_crps(mu: np.ndarray, sigma: float, y: np.ndarray) -> np.ndarray:
+    from scipy.stats import norm
+
+    z = (y - mu) / sigma
+    return sigma * (z * (2 * norm.cdf(z) - 1) + 2 * norm.pdf(z) - 1 / np.sqrt(np.pi))
+
+
+def evaluate(result: Fit, calibrate: pa.Table, test: pa.Table) -> dict:
+    """Score the locked test once. Spreads come from calibration rows (2019) only."""
+    from scipy.stats import norm
+    from sklearn.metrics import average_precision_score
+
+    from atlas.models.evaluate import decide
+
+    y = np.asarray(test[TARGET].to_pylist(), dtype=float)
+    drought = (y < -1.0).astype(int)
+    y_cal = np.asarray(calibrate[TARGET].to_pylist(), dtype=float)
+    pred, pred_cal = result.predict(test), result.predict(calibrate)
+    mae = {k: float(np.abs(np.asarray(v) - y).mean()) for k, v in pred.items()}
+    baseline = min(("persistence", "climatology"), key=lambda k: mae[k])
+    candidate = result.choice
+    blocks = [m.strftime("%Y-%m") for m in test["target_month"].to_pylist()]
+    base_err = np.abs(np.asarray(pred[baseline]) - y)
+    cand_err = np.abs(np.asarray(pred[candidate]) - y)
+    decision = decide(
+        base_err.tolist(),
+        cand_err.tolist(),
+        blocks,
+        min_rows=300,
+        min_blocks=24,
+        max_loss_ratio=GATES["mae_ratio_max"],
+    )
+
+    sigma = {
+        k: float(np.std(np.asarray(pred_cal[k]) - y_cal, ddof=1)) for k in (baseline, candidate)
+    }
+    prob = {k: norm.cdf((-1.0 - np.asarray(pred[k])) / sigma[k]) for k in (baseline, candidate)}
+    brier = {k: float(((prob[k] - drought) ** 2).mean()) for k in prob}
+    crps = {k: float(_gauss_crps(np.asarray(pred[k]), sigma[k], y).mean()) for k in prob}
+    pr_auc = float(average_precision_score(drought, prob[candidate]))
+    months = np.asarray([m.month for m in test["target_month"].to_pylist()])
+    seasons = {}
+    for name, sel in (
+        ("monsoon (Jun-Sep)", np.isin(months, list(MONSOON))),
+        ("rest of year", ~np.isin(months, list(MONSOON))),
+    ):
+        seasons[name] = {
+            "rows": int(sel.sum()),
+            "observed_drought": float(drought[sel].mean()),
+            "mean_probability": float(prob[candidate][sel].mean()),
+        }
+    resid = np.asarray(pred_cal[candidate]) - y_cal
+    lo, hi = np.quantile(resid, [0.1, 0.9])
+    covered = float(
+        ((y >= np.asarray(pred[candidate]) - hi) & (y <= np.asarray(pred[candidate]) - lo)).mean()
+    )
+
+    prevalence = float(drought.mean())
+    gates = {
+        "mae": decision.status == "candidate_eligible",
+        "pr_auc_above_prevalence": pr_auc > prevalence,
+        "brier_skill_above_0": 1 - brier[candidate] / brier[baseline] > GATES["brier_skill_min"],
+        "crps_below_baseline": crps[candidate] < crps[baseline],
+    }
+    status = (
+        "candidate_eligible"
+        if all(gates.values())
+        else ("research_only" if decision.status == "research_only" else "baseline_only")
+    )
+    imp = decision.improvement
+    return {
+        "baseline": baseline,
+        "candidate": candidate,
+        "rows": int(len(y)),
+        "months": len(set(blocks)),
+        "mae": mae,
+        "mae_ratio": mae[candidate] / mae[baseline],
+        "improvement": None
+        if imp is None
+        else {"mean": imp.mean, "lower95": imp.lower95, "upper95": imp.upper95},
+        "drought_prevalence": prevalence,
+        "pr_auc": pr_auc,
+        "brier": brier,
+        "brier_skill": 1 - brier[candidate] / brier[baseline],
+        "crps": crps,
+        "calibration_by_season": seasons,
+        "interval80_coverage": covered,
+        "gates": gates,
+        "status": status,
+        "reason": decision.reason
+        if status != "candidate_eligible"
+        else "all gates pass; needs owner approval",
+    }

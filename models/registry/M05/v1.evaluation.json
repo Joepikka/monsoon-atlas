@@ -1,0 +1,50 @@
+{
+  "baseline": "persistence",
+  "candidate": "ridge",
+  "rows": 1800,
+  "months": 60,
+  "mae": {
+    "persistence": 0.8082546179167789,
+    "climatology": 1.052593691675128,
+    "ridge": 0.7320467345749282,
+    "lightgbm": 0.7218944946369111
+  },
+  "mae_ratio": 0.9057130245190912,
+  "improvement": {
+    "mean": 0.07620788334185077,
+    "lower95": 0.0025687988345464543,
+    "upper95": 0.15024385980322363
+  },
+  "drought_prevalence": 0.056666666666666664,
+  "pr_auc": 0.2173896610813263,
+  "brier": {
+    "persistence": 0.0668470092486859,
+    "ridge": 0.05907264180158525
+  },
+  "brier_skill": 0.11630090163313456,
+  "crps": {
+    "persistence": 0.5862000770413314,
+    "ridge": 0.5296380217494724
+  },
+  "calibration_by_season": {
+    "monsoon (Jun-Sep)": {
+      "rows": 600,
+      "observed_drought": 0.045,
+      "mean_probability": 0.0707309078020531
+    },
+    "rest of year": {
+      "rows": 1200,
+      "observed_drought": 0.0625,
+      "mean_probability": 0.08979551025512364
+    }
+  },
+  "interval80_coverage": 0.6522222222222223,
+  "gates": {
+    "mae": true,
+    "pr_auc_above_prevalence": true,
+    "brier_skill_above_0": true,
+    "crps_below_baseline": true
+  },
+  "status": "candidate_eligible",
+  "reason": "all gates pass; needs owner approval"
+}

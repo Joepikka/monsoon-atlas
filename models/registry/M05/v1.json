@@ -1,0 +1,36 @@
+{
+  "model_id": "M05",
+  "version": "v1",
+  "created_at": "2026-11-05T17:31:31.685327Z",
+  "dataset_sha256": "91bb4930a3ffa0200e9e12fc87ea503edcd562dfafa4bb87747b2bd496356a42",
+  "git_sha": "7efb139bf5c911b4baa4d9ce21d5b222d44167d0",
+  "cutoffs": {
+    "train": "1981-07-01/2016-09-30",
+    "tune": "2017-01-01/2018-12-31",
+    "calibrate": "2019-01-01/2019-12-31",
+    "test": "2020-01-01/2024-12-31",
+    "split_manifest_sha256": "e0109096d1256234955be6156f4710bc107fe44b474953db9ee4909585a7bfd0",
+    "source_sha256": "09d3c89a084f13f3,0b8f4b5884f6e9e5,0c5cd53892cbea7e,1023548bcc409d95,1db12d8eb5a471d3,1e89531d9772acbd,1f656dc6498b8bcb,23119ee55f78cd4b,28ddc49f8af38bd9,2f2b20a58c883e11,34445bd00b098c85,3f007292029a212e,405e89cc3c835b39,5542e3441278325c,5b8f542bd1ae1792,6056e795aaa11f26,72a9c97f58fb12d8,73eb61027f0373e4,78060465e12dacbf,78ae74184b0ece2a,79d1d9acb4da5614,7d47dd937eb68d3e,7f5128e82aa6d362,81bbab9f686bcd0c,83185ebbab190a95,8c22bbde0d4753cd,8d671a7b4eeeb218,8e22a50a30c92d9c,9cd1654631ed918f,a13672034666d04b,a3cf9d4dd08ac504,acf30d074c16b440,ae11b700154013b3,b138efce173261e6,b1cb4b43da4434b8,b41b0c095335638f,bd24f975f5d2c64f,dc9109fc3c4c2dbc,dfb714184e16624c,e19532760221e687,ea431a0940e329e7,eaed86f9bfd2e65f,f308b916a4a2a57a,f481d8619e164381"
+  },
+  "baseline": "persistence",
+  "baseline_scores": {
+    "mae": 0.8082546179167789,
+    "brier": 0.0668470092486859,
+    "crps": 0.5862000770413314
+  },
+  "candidate": "ridge",
+  "candidate_scores": {
+    "mae": 0.7320467345749282,
+    "brier": 0.05907264180158525,
+    "crps": 0.5296380217494724,
+    "pr_auc": 0.2173896610813263
+  },
+  "improvement": {
+    "mean": 0.07620788334185077,
+    "lower95": 0.0025687988345464543,
+    "upper95": 0.15024385980322363
+  },
+  "status": "candidate_eligible",
+  "reason": "all gates pass; needs owner approval",
+  "approval": "pending"
+}
