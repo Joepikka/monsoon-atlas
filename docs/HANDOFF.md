@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 5 Nov 2026, after T025 (commit `f1af6cd`, branch `p1/gate-core`).
+Last updated: 5 Nov 2026, after T102 (commit `e6cb916`, branch `p1/gate-core`).
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
 Read it fully, then read `AGENTS.md`, then the documents listed in section 2. Keep this file up to
@@ -174,6 +174,7 @@ and a YAML block `- id: T057`.
 | T023 | `41c763e` | S22 India Data Portal: **blocked** (client-side app, no link or licence in HTML, robots 403, browser unavailable); retry with a browser render; T025 data.gov.in is the other route |
 | T101 | `bbe7c25` | M05 target + features pass on IMD 1981-2024 (30 districts, SPI-3 ~N(0,1) on 1981-2010, lag and mutation checks, gate, purged manifest); 2023 missing day handled (D40) |
 | T025 | `f1af6cd` | S23 data.gov.in mandi: API works with owner key (current-day snapshot, Karnataka 565 rows, checks pass) but **blocked on licence**: owner to read licence + unit from Catalog Info |
+| T102 | `e6cb916` | M05 fit (src/atlas/models/m05.py): tune 2017-2018 MAE persistence 0.736, ridge 0.585, LightGBM 0.571 (gain not significant) -> ridge provisional; deterministic, test rows refused, artifacts in data/models (D41) |
 
 ## 8. Current state
 
@@ -238,8 +239,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    T011/T012 if not done in step 1.
 3. **A8 step 5, frameworks:** done (T033, T034).
 4. **T101 is done** (the S08 1981-2024 files are in data/raw; re-fetch with the S08 adapter if missing).
-5. **C2 = M05:** T102 (baselines SPI-3 persistence and month climatology on identical rows, then
-   ridge and LightGBM; the ml lock is installed), T103 (evaluate with `models/evaluate.decide`,
+5. **C2 = M05:** T102 is done (ridge provisional, D41). Next T103 (evaluate with `models/evaluate.decide`,
    write the release with `models/registry`; promotion needs the owner's approval file).
 6. **C1 = M07 (Kerala):** T129 creates `configs/states/kl.yaml` (needed before any Kerala
    source can be enabled), T114 (S32 adapter), T118 (OCR for S34; pin a free OCR such as
