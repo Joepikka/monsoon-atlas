@@ -20,6 +20,7 @@ htmlcov/
 # Data (versioned outside git)
 data/raw/
 data/clean/
+data/models/
 *.duckdb
 *.duckdb.wal
 

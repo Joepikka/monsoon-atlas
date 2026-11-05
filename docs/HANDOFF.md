@@ -1,6 +1,7 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 5 Nov 2026, after T103 approval (commit `7f3780e`, branch `p1/gate-core`).
+Last updated: 5 Nov 2026, Codex continuation review and T226 Kerala bootstrap,
+branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
 Read it fully, then read `AGENTS.md`, then the documents listed in section 2. Keep this file up to
@@ -24,14 +25,16 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 (5 Nov 2026). **They win where they conflict with the plan.** Adds T222 to T225, the GATE-CORE check (A4), human-only steps H01 to H14 (A5), and the P1 session order (A8) |
-| `docs/decisions.md` | Decisions log D01 to D30. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 (5 Nov 2026). **They win where they conflict with the plan.** Adds T222 to T226, GATE-CORE (A4), human-only steps H01 to H14 (A5), P1 order (A8) and Kerala bootstrap split (A10) |
+| `docs/decisions.md` | Decisions D01 to D45. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
 | `docs/gates/core_data_gate.md` | GATE-CORE report (T222) with decisions D17 and D29 |
 | `docs/sources/sNN.md` + `configs/sources/sNN.yaml` | One discovery report and record per checked source |
 | `docs/dependency-audit.md` | Licence and wheel audit of every locked package (T007) |
+| `docs/reviews/2026-11-05-continuation.md` | Codex review, archive comparison, test evidence and unresolved readiness limits |
+| `docs/labels/kerala.md` | T226 evidence audit; full T129 remains pending |
 
 Tip: `pdftotext -layout docs/plan.pdf .cache/plan.txt` (Git Bash has pdftotext) gives a
 searchable text copy of the plan; each task has a heading like `T057 - Verify access, ...`
@@ -99,8 +102,9 @@ and a YAML block `- id: T057`.
 | `src/atlas/data/manifest.py`, `store.py`, `budget.py` | Versioned Parquet snapshots, manifests, cache rebuild, 20 GB storage quota (T006) |
 | `scripts/audit_dependencies.py` | Licence and Windows-wheel audit (T007) |
 | `configs/states/ka.yaml` | Karnataka sources; enabled: S01, S02, S08, S09, S15, S16, S17, S40 |
+| `configs/states/kl.yaml` | T226 Kerala bootstrap: isolated output paths; every source disabled pending Kerala adapter checks |
 | `configs/budgets.yaml` | Request, storage and DuckDB budgets |
-| `tests/` | 211 tests: contracts, fetcher, storage, as-of, discovery records, gate report, S08 adapter |
+| `tests/` | Contracts, fetcher, storage, as-of, discovery/adapters, geography, model gates and state isolation; final continuation results below |
 
 ## 6. How one task is done (the process every task followed)
 
@@ -146,7 +150,7 @@ and a YAML block `- id: T057`.
 | T085 | `7d76b63` | S43 Bengaluru flood labels: **blocked**. No official dated ward-level incidents; the I Change My City complaints log is not ground truth (no rule for negatives) |
 | T222 | `71c8d90`, `feffd27` | GATE-CORE: C1 fail, C2 fail, wards pass. D17 approved by the owner: C1 = M07 Kerala dam forecast, C2 = M08 Kerala flood classifier; also try KWRIS (owner emails the helpdesk) |
 | T113 | `7a5da80` | S32 KSEB daily dam levels: **available** only from Oct 2023, with a two-year gap |
-| T117 | `5681b09` | S34 KSDMA daily dam reports: **available** 20 Jun 2020 to 4 Nov 2026 (2,296 dates), but scanned images, so OCR plus manual review is needed (T118). M07 can train from Jun 2020 |
+| T117 | `5681b09` | S34 KSDMA daily dam reports: **available** 20 Jun 2020 to 4 Nov 2026 (2,296 archive dates), but scanned images require T118 OCR/manual review. Training readiness also requires known datum and verified per-dam daily coverage; archive dates alone do not pass M07's gate. |
 | T119 | `2ae3917` | S35 Kaggle Kerala 2018 flood datasets: **blocked** (sign-in, no licence, rain tables) |
 | T003 fix | `00123ba` | CLI help test pins the child encoding to UTF-8 |
 | T121 | `c34fe50` | S36 KSDMA memoranda: **available**, but only district totals; one dated district table (16 Jul 2018); no flood labels before 2018, so M08 can only be a descriptive replay. Discovery contract accepts 304 revalidation (D27); D28 records T117 and T121 in P1 |
@@ -177,6 +181,27 @@ and a YAML block `- id: T057`.
 | T102 | `e6cb916` | M05 fit (src/atlas/models/m05.py): tune 2017-2018 MAE persistence 0.736, ridge 0.585, LightGBM 0.571 (gain not significant) -> ridge provisional; deterministic, test rows refused, artifacts in data/models (D41) |
 | T103 | `bea3eb9` | M05 locked test 2020-2024: ridge beats persistence on all gates (MAE 0.732 vs 0.808, CI lower 0.003, PR-AUC 0.217, Brier skill 0.116, CRPS lower); release v1 candidate_eligible, **owner approval pending**; intervals under-cover (65%) so not published (D42). Report: reports/models/m05.md |
 | T103 approval | `7f3780e` | Owner approved M05 v1 (D43): ridge is the champion; outputs labelled hindcast, no intervals |
+| T226 (child of T129) | This continuation commit | D44: isolated disabled Kerala config and existing-evidence audit; full T129 pending. D45: ignore local model artifacts without removing them. Acceptance: 7 tests passed. |
+
+T226 final verification (Python 3.12.14 in `D:\monsoon-atlas\.venv`):
+
+```text
+python -m pytest tests/test_kl_data.py -q
+7 passed in 0.62s
+python -m pytest -q -ra
+365 passed, 1 skipped, 1 warning in 110.57s
+python -m ruff check .
+All checks passed!
+python -m ruff format --check .
+115 files already formatted
+python scripts/audit_dependencies.py --policy
+policy: 0 problem(s)
+```
+
+The skipped S36 PDF-text evidence check requires `pdftotext` on PATH; T122 pins a
+PDF parser. The warning is MLflow's SQLAlchemy `noload` deprecation. Amendment
+Markdown/YAML parity and `git diff --check` passed. Independent read-only review
+found no actionable issues in T226; it did not certify future adapters or rerun M05.
 
 ## 8. Current state
 
@@ -184,8 +209,8 @@ and a YAML block `- id: T057`.
 
 | Slot | Model | Status |
 |---|---|---|
-| C1 | **M07 Kerala seven-day dam forecast** (D17) | Data: S34 KSDMA daily reports from Jun 2020 (scanned; needs OCR, T118) and S32 KSEB from Oct 2023 (T114 adapter). Model tasks T130 to T132 |
-| C2 | **M05 Karnataka drought outlook** (D29): SPI-3 of the issue month and drought probability, per district | T101 is done (`src/atlas/features/m05.py`, `configs/models/m05.yaml`); evaluated as a hindcast (D39). Then T102 (baselines + LightGBM/ridge) and T103 (evaluate and publish) |
+| C1 | **M07 Kerala seven-day dam forecast** (D17) | T226 bootstrap done. S34 archive starts Jun 2020 but needs T118 OCR/review; S32 needs T114. Both sources report unknown datum, so model readiness is blocked until T130's gate passes. |
+| C2 | **M05 Karnataka drought outlook** (D29): SPI-3 of the issue month and drought probability, per district | T101-T103 done; ridge approved in D43. Hindcast only (D39); do not publish the under-covering intervals (D42). |
 | C3 | Ask (question answering, English first) | T179 to T181; uses Cloudflare Workers AI free tier with an extractive fallback (D08) |
 
 Blocked with retry conditions: M01 (Bengaluru ward floods), M02 (KWRIS reservoirs), M03.
@@ -204,6 +229,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S17 geoBoundaries | T019, T020 | available, enabled | 30 Karnataka districts (no Vijayanagara); ODbL |
 | S18 Geofabrik OSM | T021, T022 | blocked | robots.txt disallows .osm.pbf (D34) |
 | S22 India Data Portal Agmarknet | T023 | blocked | client-side app; retry with a browser render; T025 is the other route |
+| S23 data.gov.in mandi prices | T025 | blocked on licence/unit confirmation | Key was already used in discovery; do not ask for it again unless missing at execution |
 | S28 KWRIS | T008 | blocked | retry if KWRIS daily history arrives |
 | S32 KSEB daily levels | T113 | available (partial history) | adapter T114 |
 | S34 KSDMA dam reports | T117 | available (scanned) | OCR T118, adapter |
@@ -223,8 +249,8 @@ M08 is a non-core descriptive 2018 replay (P3).
 - Before public deployment also: confirm you are 18+ (OpenFreeMap terms), check boundary maps
   against India's official mapping guidance (geoBoundaries has no disputed-boundary field), and
   label WorldPop counts for Bengaluru as an undercount (about 6.0 million in the GBA wards).
-- data.gov.in API key (free, needs an account) for T025 mandi prices: put it in `.env` as
-  `DATA_GOV_IN_API_KEY` (name only in code).
+- T025 already accessed data.gov.in with the owner's key. Remaining step: owner reads
+  the catalogue licence and unit information; see `docs/sources/s23.md`. Never print the key.
 - Optional: download `southern-zone-latest.osm.pbf` from Geofabrik in a browser into
   `data/raw/S18/` to unblock S18 (D34).
 
@@ -248,11 +274,14 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    `models/registry/M05/v1.json`). Ridge passed every gate on 2020-2024; status
    `candidate_eligible`, **approved by the owner (D43)**: ridge is the champion.
    Before publishing intervals, recalibrate them (they cover 65%, not 80%).
-6. **C1 = M07 (Kerala):** T129 creates `configs/states/kl.yaml` (needed before any Kerala
-   source can be enabled), T114 (S32 adapter), T118 (OCR for S34; pin a free OCR such as
-   Tesseract and record it in decisions; the owner reviews an OCR sample), T130 to T132. T130
-   must re-plan the M07 splits because history starts on 20 Jun 2020.
-7. **Prices:** T025 data.gov.in (needs the owner's free API key), then T024/T026 and T035 to T037.
+6. **C1 = M07 (Kerala): T226 is done; next task T114 (S32 adapter).** Then T118 (OCR for
+   S34; pin a free OCR and record it in decisions; owner reviews a real OCR sample).
+   Before T130, explicitly resolve its full-T129 dependency for the M07-only fallback and
+   the T115/T116 scheduling dependency. Full T129 remains a P3 task, not complete (D44).
+   T130 must verify known datum, >=3 years daily coverage across >=8 dams and new dated
+   splits against the actual parsed history. The Jun 2020 archive start is not a gate pass.
+7. **Prices:** T025 needs the owner's catalogue licence/unit confirmation, then T024/T026
+   and T035 to T037. Its API key was already supplied; do not request it again without cause.
 8. Then A8 steps 9 to 13: map and product, hosting, C3 Ask, T225 case studies, T046 MVP
    gate.
 
@@ -266,9 +295,10 @@ Amendments A8 order, with the D17 and D29 fallbacks:
   another source with the same URL).
 - Indian government sites often have broken TLS chains (BBMP, GBA): record the failure, never
   disable verification.
-- Kerala has no state config yet (`configs/states/kl.yaml` arrives in T129), so Kerala sources
-  cannot be enabled.
-- Full suite takes about 1 minute locally (S08 tests parse a 25 MB file several times).
+- Kerala has a disabled bootstrap config (T226). Discovery availability alone does not
+  certify the adapter or state filter; full T129 and M07 readiness are still pending.
+- Full suite took 117.61 seconds before this continuation (358 passed, 1 skipped);
+  S08/model tests parse real local rainfall data. MLflow emits an upstream deprecation warning.
 - IMD Pune speed varies a lot (10 s to 5 minutes per 25 MB year file); run big fetches in the
   background.
 - WorldPop GeoTIFFs are BigTIFF (`II+`) with LZW tiles: use rasterio (geo lock).
@@ -280,7 +310,9 @@ Amendments A8 order, with the D17 and D29 fallbacks:
 
 ## 11. Obsidian vault (owner's second brain)
 
-Vault: `C:\Users\joepi\Documents\Obsidian Vault`. Project note: `Projects/kerala-live-map.md`
+Historical vault location: `C:\Users\joepi\Documents\Obsidian Vault`. D26 keeps current
+project writes on D; this continuation updates the repository handoff only.
+Project note: `Projects/kerala-live-map.md`
 (current state and next action). Session log: `Claude/Work log.md` (newest first). Facts:
 `Claude/Memory.md`. Never write credentials or raw datasets there.
 

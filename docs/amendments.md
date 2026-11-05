@@ -110,12 +110,46 @@ The plan has notebooks and web dashboards, but no tools that data analyst job po
 
 All of the plan's leakage rules, split protocols, baselines, promotion gates, model cards, source catalogue, schemas, privacy and legal rules, the Rs 0 and no-card policy, the MIT code licence, and the Kerala-then-Delhi phase order.
 
+## A10. Kerala bootstrap child task (D44, 5 November 2026)
+
+The handoff's next-task list placed full T129 before its own adapter prerequisites.
+Split out **T226**, a child of T129, for the already approved D17 core C1 fallback.
+T226 runs now in P1, after T003, T113, T117, T119 and T121. It creates isolated
+`configs/states/kl.yaml`, the existing-evidence audit `docs/labels/kerala.md`, and
+`tests/test_kl_data.py`. Every Kerala source stays disabled. Estimate: 2 hours.
+
+Acceptance: `.\.venv\Scripts\python -m pytest tests/test_kl_data.py -q` passes;
+two states load with separate paths, no Kerala source is enabled, and the audit
+reports real history, unknown datum, unavailable labels and unverified geography.
+This is bootstrap acceptance, not completion of the full T129 audit.
+
+T114 and T118 gain T226 as a dependency. Full T129 retains its P3 scope and all
+original dependencies (T046, T114, T116, T118, T120, T122, T124), plus T226.
+Before T130, record the resolution of its full-T129 dependency for the M07-only
+fallback and of T115/T116 scheduling; neither is waived by T226. Known datum,
+reviewed OCR, daily coverage and honest splits remain mandatory gates.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 ```yaml
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T226
+    parent: T129
+    title: "Kerala configuration bootstrap and existing-evidence audit"
+    phase: P1
+    state: KL
+    depends_on: [T003, T113, T117, T119, T121]
+    files: [configs/states/kl.yaml, docs/labels/kerala.md, tests/test_kl_data.py]
+    steps:
+      - "Load isolated Kerala paths through the existing StateConfig; keep every source disabled"
+      - "Audit captured history, units, datum, flood labels and unverified geography without inventing records"
+      - "Keep full T129 pending; T226 is only the prerequisite for the D17 dam fallback adapters"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_kl_data.py -q'
+      expected: "Two states load with isolated paths; no Kerala source enabled; evidence audit exists"
+    hours: 2
   - id: T222
     title: "GATE-CORE: core data availability report"
     phase: P1
@@ -161,6 +195,10 @@ moved_tasks:
     before: T046
   - {ids: [T085, T086], from: P2, to: P1, after: T030}
 changed_tasks:
+  - {id: T129, change: "D44: add T226 dependency; retain original dependencies and P3 full-audit scope"}
+  - {id: T114, change: "D44: add T226 dependency for disabled Kerala configuration"}
+  - {id: T118, change: "D44: add T226 dependency for disabled Kerala configuration"}
+  - {id: T130, change: "D44: before starting, record resolution of full-T129 dependency and T115/T116 scheduling; no readiness gate is waived"}
   - {id: T001, change: "Also copy docs/amendments.md and docs/amendments.yaml"}
   - {id: T002, change: "Default 16 GB; DuckDB 4 GB/4 threads if measured >= 16 GB"}
   - {id: T046, change: "Add A3 extra acceptance checks; depends on T225"}

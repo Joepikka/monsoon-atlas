@@ -1,5 +1,26 @@
 # Decisions log
 
+## Continuation review (5 Nov 2026)
+
+- **D44 — T129 bootstrap split, before implementation.** The handoff puts T129 before
+  T114/T118, but the plan makes the full T129 depend on those adapters, T046, T116,
+  T120, T122 and T124. D29 also returned the full label audit to P3. Add **T226**, a
+  child of T129, in P1: isolated, disabled Kerala configuration plus an audit of the
+  already captured S32/S34/S35/S36 evidence. Dependencies: T003, T113, T117, T119,
+  T121 (all recorded complete). T114 and T118 may follow T226 for the approved D17
+  dam fallback. Full T129 remains pending with its original dependencies plus T226;
+  no Kerala source, model, dam datum, shelter or label is certified by this bootstrap.
+  This resolves the dependency cycle without declaring unfinished P3 work complete.
+  The task list and YAML are updated together in the amendments. T130's dependency
+  on full T129 and the T115/T116 schedule must be resolved explicitly before T130;
+  this bootstrap does not waive either dependency or the datum gate.
+- **D45 — Local model artifacts remain outside git.** Continuation review found
+  `data/models/` unignored despite T102 and the handoff calling it local-only. Add
+  that exact directory to `.gitignore`. Preserve every existing file; do not add
+  weights or the MLflow SQLite database to git. Tracked release manifests under
+  `models/registry/` remain versioned. This is a one-line review correction, not a
+  new model release or retraining run.
+
 Plan decisions D01 to D16 come from `docs/plan.pdf` section 3. Decisions from D17 on are made while building. Each deviation from the plan is recorded here before it is made.
 
 ## From the plan (4 Nov 2026)
