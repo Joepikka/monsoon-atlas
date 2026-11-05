@@ -240,8 +240,11 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    T011/T012 if not done in step 1.
 3. **A8 step 5, frameworks:** done (T033, T034).
 4. **T101 is done** (the S08 1981-2024 files are in data/raw; re-fetch with the S08 adapter if missing).
-5. **C2 = M05 is evaluated** (T102, T103; `reports/models/m05.md`). Owner step: approve or reject release v1 with `atlas.models.registry.approve(Path("models/registry"), "M05", "v1", "approved", by="owner")` after reading the report. Old note on T103 (evaluate with `models/evaluate.decide`,
-   write the release with `models/registry`; promotion needs the owner's approval file).
+5. **C2 = M05 is evaluated** (T102, T103; report `reports/models/m05.md`, release
+   `models/registry/M05/v1.json`). Ridge passed every gate on 2020-2024; status
+   `candidate_eligible`, approval pending. **Owner step:** read the report, then approve or reject
+   with `atlas.models.registry.approve(Path("models/registry"), "M05", "v1", "approved", by="owner")`.
+   Before publishing intervals, recalibrate them (they cover 65%, not 80%).
 6. **C1 = M07 (Kerala):** T129 creates `configs/states/kl.yaml` (needed before any Kerala
    source can be enabled), T114 (S32 adapter), T118 (OCR for S34; pin a free OCR such as
    Tesseract and record it in decisions; the owner reviews an OCR sample), T130 to T132. T130
