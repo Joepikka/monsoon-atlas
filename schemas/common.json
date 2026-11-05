@@ -1,0 +1,34 @@
+{
+  "$comment": "Common envelope every normalized source table carries (docs/plan.pdf section 7). missing_reason is an addition recorded as D23.",
+  "schema_version": 1,
+  "timestamp": {"unit": "us", "tz": "UTC"},
+  "fields": [
+    {"name": "source_id", "type": "string", "nullable": false, "meaning": "Sxx catalogue ID"},
+    {"name": "state", "type": "string", "nullable": false, "meaning": "ka, kl, dl or all"},
+    {"name": "record_id", "type": "string", "nullable": false, "meaning": "SHA256 of natural key + provider revision"},
+    {"name": "snapshot_id", "type": "string", "nullable": false, "meaning": "Immutable published snapshot identifier"},
+    {"name": "observed_at", "type": "timestamp", "nullable": true, "meaning": "Measurement or event time"},
+    {"name": "valid_at", "type": "timestamp", "nullable": true, "meaning": "Time the value represents"},
+    {"name": "issued_at", "type": "timestamp", "nullable": true, "meaning": "Provider issue time, only if documented"},
+    {"name": "available_at", "type": "timestamp", "nullable": false, "meaning": "Earliest time the pipeline had the usable record"},
+    {"name": "fetched_at", "type": "timestamp", "nullable": false, "meaning": "HTTP retrieval time"},
+    {"name": "published_at", "type": "timestamp", "nullable": true, "meaning": "Product publication time"},
+    {"name": "source_url", "type": "string", "nullable": false, "meaning": "Retrieved URL without secrets"},
+    {"name": "raw_sha256", "type": "string", "nullable": false, "meaning": "Hash of the raw artifact"},
+    {"name": "schema_version", "type": "int64", "nullable": false, "meaning": "Contract major version"},
+    {"name": "mapping_version", "type": "string", "nullable": false, "meaning": "Upstream parsing mapping revision"},
+    {"name": "provenance", "type": "string", "nullable": false, "meaning": "Enum: provenance"},
+    {"name": "quality_flags", "type": "list<string>", "nullable": false, "meaning": "Enum list: quality_flags"},
+    {"name": "licence_id", "type": "string", "nullable": false, "meaning": "Explicit permission record"},
+    {"name": "redistribution_allowed", "type": "bool", "nullable": false, "meaning": "Default false until reviewed"},
+    {"name": "place_id", "type": "string", "nullable": true, "meaning": "Versioned place; unmatched stays null"},
+    {"name": "boundary_version", "type": "string", "nullable": true, "meaning": "Boundary release used for place_id"},
+    {"name": "missing_reason", "type": "string", "nullable": true, "meaning": "Enum: missing_reason; required when a measure is null"}
+  ],
+  "enums": {
+    "state": ["ka", "kl", "dl", "all"],
+    "provenance": ["official", "model", "inferred", "reconstructed"],
+    "quality_flags": ["missing", "stale", "imputed", "unit_unverified", "out_of_range", "duplicate", "late_revision"],
+    "missing_reason": ["not_reported", "provider_outage", "not_yet_available", "out_of_coverage", "quality_rejected", "source_disabled"]
+  }
+}
