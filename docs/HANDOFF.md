@@ -90,12 +90,12 @@ and a YAML block `- id: T057`.
 | `src/atlas/ingest/raw_store.py` | Content-addressed raw store and JSONL ledger under `data/raw/<source>/<date>/<sha256>.<ext>` (T004) |
 | `src/atlas/ingest/base.py` | Adapter protocol `fetch(ctx)` and `parse(raw, config)`; error types (T004) |
 | `src/atlas/ingest/discovery.py` | Shared discovery contract (D27): `Discovery` record, `EvidenceManifest`, `capture()`, `check()` |
-| `src/atlas/ingest/s08.py` | First real adapter: IMD gridded rainfall year files to the common envelope (T058) |
+| `src/atlas/ingest/s01.py`, `s02.py`, `s08.py`, `s09.py`, `s15.py`, `s16.py`, `s17.py`, `s18.py` | Source adapters (T010 to T022, T058): `fetch(ctx)` with the shared Fetcher, `parse(raw, config, ...)` to the common envelope plus source columns; `schemas/sNN.json` documents the columns |
 | `src/atlas/data/validate.py` | Common envelope (`schemas/common.json`) validation, missing-is-not-zero rule, mapping metadata (T005) |
 | `src/atlas/data/asof.py` | IST/UTC helpers and DuckDB as-of joins that never use future data (T005) |
 | `src/atlas/data/manifest.py`, `store.py`, `budget.py` | Versioned Parquet snapshots, manifests, cache rebuild, 20 GB storage quota (T006) |
 | `scripts/audit_dependencies.py` | Licence and Windows-wheel audit (T007) |
-| `configs/states/ka.yaml` | Karnataka sources (S08 is the only enabled one) |
+| `configs/states/ka.yaml` | Karnataka sources; enabled: S01, S02, S08, S09, S15, S16, S17 |
 | `configs/budgets.yaml` | Request, storage and DuckDB budgets |
 | `tests/` | 211 tests: contracts, fetcher, storage, as-of, discovery records, gate report, S08 adapter |
 
@@ -183,6 +183,13 @@ M08 is a non-core descriptive 2018 replay (P3).
 | Source | Task | Outcome | Note |
 |---|---|---|---|
 | S08 IMD gridded rainfall | T057, T058 | available, enabled | raw local only |
+| S01 Open-Meteo forecast | T009, T010 | available, enabled | CC BY 4.0; issue time from model meta.json |
+| S02 Open-Meteo ERA5 | T011, T012 | available, enabled | reanalysis (provenance model); 6-day lag |
+| S09 Sachet CAP alerts | T013, T014 | available, enabled | public domain; poll every 15 min (feed keeps 100) |
+| S15 OpenFreeMap basemap | T015, T016 | available, enabled | keep attribution; no bulk tiles; integrator 18+ |
+| S16 WorldPop population | T017, T018 | available, enabled | CC BY 4.0; R2025A alpha; needs geo lock |
+| S17 geoBoundaries | T019, T020 | available, enabled | 30 Karnataka districts (no Vijayanagara); ODbL |
+| S18 Geofabrik OSM | T021, T022 | blocked | robots.txt disallows .osm.pbf (D34) |
 | S28 KWRIS | T008 | blocked | retry if KWRIS daily history arrives |
 | S32 KSEB daily levels | T113 | available (partial history) | adapter T114 |
 | S34 KSDMA dam reports | T117 | available (scanned) | OCR T118, adapter |
@@ -208,9 +215,9 @@ M08 is a non-core descriptive 2018 replay (P3).
 
 Amendments A8 order, with the D17 and D29 fallbacks:
 
-1. **A8 step 3, weather, alerts and base layers:** T009 to T022 (discovery and adapters for
-   S01 Open-Meteo forecast, S02 ERA5 history, alerts and base layers; read each task in the
-   plan), then T031 (S40 ward polygons adapter) and T032 (place identity and gazetteer).
+1. **A8 step 3, rest:** T031 (S40 GBA ward polygons adapter; raw KML in `data/raw/S40`) and
+   T032 (place identity and gazetteer: S17 districts + S40 wards, shapely validity checks).
+   T009 to T022 are done (S18 blocked).
 2. **A8 step 4, core sources:** T027 (KWRIS) and T086 stay blocked (skip with a note);
    T011/T012 if not done in step 1.
 3. **A8 step 5, frameworks:** T033 (feature and target build), T034 (baseline, interval and
