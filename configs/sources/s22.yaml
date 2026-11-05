@@ -1,0 +1,93 @@
+# Discovery record for S22 (plan task T023). Evidence IDs refer to tests/fixtures/s22/manifest.json;
+# the files stay in data/raw/S22. See docs/sources/s22.md.
+source_id: S22
+state: ka
+name: "India Data Portal Agmarknet / existing price data"
+verify_task: T023
+discovered_at: "2026-11-05T16:00:42Z"
+outcome: blocked
+landing_url: "https://indiadataportal.com/p/agmarknet"
+publisher: "India Data Portal (Bharti Institute of Public Policy, ISB), republishing Agmarknet mandi prices"
+no_card: true
+account_required: false
+
+access:
+  status: client_side_app_unresolved
+  detail: >-
+    The Agmarknet page is a client-side app: its served HTML carries only the page id "agmarknet",
+    with no table, file link or API address (e02). The home page offers Datasets and Sign in (e01);
+    the documentation site is also client-side, with no API or download text in its HTML (e04).
+    robots.txt returns 403 (see failed_fetches). A browser render was attempted but the built-in
+    browser was unavailable. No download link was found, so none was guessed.
+  evidence: [e01, e02, e04]
+
+licence:
+  status: unverified
+  detail: >-
+    The footer says "All rights reserved" (e01). The data usage page link for the copyright policy
+    serves the privacy policy in its HTML, with no licence for datasets (e03).
+  evidence: [e01, e03]
+
+provider_quota:
+  status: not_published
+  detail: "No quota is published in the served pages (e01, e04)."
+  evidence: [e01, e04]
+
+history:
+  status: not_public
+  detail: "No dates or coverage are visible without running the page's scripts (e02)."
+  evidence: [e02]
+earliest_date: null
+latest_date: null
+
+units:
+  status: not_checked
+  detail: "No price rows were seen, so units (Rs per quintal, tonnes) could not be checked (e02)."
+  evidence: [e02]
+
+source_check:
+  status: fail
+  detail: >-
+    Plan rule: 0 < min <= modal <= max; names mapped through a versioned crosswalk; arrivals unit
+    documented. No price rows could be reached from the served pages, so none of this could be
+    checked (e02, e04).
+  evidence: [e02, e04]
+
+field_map:
+  - canonical: market_id
+    upstream: null
+    unit_status: absent
+    detail: "Not seen: no rows reachable."
+    evidence: [e02]
+  - canonical: commodity_id
+    upstream: null
+    unit_status: absent
+    detail: "Not seen: no rows reachable."
+    evidence: [e02]
+  - canonical: date_local
+    upstream: null
+    unit_status: absent
+    detail: "Not seen: no rows reachable."
+    evidence: [e02]
+  - canonical: modal_inr_quintal
+    upstream: null
+    unit_status: absent
+    detail: "Not seen: no rows reachable."
+    evidence: [e02]
+  - canonical: arrivals_tonnes
+    upstream: null
+    unit_status: absent
+    detail: "Not seen: no rows reachable."
+    evidence: [e02]
+
+dependents: [T024, T035, T036, T037]
+retry_condition: >-
+  Re-run T023 with a working browser render of https://indiadataportal.com/p/agmarknet (or the
+  owner opens it and notes the download button, file format and licence shown). If downloads need
+  a sign-in, that is an owner step. Meanwhile T025 (data.gov.in mandi prices, free API key) is the
+  other route to the same Agmarknet prices.
+
+failed_fetches:
+  - url: "https://indiadataportal.com/robots.txt"
+    attempted_at: "2026-11-05T16:00:42Z"
+    error: "HTTP 403: robots.txt is refused"

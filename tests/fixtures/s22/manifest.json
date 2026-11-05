@@ -1,0 +1,49 @@
+{
+  "source_id": "S22",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://indiadataportal.com/",
+      "fetched_at": "2026-11-05T16:00:24.102646Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "6451552fa3387992bd6898b210304a1eb73ee056c6aa65218d632f27a83c380a",
+      "bytes": 34821,
+      "raw_path": "S22/2026-11-05/6451552fa3387992bd6898b210304a1eb73ee056c6aa65218d632f27a83c380a.html",
+      "shows": "Home page: Datasets, Sign in; footer All rights reserved; no dataset list in the served HTML"
+    },
+    {
+      "id": "e02",
+      "url": "https://indiadataportal.com/p/agmarknet",
+      "fetched_at": "2026-11-05T16:00:27.189762Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "7e2171f6a65cafdb4cc7f7dcbb3619f7e5c26395fe3c01b05d77687053903e93",
+      "bytes": 20347,
+      "raw_path": "S22/2026-11-05/7e2171f6a65cafdb4cc7f7dcbb3619f7e5c26395fe3c01b05d77687053903e93.html",
+      "shows": "Agmarknet page: client-side app; served HTML has only id agmarknet, no data, links or licence"
+    },
+    {
+      "id": "e03",
+      "url": "https://indiadataportal.com/datausage?view=copyright_policy",
+      "fetched_at": "2026-11-05T16:00:30.980337Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "a46caca0e7780ac1106e07aa0d321ece9b0b5e3a171baa3a678b12a2a397d3f3",
+      "bytes": 30696,
+      "raw_path": "S22/2026-11-05/a46caca0e7780ac1106e07aa0d321ece9b0b5e3a171baa3a678b12a2a397d3f3.html",
+      "shows": "Data usage page: served HTML shows the privacy policy; no licence text"
+    },
+    {
+      "id": "e04",
+      "url": "https://docs.indiadataportal.com/",
+      "fetched_at": "2026-11-05T16:00:42.268750Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "fdb6ba600c3e17aa53a3fcaf15fadd822bccaac4a638bd024fadf604f9a9fb57",
+      "bytes": 54577,
+      "raw_path": "S22/2026-11-05/fdb6ba600c3e17aa53a3fcaf15fadd822bccaac4a638bd024fadf604f9a9fb57.html",
+      "shows": "Documentation site: client-side app; no API, download or licence text in the served HTML"
+    }
+  ]
+}
