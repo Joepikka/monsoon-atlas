@@ -35,3 +35,7 @@ dist/
 Thumbs.db
 .vscode/
 .idea/
+
+# Handoff bundle copies (the combined .md is committed; zip and pdf copies are local)
+handoff/*.zip
+handoff/*.pdf
