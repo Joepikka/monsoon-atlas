@@ -1,0 +1,18 @@
+{
+  "$comment": "S02 Open-Meteo historical weather / ERA5 (T012). Measure columns added to the common envelope (common.json). Field map: configs/sources/s02.yaml.",
+  "source_id": "S02",
+  "schema_version": 1,
+  "mapping_version": "s02-v1",
+  "fields": [
+    {"name": "cell_id", "type": "string", "nullable": false, "meaning": "om_era5_<lat>N_<lon>E, the ERA5 grid point the API snapped to"},
+    {"name": "date_local", "type": "date32", "nullable": false, "meaning": "IST calendar day (timezone=Asia/Kolkata)"},
+    {"name": "product", "type": "string", "nullable": false, "meaning": "Always era5"},
+    {"name": "rain_mm", "type": "float64", "nullable": true, "meaning": "precipitation_sum in mm"},
+    {"name": "tmax_c", "type": "float64", "nullable": true, "meaning": "temperature_2m_max in °C"},
+    {"name": "tmin_c", "type": "float64", "nullable": true, "meaning": "temperature_2m_min in °C"}
+  ],
+  "valid_at": "Local midnight at the end of date_local, in UTC",
+  "available_at": "Fetch time; ERA5 appears about 5 to 6 days after the day",
+  "provenance": "model (reanalysis, not observations)",
+  "missing": "A day with any measure missing becomes an all-null row: not_yet_available after the newest complete day, otherwise out_of_coverage"
+}

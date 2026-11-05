@@ -24,7 +24,8 @@ sources:
     cost: free
     storage_crs: EPSG:4326
     schedule: "backfill once; daily delayed updates"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s02.yaml
   - source_id: S03
     name: "Open-Meteo GloFAS river discharge"
     verify_task: T047
