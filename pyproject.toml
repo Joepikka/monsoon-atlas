@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "monsoon-atlas"
+version = "0.0.1"
+description = "Regional intelligence map of Indian states with honestly evaluated forecasts"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12,<3.13"
+# Runtime pins live in requirements/core.txt (hash-locked); install with --no-deps -e .
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

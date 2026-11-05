@@ -1,0 +1,6 @@
+# Dev tools pinned from docs/plan.pdf section 5, constrained to the core lock.
+-c core.txt
+pytest==9.2.0
+pytest-cov==7.1.0
+ruff==0.17.3
+pip-tools==7.6.2
