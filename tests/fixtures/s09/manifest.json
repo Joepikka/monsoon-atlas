@@ -1,0 +1,104 @@
+{
+  "source_id": "S09",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://sachet.ndma.gov.in/",
+      "fetched_at": "2026-11-05T13:05:34.070084Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "209b66938c79152b7677ec1cbb7b8b1a70f8111a979802df5cbaf879e0fe3ed8",
+      "bytes": 66343,
+      "raw_path": "S09/2026-11-05/209b66938c79152b7677ec1cbb7b8b1a70f8111a979802df5cbaf879e0fe3ed8.html",
+      "shows": "Sachet home page: national portal for official disaster warnings"
+    },
+    {
+      "id": "e02",
+      "url": "https://sachet.ndma.gov.in/cap_public_website/rss/rss_india.xml",
+      "fetched_at": "2026-11-05T13:05:37.297713Z",
+      "status": 200,
+      "media_type": "application/xml",
+      "sha256": "747a384f5bc001bc7b8bb9070a40f096ae993a4c5cd7fa998459f0e445027f24",
+      "bytes": 83761,
+      "raw_path": "S09/2026-11-05/747a384f5bc001bc7b8bb9070a40f096ae993a4c5cd7fa998459f0e445027f24.xml",
+      "shows": "All-India CAP RSS feed: copyright 'public domain', the latest 100 alerts with CAP links"
+    },
+    {
+      "id": "e03",
+      "url": "https://sachet.ndma.gov.in/cap_public_website/FetchXMLFile?identifier=1793881986295019",
+      "fetched_at": "2026-11-05T13:05:40.408124Z",
+      "status": 200,
+      "media_type": "text/xml",
+      "sha256": "8960cffc08247fd551a1729f6f7ad0faaa4d7c9d8f32d950cc87b36b9abe422f",
+      "bytes": 3951,
+      "raw_path": "S09/2026-11-05/8960cffc08247fd551a1729f6f7ad0faaa4d7c9d8f32d950cc87b36b9abe422f.xml",
+      "shows": "CAP alert from IMD Bengaluru via Karnataka SNDMC: Update with references"
+    },
+    {
+      "id": "e04",
+      "url": "https://sachet.ndma.gov.in/cap_public_website/FetchPolygonXMLFile?identifier=1793881986295019",
+      "fetched_at": "2026-11-05T13:05:43.659221Z",
+      "status": 200,
+      "media_type": "text/xml",
+      "sha256": "99f71cc2a48da954bce6a163f20f07f3d715fbbe152d85be0568b84bc2d4929b",
+      "bytes": 260820,
+      "raw_path": "S09/2026-11-05/99f71cc2a48da954bce6a163f20f07f3d715fbbe152d85be0568b84bc2d4929b.xml",
+      "shows": "Polygon file linked from e03: lat,lon rings for the alert area"
+    },
+    {
+      "id": "e05",
+      "url": "https://sachet.ndma.gov.in/cap_public_website/FetchXMLFile?identifier=1793874869802019",
+      "fetched_at": "2026-11-05T13:05:46.801323Z",
+      "status": 200,
+      "media_type": "text/xml",
+      "sha256": "337263551b8a06dd833e6cf86483448cfa792cf087520cd0d88838e3ff8fdad9",
+      "bytes": 3642,
+      "raw_path": "S09/2026-11-05/337263551b8a06dd833e6cf86483448cfa792cf087520cd0d88838e3ff8fdad9.xml",
+      "shows": "Second IMD Bengaluru CAP alert in the feed"
+    },
+    {
+      "id": "e06",
+      "url": "https://sachet.ndma.gov.in/cap_public_website/FetchXMLFile?identifier=1793880856139008",
+      "fetched_at": "2026-11-05T13:05:49.913900Z",
+      "status": 200,
+      "media_type": "text/xml",
+      "sha256": "bf2b3d1af181439df0beb0c80f091e56ef4b00b6bcab874fbcf1a61fca58213e",
+      "bytes": 2857,
+      "raw_path": "S09/2026-11-05/bf2b3d1af181439df0beb0c80f091e56ef4b00b6bcab874fbcf1a61fca58213e.xml",
+      "shows": "CAP alert from Andhra Pradesh SDMA"
+    },
+    {
+      "id": "e07",
+      "url": "https://sachet.ndma.gov.in/cap_public_website/FetchXMLFile?identifier=1793878794868007",
+      "fetched_at": "2026-11-05T13:05:53.017222Z",
+      "status": 200,
+      "media_type": "text/xml",
+      "sha256": "971ef048af63e89386c2015ec3749a51fac8880eee558d1c5ddbe1c0ff35f06c",
+      "bytes": 1998,
+      "raw_path": "S09/2026-11-05/971ef048af63e89386c2015ec3749a51fac8880eee558d1c5ddbe1c0ff35f06c.xml",
+      "shows": "CAP alert from IMD Chennai"
+    },
+    {
+      "id": "e08",
+      "url": "https://sachet.ndma.gov.in/cap_public_website/FetchXMLFile?identifier=1793871793334006",
+      "fetched_at": "2026-11-05T13:05:56.119788Z",
+      "status": 200,
+      "media_type": "text/xml",
+      "sha256": "c12689c4b2bc704464824a24a71129a37cb440737b726e354ff8fd12059818b6",
+      "bytes": 2682,
+      "raw_path": "S09/2026-11-05/c12689c4b2bc704464824a24a71129a37cb440737b726e354ff8fd12059818b6.xml",
+      "shows": "CAP alert from IMD Thiruvananthapuram"
+    },
+    {
+      "id": "e09",
+      "url": "https://sachet.ndma.gov.in/cap_public_website/FetchXMLFile?identifier=1793874925336014",
+      "fetched_at": "2026-11-05T13:05:59.233825Z",
+      "status": 200,
+      "media_type": "text/xml",
+      "sha256": "0ba3a4431ab2eb451544c65645e224c8919640b3359108e6c0055efd3b95ef9b",
+      "bytes": 1395,
+      "raw_path": "S09/2026-11-05/0ba3a4431ab2eb451544c65645e224c8919640b3359108e6c0055efd3b95ef9b.xml",
+      "shows": "CAP alert from FSI (forest fire risk)"
+    }
+  ]
+}
