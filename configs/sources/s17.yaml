@@ -1,0 +1,112 @@
+# Discovery record for S17 (plan task T019). Evidence IDs refer to tests/fixtures/s17/manifest.json;
+# the files stay in data/raw/S17. See docs/sources/s17.md.
+source_id: S17
+state: ka
+name: "geoBoundaries administrative boundaries"
+verify_task: T019
+discovered_at: "2026-11-05T13:19:13Z"
+outcome: available
+landing_url: "https://www.geoboundaries.org/api.html"
+publisher: "geoBoundaries (William & Mary geoLab); IND ADM2 from Pathways Data Pvt. Ltd. and lgdirectory.gov.in"
+no_card: true
+account_required: false
+
+access:
+  status: public_api_and_files
+  detail: >-
+    The current-release API returns metadata with download links for India ADM2 and ADM1 (e03,
+    e04), as documented on the API page (e02). The links point at a fixed GitHub release commit,
+    9469f09, and download without an account (e05, e06). robots.txt sets Crawl-delay 10 (e01), so
+    geoboundaries.org requests were spaced 10 seconds apart.
+  evidence: [e01, e02, e03, e04, e05, e06]
+
+licence:
+  status: open
+  detail: >-
+    Licences are per boundary. IND ADM2: "Open Data Commons Open Database License 1.0" (e03). IND
+    ADM1: "Creative Commons Attribution 2.5 India (CC BY 2.5 IN)", from the DataMeet community and
+    the Election Commission of India (e04). Credit geoBoundaries and each primary source; ODbL
+    share-alike applies to derived boundary databases.
+  evidence: [e03, e04]
+
+provider_quota:
+  status: not_published
+  detail: "No quota is published; robots.txt asks for 10 seconds between requests (e01, e02)."
+  evidence: [e01, e02]
+
+history:
+  status: partial
+  detail: >-
+    One current release per level. IND ADM2 represents the year 2021 (source data updated 19 Jan
+    2023, built 12 Dec 2023); IND ADM1 represents 2011 (e03, e04). Older releases are not listed by
+    this endpoint.
+  evidence: [e03, e04]
+earliest_date: "2011"
+latest_date: "2021"
+
+units:
+  status: labelled
+  detail: >-
+    GeoJSON coordinates are longitude, latitude in degrees (e05, e06). The metadata gives areas in
+    square kilometres and perimeters in kilometres (e03).
+  evidence: [e03, e05, e06]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: no assumption that 736 is current; valid polygons; preserve version and
+    disputed-boundary metadata; ADM2 does not establish ward or taluk coverage. The metadata says
+    admUnitCount 736, but the ADM2 file has 735 features (e03, e06), so counts come from the file.
+    Karnataka gets 30 districts by containment in the ADM1 Karnataka polygon; Vijayanagara (formed
+    in 2021 from Ballari) is missing, so these are older district lines (e05, e06). All 735 shape
+    IDs are unique and every ring is closed (e06); full validity checks need shapely (geo lock,
+    T032). No disputed-boundary field exists in the metadata or feature properties (e03, e04, e06);
+    ADM1 is a 2011 vintage that still shows Jammu and Kashmir as one unit (e05). Public maps must
+    follow India's mapping guidance (owner check at H11). ADM2 gives districts only; it says
+    nothing about wards or taluks.
+  evidence: [e03, e04, e05, e06]
+
+field_map:
+  - canonical: place_id
+    upstream: "built from shapeID: gb-IND-ADM2-<shapeID>"
+    unit_status: not_applicable
+    detail: "Stable within release 9469f09; boundary_version records the release."
+    evidence: [e03, e06]
+  - canonical: source_place_id
+    upstream: "shapeID"
+    unit_status: not_applicable
+    detail: "For example 76128533B75548370501185."
+    evidence: [e06]
+  - canonical: name
+    upstream: "shapeName"
+    unit_status: not_applicable
+    detail: "Old spellings, for example Bangalore, Belgaum, Gulbarga."
+    evidence: [e06]
+  - canonical: admin_level
+    upstream: "shapeType"
+    unit_status: not_applicable
+    detail: "ADM2 (District, boundaryCanonical)."
+    evidence: [e03, e06]
+  - canonical: parent_id
+    upstream: null
+    unit_status: absent
+    detail: "ADM2 features carry no parent; the state comes from containment in the ADM1 file."
+    evidence: [e05, e06]
+  - canonical: valid_from
+    upstream: null
+    unit_status: absent
+    detail: "Only boundaryYearRepresented 2021 is given, no start date; stays null."
+    evidence: [e03]
+  - canonical: valid_to
+    upstream: null
+    unit_status: absent
+    detail: "Not published; stays null."
+    evidence: [e03]
+  - canonical: geometry
+    upstream: "GeoJSON Polygon or MultiPolygon (689 and 46 features)"
+    unit_status: labelled
+    detail: "Converted to WKB in longitude, latitude."
+    evidence: [e06]
+
+dependents: [T020, T032, T101]
+retry_condition: null
