@@ -1,0 +1,114 @@
+# Discovery record for S35 (plan task T119, pulled into P1 by decision D17). Evidence IDs refer to
+# tests/fixtures/s35/manifest.json; the files stay in data/raw/S35. See docs/sources/s35.md.
+source_id: S35
+state: kl
+name: "Kerala 2018 flood dataset"
+verify_task: T119
+discovered_at: "2026-11-05T10:53:16Z"
+outcome: blocked
+landing_url: "https://www.kaggle.com/"
+publisher: "Kaggle user uploads; the only one naming an official source cites the State Relief Commissioner's memorandum"
+no_card: true
+account_required: true
+
+access:
+  status: sign_in_required
+  detail: >-
+    Five Kaggle datasets were found by searching for Kerala floods. Every page marks its download
+    as requiring a subscription, meaning a Kaggle sign-in (e01 to e05). An anonymous download
+    request redirects to /account/login (see failed_fetches). Kaggle sign-in is an owner step
+    (H10), so no file was downloaded and no column was seen. No payment is involved.
+  evidence: [e01, e02, e03, e04, e05]
+
+licence:
+  status: unverified
+  detail: >-
+    "Kerala Floods 2018" and "India Floods Inventory" give the licence as "Other (specified in
+    description)", but neither description states a licence (e01, e02). The other three say
+    "Unknown" (e03, e04, e05).
+  evidence: [e01, e02, e03, e04, e05]
+
+provider_quota:
+  status: not_published
+  detail: "Kaggle publishes no quota on these pages, and its robots.txt returns 404 (see failed_fetches)."
+  evidence: [e01]
+
+history:
+  status: not_public
+  detail: >-
+    From the page metadata only: "Kerala Floods 2018" holds 2018 casualties, warnings,
+    district-wise warnings and rainfall, taken from the State Relief Commissioner's additional
+    memorandum (98,220 bytes zipped, last updated 12 Nov 2019) (e01). "India Floods Inventory" has
+    900+ Indian floods from an unnamed friend, so its origin is unknown (e02). The three other
+    datasets are monthly or annual Kerala rainfall tables with a flood yes/no flag (e03, e04, e05).
+    The official memorandum they cite is public on the KSDMA site: a 40-page text PDF dated
+    13-09-2018, covering 1 to 30 August 2018 (e06).
+  evidence: [e01, e02, e03, e04, e05, e06]
+earliest_date: null
+latest_date: null
+
+units:
+  status: not_checked
+  detail: "No file could be downloaded without sign-in, so no column or unit was seen (e01 to e05)."
+  evidence: [e01, e02, e03, e04, e05]
+
+source_check:
+  status: fail
+  detail: >-
+    The plan requires dated location-level labels and says an aggregate rain table cannot validate a
+    classifier. e03, e04 and e05 are monthly or annual rainfall tables with a flood flag, so they
+    are rejected. e01 holds district totals for one event (August 2018); whether it has daily dated
+    rows cannot be checked without sign-in, and its data comes from the official memorandum, which
+    is S36's scope (e06). e02 has no stated origin and is rejected. None gives flood labels before
+    2018, which M08 needs for any forecasting claim (independent positives and negatives before
+    2018) (e01 to e06).
+  evidence: [e01, e02, e03, e04, e05, e06]
+
+field_map:
+  - canonical: event_id
+    upstream: null
+    unit_status: absent
+    detail: "Not seen: files need sign-in."
+    evidence: [e01]
+  - canonical: place_id
+    upstream: null
+    unit_status: absent
+    detail: "e01 describes 14 districts; the column is not seen. District resolution only, never downscaled."
+    evidence: [e01]
+  - canonical: event_date
+    upstream: null
+    unit_status: absent
+    detail: "Not seen; the memorandum covers 1 to 30 August 2018."
+    evidence: [e01, e06]
+  - canonical: flooded
+    upstream: null
+    unit_status: absent
+    detail: "Rain tables e03 to e05 have a flood yes/no flag per month or year, which is not a location label."
+    evidence: [e03, e04, e05]
+  - canonical: geometry
+    upstream: null
+    unit_status: absent
+    detail: "No geometry is described in any dataset."
+    evidence: [e01, e02]
+  - canonical: label_method
+    upstream: null
+    unit_status: absent
+    detail: "Would be 'official memorandum' for e01; unknown for e02."
+    evidence: [e01, e02]
+
+# M08 labels: blocked on S35; the official memorandum is checked in T121 (S36).
+dependents: [T120, T133, T134, T135]
+retry_condition: >-
+  Run T121 (S36 KSDMA post-disaster assessment) next: the official memorandum is public (e06) and
+  may give dated district-level flood labels for August 2018. M08 then uses district resolution only
+  and, without labels before 2018, a descriptive 2018 replay with no predictive accuracy claim.
+  Re-run T119 only if the owner signs in to Kaggle (H10) and "Kerala Floods 2018" turns out to
+  have dated rows and a stated licence.
+
+failed_fetches:
+  - url: "https://www.kaggle.com/robots.txt"
+    attempted_at: "2026-11-05T10:53:02Z"
+    error: "HTTP 404: Kaggle serves no robots.txt"
+  - url: "https://www.kaggle.com/datasets/imdevskp/kerala-floods-2018/download?datasetVersionNumber=3"
+    attempted_at: "2026-11-05T10:53:16Z"
+    error: "HTTP 302 redirect to /account/login: download requires a Kaggle sign-in"
