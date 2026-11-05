@@ -47,6 +47,35 @@ def _year(raw: RawArtifact) -> int:
     return int(rain[0])
 
 
+def read_grid(raw: RawArtifact) -> tuple[int, np.ndarray]:
+    """(year, days x 129 x 135 float32 grid) after the size and land-mask checks (T057)."""
+    year = _year(raw)
+    days = 366 if calendar.isleap(year) else 365
+    data = raw.path.read_bytes()
+    if len(data) != days * NY * NX * 4:
+        raise IngestError(
+            f"{SOURCE_ID} {year}: {len(data)} bytes, expected {days} days of {NX}x{NY} float32"
+        )
+    grid = np.frombuffer(data, dtype="<f4").reshape(days, NY, NX)
+    land = grid[0] != UNDEF
+    if ((grid == UNDEF) != ~land).any():
+        raise IngestError(f"{SOURCE_ID} {year}: land mask changes within the year")
+    return year, grid
+
+
+def state_cells(state: str, land: np.ndarray) -> tuple[np.ndarray, np.ndarray, list[str]]:
+    """Row and column indexes and IDs of land cells inside the state's cell box."""
+    lat = LAT0 + STEP * np.arange(NY)
+    lon = LON0 + STEP * np.arange(NX)
+    lat_min, lat_max, lon_min, lon_max = BOXES[state]
+    box = ((lat >= lat_min) & (lat <= lat_max))[:, None] & ((lon >= lon_min) & (lon <= lon_max))[
+        None, :
+    ]
+    rows, cols = np.nonzero(land & box)
+    cells = [f"imd025_{lat[r]:.2f}N_{lon[c]:.2f}E" for r, c in zip(rows, cols, strict=True)]
+    return rows, cols, cells
+
+
 class S08:
     def __init__(self, state: str, years: Sequence[int], fetcher: Fetcher | None = None):
         if state not in BOXES:
@@ -69,26 +98,9 @@ class S08:
     def parse(self, raw: RawArtifact, config: SourceConfig) -> pa.Table:
         if not config.enabled:
             raise SourceUnavailable(f"{SOURCE_ID} is disabled; {config.verify_task} must pass")
-        year = _year(raw)
-        days = 366 if calendar.isleap(year) else 365
-        data = raw.path.read_bytes()
-        if len(data) != days * NY * NX * 4:
-            raise IngestError(
-                f"{SOURCE_ID} {year}: {len(data)} bytes, expected {days} days of {NX}x{NY} float32"
-            )
-        grid = np.frombuffer(data, dtype="<f4").reshape(days, NY, NX)
-        land = grid[0] != UNDEF
-        if ((grid == UNDEF) != ~land).any():
-            raise IngestError(f"{SOURCE_ID} {year}: land mask changes within the year")
-
-        lat = LAT0 + STEP * np.arange(NY)
-        lon = LON0 + STEP * np.arange(NX)
-        lat_min, lat_max, lon_min, lon_max = BOXES[self.state]
-        box = ((lat >= lat_min) & (lat <= lat_max))[:, None] & (
-            (lon >= lon_min) & (lon <= lon_max)
-        )[None, :]
-        rows, cols = np.nonzero(land & box)
-        cells = [f"imd025_{lat[r]:.2f}N_{lon[c]:.2f}E" for r, c in zip(rows, cols, strict=True)]
+        year, grid = read_grid(raw)
+        days = grid.shape[0]
+        rows, cols, cells = state_cells(self.state, grid[0] != UNDEF)
         values = grid[:, rows, cols].astype(np.float64).ravel()  # day-major, cell-minor
         bad = ~np.isfinite(values) | (values < 0)
 
