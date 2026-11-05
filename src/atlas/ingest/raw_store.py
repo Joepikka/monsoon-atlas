@@ -9,30 +9,35 @@ truncates existing data.
 from __future__ import annotations
 
 import hashlib
-import json
 import os
 import tempfile
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from atlas import jsonl
 from atlas.contracts import RawArtifact
+from atlas.data.budget import StorageQuota
 
 LEDGER = "ledger.jsonl"
 
 
 class RawStore:
-    def __init__(self, root: Path):
+    def __init__(self, root: Path, quota: StorageQuota | None = None):
         self.root = Path(root)
+        self.quota = quota
 
     def put(
         self, content: bytes, source_id: str, fetched_at: datetime, ext: str
     ) -> tuple[Path, str]:
-        """Store bytes under their SHA256. Identical content is never written twice."""
+        """Store bytes under their SHA256. Identical content is never written twice.
+        Raises ArchiveOnly when the storage quota stop threshold would be reached."""
         sha = hashlib.sha256(content).hexdigest()
         target = self.root / source_id / fetched_at.date().isoformat() / f"{sha}.{ext}"
         if target.exists():
             return target, sha
+        if self.quota is not None:
+            self.quota.ensure_can_ingest(len(content))
         target.parent.mkdir(parents=True, exist_ok=True)
         fd, tmp = tempfile.mkstemp(dir=target.parent, prefix=".tmp-", suffix=f".{ext}")
         try:
@@ -48,22 +53,12 @@ class RawStore:
 
     def record(self, artifact: RawArtifact, http: dict[str, Any]) -> None:
         """Append one ledger entry. `http` must already be free of credentials."""
-        line = json.dumps({"artifact": artifact.model_dump(mode="json"), "http": http}) + "\n"
-        self.root.mkdir(parents=True, exist_ok=True)
-        with open(self.root / LEDGER, "a", encoding="utf-8") as f:
-            f.write(line)  # one write per entry; a torn final line is skipped on read
-            f.flush()
-            os.fsync(f.fileno())
+        jsonl.append(
+            self.root / LEDGER, {"artifact": artifact.model_dump(mode="json"), "http": http}
+        )
 
     def entries(self) -> list[dict[str, Any]]:
-        path = self.root / LEDGER
-        if not path.exists():
-            return []
-        out = []
-        for line in path.read_text(encoding="utf-8").splitlines(keepends=True):
-            if line.endswith("\n"):
-                out.append(json.loads(line))
-        return out
+        return jsonl.read(self.root / LEDGER)
 
     def latest_ok(self, source_url: str) -> dict[str, Any] | None:
         """Most recent stored (HTTP 200) entry for a URL, used for conditional GET and 304."""

@@ -94,6 +94,7 @@ class ManifestFile(Strict):
     path: str
     sha256: Sha256
     bytes: int = Field(ge=0)
+    rows: int = Field(ge=0)
 
 
 class DatasetManifest(Strict):

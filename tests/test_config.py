@@ -161,7 +161,7 @@ def test_secrets_never_serialized_and_urls_carry_no_keys():
 
 
 def test_manifest_total_bytes_must_match_files():
-    files = (ManifestFile(path="a.parquet", sha256=SHA, bytes=10),)
+    files = (ManifestFile(path="a.parquet", sha256=SHA, bytes=10, rows=1),)
     kw = dict(release_id="r1", schema_version=1, data_revision="d1", published_at=NOW, files=files)
     assert DatasetManifest(**kw, total_bytes=10).total_bytes == 10
     with pytest.raises(ValidationError, match="total_bytes"):
@@ -200,9 +200,11 @@ COMMANDS = {
     "publish": ["--manifest", "m.json"],
     "replay": ["--place", "in:ka:ward:1:v1", "--as-of", "2026-11-05T00:00:00Z"],
     "audit": ["--scope", "all"],
-    "quota": ["--check"],
 }
 runner = CliRunner()
+
+
+IMPLEMENTED = ["quota"]  # T006
 
 
 def test_cli_help_exits_0():
@@ -210,7 +212,7 @@ def test_cli_help_exits_0():
         [sys.executable, "-m", "atlas", "--help"], capture_output=True, text=True, check=False
     )
     assert result.returncode == 0
-    for name in COMMANDS:
+    for name in [*COMMANDS, *IMPLEMENTED]:
         assert name in result.stdout
 
 

@@ -321,3 +321,12 @@ def test_httpx_debug_logging_is_still_redacted(tmp_path, caplog):
         )
     assert "MAP_KEY=REDACTED" in caplog.text
     assert SECRET not in caplog.text
+
+
+def test_append_after_torn_ledger_line_does_not_merge(tmp_path):
+    f, store, _ = make(tmp_path, lambda r: httpx.Response(200, content=b"x"))
+    f.fetch_bytes(ctx(tmp_path), URL, mapping_version="m1")
+    with open(store.root / "ledger.jsonl", "a", encoding="utf-8") as fh:
+        fh.write('{"artifact": {"sha')  # crash mid-append
+    f.fetch_bytes(ctx(tmp_path, run="run-2"), URL, mapping_version="m1")
+    assert len(store.entries()) == 2  # the torn line is dropped, the new entry survives

@@ -37,4 +37,6 @@ duckdb:
   threads: 4
 storage:
   preflight_min_free_gb: 20
-  archive_only_at_fraction: 0.8
+  archive_budget_gb: 20
+  warn_at_fraction: 0.8
+  stop_at_fraction: 0.95

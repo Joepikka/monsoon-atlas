@@ -145,7 +145,17 @@ class DuckDbBudget(Strict):
 
 class StorageBudget(Strict):
     preflight_min_free_gb: int = Field(gt=0)
-    archive_only_at_fraction: float = Field(gt=0, le=1)
+    # Published archive envelope (plan section 6 storage arithmetic: 20 GB immutable archive).
+    archive_budget_gb: float = Field(gt=0)
+    # Warn and reduce capture cadence at 80%; refuse new ingestion (archive-only) at 95%.
+    warn_at_fraction: float = Field(gt=0, lt=1)
+    stop_at_fraction: float = Field(gt=0, le=1)
+
+    @model_validator(mode="after")
+    def _ordered(self) -> StorageBudget:
+        if self.warn_at_fraction >= self.stop_at_fraction:
+            raise ValueError("warn_at_fraction must be below stop_at_fraction")
+        return self
 
 
 class Budgets(Strict):

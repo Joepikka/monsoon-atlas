@@ -6,6 +6,7 @@ which task implements it.
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import typer
@@ -85,7 +86,31 @@ def audit(scope: str = typer.Option("all", help="Audit scope")) -> None:
     _not_implemented("audit", "T006/T007")
 
 
+QUOTA_EXCEEDED = 3
+
+
 @app.command()
-def quota(check: bool = typer.Option(False, "--check", help="Check budgets against usage")) -> None:
-    """Report usage against the free-tier budgets."""
-    _not_implemented("quota", "T006")
+def quota(
+    check: bool = typer.Option(False, "--check", help="Exit 3 if any budget is exceeded"),
+    data_root: Path = typer.Option(Path("data"), help="Data root holding clean/ and manifests/"),
+    budgets: Path = typer.Option(Path("configs/budgets.yaml"), help="Budgets file"),
+    day: str = typer.Option("", help="UTC day YYYY-MM-DD (default: today)"),
+) -> None:
+    """Report storage status and today's free-tier usage against budgets.yaml."""
+    from datetime import UTC, date, datetime
+
+    from atlas.config import load_budgets
+    from atlas.data.budget import QuotaLedger, StorageQuota
+    from atlas.data.budget import check as check_budgets
+
+    b = load_budgets(budgets)
+    storage = StorageQuota.from_budget([data_root / "clean", data_root / "manifests"], b.storage)
+    ledger = QuotaLedger(data_root / "quota" / "ledger.jsonl")
+    when = date.fromisoformat(day) if day else datetime.now(UTC).date()
+    report = check_budgets(b, ledger, storage, when)
+    typer.echo(json.dumps(report, indent=2))
+    over = [s for s in report["services"] if s["over"]]
+    if report["storage_status"] == "warn":
+        typer.echo("warning: storage above warn threshold; reduce capture cadence", err=True)
+    if check and (over or report["storage_status"] == "archive_only"):
+        raise typer.Exit(code=QUOTA_EXCEEDED)
