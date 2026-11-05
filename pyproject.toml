@@ -27,8 +27,9 @@ extend-immutable-calls = ["typer.Option", "typer.Argument"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-# Drive C is nearly full: pytest temp files stay on drive D with the repo.
-addopts = "--basetemp=.cache/pytest"
+# Drive C is nearly full: pytest temp files stay on drive D with the repo. pytest creates
+# only the last folder of --basetemp, so it sits at the repo root (fresh CI checkouts too).
+addopts = "--basetemp=.pytest-tmp"
 
 [tool.pip-tools]
 # Drive C is nearly full: the lock download cache stays on drive D with the repo.
