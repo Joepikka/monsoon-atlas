@@ -1,0 +1,21 @@
+{
+  "$comment": "S09 NDMA Sachet CAP alerts (T014). Measure columns added to the common envelope (common.json). Field map: configs/sources/s09.yaml. sender and msg_type are added to the plan's fields because supersession needs them (D33).",
+  "source_id": "S09",
+  "schema_version": 1,
+  "mapping_version": "s09-v1",
+  "fields": [
+    {"name": "alert_id", "type": "string", "nullable": false, "meaning": "cap:identifier"},
+    {"name": "sender", "type": "string", "nullable": false, "meaning": "cap:sender, for example Karnataka-SNDMC"},
+    {"name": "msg_type", "type": "string", "nullable": false, "meaning": "cap:msgType: Alert, Update or Cancel"},
+    {"name": "sent_at", "type": "timestamp", "nullable": false, "meaning": "cap:sent in UTC"},
+    {"name": "effective_at", "type": "timestamp", "nullable": true, "meaning": "cap:effective in UTC"},
+    {"name": "expires_at", "type": "timestamp", "nullable": true, "meaning": "cap:expires in UTC"},
+    {"name": "event", "type": "string", "nullable": false, "meaning": "cap:event as written (English info block)"},
+    {"name": "severity", "type": "string", "nullable": false, "meaning": "cap:severity"},
+    {"name": "area_text", "type": "string", "nullable": false, "meaning": "cap:areaDesc, always kept"},
+    {"name": "geometry", "type": "binary", "nullable": true, "meaning": "WKB MultiPolygon (lon, lat) from the polygon file; null if none"},
+    {"name": "instruction", "type": "string", "nullable": true, "meaning": "cap:instruction"},
+    {"name": "references", "type": "string", "nullable": true, "meaning": "cap:references, sender,identifier,sent triples"}
+  ],
+  "state_filter": "Rows only for alerts whose sender or area text names the state, or whose polygon has a vertex in the state box"
+}

@@ -69,7 +69,8 @@ sources:
     cost: free
     storage_crs: EPSG:4326
     schedule: "every 15 minutes"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s09.yaml
   - source_id: S10
     name: "adsb.lol live aircraft"
     verify_task: T059
