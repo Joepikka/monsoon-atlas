@@ -11,6 +11,7 @@ no redistribution licence. "blocked" is a valid discovery result; it never produ
 from __future__ import annotations
 
 import json
+import time
 from collections.abc import Mapping
 from datetime import UTC, datetime
 from pathlib import Path
@@ -103,8 +104,10 @@ def capture(
     allowed_hosts: set[str],
     *,
     fetcher: Fetcher | None = None,
+    delay_s: float = 0.0,
 ) -> EvidenceManifest:
-    """Fetch evidence pages {id: (url, what it shows)} into the raw store."""
+    """Fetch evidence pages {id: (url, what it shows)} into the raw store.
+    `delay_s` honours a source's robots.txt Crawl-Delay between requests."""
     store = RawStore(raw_root)
     fetcher = fetcher or Fetcher(store, allowed_hosts)
     now = datetime.now(UTC)
@@ -117,7 +120,9 @@ def capture(
         raw_root=raw_root,
     )
     out = []
-    for eid, (url, shows) in pages.items():
+    for i, (eid, (url, shows)) in enumerate(pages.items()):
+        if i and delay_s:
+            time.sleep(delay_s)
         art = fetcher.fetch_bytes(ctx, url, mapping_version="discovery")
         out.append(
             Evidence(

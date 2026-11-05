@@ -75,6 +75,7 @@ EXT = {
     "text/csv": "csv",
     "application/zip": "zip",
     "application/pdf": "pdf",
+    "application/vnd.google-earth.kml+xml": "kml",
     "image/png": "png",
     "image/jpeg": "jpg",
 }
