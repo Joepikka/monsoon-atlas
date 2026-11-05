@@ -1,0 +1,98 @@
+# Discovery record for S16 (plan task T017). Evidence IDs refer to tests/fixtures/s16/manifest.json;
+# the files stay in data/raw/S16. See docs/sources/s16.md.
+source_id: S16
+state: ka
+name: "WorldPop India population"
+verify_task: T017
+discovered_at: "2026-11-05T13:27:08Z"
+outcome: available
+landing_url: "https://hub.worldpop.org/rest/data/pop"
+publisher: "WorldPop, University of Southampton (Global Demographic Data Project)"
+no_card: true
+account_required: false
+
+access:
+  status: public_files_no_key
+  detail: >-
+    The hub REST catalogue lists products (e02); the India entry list for R2025A 1 km constrained
+    population gives one GeoTIFF URL per year on data.worldpop.org (e03), and the 2025 file
+    downloads without an account (e05). The hub robots.txt disallows only asset folders (e01); the
+    data host's robots.txt returns 404 (see failed_fetches). Requests were spaced 3 seconds apart.
+  evidence: [e01, e02, e03, e05]
+
+licence:
+  status: open
+  detail: >-
+    Each entry links https://hub.worldpop.org/data/licence.txt (e03), which says "WorldPop
+    datasets are licensed under the Creative Commons Attribution 4.0 International License" (e04).
+    Cite the entry's citation and DOI 10.5258/SOTON/WP00840 (e03).
+  evidence: [e03, e04]
+
+provider_quota:
+  status: not_published
+  detail: "No quota is published (e01, e02)."
+  evidence: [e01, e02]
+
+history:
+  status: available
+  detail: >-
+    R2025A 1 km constrained, UN-adjusted India has 16 entries, one per year 2015 to 2030, all dated
+    2025-09-01 (e03). The description calls R2025A "an alpha version" that "may change over the
+    coming year" (e03). Years after the release (2026 to 2030) are projections, not estimates.
+  evidence: [e03]
+earliest_date: "2015"
+latest_date: "2030"
+
+units:
+  status: labelled
+  detail: >-
+    "The units are number of people per pixel", resolution 30 arc seconds (about 1 km at the
+    equator), WGS84 (e03). The 2025 file is a BigTIFF of 3,504 x 3,451 float32 cells in 512-pixel
+    LZW tiles, pixel size 0.0083333 degrees, top-left corner 68.19E 35.51N, nodata -99999 (e05).
+  evidence: [e03, e05]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: conserve population sums during clipping; distinguish counts from density; no
+    individual records. Values are counts per pixel, not density (e03), so a district total is a
+    sum of pixels, never an average; T018 must check that the clipped Karnataka sum equals the sum
+    of the cells it keeps, with a raster reader (rasterio, geo lock), because the tiles are LZW
+    compressed (e05). The product is a gridded estimate (Random Forest dasymetric redistribution),
+    with no individual records (e03).
+  evidence: [e03, e05]
+
+field_map:
+  - canonical: raster_id
+    upstream: "DOI + release + year + country from the entry, for example WP00840-R2025A-2025-IND-1km"
+    unit_status: not_applicable
+    detail: "Built from doi, the R2025A path segment, popyear and iso3."
+    evidence: [e03]
+  - canonical: reference_year
+    upstream: "popyear"
+    unit_status: not_applicable
+    detail: "2015 to 2030; years after 2025 are projections."
+    evidence: [e03]
+  - canonical: cell_id
+    upstream: "pixel row and column in the GeoTIFF grid"
+    unit_status: not_applicable
+    detail: "Cell centre from the tiepoint and 0.0083333 degree pixel size."
+    evidence: [e05]
+  - canonical: population
+    upstream: "pixel value (float32)"
+    unit_status: labelled
+    detail: "Number of people per pixel; -99999 is nodata and becomes null."
+    evidence: [e03, e05]
+  - canonical: resolution_m
+    upstream: "30 arc seconds"
+    unit_status: labelled
+    detail: "Nominal 1000 m as WorldPop states; real east-west size is about 900 m in Karnataka."
+    evidence: [e03]
+
+dependents: [T018]
+retry_condition: null
+
+failed_fetches:
+  - url: "https://data.worldpop.org/robots.txt"
+    attempted_at: "2026-11-05T13:27:09Z"
+    error: "HTTP 404: the data host serves no robots.txt"

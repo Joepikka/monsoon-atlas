@@ -1,0 +1,60 @@
+{
+  "source_id": "S16",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://hub.worldpop.org/robots.txt",
+      "fetched_at": "2026-11-05T13:26:36.444731Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "fd8953762ab9e536de77865459e38900c2e2a1a8b6fd4675d693ecc226b39067",
+      "bytes": 99,
+      "raw_path": "S16/2026-11-05/fd8953762ab9e536de77865459e38900c2e2a1a8b6fd4675d693ecc226b39067.bin",
+      "shows": "Hub robots.txt: disallows only asset folders"
+    },
+    {
+      "id": "e02",
+      "url": "https://hub.worldpop.org/rest/data/pop",
+      "fetched_at": "2026-11-05T13:26:39.705880Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "19342eabd9779e84f0c56876a44bd6edac4701973818244a2104eb09420ae00a",
+      "bytes": 1555,
+      "raw_path": "S16/2026-11-05/19342eabd9779e84f0c56876a44bd6edac4701973818244a2104eb09420ae00a.json",
+      "shows": "REST catalogue of population products, including R2025A 1 km"
+    },
+    {
+      "id": "e03",
+      "url": "https://hub.worldpop.org/rest/data/pop/G2_CN_POP_R25A_1km?iso3=IND",
+      "fetched_at": "2026-11-05T13:26:43.793684Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "e1b957a267bf6ee4815fcc9879f5c74c3af15e47282b99570ec5b52688b8a709",
+      "bytes": 35130,
+      "raw_path": "S16/2026-11-05/e1b957a267bf6ee4815fcc9879f5c74c3af15e47282b99570ec5b52688b8a709.json",
+      "shows": "India R2025A 1 km constrained entries: 2015 to 2030, CC BY licence link, file URLs"
+    },
+    {
+      "id": "e04",
+      "url": "https://hub.worldpop.org/data/licence.txt",
+      "fetched_at": "2026-11-05T13:26:47.762263Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "cb0b6ac8fb7d24e900d3bcba5474cf022a6fef3646fa5b94e6019b54f63be25f",
+      "bytes": 19271,
+      "raw_path": "S16/2026-11-05/cb0b6ac8fb7d24e900d3bcba5474cf022a6fef3646fa5b94e6019b54f63be25f.bin",
+      "shows": "Licence: WorldPop datasets under CC BY 4.0"
+    },
+    {
+      "id": "e05",
+      "url": "https://data.worldpop.org/GIS/Population/Global_2015_2030/R2025A/2025/IND/v1/1km_ua/constrained/ind_pop_2025_CN_1km_R2025A_UA_v1.tif",
+      "fetched_at": "2026-11-05T13:27:08.098524Z",
+      "status": 200,
+      "media_type": "image/tiff",
+      "sha256": "e188723030087fb8e90e1741199bd476a181c00b046fab7dd8e8358adb136b64",
+      "bytes": 16327769,
+      "raw_path": "S16/2026-11-05/e188723030087fb8e90e1741199bd476a181c00b046fab7dd8e8358adb136b64.bin",
+      "shows": "India 2025 population GeoTIFF, 1 km, people per pixel"
+    }
+  ]
+}
