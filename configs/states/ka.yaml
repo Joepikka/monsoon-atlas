@@ -103,7 +103,8 @@ sources:
     verify_task: T015
     cost: free
     schedule: "static, on demand"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s15.yaml
   - source_id: S16
     name: "WorldPop India population"
     verify_task: T017

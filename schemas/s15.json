@@ -1,0 +1,11 @@
+{
+  "$comment": "S15 OpenFreeMap basemap (T016). Measure columns added to the common envelope (common.json). Field map: configs/sources/s15.yaml.",
+  "source_id": "S15",
+  "schema_version": 1,
+  "mapping_version": "s15-v1",
+  "fields": [
+    {"name": "style_url", "type": "string", "nullable": false, "meaning": "Style used by the map, for example https://tiles.openfreemap.org/styles/liberty"},
+    {"name": "revision", "type": "string", "nullable": false, "meaning": "Dated tile revision from the TileJSON, for example 20261101_080013_pt"},
+    {"name": "attribution", "type": "string", "nullable": false, "meaning": "TileJSON attribution HTML, shown unchanged on every map"}
+  ]
+}
