@@ -230,7 +230,10 @@ M08 is a non-core descriptive 2018 replay (P3).
 
 ### Git
 
-- `main` has P0 (PR #1). Branch `p1/gate-core` holds everything from T008 onwards and is pushed.
+- `main` has everything through T103 and the M05 approval (PR #1 P0, PR #2 P1 base layers and
+  frameworks, PR #3 M05 and T025; merge `37769bb`). Keep working on branch `p1/gate-core` (or a
+  new branch from `main`) and open a PR per batch; auto-merge is enabled on the repository.
+- Claude stopped at 89% of its weekly usage on 5 Nov 2026; this file is the full handoff.
 
 ## 9. Next tasks, in order
 
