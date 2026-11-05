@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 5 Nov 2026, after T034 (commit `e3f07bb`, branch `p1/gate-core`).
+Last updated: 5 Nov 2026, after T023 (commit `41c763e`, branch `p1/gate-core`).
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
 Read it fully, then read `AGENTS.md`, then the documents listed in section 2. Keep this file up to
@@ -171,6 +171,7 @@ and a YAML block `- id: T057`.
 | T032 | `e9807ef` | Places + gazetteer + crosswalks (src/atlas/spatial): version history, H3 r7/r8 never wards, m2 areas (EPSG:6933), metres, ambiguous search lists choices (D36). Finding: WorldPop gives ~6.0 M in GBA wards (undercount) |
 | T033 | `680f65e` | Feature framework (src/atlas/features/base.py, models/base.py, models/splits.py): as-of features with __known_at + assert_as_of, hindcast lag rule, rolling-origin/spatial-block splits with purge, hashed manifests, train-only scaler, strict evaluators (D37) |
 | T034 | `e3f07bb` | Release framework (models/uncertainty.py, evaluate.py, registry.py): block bootstrap seed 42, validation-only intervals/thresholds, decide() gates, immutable release JSON + owner approval file, optional MLflow (D38) |
+| T023 | `41c763e` | S22 India Data Portal: **blocked** (client-side app, no link or licence in HTML, robots 403, browser unavailable); retry with a browser render; T025 data.gov.in is the other route |
 
 ## 8. Current state
 
