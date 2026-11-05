@@ -1,0 +1,14 @@
+{
+  "$comment": "Place table for the gazetteer (T032): official districts (S17) and wards (S40) plus H3 analysis cells. A place keeps every boundary version it has had. Built by src/atlas/spatial/places.py.",
+  "schema_version": 1,
+  "fields": [
+    {"name": "place_id", "type": "string", "nullable": false, "meaning": "Namespaced source ID: gb-IND-ADM2-<shapeID>, gba2025-c<corp>-w<ward>, or h3:<res>:<index>"},
+    {"name": "kind", "type": "string", "nullable": false, "meaning": "state, district, ward or h3; H3 cells are never wards"},
+    {"name": "name", "type": "string", "nullable": false, "meaning": "Official name; H3 cells get 'H3 cell r<res> <index>'"},
+    {"name": "parent_id", "type": "string", "nullable": true, "meaning": "Containing place (state, corporation or district)"},
+    {"name": "boundary_version", "type": "string", "nullable": false, "meaning": "Release of the boundary; H3 cells: h3-v4-r<res>|<parent version>"},
+    {"name": "geometry", "type": "binary", "nullable": false, "meaning": "WKB, lon/lat (EPSG:4326)"}
+  ],
+  "crosswalk": "src/atlas/spatial/crosswalk.py: area weights in m2 (EPSG:6933) and population weights from WorldPop cell centres",
+  "gazetteer": "Local name search only; queries are not stored; no remote geocoder and no autocomplete; more than one match needs a user selection"
+}

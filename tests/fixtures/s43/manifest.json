@@ -1,0 +1,126 @@
+{
+  "source_id": "S43",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://data.opencity.in/robots.txt",
+      "fetched_at": "2026-11-05T09:46:31.337148Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "e5692a133e1e9afafb7ce555a0d4cb8807a4895537c21028661835e8b3c9bb77",
+      "bytes": 123,
+      "raw_path": "S43/2026-11-05/e5692a133e1e9afafb7ce555a0d4cb8807a4895537c21028661835e8b3c9bb77.bin",
+      "shows": "OpenCity robots.txt: disallows /api/; Crawl-Delay 10"
+    },
+    {
+      "id": "e02",
+      "url": "https://data.opencity.in/dataset/?q=bengaluru+flood",
+      "fetched_at": "2026-11-05T09:46:41.694000Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "922c395056b4ce77968c1c2827a04648b96f5310f70fc654661369302c5d7935",
+      "bytes": 16842,
+      "raw_path": "S43/2026-11-05/922c395056b4ce77968c1c2827a04648b96f5310f70fc654661369302c5d7935.html",
+      "shows": "OpenCity search 'bengaluru flood': 3 datasets (Flooding Locations in Bengaluru Urban, BBMP Underpasses Audit Reports 2023, Karnataka Water Security and Resilience Program); none is a dated incident log"
+    },
+    {
+      "id": "e03",
+      "url": "https://data.opencity.in/dataset/flooding-locations-in-bengaluru-urban",
+      "fetched_at": "2026-11-05T09:46:52.056152Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "65389f7c763520ae3e330163b8315d31167ca5fcbe78381b4b5837d3ebab0f08",
+      "bytes": 18019,
+      "raw_path": "S43/2026-11-05/65389f7c763520ae3e330163b8315d31167ca5fcbe78381b4b5837d3ebab0f08.html",
+      "shows": "Flooding Locations in Bengaluru Urban: three KML maps of flood-vulnerable points, flood-prone locations and low-lying areas; Source KSRSAC; licence Other (Public Domain); no dates"
+    },
+    {
+      "id": "e04",
+      "url": "https://data.opencity.in/dataset/b03218ea-4b7c-4fa9-ab67-b9054d7ecc4c/resource/d90fe768-caba-4c6e-b6b5-a75acd5e88a9/download/00fb1229-dcfd-4f59-813f-885e0c629add.kml",
+      "fetched_at": "2026-11-05T09:47:02.546132Z",
+      "status": 200,
+      "media_type": "application/vnd.google-earth.kml+xml",
+      "sha256": "b9a2df47c412401b811dacd895cb2abc05603fbbe3a915ce97064521309c8207",
+      "bytes": 22370,
+      "raw_path": "S43/2026-11-05/b9a2df47c412401b811dacd895cb2abc05603fbbe3a915ce97064521309c8207.kml",
+      "shows": "Flood Prone Locations KML: 70 named points with only an OBJECTID attribute; no event date, ward or depth"
+    },
+    {
+      "id": "e05",
+      "url": "https://data.opencity.in/dataset/?q=inundation",
+      "fetched_at": "2026-11-05T09:47:12.993516Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "396d5d0d6fcfda0c789453d00b2345335f82a68dac5494d06395b60cf4e450a7",
+      "bytes": 16888,
+      "raw_path": "S43/2026-11-05/396d5d0d6fcfda0c789453d00b2345335f82a68dac5494d06395b60cf4e450a7.html",
+      "shows": "OpenCity search 'inundation': only Hyderabad and Chennai flooding datasets"
+    },
+    {
+      "id": "e06",
+      "url": "https://data.opencity.in/dataset/?q=relief+camp+shelter+bengaluru",
+      "fetched_at": "2026-11-05T09:47:23.589639Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "72bbccd04bdb8782955136c12b189ac5251726c6a05ecba7375e06dba65784c5",
+      "bytes": 10821,
+      "raw_path": "S43/2026-11-05/72bbccd04bdb8782955136c12b189ac5251726c6a05ecba7375e06dba65784c5.html",
+      "shows": "OpenCity search 'relief camp shelter bengaluru': no datasets found"
+    },
+    {
+      "id": "e07",
+      "url": "https://data.opencity.in/dataset/i-change-my-city-data",
+      "fetched_at": "2026-11-05T09:47:34.174986Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "c04e289028c31064839497f0c6a332d57e5163c5d368cf4f296c84e31ba948eb",
+      "bytes": 16187,
+      "raw_path": "S43/2026-11-05/c04e289028c31064839497f0c6a332d57e5163c5d368cf4f296c84e31ba948eb.html",
+      "shows": "I Change My City Data: Janaagraha complaints portal (a civic NGO, not a government body); complaints log 2019-2022 and ward aggregates; licence Creative Commons Attribution Share-Alike"
+    },
+    {
+      "id": "e08",
+      "url": "https://data.opencity.in/dataset/9183b0b2-b49a-40a9-b36d-275e1eaedb3f/resource/a60abf5c-3a15-4967-af32-c3074248580f/download/5f99b09a-64b5-45f0-ab18-4cf0a0cabf6d.csv",
+      "fetched_at": "2026-11-05T09:47:46.309318Z",
+      "status": 200,
+      "media_type": "text/csv",
+      "sha256": "d951dbb484532421801f6cbd7550edaa6f9ab143da7c4d0e835ba574e4e6d5ac",
+      "bytes": 8377752,
+      "raw_path": "S43/2026-11-05/d951dbb484532421801f6cbd7550edaa6f9ab143da7c4d0e835ba574e4e6d5ac.csv",
+      "shows": "I Change My City complaints log 2019-2022 (CSV)"
+    },
+    {
+      "id": "e09",
+      "url": "https://www.ksndmc.org/en/Media/Flood",
+      "fetched_at": "2026-11-05T09:47:56.629376Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "3b39ffa5832cd55553738dc9b1412911fa6eaa6fe2507e8f5c72ed8b9efe4a1f",
+      "bytes": 46600,
+      "raw_path": "S43/2026-11-05/3b39ffa5832cd55553738dc9b1412911fa6eaa6fe2507e8f5c72ed8b9efe4a1f.html",
+      "shows": "KSNDMC Floods page: one statewide paragraph on four heavy-rain spells in the 2022 south-west monsoon; no ward-level incident list"
+    },
+    {
+      "id": "e10",
+      "url": "https://www.ksndmc.org/en/Reports",
+      "fetched_at": "2026-11-05T09:48:06.901657Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "9173dbeb8e48306316fa5670a7b196a191bfc5f56eec566264295c0735191a6f",
+      "bytes": 47594,
+      "raw_path": "S43/2026-11-05/9173dbeb8e48306316fa5670a7b196a191bfc5f56eec566264295c0735191a6f.html",
+      "shows": "KSNDMC Reports page: daily, weekly, monthly, seasonal and annual rainfall reports; no flood incident report"
+    },
+    {
+      "id": "e11",
+      "url": "https://bengalurumeghasandesha.in/cities.php?id=01",
+      "fetched_at": "2026-11-05T09:48:17.775049Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "40691e35e5e1a447abacd663c2e1625cae3176fe24c91e7811f122012fdd45d6",
+      "bytes": 207905,
+      "raw_path": "S43/2026-11-05/40691e35e5e1a447abacd663c2e1625cae3176fe24c91e7811f122012fdd45d6.html",
+      "shows": "Bengaluru Megha Sandesha (KSNDMC city dashboard): ward and zone rainfall and temperature; no flood incident records"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "source_id": "S17",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://www.geoboundaries.org/robots.txt",
+      "fetched_at": "2026-11-05T13:17:19.070022Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "ff648b9c675b52e9ae02ea03800fd28315b652efde8e8477d223fa0cb0b0efc0",
+      "bytes": 185,
+      "raw_path": "S17/2026-11-05/ff648b9c675b52e9ae02ea03800fd28315b652efde8e8477d223fa0cb0b0efc0.bin",
+      "shows": "robots.txt: Crawl-delay 10, admin paths disallowed"
+    },
+    {
+      "id": "e02",
+      "url": "https://www.geoboundaries.org/api.html",
+      "fetched_at": "2026-11-05T13:17:30.180458Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "b60cb9a2de8e2a1bcd82b1c53264de665a1c5f0e6a66b66c3c8206d10bd3baff",
+      "bytes": 18941,
+      "raw_path": "S17/2026-11-05/b60cb9a2de8e2a1bcd82b1c53264de665a1c5f0e6a66b66c3c8206d10bd3baff.html",
+      "shows": "API documentation: current release endpoints and metadata fields"
+    },
+    {
+      "id": "e03",
+      "url": "https://www.geoboundaries.org/api/current/gbOpen/IND/ADM2/",
+      "fetched_at": "2026-11-05T13:17:41.093199Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "facae06e1656838ebcbd6fc9198cdba8dd568ca2aec19d69759b3263a1511962",
+      "bytes": 1767,
+      "raw_path": "S17/2026-11-05/facae06e1656838ebcbd6fc9198cdba8dd568ca2aec19d69759b3263a1511962.json",
+      "shows": "IND ADM2 metadata: 736 districts, year 2021, ODbL 1.0, release 9469f09"
+    },
+    {
+      "id": "e04",
+      "url": "https://www.geoboundaries.org/api/current/gbOpen/IND/ADM1/",
+      "fetched_at": "2026-11-05T13:17:52.102560Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "c694a090b75394aa80214c04de4eb74325a9769fa128a317746d33bf193643d0",
+      "bytes": 1738,
+      "raw_path": "S17/2026-11-05/c694a090b75394aa80214c04de4eb74325a9769fa128a317746d33bf193643d0.json",
+      "shows": "IND ADM1 metadata: 36 units, year 2011, CC BY 2.5 IN"
+    },
+    {
+      "id": "e05",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/IND/ADM1/geoBoundaries-IND-ADM1_simplified.geojson",
+      "fetched_at": "2026-11-05T13:18:25.318571Z",
+      "status": 200,
+      "media_type": "application/octet-stream",
+      "sha256": "4c63fe43294a391e8f2de4e9f86f3edb60f8688275b9fee90c61fb2aa0c26061",
+      "bytes": 5103747,
+      "raw_path": "S17/2026-11-05/4c63fe43294a391e8f2de4e9f86f3edb60f8688275b9fee90c61fb2aa0c26061.bin",
+      "shows": "IND ADM1 simplified GeoJSON (states), linked from e04"
+    },
+    {
+      "id": "e06",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/IND/ADM2/geoBoundaries-IND-ADM2.geojson",
+      "fetched_at": "2026-11-05T13:19:13.028069Z",
+      "status": 200,
+      "media_type": "application/octet-stream",
+      "sha256": "8bef6929fd65432e7dc775e7c44473e84efff064ebddbfd6b834e6291546db40",
+      "bytes": 48317735,
+      "raw_path": "S17/2026-11-05/8bef6929fd65432e7dc775e7c44473e84efff064ebddbfd6b834e6291546db40.bin",
+      "shows": "IND ADM2 full GeoJSON (districts), linked from e03"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "source_id": "S02",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://archive-api.open-meteo.com/robots.txt",
+      "fetched_at": "2026-11-05T13:00:53.405209Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "efdb5938a9736727f5cce2b60355588e4fa541d19d022d222d8a09b8efd5dcce",
+      "bytes": 25,
+      "raw_path": "S02/2026-11-05/efdb5938a9736727f5cce2b60355588e4fa541d19d022d222d8a09b8efd5dcce.bin",
+      "shows": "Archive API host robots.txt: disallows all paths for crawlers"
+    },
+    {
+      "id": "e02",
+      "url": "https://open-meteo.com/en/terms",
+      "fetched_at": "2026-11-05T13:00:57.148070Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "681b88577798406fdd5fdb7498c2ba23721d5355ccbd5481b4a4e12086824e98",
+      "bytes": 38673,
+      "raw_path": "S02/2026-11-05/681b88577798406fdd5fdb7498c2ba23721d5355ccbd5481b4a4e12086824e98.html",
+      "shows": "Terms: free API for non-commercial use, 600/min, 5,000/h, 10,000/day"
+    },
+    {
+      "id": "e03",
+      "url": "https://open-meteo.com/en/licence",
+      "fetched_at": "2026-11-05T13:01:00.455537Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "06178f27a1fff1dced571f7e825b351355ff54d3fe7806388e5021fe0ae938c4",
+      "bytes": 40502,
+      "raw_path": "S02/2026-11-05/06178f27a1fff1dced571f7e825b351355ff54d3fe7806388e5021fe0ae938c4.html",
+      "shows": "Licence page: API data under CC BY 4.0, with attribution"
+    },
+    {
+      "id": "e04",
+      "url": "https://open-meteo.com/en/docs/historical-weather-api",
+      "fetched_at": "2026-11-05T13:01:03.833939Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "649814e5ad17bbc4916b697200e4e33546351ef7ec11ca7112e32de4da7b0ec6",
+      "bytes": 392785,
+      "raw_path": "S02/2026-11-05/649814e5ad17bbc4916b697200e4e33546351ef7ec11ca7112e32de4da7b0ec6.html",
+      "shows": "Historical API docs: ERA5 0.25 degree from 1940, daily updates with 5 days delay"
+    },
+    {
+      "id": "e05",
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=12.97&longitude=77.59&daily=precipitation_sum,temperature_2m_max,temperature_2m_min&temperature_unit=celsius&precipitation_unit=mm&timezone=Asia%2FKolkata&models=era5&start_date=2026-10-20&end_date=2026-11-04",
+      "fetched_at": "2026-11-05T13:01:07.707756Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "0c1116b5271e0b9af2152c5e27980744d98e13e54cfc628cc7fb6ec4258a038c",
+      "bytes": 829,
+      "raw_path": "S02/2026-11-05/0c1116b5271e0b9af2152c5e27980744d98e13e54cfc628cc7fb6ec4258a038c.json",
+      "shows": "Recent ERA5 sample for Bengaluru: shows where the release lag starts"
+    },
+    {
+      "id": "e06",
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=12.97&longitude=77.59&daily=precipitation_sum,temperature_2m_max,temperature_2m_min&temperature_unit=celsius&precipitation_unit=mm&timezone=Asia%2FKolkata&models=era5&start_date=1940-01-01&end_date=1940-01-07",
+      "fetched_at": "2026-11-05T13:01:11.232849Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "77f1a9bceee056b12a3760db96eb20b341163dac9f6c68a5f374e6ec8d874458",
+      "bytes": 572,
+      "raw_path": "S02/2026-11-05/77f1a9bceee056b12a3760db96eb20b341163dac9f6c68a5f374e6ec8d874458.json",
+      "shows": "Earliest ERA5 sample for Bengaluru: first week of 1940"
+    },
+    {
+      "id": "e07",
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=12.97&longitude=77.59&daily=precipitation_sum,temperature_2m_max,temperature_2m_min&temperature_unit=celsius&precipitation_unit=mm&timezone=Asia%2FKolkata&models=era5&start_date=2024-07-01&end_date=2024-07-31",
+      "fetched_at": "2026-11-05T13:01:14.493292Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "acc1210acd1307aa17546c9fce763400c819741379203321d268f1ffd29748cd",
+      "bytes": 1255,
+      "raw_path": "S02/2026-11-05/acc1210acd1307aa17546c9fce763400c819741379203321d268f1ffd29748cd.json",
+      "shows": "ERA5 sample for Bengaluru, July 2024 (monsoon month)"
+    }
+  ]
+}

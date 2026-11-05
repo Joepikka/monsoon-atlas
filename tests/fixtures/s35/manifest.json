@@ -1,0 +1,71 @@
+{
+  "source_id": "S35",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://www.kaggle.com/datasets/imdevskp/kerala-floods-2018",
+      "fetched_at": "2026-11-05T10:52:15.290107Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "4424cd6681b2143e38f17d9ffd309e536a85763dcec704bd18fffc0b76b89bc8",
+      "bytes": 10565,
+      "raw_path": "S35/2026-11-05/4424cd6681b2143e38f17d9ffd309e536a85763dcec704bd18fffc0b76b89bc8.html",
+      "shows": "Kaggle 'Kerala Floods 2018' (imdevskp): 2018 casualties, warnings, district-wise warnings and rainfall from the State Relief Commissioner's memorandum; licence 'Other (specified in description)'; download requires sign-in"
+    },
+    {
+      "id": "e02",
+      "url": "https://www.kaggle.com/datasets/aditya2803/india-floods-inventory",
+      "fetched_at": "2026-11-05T10:52:18.729976Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "a070e08a9a6147fd3015f29864c8c9a34b27af06f6f48fdf962e09dda8825269",
+      "bytes": 10000,
+      "raw_path": "S35/2026-11-05/a070e08a9a6147fd3015f29864c8c9a34b27af06f6f48fdf962e09dda8825269.html",
+      "shows": "Kaggle 'India Floods Inventory' (aditya2803): 900+ rows of Indian floods, 'got this dataset from my Friend'; licence 'Other (specified in description)'; download requires sign-in"
+    },
+    {
+      "id": "e03",
+      "url": "https://www.kaggle.com/datasets/mukulthakur177/kerela-flood",
+      "fetched_at": "2026-11-05T10:52:22.111564Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "68443508ab53a0ef34874c1ae83302cc5b57db4e927b0dd787a66573cf936ec9",
+      "bytes": 9545,
+      "raw_path": "S35/2026-11-05/68443508ab53a0ef34874c1ae83302cc5b57db4e927b0dd787a66573cf936ec9.html",
+      "shows": "Kaggle 'Monthly Rainfall Index and Flood Probability': monthly Kerala rainfall 1900-2018 with a flood yes/no flag; licence 'Unknown'"
+    },
+    {
+      "id": "e04",
+      "url": "https://www.kaggle.com/datasets/srilaasyakandukuri/kerala-floods-dataset",
+      "fetched_at": "2026-11-05T10:52:25.510877Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "1cf9c64b42b003422b175ad35e329ba36f9ddf2e429dabab7a1823aa11907e47",
+      "bytes": 9495,
+      "raw_path": "S35/2026-11-05/1cf9c64b42b003422b175ad35e329ba36f9ddf2e429dabab7a1823aa11907e47.html",
+      "shows": "Kaggle 'Kerala_Floods_Dataset': month-wise and annual rainfall for flood prediction"
+    },
+    {
+      "id": "e05",
+      "url": "https://www.kaggle.com/datasets/amirazizdatascience/kerala-dataset",
+      "fetched_at": "2026-11-05T10:52:29.021516Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "793065a5af7b3a48d4dcacef894b725f6057f62611f2bb92209a7af7b90340c5",
+      "bytes": 9442,
+      "raw_path": "S35/2026-11-05/793065a5af7b3a48d4dcacef894b725f6057f62611f2bb92209a7af7b90340c5.html",
+      "shows": "Kaggle 'Kerala_Dataset': rainfall table used for flood prediction"
+    },
+    {
+      "id": "e06",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2019/08/Memorandum2-Floods-2018.pdf",
+      "fetched_at": "2026-11-05T10:52:32.813916Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "1a621482c463a26d202a04dde06395b3a1a86e80d28e717b49c45dc4660ce18f",
+      "bytes": 3489970,
+      "raw_path": "S35/2026-11-05/1a621482c463a26d202a04dde06395b3a1a86e80d28e717b49c45dc4660ce18f.pdf",
+      "shows": "Official upstream named by e01: 'Additional memorandum, Kerala Floods 2018', State Relief Commissioner, on the KSDMA site (S36 scope)"
+    }
+  ]
+}

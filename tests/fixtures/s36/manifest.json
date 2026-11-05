@@ -1,0 +1,126 @@
+{
+  "source_id": "S36",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://sdma.kerala.gov.in/robots.txt",
+      "fetched_at": "2026-11-05T12:06:20.144636Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "b925e3316e65f422eb7965a422a85a6faf08b9def23e4ef42d09179d2f5db981",
+      "bytes": 127,
+      "raw_path": "S36/2026-11-05/b925e3316e65f422eb7965a422a85a6faf08b9def23e4ef42d09179d2f5db981.bin",
+      "shows": "robots.txt: disallows only /wp-admin/; lists /sitemap.xml"
+    },
+    {
+      "id": "e02",
+      "url": "https://sdma.kerala.gov.in/page-sitemap.xml",
+      "fetched_at": "2026-11-05T12:06:24.134931Z",
+      "status": 200,
+      "media_type": "text/xml",
+      "sha256": "a5a74384255b5c08036f330356a4d5e705ae53779a477910ca3004b91551a44f",
+      "bytes": 202121,
+      "raw_path": "S36/2026-11-05/a5a74384255b5c08036f330356a4d5e705ae53779a477910ca3004b91551a44f.xml",
+      "shows": "Page sitemap: lists /disaster-memoranda/, /floods_2018/ and /event-specific-maps/"
+    },
+    {
+      "id": "e03",
+      "url": "https://sdma.kerala.gov.in/disaster-memoranda/",
+      "fetched_at": "2026-11-05T12:06:27.776916Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "a86e8749dc8eb73f3f9506c2a53dad3dd1e202e4f722e54bbc0743311d567f68",
+      "bytes": 111443,
+      "raw_path": "S36/2026-11-05/a86e8749dc8eb73f3f9506c2a53dad3dd1e202e4f722e54bbc0743311d567f68.html",
+      "shows": "Disaster Memoranda page: links memoranda from 2012 to 2024, including two for the 2018 floods"
+    },
+    {
+      "id": "e04",
+      "url": "https://sdma.kerala.gov.in/floods_2018/",
+      "fetched_at": "2026-11-05T12:06:31.404215Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "1a0c6a700403e53c467f54aa15b4d6053dc4b45920ab664fe8f87350e089ff8e",
+      "bytes": 118658,
+      "raw_path": "S36/2026-11-05/1a0c6a700403e53c467f54aa15b4d6053dc4b45920ab664fe8f87350e089ff8e.html",
+      "shows": "Floods 2018 page: links the PDNA (UN, World Bank, ADB, Government of Kerala) and studies"
+    },
+    {
+      "id": "e05",
+      "url": "https://sdma.kerala.gov.in/event-specific-maps/",
+      "fetched_at": "2026-11-05T12:06:35.095497Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "ad3ccac2d380facf8319cb298f9b40b5680ec25c1ddd4da56420bf758aea1f4c",
+      "bytes": 104946,
+      "raw_path": "S36/2026-11-05/ad3ccac2d380facf8319cb298f9b40b5680ec25c1ddd4da56420bf758aea1f4c.html",
+      "shows": "Event Specific Maps page: links flood inundation map PDFs for 2013, 2018, 2019 and 2020"
+    },
+    {
+      "id": "e06",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2019/08/Memorandum1-Floods-2018.pdf",
+      "fetched_at": "2026-11-05T12:06:39.141388Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "49e4190f4271620b67612dfdb1314f1ed3cca6e05157d3f65dc2407a1b20b493",
+      "bytes": 6567054,
+      "raw_path": "S36/2026-11-05/49e4190f4271620b67612dfdb1314f1ed3cca6e05157d3f65dc2407a1b20b493.pdf",
+      "shows": "Memorandum (Revised) dated 7-8-2018, 29 May to 31 Jul 2018: NRSC district flooded area on 16-7-2018"
+    },
+    {
+      "id": "e07",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2019/08/Memorandum2-Floods-2018.pdf",
+      "fetched_at": "2026-11-05T12:06:42.247871Z",
+      "status": 304,
+      "media_type": "application/pdf",
+      "sha256": "1a621482c463a26d202a04dde06395b3a1a86e80d28e717b49c45dc4660ce18f",
+      "bytes": 3489970,
+      "raw_path": "S35/2026-11-05/1a621482c463a26d202a04dde06395b3a1a86e80d28e717b49c45dc4660ce18f.pdf",
+      "shows": "Additional memorandum dated 13-09-2018, 1 to 30 Aug 2018: district totals and flooding narrative"
+    },
+    {
+      "id": "e08",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2020/08/Kerala-Post-Disaster-Needs-Assessment.pdf",
+      "fetched_at": "2026-11-05T12:06:48.236695Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "f88a7b6dc2454cddc12c878ab26f3e65c099b66a2fd3dc1f31d1ea2fac15fc9d",
+      "bytes": 10512981,
+      "raw_path": "S36/2026-11-05/f88a7b6dc2454cddc12c878ab26f3e65c099b66a2fd3dc1f31d1ea2fac15fc9d.pdf",
+      "shows": "Kerala PDNA, Floods and Landslides August 2018 (October 2018): cites a village notification order"
+    },
+    {
+      "id": "e09",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2020/11/Flood_2018-1.pdf",
+      "fetched_at": "2026-11-05T12:06:55.020234Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "9ff05682c9b7f2932fe88ccef90d68b644908b64aae78061eb262a455769bcbd",
+      "bytes": 8092189,
+      "raw_path": "S36/2026-11-05/9ff05682c9b7f2932fe88ccef90d68b644908b64aae78061eb262a455769bcbd.pdf",
+      "shows": "Map 'Kerala Flood Inundation (2018)': one undated image, 'Reference purpose only'"
+    },
+    {
+      "id": "e10",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2020/11/FLOOD_INUNDATION2013.pdf",
+      "fetched_at": "2026-11-05T12:06:58.924189Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "ea3f9d2f8d891a33470be9d4b0a50c8cf1561e744e4eb62b493774af3e979d67",
+      "bytes": 1601594,
+      "raw_path": "S36/2026-11-05/ea3f9d2f8d891a33470be9d4b0a50c8cf1561e744e4eb62b493774af3e979d67.pdf",
+      "shows": "Map 'Flood Inundation Map 2013', source NRSC: one raster image, year only"
+    },
+    {
+      "id": "e11",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2018/11/6.Memorandum-Monsoon-Calamity-2013.pdf",
+      "fetched_at": "2026-11-05T12:07:04.455427Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "aea331f7bca68d4092b88186014663b6f5880a5104f2f2cee126b1f0f8f9dcca",
+      "bytes": 3800237,
+      "raw_path": "S36/2026-11-05/aea331f7bca68d4092b88186014663b6f5880a5104f2f2cee126b1f0f8f9dcca.pdf",
+      "shows": "Memorandum dated 4-07-2013, 1 to 30 Jun 2013: mixed-hazard monsoon calamity, district totals"
+    }
+  ]
+}

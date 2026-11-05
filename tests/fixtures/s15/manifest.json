@@ -1,0 +1,82 @@
+{
+  "source_id": "S15",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://openfreemap.org/robots.txt",
+      "fetched_at": "2026-11-05T13:12:14.565150Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "47db4f64198b3f6f1925521bbd9e551f605b4cc0c292adcbc1f30b0ecad7c5c5",
+      "bytes": 75,
+      "raw_path": "S15/2026-11-05/47db4f64198b3f6f1925521bbd9e551f605b4cc0c292adcbc1f30b0ecad7c5c5.bin",
+      "shows": "Website robots.txt: allows all paths"
+    },
+    {
+      "id": "e02",
+      "url": "https://openfreemap.org/",
+      "fetched_at": "2026-11-05T13:12:17.664626Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "5684b65ec9db17a9d548aae07d255472d35b314834c13dacfc274c496a368bd0",
+      "bytes": 12268,
+      "raw_path": "S15/2026-11-05/5684b65ec9db17a9d548aae07d255472d35b314834c13dacfc274c496a368bd0.html",
+      "shows": "Home page: free public instance, no limits on views, no registration, keys or cookies"
+    },
+    {
+      "id": "e03",
+      "url": "https://openfreemap.org/tos/",
+      "fetched_at": "2026-11-05T13:12:20.738829Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "37b230074596ec6fe967a0cb831a3d1918c8c9435c0fb3576fa5135677b3c1dc",
+      "bytes": 5799,
+      "raw_path": "S15/2026-11-05/37b230074596ec6fe967a0cb831a3d1918c8c9435c0fb3576fa5135677b3c1dc.html",
+      "shows": "Terms of Service: no automated collection beyond small offline downloads; integrator 18+"
+    },
+    {
+      "id": "e04",
+      "url": "https://openfreemap.org/quick_start/",
+      "fetched_at": "2026-11-05T13:12:23.837709Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "29647234fefbe06791e5af94790006fe2ffbd6aa82f5d9ac096d525f643b6863",
+      "bytes": 17129,
+      "raw_path": "S15/2026-11-05/29647234fefbe06791e5af94790006fe2ffbd6aa82f5d9ac096d525f643b6863.html",
+      "shows": "Quick start: style URLs liberty, bright and positron"
+    },
+    {
+      "id": "e05",
+      "url": "https://tiles.openfreemap.org/styles/liberty",
+      "fetched_at": "2026-11-05T13:12:26.986086Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "408245464e76791801a64393c403433d09e8110eb9516040f8dc2b62584eee2a",
+      "bytes": 43311,
+      "raw_path": "S15/2026-11-05/408245464e76791801a64393c403433d09e8110eb9516040f8dc2b62584eee2a.json",
+      "shows": "Liberty style JSON: openmaptiles source, glyphs and sprite URLs"
+    },
+    {
+      "id": "e06",
+      "url": "https://tiles.openfreemap.org/planet",
+      "fetched_at": "2026-11-05T13:12:30.051102Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "3339dd4706556bf88d514cb54b10647dbe1f8306381f739f2a2e52341147040c",
+      "bytes": 19254,
+      "raw_path": "S15/2026-11-05/3339dd4706556bf88d514cb54b10647dbe1f8306381f739f2a2e52341147040c.json",
+      "shows": "Planet TileJSON: versioned tile URL, OpenMapTiles 3.16.0, attribution string"
+    },
+    {
+      "id": "e07",
+      "url": "https://tiles.openfreemap.org/planet/20261101_080013_pt/6/45/29.pbf",
+      "fetched_at": "2026-11-05T13:12:33.174825Z",
+      "status": 200,
+      "media_type": "application/vnd.mapbox-vector-tile",
+      "sha256": "b72a67235221e24f7a38b100f2397cfa396a2349ff59817a7f5e76c8c62004cf",
+      "bytes": 157188,
+      "raw_path": "S15/2026-11-05/b72a67235221e24f7a38b100f2397cfa396a2349ff59817a7f5e76c8c62004cf.bin",
+      "shows": "Vector tile z6/45/29 over Karnataka from the current revision"
+    }
+  ]
+}

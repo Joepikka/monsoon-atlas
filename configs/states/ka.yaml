@@ -16,14 +16,16 @@ sources:
     cost: free
     storage_crs: EPSG:4326
     schedule: "every 6 hours"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s01.yaml
   - source_id: S02
     name: "Open-Meteo historical weather / ERA5"
     verify_task: T011
     cost: free
     storage_crs: EPSG:4326
     schedule: "backfill once; daily delayed updates"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s02.yaml
   - source_id: S03
     name: "Open-Meteo GloFAS river discharge"
     verify_task: T047
@@ -58,14 +60,17 @@ sources:
     name: "IMD Pune gridded rainfall 1901-2024"
     verify_task: T057
     cost: free
-    enabled: false
+    schedule: "yearly check"
+    enabled: true
+    verified_by: configs/sources/s08.yaml
   - source_id: S09
     name: "NDMA Sachet CAP alerts"
     verify_task: T013
     cost: free
     storage_crs: EPSG:4326
     schedule: "every 15 minutes"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s09.yaml
   - source_id: S10
     name: "adsb.lol live aircraft"
     verify_task: T059
@@ -98,20 +103,23 @@ sources:
     verify_task: T015
     cost: free
     schedule: "static, on demand"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s15.yaml
   - source_id: S16
     name: "WorldPop India population"
     verify_task: T017
     cost: free
     schedule: "once per release"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s16.yaml
   - source_id: S17
     name: "geoBoundaries administrative boundaries"
     verify_task: T019
     cost: free
     storage_crs: EPSG:4326
     schedule: "yearly check"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s17.yaml
   - source_id: S18
     name: "Geofabrik OSM extracts"
     verify_task: T021
@@ -202,7 +210,8 @@ sources:
     cost: free
     storage_crs: EPSG:4326
     schedule: "one-off then boundary revision"
-    enabled: false
+    enabled: true
+    verified_by: configs/sources/s40.yaml
   - source_id: S43
     name: "Official shelters and flood impact labels"
     verify_task: T085

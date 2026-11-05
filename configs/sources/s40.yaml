@@ -1,0 +1,110 @@
+# Discovery record for S40 (plan task T030). Evidence IDs refer to tests/fixtures/s40/manifest.json;
+# the evidence files stay in data/raw/S40. See docs/sources/s40.md.
+source_id: S40
+state: ka
+name: "Ward / taluk polygons and crosswalks"
+verify_task: T030
+discovered_at: "2026-11-05T09:37:53Z"
+outcome: available
+landing_url: "https://data.opencity.in/"
+publisher: "OpenCity (data.opencity.in), redistributing ward maps; source of the 2025 maps named as GBA (Greater Bengaluru Authority)"
+no_card: true
+account_required: false
+
+access:
+  status: public_download
+  detail: >-
+    Dataset pages and KML downloads open without an account or key (e02, e04, e06). robots.txt
+    disallows /api/ and asks for a 10 second crawl delay, so only dataset pages and their published
+    download links are used, 10 seconds apart (e01).
+  evidence: [e01, e02, e04, e06]
+
+licence:
+  status: open
+  detail: >-
+    GBA Wards Delimitation 2025: dataset licence "Other (Public Domain)", Source GBA (e02); the
+    final 369-ward KML resource carries the same licence with credit "Vivek Mathew" (e03). Credit
+    GBA and OpenCity with dataset title, retrieval date and URL. The older BBMP ward maps (2015,
+    2022, 2023) show "No License Provided" and name no source (e06): they are used locally for
+    research only and never published.
+  evidence: [e02, e03, e06]
+
+provider_quota:
+  status: crawl_delay_10s
+  detail: "No quota is published; robots.txt sets Crawl-Delay 10 and disallows /api/ (e01)."
+  evidence: [e01]
+
+history:
+  status: available
+  detail: >-
+    Boundary versions: BBMP 2015 (198 wards, e07), BBMP 2022 (243 wards, e08), BBMP 2023 final
+    (225 wards, e09), and GBA 2025 final (369 wards across 5 corporations, notified on 19 Nov 2025,
+    e03, e04), with a December 2025 file that includes ward renames from 01.12.2025 (e05). Each
+    file was checked: 198, 243, 225, 369 and 369 placemarks.
+  evidence: [e03, e04, e05, e07, e08, e09]
+earliest_date: "2015"  # year of the oldest ward map; the page gives no exact date
+latest_date: "2025-12-01"
+
+units:
+  status: labelled
+  detail: >-
+    All five KML files use the OGC KML 2.2 namespace, whose coordinates are WGS84 longitude and
+    latitude (EPSG:4326, the project's storage CRS). Extents are longitude 77.460 to 77.784 and
+    latitude 12.833 to 13.144, inside Bengaluru. The 2023 file's ward_area has no unit and is not
+    used; areas are recomputed from geometry (e04, e05, e07, e08, e09).
+  evidence: [e04, e05, e07, e08, e09]
+
+source_check:
+  status: pass
+  detail: >-
+    No ward ID is guessed. GBA 2025: ward_id repeats across corporations, so the published pair
+    (corporation_id, ward_id) is the key, unique for all 369 wards (e04). BBMP 2022: WardNo is
+    unique for all 243 wards (e08). BBMP 2015: the ward number comes from the published placemark
+    name ("Ward 1" to "Ward 198", e07). The constituency CSV lists old and new wards side by side
+    per constituency, not as a ward-to-ward match, so crosswalks between versions are derived from
+    polygon overlap in T031 and labelled as derived (e10). No Karnataka taluk polygon dataset was
+    found (e11): taluk-level outputs use district or H3 views, labelled as such.
+  evidence: [e04, e07, e08, e10, e11]
+
+field_map:
+  - canonical: place_id
+    upstream: "corporation_id + ward_id (GBA 2025); WardNo (BBMP 2022); placemark name number (BBMP 2015); id (BBMP 2023)"
+    unit_status: not_applicable
+    detail: "Prefixed with the boundary version, for example gba2025-1-24, so IDs never collide across versions."
+    evidence: [e04, e07, e08, e09]
+  - canonical: name
+    upstream: "ward_name (GBA 2025); WardName (2022); Ward Name (2015); name_en (2023)"
+    unit_status: not_applicable
+    detail: "English names; Kannada names (ward_name_kn, name_ka) are kept as attributes."
+    evidence: [e04, e07, e08, e09]
+  - canonical: level
+    upstream: null
+    unit_status: not_applicable
+    detail: "Constant 'ward' for these files; taluk level is absent (no official polygons found)."
+    evidence: [e04, e11]
+  - canonical: parent_id
+    upstream: "corporation_id (GBA 2025); Zone (2015)"
+    unit_status: not_applicable
+    detail: "GBA corporation (Central, East, North, South, West); 2022 and 2023 files have no parent field."
+    evidence: [e04, e07]
+  - canonical: version
+    upstream: null
+    unit_status: not_applicable
+    detail: "Set from the resource title: bbmp2015, bbmp2022, bbmp2023, gba2025, gba2025-12."
+    evidence: [e03, e06]
+  - canonical: geometry
+    upstream: "KML Polygon or MultiGeometry"
+    unit_status: labelled
+    detail: "WGS84 longitude/latitude by the KML 2.2 standard; stored as WKB in EPSG:4326."
+    evidence: [e04, e07]
+  - canonical: valid_from
+    upstream: "resource description"
+    unit_status: not_applicable
+    detail: "2025-11-19 for the GBA final map (notification date); null for BBMP maps, whose pages give only a year."
+    evidence: [e03, e06]
+
+dependents: [T031]
+retry_condition: >-
+  Taluk polygons: run a separate discovery for an official Karnataka taluk boundary source before
+  any taluk-level map; until then taluk outputs use district or H3 views. BBMP 2015/2022/2023 maps:
+  re-check licence before any public use.

@@ -1,0 +1,124 @@
+# Discovery record for S09 (plan task T013). Evidence IDs refer to tests/fixtures/s09/manifest.json;
+# the files stay in data/raw/S09. See docs/sources/s09.md.
+source_id: S09
+state: ka
+name: "NDMA Sachet CAP alerts"
+verify_task: T013
+discovered_at: "2026-11-05T13:05:59Z"
+outcome: available
+landing_url: "https://sachet.ndma.gov.in/cap_public_website/rss/rss_india.xml"
+publisher: "National Disaster Management Authority (NDMA) Sachet portal, relaying alerts from IMD, state disaster authorities and FSI"
+no_card: true
+account_required: false
+
+access:
+  status: public_feed
+  detail: >-
+    The all-India RSS feed lists alerts, and each item links its CAP 1.2 XML through
+    FetchXMLFile?identifier=... (e02). The CAP files and the polygon file each alert names in its
+    "Polygon URL" parameter download without an account (e03 to e09). robots.txt returns 404 (see
+    failed_fetches). Requests were spaced 3 seconds apart.
+  evidence: [e01, e02, e03, e04, e05, e06, e07, e08, e09]
+
+licence:
+  status: open
+  detail: 'The feed channel states <copyright>public domain</copyright> (e02).'
+  evidence: [e02]
+
+provider_quota:
+  status: not_published
+  detail: "No quota is published (e01, e02); robots.txt returns 404 (see failed_fetches)."
+  evidence: [e01, e02]
+
+history:
+  status: partial
+  detail: >-
+    The feed holds only the latest 100 items: on 5 Nov 2026 at 13:05 UTC they ran from 4 Nov 2026
+    15:55:40 GMT to 5 Nov 2026 12:35:12 GMT, about 21 hours (e02). No archive is linked, so history
+    starts when the project begins polling (schedule every 15 minutes). The channel pubDate is
+    stale (16 Oct 2026) and must not be used for freshness; item pubDates are current (e02).
+  evidence: [e02]
+earliest_date: "2026-11-04"
+latest_date: "2026-11-05"
+
+units:
+  status: not_applicable
+  detail: >-
+    Alerts have no measured units. Times carry explicit offsets, for example
+    2026-11-05T18:05:10+05:30 (e03). Severity uses the CAP words Moderate, Severe and Extreme (e03,
+    e06, e08).
+  evidence: [e03, e06, e08]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: CAP updates and cancellations supersede old alerts; missing geometry stays area
+    text; do not infer lightning from rain. The samples include msgType Update with references in
+    the CAP form sender,identifier,sent, for example "IMD-Bengaluru,IN-1793881986295019_51,..." in a
+    Karnataka-SNDMC update (e03, e05, e08, e09), and msgType Alert without references (e06, e07). No
+    Cancel was in the samples, but CAP 1.2 defines it, so T014 handles Update and Cancel the same
+    way. Geometry: every sample names a polygon file, and e04 holds lat,lon rings (14 rings, each
+    listed twice). Some alerts have LGD district codes (e03, e05, e07), others only area text such
+    as "central Kerala" (e08); area text is always kept. Events are taken as written, for example
+    "Thunderstorm with Lightning" (e03) and "Moderate Rain" (e07); no event is inferred.
+  evidence: [e03, e04, e05, e06, e07, e08, e09]
+
+field_map:
+  - canonical: alert_id
+    upstream: "cap:identifier"
+    unit_status: not_applicable
+    detail: "For example IN-1793881986295019_19."
+    evidence: [e03]
+  - canonical: sent_at
+    upstream: "cap:sent"
+    unit_status: labelled
+    detail: "ISO 8601 with +05:30 offset; stored in UTC."
+    evidence: [e03]
+  - canonical: effective_at
+    upstream: "cap:info/cap:effective"
+    unit_status: labelled
+    detail: "ISO 8601 with offset."
+    evidence: [e03]
+  - canonical: expires_at
+    upstream: "cap:info/cap:expires"
+    unit_status: labelled
+    detail: "ISO 8601 with offset; one week for the FSI fire alert (e09)."
+    evidence: [e03, e09]
+  - canonical: event
+    upstream: "cap:info/cap:event"
+    unit_status: not_applicable
+    detail: "Taken as written; the English info block is used (other blocks are KN and so on)."
+    evidence: [e03, e07]
+  - canonical: severity
+    upstream: "cap:info/cap:severity"
+    unit_status: not_applicable
+    detail: "CAP severity words."
+    evidence: [e03, e06, e08]
+  - canonical: area_text
+    upstream: "cap:area/cap:areaDesc"
+    unit_status: not_applicable
+    detail: "Always kept, also when geometry exists."
+    evidence: [e03, e08]
+  - canonical: geometry
+    upstream: "polygon file from the 'Polygon URL' parameter: <polygon>lat,lon ...</polygon>"
+    unit_status: not_applicable
+    detail: "Rings in lat,lon order; duplicates removed; null when the file has none."
+    evidence: [e03, e04]
+  - canonical: instruction
+    upstream: "cap:info/cap:instruction"
+    unit_status: not_applicable
+    detail: "Free text, for example 'Please follow SDMA guidelines.'"
+    evidence: [e03]
+  - canonical: references
+    upstream: "cap:references"
+    unit_status: not_applicable
+    detail: "sender,identifier,sent triples; used to mark superseded alerts."
+    evidence: [e03, e08]
+
+dependents: [T014]
+retry_condition: null
+
+failed_fetches:
+  - url: "https://sachet.ndma.gov.in/robots.txt"
+    attempted_at: "2026-11-05T13:06:14Z"
+    error: "HTTP 404: the site serves no robots.txt"

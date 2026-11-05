@@ -1,6 +1,7 @@
 """T003 acceptance: reject unknown source, bad CRS and paid-provider config; CLI help exits 0;
 unimplemented commands exit 2."""
 
+import os
 import subprocess
 import sys
 from datetime import UTC, date, datetime, timedelta, timezone
@@ -11,7 +12,15 @@ from pydantic import ValidationError
 from typer.testing import CliRunner
 
 from atlas.cli import app
-from atlas.config import Budgets, SourceConfig, StateConfig, load_budgets, load_state, to_display
+from atlas.config import (
+    Budgets,
+    SourceConfig,
+    StateConfig,
+    load_budgets,
+    load_state,
+    load_yaml,
+    to_display,
+)
 from atlas.contracts import (
     Budget,
     DatasetManifest,
@@ -20,6 +29,7 @@ from atlas.contracts import (
     RawArtifact,
     SplitManifest,
 )
+from atlas.ingest.discovery import Discovery
 
 ROOT = Path(__file__).resolve().parents[1]
 GOOD = {
@@ -36,11 +46,15 @@ NOW = datetime(2026, 11, 5, 6, 30, tzinfo=UTC)
 # --- shipped configs -------------------------------------------------------------------------
 
 
-def test_ka_config_loads_with_every_source_disabled():
+def test_ka_config_enables_only_sources_whose_discovery_passed():
     ka = load_state(ROOT / "configs/states/ka.yaml")
     assert ka.state_id == "ka"
     assert (ka.storage_tz, ka.display_tz) == ("UTC", "Asia/Kolkata")
-    assert ka.sources and all(not s.enabled for s in ka.sources)
+    enabled = [s for s in ka.sources if s.enabled]
+    assert len(enabled) < len(ka.sources)
+    for s in enabled:
+        d = load_yaml(ROOT / s.verified_by, Discovery)
+        assert (d.source_id, d.outcome) == (s.source_id, "available"), s.source_id
     assert ka.source("S28").verify_task == "T008"
 
 
@@ -208,8 +222,12 @@ IMPLEMENTED = ["quota"]  # T006
 
 
 def test_cli_help_exits_0():
-    result = subprocess.run(
-        [sys.executable, "-m", "atlas", "--help"], capture_output=True, text=True, check=False
+    result = subprocess.run(  # pin the child's encoding: help text has box-drawing characters
+        [sys.executable, "-m", "atlas", "--help"],
+        capture_output=True,
+        encoding="utf-8",
+        env={**os.environ, "PYTHONIOENCODING": "utf-8"},
+        check=False,
     )
     assert result.returncode == 0
     for name in [*COMMANDS, *IMPLEMENTED]:

@@ -1,0 +1,115 @@
+# Discovery record for S36 (plan task T121, run in P1 by decision D28). Evidence IDs refer to
+# tests/fixtures/s36/manifest.json; the files stay in data/raw (S36, and S35 for e07). See
+# docs/sources/s36.md.
+source_id: S36
+state: kl
+name: "KSDMA post-disaster assessment"
+verify_task: T121
+discovered_at: "2026-11-05T12:07:04Z"
+outcome: available
+landing_url: "https://sdma.kerala.gov.in/disaster-memoranda/"
+publisher: "Kerala State Disaster Management Authority (KSDMA); memoranda by the State Relief Commissioner, Department of Disaster Management"
+no_card: true
+account_required: false
+
+access:
+  status: public_pdf_links
+  detail: >-
+    robots.txt disallows only /wp-admin/ and names the sitemap (e01), which lists the Disaster
+    Memoranda, Floods 2018 and Event Specific Maps pages (e02). These pages link the PDFs directly
+    (e03, e04, e05), and every PDF downloaded without an account, key or card (e06 to e11).
+    Requests were spaced 3 seconds apart. e07 returned 304 Not Modified: the server confirmed the
+    copy stored for S35 an hour earlier, so the same file (same SHA256) is the evidence.
+  evidence: [e01, e02, e03, e04, e05, e06, e07, e08, e09, e10, e11]
+
+licence:
+  status: restricted
+  detail: >-
+    Every page footer reads "Copyright © 2026.KERALA STATE DISASTER MANAGEMENT AUTHORITY. All
+    rights reserved." and no open licence or terms of use is linked (e03, e04, e05). No licence
+    statement was found in the memoranda or in the PDNA text (e06, e07, e08, e11). The PDFs stay in
+    data/raw and are never redistributed. Only district-level facts with document and page
+    citations are published, credited to KSDMA and the State Relief Commissioner.
+  evidence: [e03, e04, e05, e06, e07, e08, e11]
+
+provider_quota:
+  status: not_published
+  detail: "No quota is published; robots.txt disallows only /wp-admin/ (e01)."
+  evidence: [e01]
+
+history:
+  status: partial
+  detail: >-
+    One-off documents, not a series. The Disaster Memoranda page lists memoranda from 2012 to
+    2024, including two for the 2018 floods: Memorandum 1 (29 May to 31 Jul 2018, submitted
+    7-08-2018) and the Additional Memorandum (1 to 30 Aug 2018, submitted 13-09-2018) (e03, e06,
+    e07). Each gives district totals for its whole period. Only one table has a date per district:
+    NRSC flooded area in 7 districts "as on 16-7-2018", total 55,007 ha (e06, page 9). Other dated
+    district statements are narrative, for example flooding in Wayanad, Kannur and Malappuram on
+    8 and 9 August (e07, page 12). Before 2018 the captured flood-season document is the June 2013
+    monsoon calamity memorandum: 891 villages affected by landslide, flood and/or windfall,
+    with district totals for 1 to 30 June (e11). The event maps for 2013 and 2018 are single map
+    images with a year only and "Reference purpose only" (e05, e09, e10). The PDNA (October 2018)
+    cites a Government Order dated 03/10/2018 listing villages notified as flood or landslide
+    affected, but that order is not linked from these pages (e08, page 319).
+  evidence: [e03, e05, e06, e07, e08, e09, e10, e11]
+earliest_date: "2013-06-01"
+latest_date: "2018-08-30"
+
+units:
+  status: labelled
+  detail: >-
+    District tables state their units in the header: "Flooded Area (ha)" (e06, page 9),
+    fatalities as counts with relief "@ 4 lakhs" (e06, page 14; e07, page 20), and costs "in
+    Lakhs" (e07). District names are spelt differently across documents, for example Alleppey and
+    Alappuzha, Kasargode and Kasaragode (e06, e07).
+  evidence: [e06, e07]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: use district totals only at district resolution, with no invented ward truth. The
+    memoranda give district totals and district rows (e06, e07, e11), so place_id is a district.
+    Ward figures appear only as counts per district of flood-notified wards (e07, page 24), with
+    no ward list, so no ward or taluk label is derived. The two inundation maps are images without
+    a published vector layer, so no polygon label is digitised from them (e09, e10). For M08 this
+    means: dated district labels exist for 2018 only, and sparsely (one table and narrative
+    dates); no independent district-day positives and negatives before 2018 were found, which the
+    M08 card needs for any forecasting claim (e06, e07, e11).
+  evidence: [e06, e07, e09, e10, e11]
+
+field_map:
+  - canonical: document_id
+    upstream: "PDF file name and the 'Submitted on' date on the Disaster Memoranda page"
+    unit_status: not_applicable
+    detail: "For example Memorandum1-Floods-2018.pdf, submitted 7-08-2018."
+    evidence: [e03, e06]
+  - canonical: page
+    upstream: "PDF page number"
+    unit_status: not_applicable
+    detail: "The NRSC district flooded area table is on page 9 of Memorandum 1."
+    evidence: [e06]
+  - canonical: place_id
+    upstream: "District name in a table row"
+    unit_status: not_applicable
+    detail: "14 districts; spellings vary and must be mapped to district IDs. Never downscaled."
+    evidence: [e06, e07]
+  - canonical: event_date
+    upstream: "'as on' date of a table, or a dated sentence; otherwise the memorandum period"
+    unit_status: not_applicable
+    detail: "Only 16-7-2018 is a per-district table date; period totals get null with the period noted."
+    evidence: [e06, e07]
+  - canonical: excerpt
+    upstream: "Table row or sentence text"
+    unit_status: not_applicable
+    detail: "Kept with the page number so each claim can be traced to the PDF."
+    evidence: [e06, e07]
+  - canonical: claim_type
+    upstream: "Table title and column header"
+    unit_status: labelled
+    detail: "For example 'Flooded Area (ha)' and 'Human Fatality'; units come from the header."
+    evidence: [e06, e07]
+
+# Available as a document-claim source. M08 forecasting labels are not met (see source_check).
+dependents: [T122, T133, T134, T135]
+retry_condition: null

@@ -1,0 +1,137 @@
+{
+  "source_id": "S34",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://sdma.kerala.gov.in/robots.txt",
+      "fetched_at": "2026-11-05T10:47:28.872790Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "b925e3316e65f422eb7965a422a85a6faf08b9def23e4ef42d09179d2f5db981",
+      "bytes": 127,
+      "raw_path": "S34/2026-11-05/b925e3316e65f422eb7965a422a85a6faf08b9def23e4ef42d09179d2f5db981.bin",
+      "shows": "robots.txt: disallows only /wp-admin/; lists /sitemap.xml"
+    },
+    {
+      "id": "e02",
+      "url": "https://sdma.kerala.gov.in/dam-water-level/",
+      "fetched_at": "2026-11-05T10:47:32.545621Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "96494bdde0de9420793db1a50cbb80a8731a77c1886ffe1699cefdfff4ab5973",
+      "bytes": 104218,
+      "raw_path": "S34/2026-11-05/96494bdde0de9420793db1a50cbb80a8731a77c1886ffe1699cefdfff4ab5973.html",
+      "shows": "Dam Water Level page: links today's 'Water Levels of Major Reservoirs (KSEB)' and '(IRRIGATION)' PDFs (05/11/2026, 11.00 AM) and a guideline PDF; footer 'All rights reserved'; no archive list"
+    },
+    {
+      "id": "e03",
+      "url": "https://sdma.kerala.gov.in/page-sitemap.xml",
+      "fetched_at": "2026-11-05T10:47:36.901298Z",
+      "status": 200,
+      "media_type": "text/xml",
+      "sha256": "2e8a4560418bcf927e038afacc9f8fec7873ffb6d80f92c7e41bbb7fb16bccd7",
+      "bytes": 202121,
+      "raw_path": "S34/2026-11-05/2e8a4560418bcf927e038afacc9f8fec7873ffb6d80f92c7e41bbb7fb16bccd7.xml",
+      "shows": "Page sitemap published via robots.txt: lists /archives/, /dam-water-level/, /water-level-status-in-dams/ and /reservoirs/"
+    },
+    {
+      "id": "e04",
+      "url": "https://sdma.kerala.gov.in/archives/",
+      "fetched_at": "2026-11-05T10:47:40.642185Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "0b88dc02ea68b95d4418414f69f4311f3794e920a745f8d5c45bd48dd8c22a6b",
+      "bytes": 414847,
+      "raw_path": "S34/2026-11-05/0b88dc02ea68b95d4418414f69f4311f3794e920a745f8d5c45bd48dd8c22a6b.html",
+      "shows": "Archives page: about 2,300 PDF links labelled with dates from 20/06/2020 to 04/11/2026, plus label errors (31/11/2020, a date in 2121, mixed formats)"
+    },
+    {
+      "id": "e05",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2020/06/%E0%B4%85%E0%B4%A3%E0%B4%95%E0%B5%8D%E0%B4%95%E0%B5%86%E0%B4%9F%E0%B5%8D%E0%B4%9F%E0%B5%81%E0%B4%95%E0%B4%B3%E0%B4%BF%E0%B4%B2%E0%B5%86-%E0%B4%9C%E0%B4%B2%E0%B4%A8%E0%B4%BF%E0%B4%B0%E0%B4%AA%E0%B5%8D%E0%B4%AA%E0%B5%8D-%E0%B4%AA%E0%B4%9F%E0%B5%8D%E0%B4%9F%E0%B4%BF%E0%B4%95-%E0%B4%AE%E0%B4%A8%E0%B4%B8%E0%B5%8D%E0%B4%B8%E0%B4%BF%E0%B4%B2%E0%B4%BE%E0%B4%95%E0%B5%8D%E0%B4%95%E0%B4%BE%E0%B4%A8%E0%B5%81%E0%B4%B3%E0%B5%8D%E0%B4%B3-%E0%B4%B5%E0%B4%BF%E0%B4%B6%E0%B4%A6%E0%B5%80%E0%B4%95%E0%B4%B0%E0%B4%A3%E0%B4%95%E0%B5%8D%E0%B4%95%E0%B5%81%E0%B4%B1%E0%B4%BF%E0%B4%AA%E0%B5%8D%E0%B4%AA%E0%B5%8D-1.pdf",
+      "fetched_at": "2026-11-05T10:47:43.858114Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "61254054c5c63793c1aa5ffb9805c5e9f6fa29cdbacd5de863a412637449f494",
+      "bytes": 145154,
+      "raw_path": "S34/2026-11-05/61254054c5c63793c1aa5ffb9805c5e9f6fa29cdbacd5de863a412637449f494.pdf",
+      "shows": "Guideline PDF (Malayalam) on reading the KSEB and irrigation tables, uploaded 2020-06"
+    },
+    {
+      "id": "e06",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2026/11/kseb-site-1.pdf",
+      "fetched_at": "2026-11-05T10:47:47.226023Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "43917fdc2a88588bf64671c276e5efecedb9ab20c6c0dcebca65e0fb9e9c8fb5",
+      "bytes": 65240,
+      "raw_path": "S34/2026-11-05/43917fdc2a88588bf64671c276e5efecedb9ab20c6c0dcebca65e0fb9e9c8fb5.pdf",
+      "shows": "Today's KSEB dam water level PDF linked from the Dam Water Level page"
+    },
+    {
+      "id": "e07",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2026/11/IRR-SITE-4.pdf",
+      "fetched_at": "2026-11-05T10:47:50.390729Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "bfb9675e9374bb52bf6fb76b36b52c1bb09059e9fe1deb0647f682dd6576e06e",
+      "bytes": 61839,
+      "raw_path": "S34/2026-11-05/bfb9675e9374bb52bf6fb76b36b52c1bb09059e9fe1deb0647f682dd6576e06e.pdf",
+      "shows": "Today's irrigation dam water level PDF linked from the Dam Water Level page"
+    },
+    {
+      "id": "e08",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2020/06/20_06_2020-1.pdf",
+      "fetched_at": "2026-11-05T10:47:53.922065Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "e533d6d422c93326297b918055f32dc27a3597d54a438e2d8afca672fb650619",
+      "bytes": 1246903,
+      "raw_path": "S34/2026-11-05/e533d6d422c93326297b918055f32dc27a3597d54a438e2d8afca672fb650619.pdf",
+      "shows": "Archive PDF labelled 20/06/2020 (earliest): 6 pages, each one JPEG image; KSEB table titled '20/06/2020, 11 am' with 18 dams, water level (m, Idukki and Sholayar in ft), colour code and spill (cumecs); no storage column"
+    },
+    {
+      "id": "e09",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2021/07/ARCHIVES-20.pdf",
+      "fetched_at": "2026-11-05T10:47:57.405179Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "1d6f77dc7fd541cbe7be68dbe793494606caad7d541f24f0ec44a4e7e6b917c3",
+      "bytes": 933350,
+      "raw_path": "S34/2026-11-05/1d6f77dc7fd541cbe7be68dbe793494606caad7d541f24f0ec44a4e7e6b917c3.pdf",
+      "shows": "Archive PDF labelled 15/07/2021: rainfall, KSEB and irrigation reservoir statistics as images"
+    },
+    {
+      "id": "e10",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2023/08/Archives.pdf",
+      "fetched_at": "2026-11-05T10:48:01.921065Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "f84fd2926c1c99d61a5762bc5efcfe46b0d83d0b5ddf3acfa7b7eb7bc62c48ec",
+      "bytes": 2641853,
+      "raw_path": "S34/2026-11-05/f84fd2926c1c99d61a5762bc5efcfe46b0d83d0b5ddf3acfa7b7eb7bc62c48ec.pdf",
+      "shows": "Archive PDF labelled 01/08/2023: 7 page images; KSEB table '01/08/2023 - 11.00 AM' with 17 dams, level (ft or metre per cell), live storage (MCM), % storage, spillway release (m3/sec); irrigation-with-alert table with 12 dams, level (metre), storage (MCM), % gross storage, outflow (m3/sec); flood report page"
+    },
+    {
+      "id": "e11",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2024/08/ARCHIVES-56.pdf",
+      "fetched_at": "2026-11-05T10:48:06.393293Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "642042ee7673e62523f3043da6ee1cf0ddb0166aceeca813e1c7fbd29fc5639c",
+      "bytes": 3615854,
+      "raw_path": "S34/2026-11-05/642042ee7673e62523f3043da6ee1cf0ddb0166aceeca813e1c7fbd29fc5639c.pdf",
+      "shows": "Archive PDF labelled 15/07/2024: KSEB and irrigation reservoir statistics, flood report"
+    },
+    {
+      "id": "e12",
+      "url": "https://sdma.kerala.gov.in/wp-content/uploads/2026/11/ARCHIVES-3.pdf",
+      "fetched_at": "2026-11-05T10:48:12.386461Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "85d0128600ddc21b62435d3af9b55a4571ca1542a62fad60fe1306d9162f01af",
+      "bytes": 9698214,
+      "raw_path": "S34/2026-11-05/85d0128600ddc21b62435d3af9b55a4571ca1542a62fad60fe1306d9162f01af.pdf",
+      "shows": "Archive PDF labelled 04/11/2026 (latest): 9 page images incl. KSEB alert/no-alert, irrigation alert/no-alert and CWC flood report"
+    }
+  ]
+}

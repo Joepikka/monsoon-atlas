@@ -1,0 +1,14 @@
+{
+  "$comment": "S08 IMD Pune 0.25 degree daily gridded rainfall (T058). Measure columns added to the common envelope (common.json). Field map: configs/sources/s08.yaml.",
+  "source_id": "S08",
+  "schema_version": 1,
+  "mapping_version": "s08-v1",
+  "fields": [
+    {"name": "cell_id", "type": "string", "nullable": false, "meaning": "imd025_<lat>N_<lon>E, the 0.25 degree cell centre"},
+    {"name": "date_local", "type": "date32", "nullable": false, "meaning": "Day label of the record in the year file"},
+    {"name": "rain_mm", "type": "float64", "nullable": true, "meaning": "Daily rainfall in mm; null with missing_reason quality_rejected if negative or not finite"},
+    {"name": "grid_resolution_deg", "type": "float64", "nullable": false, "meaning": "Always 0.25"}
+  ],
+  "valid_at": "08:30 IST (03:00 UTC) on the day after date_local: the latest possible end of the unstated 24-hour window",
+  "excluded": "Cells that are -999 (outside the land mask) or outside the state cell box are not rows"
+}

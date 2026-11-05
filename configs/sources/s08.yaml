@@ -1,0 +1,105 @@
+# Discovery record for S08 (plan task T057, run in P1 by decision D29). Evidence IDs refer to
+# tests/fixtures/s08/manifest.json; the files stay in data/raw/S08. See docs/sources/s08.md.
+source_id: S08
+state: ka
+name: "IMD Pune gridded rainfall 1901-2024"
+verify_task: T057
+discovered_at: "2026-11-05T12:25:10Z"
+outcome: available
+landing_url: "https://www.imdpune.gov.in/cmpg/Griddata/Rainfall_25_Bin.html"
+publisher: "India Meteorological Department (IMD), Climate Research and Services, Pune"
+no_card: true
+account_required: false
+
+access:
+  status: public_download
+  detail: >-
+    The gridded rainfall page has a form that sends a year to rainfall.php (e03). The same URL
+    answers a GET with ?rain=YYYY and returns the attachment indYYYY_rfp25.grd with no account,
+    key or card (e04, e05, e06). The page is not linked from the home page (e01); it is the route
+    named in the plan (imdlib download inventory) and is on the IMD Pune host. Requests were
+    spaced 3 seconds apart. robots.txt returns 404 on both hosts (see failed_fetches).
+  evidence: [e01, e03, e04, e05, e06]
+
+licence:
+  status: restricted
+  detail: >-
+    The site disclaimer says data on the website "should not be reproduced anywhere without prior
+    permission" (e02). The gridded rainfall page asks users to cite Pai et al. (2014), MAUSAM 65(1),
+    and states no licence (e03). The year files stay in data/raw and are never redistributed.
+    Public outputs are limited to derived indices and model results (SPI, drought probability,
+    metrics), with the citation; raw or area-averaged rainfall values are not published without
+    permission.
+  evidence: [e02, e03]
+
+provider_quota:
+  status: not_published
+  detail: "No quota is published on the pages (e01, e03); robots.txt returns 404 (see failed_fetches)."
+  evidence: [e01, e03]
+
+history:
+  status: available
+  detail: >-
+    The page text says data is available "for 124 years, 1901 to 2024", and the year form offers
+    1901 to 2025 (e03). The 1901 file (365 days) and the 2025 file (365 days, December included)
+    both downloaded in full (e05, e06), as did 2024 (366 days) (e04). Files are yearly: on 5 Nov
+    2026 the form offers no 2026 file, so the latest data ends on 31 Dec 2025, up to about 22
+    months before an issue date. The page does not say whether 2025 is final.
+  evidence: [e03, e04, e05, e06]
+earliest_date: "1901-01-01"
+latest_date: "2025-12-31"
+
+units:
+  status: labelled
+  detail: >-
+    "The unit of rainfall is in millimeter (mm)"; the GrADS control file gives UNDEF -999.0,
+    XDEF 135 LINEAR 66.5 0.25 and YDEF 129 LINEAR 6.5 0.25 (e03). In all three files the same 4,964
+    cells hold values from 0 upward and every other cell is -999 on every day (e04, e05, e06).
+  evidence: [e03, e04, e05, e06]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: check the actual file format and dimensions, because imdlib downloads binary grids,
+    not NetCDF. Each file is raw little-endian float32 with no header: 135 x 129 values per day,
+    longitude fastest, south to north, one record per day (e03). File sizes match exactly: 69,660
+    bytes x 365 days for 1901 and 2025, x 366 for 2024 (e04, e05, e06). Read as little-endian, the
+    2024 totals are plausible: about 990 mm at Bengaluru and 6,457 mm at Agumbe (e04). Days with
+    zero rain at every land cell occur only in December to February (e04, e05, e06). Conversion to
+    Parquet or Zarr happens in T058, after this parse.
+  evidence: [e03, e04, e05, e06]
+
+field_map:
+  - canonical: cell_id
+    upstream: "Grid index: I = 1..135 from 66.5E, J = 1..129 from 6.5N, step 0.25 degree"
+    unit_status: not_applicable
+    detail: "Cell centre latitude and longitude come from the GrADS XDEF and YDEF lines."
+    evidence: [e03]
+  - canonical: date_local
+    upstream: "Record number in the year file (1 to 365 or 366) plus the year in the file name"
+    unit_status: not_applicable
+    detail: >-
+      Neither the page nor Pai et al. (2014) states the 24-hour window (e03, e07), so T058 sets
+      valid_at to the latest possible end, 08:30 IST on the next day, and no daily feature leaks.
+    evidence: [e03, e04, e07]
+  - canonical: rain_mm
+    upstream: "float32 value per cell and day"
+    unit_status: labelled
+    detail: "Unit mm per the page; -999.0 marks cells outside the land mask and becomes null."
+    evidence: [e03, e04]
+  - canonical: grid_resolution_deg
+    upstream: "0.25 (page title and GrADS XDEF/YDEF step)"
+    unit_status: labelled
+    detail: "Constant 0.25 for this product."
+    evidence: [e03]
+
+dependents: [T058, T101, T102, T103, T145]
+retry_condition: null
+
+failed_fetches:
+  - url: "https://imdpune.gov.in/robots.txt"
+    attempted_at: "2026-11-05T12:25:44Z"
+    error: "HTTP 404: the site serves no robots.txt"
+  - url: "https://www.imdpune.gov.in/robots.txt"
+    attempted_at: "2026-11-05T12:25:50Z"
+    error: "HTTP 404: the site serves no robots.txt"

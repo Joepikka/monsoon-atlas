@@ -1,0 +1,21 @@
+# M05 Karnataka drought outlook (plan model card M05; core C2 by decision D29). T101.
+model_id: M05
+task: regression
+target: spi3 of the issue month (standardised 3-month rain total, gamma fit per district and calendar month)
+classification_target: drought = SPI-3 < -1.0
+unit: district            # no verified taluk polygons (T030); S17 geoBoundaries 2021 lines, 30 districts
+boundary_version: geoboundaries-IND-ADM2-9469f09
+rain_source: S08          # IMD 0.25 degree daily grids, area-weighted (m2) to districts
+spi_reference: ["1981-01-01", "2010-12-31"]
+features:                 # all from months up to t-1; issue at 00:00 IST on day 1 of month t
+  - spi1_lag1
+  - spi3_lag1
+  - spi6_lag1
+  - rain_lag1_mm
+  - month_of_year
+baselines: [spi3 persistence, month climatology]
+splits: src/atlas/features/m05.py splits()  # train 1981-07..2016-09 (purged 92 days), tune 2017-2018, calibrate 2019, test 2020-2024
+evidence: hindcast        # D39: S08 is released yearly, so live issue-time rain is not available
+data_gate:
+  min_years: 30
+  taluk_polygons: false   # falls back to districts, labelled as such

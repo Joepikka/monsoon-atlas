@@ -1,0 +1,126 @@
+{
+  "source_id": "S40",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://data.opencity.in/robots.txt",
+      "fetched_at": "2026-11-05T09:36:05.402222Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "e5692a133e1e9afafb7ce555a0d4cb8807a4895537c21028661835e8b3c9bb77",
+      "bytes": 123,
+      "raw_path": "S40/2026-11-05/e5692a133e1e9afafb7ce555a0d4cb8807a4895537c21028661835e8b3c9bb77.bin",
+      "shows": "robots.txt: disallows /api/, /revision/ and dataset history pages; Crawl-Delay 10"
+    },
+    {
+      "id": "e02",
+      "url": "https://data.opencity.in/dataset/gba-wards-delimitation-2025",
+      "fetched_at": "2026-11-05T09:36:16.942346Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "a5a51eb2dc1b5af7fd9276f51bebb4e974714fcb5b80ffadba631336df5249a6",
+      "bytes": 48787,
+      "raw_path": "S40/2026-11-05/a5a51eb2dc1b5af7fd9276f51bebb4e974714fcb5b80ffadba631336df5249a6.html",
+      "shows": "GBA Wards Delimitation 2025 dataset page: Source GBA, licence 'Other (Public Domain)', created 30 Sep 2025, updated 31 Jul 2026; lists final 369-ward maps, draft 368-ward map and corporation notifications"
+    },
+    {
+      "id": "e03",
+      "url": "https://data.opencity.in/dataset/gba-wards-delimitation-2025/resource/dbe57ae6-a72f-426e-917b-e55b3b22a87b",
+      "fetched_at": "2026-11-05T09:36:27.554274Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "c97772f7ba96c7c586555073f98fec6a6be18241e8a2fbf58ab636316ed72a6d",
+      "bytes": 25060,
+      "raw_path": "S40/2026-11-05/c97772f7ba96c7c586555073f98fec6a6be18241e8a2fbf58ab636316ed72a6d.html",
+      "shows": "Resource page 'Final Wards Map - 369 Wards': final wards map notified on 19 Nov 2025 with 369 wards across 5 corporations; format KML"
+    },
+    {
+      "id": "e04",
+      "url": "https://data.opencity.in/dataset/863209cb-4ced-4f51-b5c5-156939c50922/resource/dbe57ae6-a72f-426e-917b-e55b3b22a87b/download/1c5bbd4e-006c-4130-b278-fd6680fef91b.kml",
+      "fetched_at": "2026-11-05T09:36:38.661693Z",
+      "status": 200,
+      "media_type": "application/vnd.google-earth.kml+xml",
+      "sha256": "83ef157474a60708df41a3b97e3a2b06d8356313485b90a8c7f6bf107833474f",
+      "bytes": 3745694,
+      "raw_path": "S40/2026-11-05/83ef157474a60708df41a3b97e3a2b06d8356313485b90a8c7f6bf107833474f.kml",
+      "shows": "KML file 'Final Wards Map - 369 Wards' (OGC KML 2.2, WGS84 longitude/latitude)"
+    },
+    {
+      "id": "e05",
+      "url": "https://data.opencity.in/dataset/863209cb-4ced-4f51-b5c5-156939c50922/resource/9013d656-8051-4e2d-9648-46efd0d86d3d/download/gba-369-wards-december-2025.kml",
+      "fetched_at": "2026-11-05T09:36:49.835761Z",
+      "status": 200,
+      "media_type": "application/vnd.google-earth.kml+xml",
+      "sha256": "b61575248b0492a65d7fb06773c11a21b0e46539f4dff46f1b3021894c146c28",
+      "bytes": 4054904,
+      "raw_path": "S40/2026-11-05/b61575248b0492a65d7fb06773c11a21b0e46539f4dff46f1b3021894c146c28.kml",
+      "shows": "KML file 'GBA Final Wards Map With Population - Dec 2025': final wards including name changes from 01.12.2025"
+    },
+    {
+      "id": "e06",
+      "url": "https://data.opencity.in/dataset/bbmp-ward-information",
+      "fetched_at": "2026-11-05T09:37:00.819038Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "bfebd376020d30186e1f1806bac8991d63c4505536b1d409cd515779f1c3be04",
+      "bytes": 32944,
+      "raw_path": "S40/2026-11-05/bfebd376020d30186e1f1806bac8991d63c4505536b1d409cd515779f1c3be04.html",
+      "shows": "BBMP Ward Information dataset page: ward maps for 2015 (198 wards), 2022 (243), 2023 final and proposed (225), 2023 delimitation notification; 'No License Provided'; no source named"
+    },
+    {
+      "id": "e07",
+      "url": "https://data.opencity.in/dataset/87b978d1-352e-4b90-aa2c-9991e55d3425/resource/a0329df6-2924-43f4-8fe4-7a6ffcc1d53d/download/806d6b9c-e8d9-4eb0-a3a3-b2ba68ec3cda.kml",
+      "fetched_at": "2026-11-05T09:37:11.319064Z",
+      "status": 200,
+      "media_type": "application/vnd.google-earth.kml+xml",
+      "sha256": "44c721814b0bcf9faab48a09f621cb1a27cf5fc081c49d5dc1ecba0c85bee4cc",
+      "bytes": 1195953,
+      "raw_path": "S40/2026-11-05/44c721814b0bcf9faab48a09f621cb1a27cf5fc081c49d5dc1ecba0c85bee4cc.kml",
+      "shows": "KML file 'BBMP Ward Map - 2015' with 198 wards"
+    },
+    {
+      "id": "e08",
+      "url": "https://data.opencity.in/dataset/87b978d1-352e-4b90-aa2c-9991e55d3425/resource/9423dbca-db2b-47df-823e-8546f4fb8f2a/download/53418b48-c08d-43bd-be0e-31b46cd0f798.kml",
+      "fetched_at": "2026-11-05T09:37:22.067486Z",
+      "status": 200,
+      "media_type": "application/vnd.google-earth.kml+xml",
+      "sha256": "8ee0268d9956a61a671c732e670649386cf09b6ddd1fee74526768d7cbfc6971",
+      "bytes": 2093582,
+      "raw_path": "S40/2026-11-05/8ee0268d9956a61a671c732e670649386cf09b6ddd1fee74526768d7cbfc6971.kml",
+      "shows": "KML file 'BBMP Ward Map - 2022' with 243 wards"
+    },
+    {
+      "id": "e09",
+      "url": "https://data.opencity.in/dataset/87b978d1-352e-4b90-aa2c-9991e55d3425/resource/4dd58225-3ad2-4a99-9003-4e8d71e7f99f/download/e56d21e8-0c44-4c35-9e5d-c732f6f59c97.kml",
+      "fetched_at": "2026-11-05T09:37:32.943523Z",
+      "status": 200,
+      "media_type": "application/vnd.google-earth.kml+xml",
+      "sha256": "861082859a7213ad2324ebaeb31109d6d21da8c06573b8a37267a55c80e39838",
+      "bytes": 2565106,
+      "raw_path": "S40/2026-11-05/861082859a7213ad2324ebaeb31109d6d21da8c06573b8a37267a55c80e39838.kml",
+      "shows": "KML file 'BBMP Final Wards Map - 2023' with 225 wards"
+    },
+    {
+      "id": "e10",
+      "url": "https://data.opencity.in/dataset/87b978d1-352e-4b90-aa2c-9991e55d3425/resource/ebf9c61c-338f-4f11-888a-914493100dc2/download/e08d0f26-d02b-4e0f-ad5b-4049048a9561.csv",
+      "fetched_at": "2026-11-05T09:37:43.160261Z",
+      "status": 200,
+      "media_type": "text/csv",
+      "sha256": "5e246c9a5a1ff95357b5ed3d5797e9d6fc53de6706fa5beb1d191e6135191f87",
+      "bytes": 16714,
+      "raw_path": "S40/2026-11-05/5e246c9a5a1ff95357b5ed3d5797e9d6fc53de6706fa5beb1d191e6135191f87.csv",
+      "shows": "CSV 'Constituencies to Wards Mapping for Old and New Wards': assembly constituency to ward lists for 198 and 243 wards"
+    },
+    {
+      "id": "e11",
+      "url": "https://data.opencity.in/dataset/?q=karnataka+taluk+boundaries",
+      "fetched_at": "2026-11-05T09:37:53.520934Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "3aa769981adc6eb458745af17f6f8cf933aaf1c57a03b3213246468ed6b7c242",
+      "bytes": 42881,
+      "raw_path": "S40/2026-11-05/3aa769981adc6eb458745af17f6f8cf933aaf1c57a03b3213246468ed6b7c242.html",
+      "shows": "Dataset search 'karnataka taluk boundaries': results list no Karnataka taluk polygon dataset"
+    }
+  ]
+}

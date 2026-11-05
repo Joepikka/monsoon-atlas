@@ -1,0 +1,63 @@
+<cap:alert xmlns:cap="urn:oasis:names:tc:emergency:cap:1.2">
+<cap:identifier>IN-1793871793334006_6</cap:identifier>
+<cap:sender>Kerala-SDMA</cap:sender>
+<cap:sent>2026-11-05T15:21:13+05:30</cap:sent>
+<cap:status>Actual</cap:status>
+<cap:msgType>Update</cap:msgType>
+<cap:scope>Public</cap:scope>
+<cap:restriction/>
+<cap:addresses/>
+<cap:note/>
+<cap:references>IMD-Thiruvananthapuram,IN-1793871793334006_64,2026-11-05T15:12:51+05:30</cap:references>
+<cap:incidents/>
+<cap:info>
+<cap:language>en-IN</cap:language>
+<cap:category>Met</cap:category>
+<cap:event>Heavy Rain</cap:event>
+<cap:urgency>Immediate</cap:urgency>
+<cap:severity>Extreme</cap:severity>
+<cap:certainty>Likely</cap:certainty>
+<cap:audience>1</cap:audience>
+<cap:effective>2026-11-05T15:11:00+05:30</cap:effective>
+<cap:onset>2026-11-05T15:21:13+05:30</cap:onset>
+<cap:expires>2026-11-05T18:11:00+05:30</cap:expires>
+<cap:headline>Moderate Thunderstorm with Heavy Rain is very likely to occur at isolated places over Ernakulam, Idukki, Kottayam, Thrissur in next 3 hours.</cap:headline>
+<cap:description/>
+<cap:instruction>Please follow SDMA guidelines.</cap:instruction>
+<cap:contact/>
+<cap:parameter>
+<cap:valueName>Polygon URL</cap:valueName>
+<cap:value>https://sachet.ndma.gov.in/cap_public_website/FetchPolygonXMLFile?identifier=1793871793334006</cap:value>
+</cap:parameter>
+<cap:area>
+<cap:areaDesc>central Kerala</cap:areaDesc>
+<cap:altitude>0</cap:altitude>
+<cap:ceiling>0</cap:ceiling>
+</cap:area>
+</cap:info>
+<cap:info>
+<cap:language>ML</cap:language>
+<cap:category>Met</cap:category>
+<cap:event>Heavy Rain</cap:event>
+<cap:urgency>Immediate</cap:urgency>
+<cap:severity>Extreme</cap:severity>
+<cap:certainty>Likely</cap:certainty>
+<cap:audience>1</cap:audience>
+<cap:effective>2026-11-05T15:11:00+05:30</cap:effective>
+<cap:onset>2026-11-05T15:21:13+05:30</cap:onset>
+<cap:expires>2026-11-05T18:11:00+05:30</cap:expires>
+<cap:headline>അടുത്ത 3 മണിക്കൂറിൽ KTM, IDK, EKM, TSR ജില്ലകളിൽ ഒറ്റപ്പെട്ടയിടങ്ങളിൽ ഇടിമിന്നലോട് കൂടിയ ശക്തമായ മഴയ്ക്ക് സാധ്യത . 05.11.2026; 03.13 pm; IMD -KSDMA</cap:headline>
+<cap:description/>
+<cap:instruction>Please follow SDMA guidelines.</cap:instruction>
+<cap:contact/>
+<cap:parameter>
+<cap:valueName>Polygon URL</cap:valueName>
+<cap:value>https://sachet.ndma.gov.in/cap_public_website/FetchPolygonXMLFile?identifier=1793871793334006</cap:value>
+</cap:parameter>
+<cap:area>
+<cap:areaDesc>central Kerala</cap:areaDesc>
+<cap:altitude>0</cap:altitude>
+<cap:ceiling>0</cap:ceiling>
+</cap:area>
+</cap:info>
+</cap:alert>

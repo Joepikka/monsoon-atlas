@@ -1,0 +1,14 @@
+{
+  "$comment": "S18 Geofabrik OSM extracts (T022). The source is blocked (T021, D34); the adapter is disabled and produces no rows. Planned measure columns from plan section 7, unverified until a retry condition is met.",
+  "source_id": "S18",
+  "schema_version": 1,
+  "status": "disabled",
+  "fields": [
+    {"name": "osm_type", "type": "string", "nullable": false},
+    {"name": "osm_id", "type": "int64", "nullable": false},
+    {"name": "osm_version", "type": "int64", "nullable": false},
+    {"name": "feature_kind", "type": "string", "nullable": false},
+    {"name": "tags_json", "type": "string", "nullable": false},
+    {"name": "geometry", "type": "binary", "nullable": false}
+  ]
+}
