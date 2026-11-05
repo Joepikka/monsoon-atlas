@@ -1,0 +1,49 @@
+{
+  "source_id": "S18",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://download.geofabrik.de/robots.txt",
+      "fetched_at": "2026-11-05T13:30:38.777882Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "cbf7891c69738be030f73dcee59d616f445054d32c4526674a69c34b7a02c494",
+      "bytes": 171,
+      "raw_path": "S18/2026-11-05/cbf7891c69738be030f73dcee59d616f445054d32c4526674a69c34b7a02c494.bin",
+      "shows": "robots.txt: disallows *.osm.pbf, *.shp.zip, state and update files"
+    },
+    {
+      "id": "e02",
+      "url": "https://download.geofabrik.de/asia/india.html",
+      "fetched_at": "2026-11-05T13:30:42.255434Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "aa6212cb10ed53005f6468615d744ddcd2e25993ee030a8fa3908f10fde9c11e",
+      "bytes": 19149,
+      "raw_path": "S18/2026-11-05/aa6212cb10ed53005f6468615d744ddcd2e25993ee030a8fa3908f10fde9c11e.html",
+      "shows": "India page: sub-regions including Southern Zone; licence ODbL 1.0"
+    },
+    {
+      "id": "e03",
+      "url": "https://download.geofabrik.de/asia/india/southern-zone.html",
+      "fetched_at": "2026-11-05T13:30:45.798493Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "de6f52d546d1c2446880d56130bb481ae1a447745684f3bdae4781b035df66b4",
+      "bytes": 18855,
+      "raw_path": "S18/2026-11-05/de6f52d546d1c2446880d56130bb481ae1a447745684f3bdae4781b035df66b4.html",
+      "shows": "Southern Zone page: latest PBF 533 MB with data to 2026-11-03T21:24:23Z, yearly snapshots"
+    },
+    {
+      "id": "e04",
+      "url": "https://download.geofabrik.de/technical.html",
+      "fetched_at": "2026-11-05T13:30:49.057675Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "03e1721761b739ca247682e6bd98cdfd9d5a394117900ce8a03522b9452d1d82",
+      "bytes": 9288,
+      "raw_path": "S18/2026-11-05/03e1721761b739ca247682e6bd98cdfd9d5a394117900ce8a03522b9452d1d82.html",
+      "shows": "Technical details: extracts updated once a day around 21:00 CET"
+    }
+  ]
+}

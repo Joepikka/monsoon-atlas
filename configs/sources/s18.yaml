@@ -1,0 +1,97 @@
+# Discovery record for S18 (plan task T021). Evidence IDs refer to tests/fixtures/s18/manifest.json;
+# the files stay in data/raw/S18. See docs/sources/s18.md.
+source_id: S18
+state: ka
+name: "Geofabrik OSM extracts"
+verify_task: T021
+discovered_at: "2026-11-05T13:30:49Z"
+outcome: blocked
+landing_url: "https://download.geofabrik.de/asia/india.html"
+publisher: "Geofabrik GmbH, processing OpenStreetMap contributors' data"
+no_card: true
+account_required: false
+
+access:
+  status: robots_disallow
+  detail: >-
+    The India page lists sub-region extracts, including the Southern Zone that holds Karnataka
+    (e02); its page links southern-zone-latest.osm.pbf (533 MB) and dated snapshots (e03).
+    robots.txt disallows *.osm.pbf, *.shp.zip, state files and updates for all user agents (e01),
+    and no Geofabrik page invites scripted downloads (e02, e03, e04). Decision D34: the automated
+    pipeline honours this and downloads no extract; no PBF was fetched.
+  evidence: [e01, e02, e03, e04]
+
+licence:
+  status: open
+  detail: >-
+    "Data processed by Geofabrik GmbH and created by OpenStreetMap Contributors | License: ODbL
+    1.0" (e02, e03).
+  evidence: [e02, e03]
+
+provider_quota:
+  status: not_published
+  detail: "No quota is published; robots.txt disallows extract files for robots (e01, e04)."
+  evidence: [e01, e04]
+
+history:
+  status: partial
+  detail: >-
+    Extracts are rebuilt once a day around 21:00 CET (e04). On 5 Nov 2026 the Southern Zone page
+    offered the latest file with data up to 2026-11-03T21:24:23Z, plus snapshots on 1 Jan 2022 to
+    2026 and recent dated files (e03).
+  evidence: [e03, e04]
+earliest_date: "2022-01-01"
+latest_date: "2026-11-03"
+
+units:
+  status: not_checked
+  detail: "No extract was downloaded (robots.txt), so tags and geometry were not inspected (e01)."
+  evidence: [e01]
+
+source_check:
+  status: fail
+  detail: >-
+    Plan rule: unique type/id/version; valid geometry; do not infer shelter opening status from
+    OSM. These checks need the PBF, which robots.txt disallows for automated clients (e01), and
+    the latest Southern Zone file is 533 MB (e03). Nothing could be checked, so the source stays
+    disabled.
+  evidence: [e01, e03]
+
+field_map:
+  - canonical: osm_type
+    upstream: null
+    unit_status: absent
+    detail: "Not seen: no extract downloaded."
+    evidence: [e01]
+  - canonical: osm_id
+    upstream: null
+    unit_status: absent
+    detail: "Not seen: no extract downloaded."
+    evidence: [e01]
+  - canonical: osm_version
+    upstream: null
+    unit_status: absent
+    detail: "Not seen: no extract downloaded."
+    evidence: [e01]
+  - canonical: feature_kind
+    upstream: null
+    unit_status: absent
+    detail: "Not seen: no extract downloaded."
+    evidence: [e01]
+  - canonical: tags_json
+    upstream: null
+    unit_status: absent
+    detail: "Not seen: no extract downloaded."
+    evidence: [e01]
+  - canonical: geometry
+    upstream: null
+    unit_status: absent
+    detail: "Not seen: no extract downloaded."
+    evidence: [e01]
+
+dependents: [T022]
+retry_condition: >-
+  Any one of: (1) the owner downloads southern-zone-latest.osm.pbf in a browser and saves it in
+  data/raw/S18 (a manual download is not a robot), then T021 checks it and T022 parses the local
+  file; (2) Geofabrik states that scripted downloads are allowed; (3) a separate source task
+  verifies the OpenStreetMap Overpass API for the few Karnataka feature types the map needs.
