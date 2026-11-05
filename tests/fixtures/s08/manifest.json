@@ -1,0 +1,71 @@
+{
+  "source_id": "S08",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://imdpune.gov.in/",
+      "fetched_at": "2026-11-05T12:24:29.821295Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "5432794099b024039cf006bd89145e0f090136aea2256180d6df089a6e2f4aaa",
+      "bytes": 45859,
+      "raw_path": "S08/2026-11-05/5432794099b024039cf006bd89145e0f090136aea2256180d6df089a6e2f4aaa.html",
+      "shows": "IMD Pune CRS home page: links the Disclaimer page"
+    },
+    {
+      "id": "e02",
+      "url": "https://imdpune.gov.in/disclaimer.html",
+      "fetched_at": "2026-11-05T12:24:32.942309Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "88b56b6d84997fdb33abd2a6c864d037c052b2e3d7b52d91bbc5717518197ccf",
+      "bytes": 1629,
+      "raw_path": "S08/2026-11-05/88b56b6d84997fdb33abd2a6c864d037c052b2e3d7b52d91bbc5717518197ccf.html",
+      "shows": "Disclaimer: data 'should not be reproduced anywhere without prior permission'"
+    },
+    {
+      "id": "e03",
+      "url": "https://www.imdpune.gov.in/cmpg/Griddata/Rainfall_25_Bin.html",
+      "fetched_at": "2026-11-05T12:24:38.411097Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "c8e5b11fb6e612c07fc97dac782d57ae15260baa5c2b0be8a3af83fe505efaa5",
+      "bytes": 14159,
+      "raw_path": "S08/2026-11-05/c8e5b11fb6e612c07fc97dac782d57ae15260baa5c2b0be8a3af83fe505efaa5.html",
+      "shows": "Gridded rainfall page: 0.25 degree binary, 135x129 grid, mm, 1901 to 2024, year form"
+    },
+    {
+      "id": "e04",
+      "url": "https://www.imdpune.gov.in/cmpg/Griddata/rainfall.php?rain=2024",
+      "fetched_at": "2026-11-05T12:24:48.478604Z",
+      "status": 200,
+      "media_type": "application/octet-stream",
+      "sha256": "09d3c89a084f13f3ec534170ce9d98fafc6ff8c29b87d1c83cc2fcd82b495601",
+      "bytes": 25495560,
+      "raw_path": "S08/2026-11-05/09d3c89a084f13f3ec534170ce9d98fafc6ff8c29b87d1c83cc2fcd82b495601.bin",
+      "shows": "Year file ind2024_rfp25.grd: 366 daily grids of 135x129 float32, -999 outside land"
+    },
+    {
+      "id": "e05",
+      "url": "https://www.imdpune.gov.in/cmpg/Griddata/rainfall.php?rain=1901",
+      "fetched_at": "2026-11-05T12:25:00.185406Z",
+      "status": 200,
+      "media_type": "application/octet-stream",
+      "sha256": "3198002e2d32624bae34064d6aa1074c255dbcb243e097c526b6904f0d9187d6",
+      "bytes": 25425900,
+      "raw_path": "S08/2026-11-05/3198002e2d32624bae34064d6aa1074c255dbcb243e097c526b6904f0d9187d6.bin",
+      "shows": "Year file ind1901_rfp25.grd (earliest): 365 daily grids of 135x129 float32"
+    },
+    {
+      "id": "e06",
+      "url": "https://www.imdpune.gov.in/cmpg/Griddata/rainfall.php?rain=2025",
+      "fetched_at": "2026-11-05T12:25:10.687248Z",
+      "status": 200,
+      "media_type": "application/octet-stream",
+      "sha256": "b4fa5ffb389496c0fa7d5a468d1cb47e4db0bcabcd11be4f273c0e6cfa7d611d",
+      "bytes": 25425900,
+      "raw_path": "S08/2026-11-05/b4fa5ffb389496c0fa7d5a468d1cb47e4db0bcabcd11be4f273c0e6cfa7d611d.bin",
+      "shows": "Year file ind2025_rfp25.grd: offered by the form though the page text ends at 2024"
+    }
+  ]
+}
