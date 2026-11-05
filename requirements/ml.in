@@ -1,0 +1,12 @@
+# Classical ML, statistics and tracking pins from docs/plan.pdf section 5, constrained to core.
+# No torch here: ingest and classical-ML jobs must never load it.
+-c core.txt
+scikit-learn==1.9.1
+lightgbm==4.7.0
+statsmodels==0.15.0
+scipy==1.18.1
+optuna==5.0.0
+shap==0.54.1
+mlflow==3.18.0
+matplotlib==3.11.2
+plotly==7.1.0

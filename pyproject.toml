@@ -27,3 +27,13 @@ extend-immutable-calls = ["typer.Option", "typer.Argument"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Drive C is nearly full: pytest temp files stay on drive D with the repo.
+addopts = "--basetemp=.cache/pytest"
+
+[tool.pip-tools]
+# Drive C is nearly full: the lock download cache stays on drive D with the repo.
+cache-dir = ".cache/pip-tools"
+# Pin pip and setuptools too, so a fresh environment installs with --require-hashes.
+allow-unsafe = true
+generate-hashes = true
+strip-extras = true
