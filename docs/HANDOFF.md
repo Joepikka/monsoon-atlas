@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 5 Nov 2026, after T012 (commit `ed6842f`, branch `p1/gate-core`).
+Last updated: 5 Nov 2026, after T013 (commit `f7fea2d`, branch `p1/gate-core`).
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
 Read it fully, then read `AGENTS.md`, then the documents listed in section 2. Keep this file up to
@@ -154,6 +154,7 @@ and a YAML block `- id: T057`.
 | T010 | `cb7f4ca` | S01 adapter: one named model, issue time from meta.json read around the call, settle 10 min (D32); enabled; CC BY fixtures committed so CI runs real-sample tests |
 | T011 | `82a82b3` | S02 Open-Meteo ERA5: **available** 1940-01-02 to D-6 (CC BY 4.0, models=era5, IST days). Reanalysis = provenance model; keep the release lag |
 | T012 | `ed6842f` | S02 adapter: era5 daily, IST days, valid_at end of day, lag days null not_yet_available; enabled; CC BY fixtures |
+| T013 | `f7fea2d` | S09 Sachet CAP alerts: **available**, public domain; feed = latest 100 alerts (~21 h), so history starts with polling; Updates reference replaced alerts; polygons via Polygon URL, else area text |
 
 ## 8. Current state
 
