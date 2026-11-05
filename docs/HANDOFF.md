@@ -180,7 +180,7 @@ and a YAML block `- id: T057`.
 | Slot | Model | Status |
 |---|---|---|
 | C1 | **M07 Kerala seven-day dam forecast** (D17) | Data: S34 KSDMA daily reports from Jun 2020 (scanned; needs OCR, T118) and S32 KSEB from Oct 2023 (T114 adapter). Model tasks T130 to T132 |
-| C2 | **M05 Karnataka drought outlook** (D29): next-month SPI-3 and drought probability | Data: S08 done (T057, T058). Needs T101 to T103. Live outlooks need a near-real-time rain source for recent months (S08 files are yearly), or M05 is published as a backtest only |
+| C2 | **M05 Karnataka drought outlook** (D29): SPI-3 of the issue month and drought probability, per district | T101 code is committed (`src/atlas/features/m05.py`, `configs/models/m05.yaml`) but its acceptance test waits for the S08 1981-2024 backfill (see section 9). Evaluated as a hindcast (D39). Then T102 (baselines + LightGBM/ridge) and T103 (evaluate and publish) |
 | C3 | Ask (question answering, English first) | T179 to T181; uses Cloudflare Workers AI free tier with an extractive fallback (D08) |
 
 Blocked with retry conditions: M01 (Bengaluru ward floods), M02 (KWRIS reservoirs), M03.
@@ -198,6 +198,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S16 WorldPop population | T017, T018 | available, enabled | CC BY 4.0; R2025A alpha; needs geo lock |
 | S17 geoBoundaries | T019, T020 | available, enabled | 30 Karnataka districts (no Vijayanagara); ODbL |
 | S18 Geofabrik OSM | T021, T022 | blocked | robots.txt disallows .osm.pbf (D34) |
+| S22 India Data Portal Agmarknet | T023 | blocked | client-side app; retry with a browser render; T025 is the other route |
 | S28 KWRIS | T008 | blocked | retry if KWRIS daily history arrives |
 | S32 KSEB daily levels | T113 | available (partial history) | adapter T114 |
 | S34 KSDMA dam reports | T117 | available (scanned) | OCR T118, adapter |
@@ -214,6 +215,13 @@ M08 is a non-core descriptive 2018 replay (P3).
 - H10 (optional): Kaggle sign-in only if the owner wants S35 re-checked.
 - H11: review at each gate and before any public deployment (licences: S08 and S34 forbid
   reproduction, so only derived outputs may be published).
+- Before public deployment also: confirm you are 18+ (OpenFreeMap terms), check boundary maps
+  against India's official mapping guidance (geoBoundaries has no disputed-boundary field), and
+  label WorldPop counts for Bengaluru as an undercount (about 6.0 million in the GBA wards).
+- data.gov.in API key (free, needs an account) for T025 mandi prices: put it in `.env` as
+  `DATA_GOV_IN_API_KEY` (name only in code).
+- Optional: download `southern-zone-latest.osm.pbf` from Geofabrik in a browser into
+  `data/raw/S18/` to unblock S18 (D34).
 
 ### Git
 
@@ -227,12 +235,21 @@ Amendments A8 order, with the D17 and D29 fallbacks:
 2. **A8 step 4, core sources:** T027 (KWRIS) and T086 stay blocked (skip with a note);
    T011/T012 if not done in step 1.
 3. **A8 step 5, frameworks:** done (T033, T034).
-4. **C1 = M07:** T114 (S32 adapter), T118 (OCR for S34; pin a free OCR such as Tesseract,
-   record it in decisions; the owner reviews an OCR sample), T130 to T132. T130 must re-plan the
-   M07 splits because history starts on 20 Jun 2020.
-5. **C2 = M05:** T101 to T103. T101 needs district polygons or H3 cells for Karnataka and a
-   decision on near-real-time rain for live outlooks.
-6. Then A8 steps 8 to 13: prices, map and product, hosting, C3 Ask, T225 case studies, T046 MVP
+4. **Finish T101 (in progress).** The S08 1981-2024 backfill was started on 5 Nov 2026 with a
+   scratch script (IMD served about 120 KB/s, about 5 minutes per 25 MB year). To resume or
+   redo it, fetch each year with the S08 adapter: `S08('ka', range(1981, 2025), Fetcher(RawStore(Path('data/raw')), HOSTS)).fetch(ctx)`
+   with a `FetchContext` budget of about 200 requests and 1.3 GB (years already stored are
+   re-validated with 304). Then run `.\.venv\Scripts\python -m pytest tests/models/test_m05_features.py -q`;
+   fix anything it finds, commit as `T101: ...` and add the work-log row.
+5. **C2 = M05:** T102 (baselines SPI-3 persistence and month climatology on identical rows, then
+   ridge and LightGBM; the ml lock is installed), T103 (evaluate with `models/evaluate.decide`,
+   write the release with `models/registry`; promotion needs the owner's approval file).
+6. **C1 = M07 (Kerala):** T129 creates `configs/states/kl.yaml` (needed before any Kerala
+   source can be enabled), T114 (S32 adapter), T118 (OCR for S34; pin a free OCR such as
+   Tesseract and record it in decisions; the owner reviews an OCR sample), T130 to T132. T130
+   must re-plan the M07 splits because history starts on 20 Jun 2020.
+7. **Prices:** T025 data.gov.in (needs the owner's free API key), then T024/T026 and T035 to T037.
+8. Then A8 steps 9 to 13: map and product, hosting, C3 Ask, T225 case studies, T046 MVP
    gate.
 
 ## 10. Lessons and pitfalls
@@ -248,6 +265,14 @@ Amendments A8 order, with the D17 and D29 fallbacks:
 - Kerala has no state config yet (`configs/states/kl.yaml` arrives in T129), so Kerala sources
   cannot be enabled.
 - Full suite takes about 1 minute locally (S08 tests parse a 25 MB file several times).
+- IMD Pune speed varies a lot (10 s to 5 minutes per 25 MB year file); run big fetches in the
+  background.
+- WorldPop GeoTIFFs are BigTIFF (`II+`) with LZW tiles: use rasterio (geo lock).
+- Many pages put `&nbsp;` between numbers and units; match the raw HTML, not the rendered text.
+- Client-side web apps (India Data Portal) need a browser render; never guess their APIs.
+- GitHub sometimes rejects a push with `fatal error in commit_refs`; just retry.
+- Geo and ml locks are installed locally; CI installs core and dev only, so tests that need
+  rasterio, shapely, h3, scipy or mlflow use `pytest.importorskip` (D35).
 
 ## 11. Obsidian vault (owner's second brain)
 
