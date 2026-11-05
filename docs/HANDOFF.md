@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 5 Nov 2026, after T018 (commit `98a6524`, branch `p1/gate-core`).
+Last updated: 5 Nov 2026, after T031 (commit `2774b3f`, branch `p1/gate-core`).
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
 Read it fully, then read `AGENTS.md`, then the documents listed in section 2. Keep this file up to
@@ -65,7 +65,7 @@ and a YAML block `- id: T057`.
   set `TEMP` and `TMP` to `D:\monsoon-atlas\.cache\tmp`.
 - Locks: `requirements/{core,dev,geo,ml,dl}.in` compiled to hash-locked `.txt` with pip-tools
   (Windows, Python 3.12; D25). Install with `pip install --require-hashes -r requirements/core.txt`
-  and `dev.txt`.
+  and `dev.txt`; raster and polygon work also needs `geo.txt` (installed locally, D35).
 - Commands (PowerShell):
 
 ```powershell
@@ -95,7 +95,7 @@ and a YAML block `- id: T057`.
 | `src/atlas/data/asof.py` | IST/UTC helpers and DuckDB as-of joins that never use future data (T005) |
 | `src/atlas/data/manifest.py`, `store.py`, `budget.py` | Versioned Parquet snapshots, manifests, cache rebuild, 20 GB storage quota (T006) |
 | `scripts/audit_dependencies.py` | Licence and Windows-wheel audit (T007) |
-| `configs/states/ka.yaml` | Karnataka sources; enabled: S01, S02, S08, S09, S15, S16, S17 |
+| `configs/states/ka.yaml` | Karnataka sources; enabled: S01, S02, S08, S09, S15, S16, S17, S40 |
 | `configs/budgets.yaml` | Request, storage and DuckDB budgets |
 | `tests/` | 211 tests: contracts, fetcher, storage, as-of, discovery records, gate report, S08 adapter |
 
@@ -164,6 +164,7 @@ and a YAML block `- id: T057`.
 | T021 | `1545fc5` | S18 Geofabrik: **blocked**, robots.txt disallows *.osm.pbf (D34); 533 MB extract; retry = owner browser download to data/raw/S18, Geofabrik permission, or Overpass source |
 | T022 | `a883fa3` | S18 disabled adapter: fetch/parse raise SourceUnavailable, zero rows |
 | T018 | `98a6524` | S16 adapter: native 1 km cells in the S17 state polygon, totals conserved (Karnataka 2025: 203,344 cells, ~70.8 M); geo lock installed locally, lazy imports (D35); enabled |
+| T031 | `2774b3f` | S40 adapter: 369 GBA 2025 wards, place_id gba2025-c<corp>-w<ward>, parent corporation, WKB; BBMP maps never parsed; enabled |
 
 ## 8. Current state
 
@@ -195,7 +196,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S34 KSDMA dam reports | T117 | available (scanned) | OCR T118, adapter |
 | S35 Kaggle Kerala floods | T119 | blocked | needs owner Kaggle sign-in (H10) |
 | S36 KSDMA memoranda | T121 | available | adapter T122 in P3 |
-| S40 ward polygons | T030 | available | adapter T031 |
+| S40 ward polygons | T030, T031 | available, enabled | 369 GBA 2025 wards, public domain |
 | S43 Bengaluru flood labels | T085 | blocked | not ground truth |
 
 ### Pending human-only steps (owner)
@@ -215,9 +216,8 @@ M08 is a non-core descriptive 2018 replay (P3).
 
 Amendments A8 order, with the D17 and D29 fallbacks:
 
-1. **A8 step 3, rest:** T031 (S40 GBA ward polygons adapter; raw KML in `data/raw/S40`) and
-   T032 (place identity and gazetteer: S17 districts + S40 wards, shapely validity checks).
-   T009 to T022 are done (S18 blocked).
+1. **A8 step 3, rest:** T032 (place identity and gazetteer: S17 districts + S40 wards, shapely
+   validity checks). T009 to T022 and T031 are done (S18 blocked).
 2. **A8 step 4, core sources:** T027 (KWRIS) and T086 stay blocked (skip with a note);
    T011/T012 if not done in step 1.
 3. **A8 step 5, frameworks:** T033 (feature and target build), T034 (baseline, interval and
