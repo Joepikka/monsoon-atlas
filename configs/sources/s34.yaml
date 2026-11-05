@@ -1,0 +1,106 @@
+# Discovery record for S34 (plan task T117, pulled into P1 by decision D17). Evidence IDs refer to
+# tests/fixtures/s34/manifest.json; the files stay in data/raw/S34. See docs/sources/s34.md.
+source_id: S34
+state: kl
+name: "KSDMA dam level reports"
+verify_task: T117
+discovered_at: "2026-11-05T10:48:12Z"
+outcome: available
+landing_url: "https://sdma.kerala.gov.in/dam-water-level/"
+publisher: "Kerala State Disaster Management Authority (KSDMA), reporting KSEB and Irrigation Department dams"
+no_card: true
+account_required: false
+
+access:
+  status: public_pdf_links
+  detail: >-
+    The Dam Water Level page links today's KSEB and irrigation PDFs (e02, e06, e07). Past daily
+    reports are linked from the Archives page (e04), which the page sitemap lists (e03); robots.txt
+    names the sitemap and disallows only /wp-admin/ (e01). Requests were spaced 3 seconds apart. No
+    account, key or card is needed.
+  evidence: [e01, e02, e03, e04, e06, e07]
+
+licence:
+  status: restricted
+  detail: >-
+    The footer states "All rights reserved" and no open licence or terms of use is linked (e02).
+    The PDFs stay in data/raw and are never redistributed; only derived model results are
+    published, with credit to KSDMA, KSEB and the Irrigation Department.
+  evidence: [e02]
+
+provider_quota:
+  status: not_published
+  detail: "No quota is published; robots.txt disallows only /wp-admin/ (e01)."
+  evidence: [e01]
+
+history:
+  status: available
+  detail: >-
+    The Archives page links 2,322 PDFs; 2,305 labels parse as DD/MM/YYYY, giving 2,296 unique valid
+    dates from 20 Jun 2020 to 4 Nov 2026 (2020: 193, 2021: 357, 2022: 357, 2023: 362, 2024: 359,
+    2025: 363, 2026: 305). 17 labels do not parse: 3 are directories, and 14 are malformed or
+    impossible dates (for example 31/11/2020, 31/09/2024, 12/06/02023, /07/2026), plus one label
+    in the year 2121 (e04). Some dates have two PDFs. So each report's date is read from its own
+    table title, never from the label or the fetch time. Each report is a daily bundle: rainfall,
+    KSEB reservoirs, irrigation reservoirs, sea state, and from 2023 a flood report (e08 to e12).
+    No 2017 to 2019 dam reports are archived (e04).
+  evidence: [e04, e08, e09, e10, e11, e12]
+earliest_date: "2020-06-20"
+latest_date: "2026-11-04"
+
+units:
+  status: labelled
+  detail: >-
+    Units are stated in each table. KSEB table on 20/06/2020: water level (m), with Idukki and
+    Sholayar in ft per cell ("2331.14 ft"), colour code and spill (cumecs); no storage column (e08).
+    KSEB table on 01/08/2023: water level "(ft or metre)" with the unit in each cell, live storage
+    (MCM), % storage wrt live storage at FRL and spillway release (m3/sec) (e10). Irrigation table
+    on 01/08/2023: water level (metre), storage (MCM), % of gross storage and outflow (m3/sec)
+    (e10). Today's KSEB PDF adds FRL and blue, orange and red alert levels (e06). No datum is stated.
+  evidence: [e06, e08, e10]
+
+source_check:
+  status: pass_with_manual_review
+  detail: >-
+    Columns and dates were sample-checked by reading the table images: the 20/06/2020 KSEB table
+    (18 dams) and the 01/08/2023 KSEB (17 dams) and irrigation-with-alert (12 dams) tables. Each
+    table title carries its own date and time ("20/06/2020, 11 am", "01/08/2023 - 11.00 AM"), which
+    match the archive labels (e08, e10). Column sets change between years, so T118 needs one parser
+    per layout. Archive PDFs are scanned images (6, 7 and 9 page images in e08, e10, e12), so they
+    need OCR, and the plan requires manual review of OCR output before model use. Today's PDFs have
+    a text layer, but text extraction scrambles the column order (e06, e07). "Kuttiyadi" names a
+    KSEB dam and a different irrigation dam, so reservoir_id includes the operator (e10).
+  evidence: [e06, e07, e08, e10, e12]
+
+field_map:
+  - canonical: reservoir_id
+    upstream: "Reservoir (name in English and Malayalam), with the table's operator (KSEB or IRRIGATION)"
+    unit_status: not_applicable
+    detail: "Operator prefix avoids clashes such as Kuttiyadi (KSEB) and Kuttiyadi (irrigation)."
+    evidence: [e08, e10]
+  - canonical: date_local
+    upstream: "table title 'DD/MM/YYYY - 11.00 AM'"
+    unit_status: not_applicable
+    detail: "11 AM report time in Asia/Kolkata, read from each table; archive labels are only a hint."
+    evidence: [e08, e10]
+  - canonical: level_m
+    upstream: "Today's Water Level (m, or ft or metre per cell)"
+    unit_status: labelled
+    detail: "Cells marked ft are converted to metres (1 ft = 0.3048 m) and flagged; no datum stated."
+    evidence: [e08, e10]
+  - canonical: warning_level_m
+    upstream: "Blue, Orange and Red alert levels (metre or ft per cell)"
+    unit_status: labelled
+    detail: "Present in today's KSEB PDF; older tables give only the colour code, so this stays null with a reason there."
+    evidence: [e06, e08]
+  - canonical: warning_stage
+    upstream: "Colour Code (Todays Alert) column, or row shading in irrigation tables"
+    unit_status: not_applicable
+    detail: "No Warning, Blue, Orange, Red, and Yellow for controlled release; row shading needs manual review."
+    evidence: [e08, e10]
+
+# T118 (adapter) needs an OCR step and manual review before any value is used.
+dependents: [T118, T130, T131, T132]
+retry_condition: >-
+  Not blocked. To avoid OCR, the owner could ask KSDMA or KSEB for the daily tables as
+  spreadsheets with a licence; if granted, record it and re-run T117.
