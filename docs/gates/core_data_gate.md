@@ -4,8 +4,11 @@ Date: 5 Nov 2026. Rules: amendments A4. Inputs: discovery tasks T008 (S28), T030
 T085 (S43). Each discovery record cites evidence pages by ID; the pages themselves are kept
 locally in `data/raw` with their SHA256 in the committed manifests.
 
-**Result: 2 of 3 checks fail.** The A4 fallbacks are proposed as decision D17, which needs
-owner approval (H11) before any fallback task starts.
+**Result: 2 of 3 checks fail.** The A4 fallbacks are recorded as decision D17.
+
+**Owner decision (H11, 5 Nov 2026): D17 approved, and KWRIS is also tried.** Next tasks: T113
+(KSEB daily water level), then T119 (Kerala 2018 flood dataset). In parallel, the owner asks
+ACIWRM for KWRIS daily reservoir history.
 
 | Check | Result | Evidence |
 |---|---|---|
@@ -66,7 +69,7 @@ Criterion: official ward polygons with a release date.
 - Past monsoons used the 198-ward BBMP map, which has no licence: local research only (e06, e07).
 - No Karnataka taluk polygons were found (e11), so taluk-level work uses district or H3 views.
 
-## Proposed decision D17 (needs owner approval, H11)
+## Decision D17 (approved by the owner, H11)
 
 | Check | Proposed fallback (A4) | Tasks pulled into P1 |
 |---|---|---|
@@ -86,7 +89,7 @@ Also proposed:
    precision or PR-AUC computed on it would be inflated or meaningless. It can be shown as a
    separate, clearly labelled "citizen complaints" layer, if its CC BY-SA terms are followed.
 
-### Owner options
+### Options offered at H11 (the owner chose the second)
 
 - **Approve D17 as proposed** (recommended): Kerala models become C1 and C2. This follows A4
   exactly and keeps the honest-ML rules.
