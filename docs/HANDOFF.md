@@ -270,7 +270,14 @@ https://github.com/Joepikka/monsoon-atlas/actions/runs/42259620437 ,
 https://github.com/Joepikka/monsoon-atlas/actions/runs/42259620166 .
 T237 paired weather capture and the joint recovery-review fixes pass at `c848989`.
 Its live smoke succeeded with three provider requests; a repeat returned not-due
-with zero requests. New commit-specific CI follows the next push. See
+with zero requests. At `02d0ec7`, core Windows/Ubuntu and actual Worker/D1 Ubuntu
+CI passed. Web Windows/Ubuntu CI passed on one rerun: the first Windows attempt
+timed out at `lens.spec.ts:74` before finding the Place selector (47/48 passed);
+the same targeted desktop test passed five local repeats without code changes.
+No root cause was established; no speculative UI fix was made. Runs:
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42268336651 ,
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42268336634 ,
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42268336612 . See
 `docs/reviews/2026-11-06-weather-refresh.md` for the independent review and rulings.
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
