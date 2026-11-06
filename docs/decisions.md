@@ -2,6 +2,20 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D61 — Preserve area-only CAP alerts before refresh (6 Nov 2026), before
+  implementation.** T014 legitimately parses CAP area descriptions without a
+  polygon. Requiring a map point in the browser/hot transport would reject a
+  valid official warning or encourage invented coordinates. Split T230 from
+  T043 to preserve these rows through the shared validator, record list, ticker,
+  Place Lens and Worker. Allow both coordinates to be explicitly null only for
+  S09 official area alerts with original area text and a location-limit note.
+  Such rows stay in state context, never become a marker, radius distance or
+  point-specific incident. Weather, facilities and administrative places still
+  require verified numeric coordinates. Check stored canonical bytes before
+  revalidation so new optional fields cannot alter old identity or hide a
+  modified field behind normalization. Full T043 still needs its producer,
+  bounded schedule, polling/fallback integration and the pending cloud gate.
+
 - **D60 — T042 local implementation child and cloud gate (6 Nov 2026), before
   implementation.** Split T229 from T042 to implement and verify the Worker/D1
   endpoint locally and in free CI while H05 remains pending. The owner has

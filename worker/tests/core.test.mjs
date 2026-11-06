@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { gzipSync } from 'node:zlib';
+import { gzipSync, gunzipSync } from 'node:zlib';
 import { authenticate, decodeUpload, restoreUpload, uploadMessage, MAX_BLOB } from '../src/ingest.ts';
 import worker from '../src/index.ts';
 import { runtime, runtimeOptions } from './runtime-config.mjs';
@@ -49,8 +49,33 @@ test('canonical upload keeps original source clocks and discards unknown fields'
   assert.equal('unchecked' in clean.snapshot,false);
 });
 
+test('area-only official CAP text survives hot validation without invented coordinates',async()=>{
+  const area=JSON.parse(readFileSync(new URL('../../web/tests/fixtures/sachet-ka-area.json',import.meta.url),'utf8'));
+  const clean=await decodeUpload(gzipSync(JSON.stringify({source_id:'S09',snapshot:{...snapshot,records:[area]}})),now);
+  assert.equal(clean.snapshot.records[0].longitude,null);
+  assert.equal(clean.snapshot.records[0].area_text,area.area_text);
+});
+
 test('corrupt stored data is a server availability failure, never a client input error',async()=>{
   await assert.rejects(()=>restoreUpload(new Uint8Array([1,2,3]),'a'.repeat(64),now),error=>error.status===503);
+});
+
+test('storage integrity covers exact bytes, including changes to ignored fields',async()=>{
+  const clean=await decodeUpload(payload(),now);
+  const changed=JSON.parse(gunzipSync(clean.compressed).toString('utf8'));
+  changed.unchecked='corrupt-copy';
+  await assert.rejects(()=>restoreUpload(gzipSync(JSON.stringify(changed)),clean.sha256,now),error=>error.status===503);
+});
+
+test('older stored bytes retain their hash when a newly optional field is absent',async()=>{
+  const clean=await decodeUpload(payload(),now);
+  const old=JSON.parse(gunzipSync(clean.compressed).toString('utf8'));
+  delete old.snapshot.records[0].area_text;
+  const original=new TextEncoder().encode(JSON.stringify(old));
+  const hash=hex(await crypto.subtle.digest('SHA-256',original));
+  const restored=await restoreUpload(gzipSync(original),hash,now);
+  assert.equal(restored.sha256,hash);
+  assert.equal(restored.snapshot.records[0].issued_at,cap.issued_at);
 });
 
 test('unknown sources, future cutoffs and malformed or oversized compression fail closed',async()=>{

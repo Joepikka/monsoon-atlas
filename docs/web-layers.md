@@ -16,7 +16,12 @@ Radius selection works by clicking the map or panning with its keyboard controls
 and pressing Enter. Point records use great-circle distance. The centre can be
 cleared. Area warnings remain in state context because their representative
 point does not measure distance to the entire polygon (D58); no incident or safe
-route is inferred from that point.
+route is inferred from that point. T230 also preserves S09 warnings with original
+area text but no supplemental polygon. Both coordinates remain explicitly null;
+the list, ticker and report retain the warning while the map creates no marker
+or fly-to point. Unlocated weather, facilities and administrative places remain
+invalid. A radius cannot establish which part of an unmapped warning area it
+intersects, so that warning stays in state context.
 
 The ticker is labelled as snapshot context, preserves severity and absolute
 expiry, marks expired alerts, uses a polite live region and can be paused. Reduced

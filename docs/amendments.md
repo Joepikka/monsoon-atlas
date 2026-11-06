@@ -154,6 +154,15 @@ this child. Windows 10 is outside current Wrangler support, so pure logic and
 SQLite run locally and the actual Miniflare/D1 runtime runs on Ubuntu CI. Estimate:
 3 hours. Acceptance: `.\.venv\Scripts\python -m pytest tests/test_worker_core.py -q`.
 
+## A13. Preserve area-only alerts before refresh (D61, 6 November 2026)
+
+T230 is a child of T043 after T014/T040/T229. It retains official CAP warnings
+whose original area text is known but whose geometry is unavailable. The list,
+Place Lens, ticker and hot transport preserve the warning and its clocks without
+inventing a map point. Estimate: 1 hour. Acceptance:
+`.\.venv\Scripts\python -m pytest tests/test_alert_area_context.py -q`.
+It does not complete T043's producer, schedule, polling or cloud gate.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -174,6 +183,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T230
+    parent: T043
+    title: "Preserve official area-only alerts in browser and hot transport"
+    phase: P1
+    state: KA
+    depends_on: [T014, T040, T229]
+    files: [web/src/, web/tests/area.spec.ts, web/tests/fixtures/sachet-ka-area.json, tests/test_alert_area_context.py, worker/src/ingest.ts, worker/tests/core.test.mjs, worker/tests/runtime.test.mjs]
+    steps:
+      - "Preserve actual CAP area text and original clocks when a polygon is unavailable"
+      - "Keep area-only warnings in state/list/report context without a marker or invented distance"
+      - "Verify the real source projection and shared Worker/browser validation"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_alert_area_context.py -q'
+      expected: "Official warning survives missing geometry with no fake point, distance or incident claim"
+    hours: 1
   - id: T229
     parent: T042
     title: "Hot Worker endpoint implementation and local/CI checks"

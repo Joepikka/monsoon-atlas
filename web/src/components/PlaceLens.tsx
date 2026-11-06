@@ -12,6 +12,7 @@ function Records({ records, snapshot, now }: { records: MapRecord[]; snapshot: S
     <h4>{record.title}</h4>
     {record.warning_text && <p>{record.warning_text}</p>}
     {record.instruction && <p>{record.instruction}</p>}
+    {record.area_text && <p>{record.area_text}</p>}
     {record.spatial_scope === 'area' && <p>Statewide area-warning context; inclusion does not establish an incident at this place.</p>}
     {record.model_id && <p>{record.model_id} · {record.model_status?.replaceAll('_', ' ')}</p>}
     <SourceBadge record={record} health={snapshot.sources.find(source => source.source_id === record.source_id)} now={now} />

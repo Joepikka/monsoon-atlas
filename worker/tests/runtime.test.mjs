@@ -23,7 +23,7 @@ try {
     }
   }
   const fixture = name => JSON.parse(readFileSync(new URL(`../../web/tests/fixtures/${name}.json`,import.meta.url),'utf8'));
-  const cap=fixture('sachet-ka-point'); const weather=fixture('openmeteo-temperature-point');
+  const cap=fixture('sachet-ka-area'); const weather=fixture('openmeteo-temperature-point');
   const envelope = (record,source) => ({source_id:source,snapshot:{schema_version:1,state:'ka',release_id:'actual-runtime-contract',data_revision:'e'.repeat(64),
     as_of:cap.fetched_at,published_at:cap.fetched_at,records:[record],sources:[{source_id:source,status:'available',last_success_at:record.fetched_at,detail:'Captured source sample'}]}});
   const signed=async value=>{
@@ -42,6 +42,8 @@ try {
   const first=await get(); assert.equal(first.status,200,await first.clone().text());
   const source=(await first.json()).sources[0];
   assert.equal(source.sha256,id); assert.equal(source.snapshot.records[0].issued_at,cap.issued_at);
+  assert.equal(source.snapshot.records[0].longitude,null);
+  assert.equal(source.snapshot.records[0].area_text,cap.area_text);
   assert.ok(source.age_seconds>=0);
   assert.equal((await post(good)).status,200);
   assert.equal(await db.prepare('SELECT writes_reserved FROM daily_usage').first('writes_reserved'),20);

@@ -44,23 +44,29 @@ async function transform(bytes: Uint8Array, compression: boolean): Promise<Uint8
 }
 
 export interface Upload { source_id: string; snapshot: Snapshot; sha256: string; compressed: Uint8Array }
+function validateEnvelope(value: unknown, now: number): Pick<Upload, 'source_id' | 'snapshot'> {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new UploadError('Invalid hot envelope.');
+  const decoded = value as { source_id: unknown; snapshot: unknown };
+  if (typeof decoded.source_id !== 'string' || !(HOT_SOURCES as readonly string[]).includes(decoded.source_id)) throw new UploadError('Unknown hot source.');
+  const snapshot = parseSnapshot(decoded.snapshot, 'ka');
+  const cutoff = Date.parse(snapshot.as_of);
+  if (cutoff > now || Date.parse(snapshot.published_at) > now || Date.parse(snapshot.published_at) < cutoff) throw new UploadError('Invalid snapshot cutoff or publication time.');
+  if (snapshot.records.some(record => record.source_id !== decoded.source_id || Date.parse(record.fetched_at) > cutoff ||
+      record.kind !== (decoded.source_id === 'S09' ? 'alert' : 'weather'))) throw new UploadError('Record source, layer or fetch time does not match the upload.');
+  if (snapshot.places.length || snapshot.facilities.length || snapshot.sources.length !== 1 ||
+      snapshot.sources[0].source_id !== decoded.source_id || snapshot.sources[0].status !== 'available' || !snapshot.sources[0].last_success_at) {
+    throw new UploadError('A hot snapshot needs its own successful source health, without unrelated data.');
+  }
+  return { source_id: decoded.source_id, snapshot };
+}
+
 export async function decodeUpload(bytes: Uint8Array, now: number): Promise<Upload> {
   if (bytes.byteLength > MAX_BLOB) throw new UploadError('Compressed snapshot exceeds the limit.', 413);
   try {
-    const decoded = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(await transform(bytes, false)));
-    if (!decoded || typeof decoded !== 'object' || !HOT_SOURCES.includes(decoded.source_id)) throw new UploadError('Unknown hot source.');
-    const snapshot = parseSnapshot(decoded.snapshot, 'ka');
-    const cutoff = Date.parse(snapshot.as_of);
-    if (cutoff > now || Date.parse(snapshot.published_at) > now || Date.parse(snapshot.published_at) < cutoff) throw new UploadError('Invalid snapshot cutoff or publication time.');
-    if (snapshot.records.some(record => record.source_id !== decoded.source_id || Date.parse(record.fetched_at) > cutoff ||
-        record.kind !== (decoded.source_id === 'S09' ? 'alert' : 'weather'))) throw new UploadError('Record source, layer or fetch time does not match the upload.');
-    if (snapshot.places.length || snapshot.facilities.length || snapshot.sources.length !== 1 ||
-        snapshot.sources[0].source_id !== decoded.source_id || snapshot.sources[0].status !== 'available' || !snapshot.sources[0].last_success_at) {
-      throw new UploadError('A hot snapshot needs its own successful source health, without unrelated data.');
-    }
-    const canonical = new TextEncoder().encode(JSON.stringify({ source_id: decoded.source_id, snapshot }));
+    const decoded = validateEnvelope(JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(await transform(bytes, false))), now);
+    const canonical = new TextEncoder().encode(JSON.stringify(decoded));
     if (canonical.byteLength > MAX_BLOB) throw new UploadError('Canonical snapshot exceeds the byte limit.', 413);
-    return { source_id: decoded.source_id, snapshot, sha256: await sha256(canonical), compressed: await transform(canonical, true) };
+    return { ...decoded, sha256: await sha256(canonical), compressed: await transform(canonical, true) };
   } catch (error) {
     if (error instanceof UploadError) throw error;
     throw new UploadError('Invalid compressed snapshot or source schema.');
@@ -69,8 +75,10 @@ export async function decodeUpload(bytes: Uint8Array, now: number): Promise<Uplo
 
 export async function restoreUpload(bytes: Uint8Array, expectedHash: string, now: number): Promise<Upload> {
   try {
-    const upload = await decodeUpload(bytes, now);
-    if (upload.sha256 !== expectedHash) throw new Error('Hash mismatch');
-    return upload;
+    if (bytes.byteLength > MAX_BLOB) throw new Error('Oversized stored blob');
+    const canonical = await transform(bytes, false);
+    if (await sha256(canonical) !== expectedHash) throw new Error('Hash mismatch');
+    const decoded = validateEnvelope(JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(canonical)), now);
+    return { ...decoded, sha256: expectedHash, compressed: bytes };
   } catch { throw new UploadError('Stored snapshot integrity failure.', 503); }
 }

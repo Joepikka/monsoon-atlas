@@ -14,9 +14,10 @@ browser validator in `web/src/data.ts`; only KA S01 weather and S09 official CAP
 records are accepted. Sources must already be enabled and publicly reusable.
 The snapshot contains exactly its own successful health entry, no unrelated
 places/facilities, original source clocks and a cutoff not in the future.
-An S09 row without a verified map location cannot be given an invented point;
-the producer must fail/retain last-good rather than silently omit that warning.
-T043 must handle that source-coverage limit explicitly before enabling polling.
+An S09 row without a polygon retains its actual area text and an explicit
+geometry-unavailable note (T230). Both coordinates are null; it remains in the
+record list, report and ticker without a fabricated marker or distance. The
+producer must preserve it rather than silently omit the warning.
 
 The server requires `ATLAS_INGEST_HMAC_KEY` (at least 32 characters). Its value
 is a separate pipeline secret, never a browser variable or an account API token.
@@ -33,7 +34,11 @@ canonical and combined response sizes are each bounded to 1 MiB. Unknown input
 fields are discarded before canonical JSON is hashed/compressed/stored. No source
 credential, supplied instruction or arbitrary remote URL becomes code authority.
 
-Canonical SHA256 provides idempotency. An unchanged upload consumes no new write
+Canonical SHA256 provides idempotency. Stored integrity is checked against the
+original decompressed canonical bytes before schema normalization, including
+changes to otherwise ignored fields. A new optional field cannot rewrite the
+identity of an older stored blob. Reads validate without recompressing it.
+An unchanged upload consumes no new write
 reservation. A conflicting snapshot at the same source/state/millisecond cutoff
 returns 409, preserving the prior head; the original as-of string remains in the
 payload. Newer successful cutoffs advance the head atomically. Stored corruption

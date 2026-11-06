@@ -1,0 +1,9 @@
+{
+  "test_only": true,
+  "source_id": "S09",
+  "licence": "Public domain, NDMA Sachet / Karnataka SNDMC",
+  "derivation": "S09 adapter s09-v1 on the original CAP document, without supplemental polygon; no coordinate derived",
+  "source_files": {
+    "tests/fixtures/s09_sachet_cap_1793881986295019.xml": "8960cffc08247fd551a1729f6f7ad0faaa4d7c9d8f32d950cc87b36b9abe422f"
+  }
+}

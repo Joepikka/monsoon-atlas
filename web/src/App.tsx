@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import { loadSnapshot, stateNames, type LayerKind, type Snapshot, type StateId, type ViewState } from './data';
+import { hasCoordinates, loadSnapshot, stateNames, type LayerKind, type Snapshot, type StateId, type ViewState } from './data';
 import Layers, { layerConfigs, visibleRecords, type Coordinates } from './map/Layers';
 import SourceBadge from './components/SourceBadge';
 import EventTicker from './components/EventTicker';
@@ -105,6 +105,7 @@ export default function App() {
           <Layers snapshot={snapshot} active={active} onToggle={toggle} center={center} onClear={() => setCenter(null)} />
           <section id="records" className="records" tabIndex={-1} aria-labelledby="records-heading">
             <div className="section-title"><h3 id="records-heading">In this view</h3><span>{records.length} records</span></div>
+            {records.some(record => !hasCoordinates(record)) && <p className="location-note">Area-only warnings remain in this list. Their map geometry is unavailable.</p>}
             {records.length === 0 ? <div className="empty-records">
               <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><path d="M6 32V12l10-4 12 4 10-4v24l-10 4-12-4-10 4zm10-24v24m12-20v24" fill="none" stroke="currentColor" strokeWidth="1.5" /></svg>
               <p>{snapshot ? 'No mapped records in this snapshot.' : 'Dated records will appear with their sources when a reviewed snapshot is released.'}</p>
@@ -113,6 +114,7 @@ export default function App() {
               <button className="record-title" aria-pressed={selected === record.id} onClick={() => setSelected(record.id)}>{record.title}</button>
               {record.warning_text && <p className="location-note">{record.warning_text}</p>}
               {record.instruction && <p className="location-note">{record.instruction}</p>}
+              {record.area_text && <p className="location-note">{record.area_text}</p>}
               <SourceBadge record={record} health={snapshot?.sources.find(source => source.source_id === record.source_id)} now={clock} />
               {record.location_note && <p className="location-note">{record.location_note}</p>}
               <a href={record.source_url} target="_blank" rel="noopener noreferrer">{record.source_id} · {sourceNames[record.source_id] ?? 'Original source'} ↗</a>
@@ -123,7 +125,7 @@ export default function App() {
         </section>
 
         <section className="map-panel" aria-label="Karnataka map">
-          <div className="map-caption"><span className="map-cross" aria-hidden="true">⊕</span><span>{stateNames[state]}<small>Map &amp; matching record list</small></span></div>
+          <div className="map-caption"><span className="map-cross" aria-hidden="true">⊕</span><span>{stateNames[state]}<small>{records.some(record => !hasCoordinates(record)) ? 'Mapped points & area warning list' : 'Map & matching record list'}</small></span></div>
           <Suspense fallback={<p className="map-message">Loading map…</p>}>
             <MapView records={records} selected={selected} onSelect={setSelected} center={center} onCenter={setCenter} />
           </Suspense>

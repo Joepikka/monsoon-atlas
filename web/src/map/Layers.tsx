@@ -1,4 +1,4 @@
-import type { Health, LayerKind, MapRecord, Snapshot } from '../data';
+import { hasCoordinates, type Health, type LayerKind, type MapRecord, type Snapshot } from '../data';
 
 export type Coordinates = [number, number]; // longitude, latitude
 export const layerConfigs: { kind: LayerKind; label: string; sources: string[] }[] = [
@@ -18,7 +18,7 @@ export function distanceKm(a: Coordinates, b: Coordinates): number {
 
 export function visibleRecords(records: MapRecord[], kinds: Set<string>, center: Coordinates | null, radius: number): MapRecord[] {
   return records.filter(record => kinds.has(record.kind) && (record.spatial_scope === 'area' || !center ||
-    distanceKm(center, [record.longitude, record.latitude]) <= radius));
+    (hasCoordinates(record) && distanceKm(center, [record.longitude, record.latitude]) <= radius)));
 }
 
 export function layerHealth(kind: LayerKind, snapshot: Snapshot | null): Health {

@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 6 Nov 2026, T229 local/Ubuntu Worker checks passed; cloud setup deferred,
+Last updated: 6 Nov 2026, T230 local area-only alert checks passed; CI pending,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T229. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D60. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T230. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D61. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -206,6 +206,7 @@ and a YAML block `- id: T057`.
 | T039 | `3dbbd04` | Original source clocks/provenance, provider severity/expiry, source health, per-layer toggles, keyboard geodesic radius and pausable dated alerts (D58). Source projections checked against S01/S09 adapters. Acceptance: 2 passed in 21.13s; full suite 453 passed, 1 skipped in 206.61s; 16 web unit checks and 30 browser checks, including populated axe/overflow checks. Lint/format pass; price/model/source gates unchanged. |
 | T040 | `03383a2` | Six tabs, versioned source-backed places, hash-bound historical share links and browser print/PDF from the same report (D59). Original CAP warning/instruction retained; unavailable facilities/scores stay unavailable. Acceptance: 4 passed in 37.80s. Full suite: 457 passed, 1 skipped in 288.83s, including 23 web unit checks and 45 browser checks. Lint/format (147 files), dependency policy and whitespace checks pass. Three generated A4 PDFs checked for original warning, attribution, place version and risk limits. No production places, facilities, scores or approvals seeded. |
 | T229 (child of T042) | `d5dc0f2`..`4cdffde` | Local acceptance: 4 passed in 1.61s, including 8 Node logic cases and SQLite cap/rollback checks. Full suite: 461 passed, 1 skipped in 229.96s. Actual Miniflare/D1 Ubuntu CI passed at `4cdffde`, including duplicate concurrency, conflicting cutoffs, original clocks/hash, corruption and storage/write rollback. Lint/format, dependency policy, npm full audit (0 vulnerabilities), amendment parity and whitespace pass. Full T042 is pending H05 and an actual free/no-card capability probe; no remote resource, approval or service is created. |
+| T230 (child of T043) | This continuation commit; CI pending | Original area-only CAP projection checked against S09 with no supplemental polygon. Nullable coordinates allowed only for official S09 area text with an explicit location limit. List, ticker and report retain it; map makes no marker or fly-to point. Stored canonical hashes are checked before normalization, including ignored fields and older optional-field representations. Acceptance: 2 passed in 14.61s; full suite: 463 passed, 1 skipped in 258.38s, with 26 web unit checks, 48 browser checks and 11 Worker logic checks. Lint/format (151 files), amendment parity and whitespace pass. Full T043's producer, schedule, polling and cloud gate remain pending. |
 
 T025 retry final validation: `432 passed, 1 skipped, 1 warning in 115.94s`;
 lint passes, 128 files pass formatting, dependency policy reports 0 problems
@@ -394,8 +395,9 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    `scripts/web.ps1 run dev` serves the local
    map at http://127.0.0.1:5173. There is no approved public snapshot or deployment.
    T229's local T042 implementation and real Ubuntu runtime CI pass. Full T042
-   stays pending H05. Preserve text-only S09 alerts before building the refresh
-   producer: no geometry must not mean the official warning vanishes. Continue
+   stays pending H05. T230 preserves text-only S09 alerts through the browser
+   and hot transport; local checks pass, verify its web/Worker CI next. Then
+   implement the bounded refresh producer, schedule and active-page poller. Continue
    independent local hosting preparation and then C3 Ask preparation,
    T225 case studies and T046;
    unresolved human/data gates must remain pending rather than blocking independent work.

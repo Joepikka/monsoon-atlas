@@ -17,7 +17,7 @@ export interface Facility {
 }
 
 export interface MapRecord {
-  id: string; title: string; longitude: number; latitude: number;
+  id: string; title: string; longitude: number | null; latitude: number | null;
   source_id: string; source_url: string; provenance: 'official' | 'model' | 'inferred' | 'reconstructed';
   valid_at: string; fetched_at: string;
   location_note?: string;
@@ -29,6 +29,7 @@ export interface MapRecord {
   place_id: string | null; boundary_version: string | null;
   model_id: string | null; model_status: 'champion' | 'baseline' | 'research_only' | null;
   warning_text: string | null; instruction: string | null;
+  area_text: string | null;
 }
 
 export interface Snapshot {
@@ -92,6 +93,10 @@ function coordinates(row: Record<string, unknown>): { longitude: number; latitud
   return { longitude: row.longitude, latitude: row.latitude };
 }
 
+export function hasCoordinates<T extends { longitude: number | null; latitude: number | null }>(point: T): point is T & { longitude: number; latitude: number } {
+  return typeof point.longitude === 'number' && Number.isFinite(point.longitude) && typeof point.latitude === 'number' && Number.isFinite(point.latitude);
+}
+
 export async function sha256(bytes: Uint8Array): Promise<string> {
   const digest = await crypto.subtle.digest('SHA-256', Uint8Array.from(bytes).buffer);
   return Array.from(new Uint8Array(digest), n => n.toString(16).padStart(2, '0')).join('');
@@ -111,7 +116,11 @@ export function parseSnapshot(value: unknown, state: StateId): Snapshot {
     const id = text(row.id, 'record ID');
     if (ids.has(id)) throw new Error('Duplicate snapshot record ID.');
     ids.add(id);
-    const point = coordinates(row);
+    const areaText = nullableText(row.area_text, 'original area text');
+    const unlocated = row.longitude === null && row.latitude === null;
+    if (unlocated && (row.source_id !== 'S09' || row.provenance !== 'official' || row.kind !== 'alert' ||
+        row.spatial_scope !== 'area' || !areaText || !row.location_note)) throw new Error('An area-only official warning needs its source area text and location limit.');
+    const point = unlocated ? { longitude: null, latitude: null } : coordinates(row);
     if (!['official', 'model', 'inferred', 'reconstructed'].includes(String(row.provenance))) throw new Error('Missing record provenance.');
     const sourceId = text(row.source_id, 'source ID');
     if (!/^S\d{2,}$/.test(sourceId)) throw new Error('Invalid source ID.');
@@ -158,6 +167,7 @@ export function parseSnapshot(value: unknown, state: StateId): Snapshot {
       evidence: evidence as MapRecord['evidence'],
       place_id: placeId, boundary_version: boundary, model_id: modelId, model_status: modelStatus as MapRecord['model_status'],
       warning_text: nullableText(row.warning_text, 'original warning'), instruction: nullableText(row.instruction, 'source instruction'),
+      area_text: areaText,
     };
   });
   if (data.sources !== undefined && !Array.isArray(data.sources)) throw new Error('Invalid source health metadata.');

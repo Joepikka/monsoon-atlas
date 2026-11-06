@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Map, Marker, NavigationControl, setWorkerUrl } from 'maplibre-gl';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import type { MapRecord } from './data';
+import { hasCoordinates, type MapRecord } from './data';
 import type { Coordinates } from './map/Layers';
 
 setWorkerUrl(workerUrl);
@@ -40,7 +40,7 @@ export default function MapView({ records, selected, onSelect, center, onCenter 
   }, [onCenter]);
   useEffect(() => {
     if (!map.current) return;
-    const markers = records.map(record => {
+    const markers = records.filter(hasCoordinates).map(record => {
       const element = document.createElement('button');
       element.type = 'button'; element.className = `map-pin ${record.provenance}`;
       element.setAttribute('aria-label', `View ${record.title}`);
@@ -53,7 +53,7 @@ export default function MapView({ records, selected, onSelect, center, onCenter 
   }, [records, selected, onSelect]);
   useEffect(() => {
     const record = records.find(row => row.id === selected);
-    if (record && map.current) map.current.flyTo({ center: [record.longitude, record.latitude],
+    if (record && hasCoordinates(record) && map.current) map.current.flyTo({ center: [record.longitude, record.latitude],
       zoom: Math.max(map.current.getZoom(), 8), duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 500 });
   }, [selected, records]);
   useEffect(() => {

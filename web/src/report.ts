@@ -1,4 +1,4 @@
-import type { Facility, MapRecord, Place, Snapshot, StateId } from './data';
+import { hasCoordinates, type Facility, type MapRecord, type Place, type Snapshot, type StateId } from './data';
 import { distanceKm, type Coordinates } from './map/Layers';
 
 export interface ShareIdentity { state: StateId; place: string; boundary: string; asOf: string; release: string }
@@ -27,7 +27,7 @@ export function buildReport(snapshot: Snapshot, placeId: string, boundary: strin
   const records = snapshot.records.filter(record => {
     if (record.place_id) return record.place_id === placeId && record.boundary_version === boundary;
     if (record.kind === 'model') return false; // A model score needs an explicit versioned place association.
-    return record.spatial_scope === 'area' || distanceKm([place.longitude, place.latitude], [record.longitude, record.latitude]) <= 25;
+    return record.spatial_scope === 'area' || (hasCoordinates(record) && distanceKm([place.longitude, place.latitude], [record.longitude, record.latitude]) <= 25);
   });
   const facilities = rankByDistance([place.longitude, place.latitude], snapshot.facilities).filter(item => item.distance_km <= 25).slice(0, 10);
   const sourceMap = new Map<string, { id: string; url: string }>();
