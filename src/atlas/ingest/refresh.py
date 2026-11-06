@@ -13,7 +13,7 @@ from pathlib import Path
 import httpx
 
 from atlas.data.budget import ArchiveOnly
-from atlas.ingest.base import IngestError
+from atlas.ingest.base import IngestError, SourceUnavailable
 from atlas.ingest.s09_collect import ROOT, collect, run_bounded
 from atlas.ingest.s09_prepare import prepare
 
@@ -38,8 +38,15 @@ def refresh(
         collection = collect(
             root, max_documents=max_documents, transport=transport, clock=clock, sleep=sleep
         )
-    except (IngestError, ArchiveOnly, OSError, ValueError) as error:
+    except (SourceUnavailable, ValueError) as error:
         return {
+            "status": "failed",
+            "coverage": "partial",
+            "stage": "capture",
+            "error_type": type(error).__name__,
+        }
+    except (IngestError, ArchiveOnly, OSError) as error:
+        collection = {
             "status": "failed",
             "coverage": "partial",
             "stage": "capture",

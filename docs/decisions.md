@@ -2,6 +2,26 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D68 — Bounded paired weather capture (6 Nov 2026), before implementation.**
+  Split T237 from T043 after T010/T234/T236. Start with the already verified
+  Bengaluru query (12.97,77.59), named `ecmwf_ifs025`, whose returned grid point
+  is (13.0,77.5); do not invent a statewide query grid or coverage claim. Retain
+  each metadata-before/forecast/metadata-after attempt as an immutable local
+  receipt so later preparation cannot mix independently latest raw files.
+  Only a stable, settled pair with a quality-passed future temperature can
+  advance the latest validated-pair pointer. Use shared six-hour admission,
+  five-second per-attempt spacing and five HTTP attempts per admitted run,
+  bounding four nominal checks to at most 20 attempts per UTC day locally.
+  Refactor the existing cadence/backoff transport for both verified profiles;
+  enabled-source flags must be checked before provider calls. A 120-second
+  HTTP-only child bound covers this local capture. Failed, incomplete, changed
+  or unsettled pairs preserve the last pointer, and raw observations remain
+  untouched. This child does not create a browser projection, upload, schedule
+  or cloud resource; coverage remains the single verified point and partial.
+  The joint refresh/weather review additionally requires retaining usable CAP
+  preparation after recoverable capture I/O errors, and saving each completed
+  weather receipt before validating a possibly damaged previous head.
+
 - **D67 — One bounded local CAP refresh command (6 Nov 2026), before implementation.**
   Split T236 from T043 after T234/T235. Run capture and preparation in one
   HTTP-only child with a 150-second parent deadline, rather than nesting child

@@ -9,6 +9,9 @@ from pathlib import Path
 
 import httpx
 
+import atlas.ingest.refresh as refresh_module
+from atlas.ingest.base import SourceUnavailable
+from atlas.ingest.raw_store import RawStore
 from atlas.ingest.refresh import refresh
 from atlas.ingest.s09 import FEED
 from atlas.ingest.s09_collect import run_bounded
@@ -152,3 +155,33 @@ def test_parent_deadline_includes_preparation_and_keeps_completed_capture(tmp_pa
         ).fetchone() == (1,)
     recovered, calls = run(capture_root)
     assert recovered["status"] == "prepared" and not calls
+
+
+def test_capture_io_failure_still_prepares_retained_data_without_new_validation_clock(
+    tmp_path, monkeypatch
+):
+    run(tmp_path)
+
+    def unavailable_ledger(*args, **kwargs):
+        raise PermissionError("test-only ledger append failure")
+
+    monkeypatch.setattr(RawStore, "record", unavailable_ledger)
+    result, calls = run(tmp_path, now=NOW + timedelta(minutes=15))
+    assert result["status"] == "prepared" and len(calls) == 1
+    assert result["collection"]["status"] == "failed"
+    assert result["collection"]["error_type"] == "PermissionError"
+    snapshot = json.loads(Path(result["prepared"]["payload_path"]).read_text("utf-8"))["snapshot"]
+    assert snapshot["sources"][0]["last_success_at"] == NOW.isoformat().replace("+00:00", "Z")
+
+
+def test_disabled_capture_cannot_prepare_retained_source_data(tmp_path, monkeypatch):
+    def disabled(*args, **kwargs):
+        raise SourceUnavailable("source disabled in test configuration")
+
+    def must_not_prepare(*args, **kwargs):
+        raise AssertionError("Disabled source must stop before preparation")
+
+    monkeypatch.setattr(refresh_module, "collect", disabled)
+    monkeypatch.setattr(refresh_module, "prepare", must_not_prepare)
+    result = refresh_module.refresh(tmp_path)
+    assert result["status"] == "failed" and result["stage"] == "capture"

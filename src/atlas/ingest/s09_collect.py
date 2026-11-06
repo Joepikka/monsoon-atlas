@@ -5,15 +5,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import math
-import subprocess
 import sys
 import time
 import uuid
 import xml.etree.ElementTree as ET
 from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
-from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 import httpx
@@ -21,60 +18,21 @@ import httpx
 from atlas.config import load_budgets, load_state
 from atlas.contracts import Budget, FetchContext, RawArtifact
 from atlas.data.budget import ArchiveOnly, StorageQuota
-from atlas.ingest.base import FetchError, IngestError
-from atlas.ingest.http import RETRY_STATUS, Fetcher
+from atlas.ingest.base import FetchError, IngestError, SourceUnavailable
+from atlas.ingest.http import Fetcher
 from atlas.ingest.raw_store import RawStore
 from atlas.ingest.s09 import BASE, FEED, HOSTS, MAPPING_VERSION, NS, S09, _time, feed_versions
-from atlas.ingest.schedule import admit, defer, open_control
+from atlas.ingest.schedule import (
+    AdmittedTransport as CollectorTransport,
+)
+from atlas.ingest.schedule import (
+    Deferred,
+    admit,
+    open_control,
+    run_bounded,
+)
 
 ROOT = Path(__file__).resolve().parents[3]
-
-
-class Deferred(FetchError):
-    """A provider cooldown was committed; stop this run without retrying."""
-
-
-class CollectorTransport(httpx.BaseTransport):
-    """Space every attempt and save cooldown headers before reading response bodies."""
-
-    def __init__(self, inner, sleep, clock, database):
-        self.inner, self.sleep = inner, sleep
-        self.clock, self.database = clock, database
-
-    def handle_request(self, request):
-        self.sleep(1.0)
-        response = self.inner.handle_request(request)
-        try:
-            self._respect_retry_after(response)
-        except BaseException:
-            response.close()
-            raise
-        return response
-
-    def close(self):
-        self.inner.close()
-
-    def _respect_retry_after(self, response):
-        retry_after = response.headers.get("retry-after")
-        # Observe the actual response, including the last attempt. Fetcher._wait
-        # is only invoked if there is still a retry available.
-        if response.status_code in RETRY_STATUS and retry_after:
-            try:
-                seconds = float(retry_after)
-                # Reject NaN/infinity instead of silently losing the cooldown.
-                if not math.isfinite(seconds) or seconds < 0:
-                    return
-                until = self.clock().timestamp() + seconds
-            except ValueError:
-                try:
-                    until = parsedate_to_datetime(retry_after)
-                    if until.tzinfo is None:
-                        raise ValueError
-                    until = until.timestamp()
-                except (TypeError, ValueError, OverflowError):
-                    return
-            defer(self.database, "S09", until)
-            raise Deferred("S09: provider Retry-After retained locally")
 
 
 def validate_cap(raw: RawArtifact) -> dict:
@@ -126,6 +84,8 @@ def collect(
     now = clock()
     if now.utcoffset() != timedelta(0):
         raise ValueError("collector clock must be aware UTC")
+    if not load_state(ROOT / "configs/states/ka.yaml").source("S09").enabled:
+        raise SourceUnavailable("S09 is disabled; no provider request is allowed")
     root = Path(root).resolve()
     db = open_control(root / "control.sqlite")
     result = {
@@ -251,25 +211,6 @@ def collect(
         if fetcher:
             fetcher.client.close()
         db.close()
-
-
-def run_bounded(command: list[str], *, timeout: float) -> dict:
-    """Only for HTTP-only children with no descendants. Timeout kills and reaps the child."""
-    try:
-        completed = subprocess.run(
-            command,
-            shell=False,
-            timeout=timeout,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            check=False,
-        )
-    except subprocess.TimeoutExpired:
-        return {"status": "deadline", "coverage": "partial"}
-    if completed.returncode != 0:
-        return {"status": "failed", "coverage": "partial"}
-    return json.loads(completed.stdout)
 
 
 def main() -> None:

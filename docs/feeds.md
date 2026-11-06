@@ -100,7 +100,41 @@ replay at one cutoff keeps its byte identity. Missing/corrupt evidence fails
 preparation and retains the previous head; absence of evidence cannot generate
 a fake empty feed. The public command exits unsuccessfully on failed preparation
 or a deadline.
+Recoverable capture I/O failures are retained in `collection` diagnostics while
+usable dated evidence is still prepared. Explicit source-disable and invalid
+input errors stop the command before preparation.
 
 This runner is local S09 preparation. S01 preparation, authenticated cloud
 admission/upload, durable cloud restoration, scheduling and active-page polling
 remain in T043. No credential, account, recurring job or public release is used.
+
+## Paired local weather capture (T237)
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 weather
+```
+
+The verified profile queries Bengaluru (12.97,77.59) using named model
+`ecmwf_ifs025`; the source returns grid centre (13.0,77.5). This is one model grid
+point, with partial coverage. It establishes no statewide weather coverage.
+
+Capture retains metadata-before, forecast and metadata-after together, including
+their exact hashes and HTTP validation clocks. A changed model run, pre-settling
+forecast response, unexpected grid or absence of a quality-passed future
+temperature cannot replace the validated-pair pointer. Waiting after an early
+capture does not certify its model vintage. Raw body bytes and every completed
+attempt receipt remain stored under `.cache/feeds/weather/`; later revalidation
+does not overwrite original receipts. The pointer also rejects older model runs
+and regressing capture clocks. Weather browser preparation remains a later task.
+Each newly completed receipt is saved before the previous head is checked. If
+that head or its old receipt is damaged, advancement fails and the result still
+includes the new immutable receipt's path/hash; the grouping is not lost.
+
+Shared local admission allows at most four six-hour checks per UTC day. Each
+weather run admits at most five HTTP attempts, including retries/redirects, so
+the initial 20/source/day weather cap is respected. Every underlying attempt
+waits five seconds; a normal metadata/forecast/metadata capture uses three calls.
+Retry-After is durable and source-specific. A 120-second parent deadline bounds
+the child, with startup/cleanup overhead additional. Both local source producers
+check enabled-source flags before any provider call. No account, upload,
+projection, recurring job or deployment is created.

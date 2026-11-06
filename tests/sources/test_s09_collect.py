@@ -13,6 +13,8 @@ from pathlib import Path
 import httpx
 import pytest
 
+import atlas.ingest.s09_collect as collector_module
+from atlas.ingest.base import SourceUnavailable
 from atlas.ingest.s09 import FEED
 from atlas.ingest.s09_collect import collect, run_bounded
 
@@ -306,3 +308,21 @@ def test_bounded_launcher_uses_argument_list_and_no_shell(monkeypatch):
 def test_invalid_admission_limit_fails_before_network(tmp_path, limit):
     with pytest.raises(ValueError, match="1.*30"):
         replay(tmp_path, limit=limit)
+
+
+def test_disabled_alert_source_fails_before_admission_or_provider_request(tmp_path, monkeypatch):
+    state = collector_module.load_state(collector_module.ROOT / "configs/states/ka.yaml")
+    disabled = state.model_copy(
+        update={
+            "sources": tuple(
+                source.model_copy(update={"enabled": False})
+                if source.source_id == "S09"
+                else source
+                for source in state.sources
+            )
+        }
+    )
+    monkeypatch.setattr(collector_module, "load_state", lambda _: disabled)
+    with pytest.raises(SourceUnavailable):
+        replay(tmp_path, ids=[IDS[0]])
+    assert not (tmp_path / "control.sqlite").exists()

@@ -213,6 +213,14 @@ admission/backoff and actual source clocks survive recovery; no upload or
 recurring work is enabled. Estimate: 2 hours. Acceptance:
 `.\.venv\Scripts\python -m pytest tests/test_feed_refresh.py -q`.
 
+## A20. Bounded paired weather capture (D68, 6 November 2026)
+
+T237 is a child of T043 after T010/T234/T236. Capture the verified single-point
+S01 profile with immutable paired metadata/forecast evidence, model settling,
+shared cadence/backoff and weather-specific spacing/attempt caps. It remains
+local and partial, with no projection, upload or workflow. Estimate: 3 hours.
+Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s01_collect.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -233,6 +241,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T237
+    parent: T043
+    title: "Bounded paired S01 capture for the verified Bengaluru profile"
+    phase: P1
+    state: KA
+    depends_on: [T010, T234, T236]
+    files: [src/atlas/ingest/s01_collect.py, src/atlas/ingest/schedule.py, src/atlas/ingest/s09_collect.py, src/atlas/ingest/refresh.py, tests/sources/test_s01_collect.py, tests/sources/test_s09_collect.py, tests/test_feed_refresh.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Retain stable metadata-before/forecast/metadata-after receipts from the verified named-model point"
+      - "Enforce five-second request spacing, five attempts per six-hour admission and durable source-specific cooldown"
+      - "Advance only validated settled pairs, with source-enable gates and a bounded child; no projection or cloud activity"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s01_collect.py -q'
+      expected: "Real paired evidence survives capture; failed/unsettled/disabled/limited runs cannot advance the validated pointer or invent forecasts"
+    hours: 3
   - id: T236
     parent: T043
     title: "Bounded local CAP capture and preparation runner"

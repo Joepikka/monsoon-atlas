@@ -262,6 +262,15 @@ https://github.com/Joepikka/monsoon-atlas/actions/runs/42256006061 .
 The local integration test also validates Python-produced payloads with the
 actual Worker decoder/restore. T236's local bounded runner passes at `0b8fa6a`.
 
+T236 at `88543ba` also passed core Windows/Ubuntu, Worker/D1 Ubuntu, and web
+Windows/Ubuntu CI:
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42259620110 ,
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42259620437 ,
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42259620166 .
+T237 paired weather capture and the joint recovery-review fixes are under final
+verification. Its live smoke succeeded with three provider requests; a repeat
+returned not-due with zero requests.
+
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
 checks pass. Independent review found no actionable defect. The skip/warning
