@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 6 Nov 2026, T115 S33 discovery while S34 owner review is pending,
+Last updated: 6 Nov 2026, T115/T116 S33 blocked contract; S34 owner review pending,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -105,6 +105,7 @@ and a YAML block `- id: T057`.
 | `configs/states/kl.yaml` | T226 Kerala bootstrap: isolated output paths; every source disabled pending Kerala adapter checks |
 | `src/atlas/ingest/s32.py`, `schemas/s32.json` | T114 KSEB daily report adapter: observed 07:00 IST, strict layout, unit/percentage quarantine, unknown datum retained; S32 enabled only in Kerala |
 | `src/atlas/ingest/s34_ocr.py`, `scripts/s34_ocr_review.py` | T228 local OCR review packets, pinned toolchain/model, two unselected candidates per cell and explicit owner gate; full S34 adapter pending |
+| `src/atlas/ingest/s33.py`, `schemas/s33.json` | T116 blocked monthly source: raises SourceUnavailable even if config is force-enabled; no unverified field schema or rows |
 | `configs/budgets.yaml` | Request, storage and DuckDB budgets |
 | `tests/` | Contracts, fetcher, storage, as-of, discovery/adapters, geography, model gates and state isolation; final continuation results below |
 
@@ -187,7 +188,13 @@ and a YAML block `- id: T057`.
 | T114 | `812e111` | S32 fetch/parse contract, real attributed CI samples and quarantine checks; D46. D47 fixes empty typed-table validation. |
 | T227 (child of T114) | `e017b1e` | All 700 dates, 2024-08-15..2026-07-15, returned validated empty reports. 47 reused, 653 newly captured; zero failed/unattempted. Per-date hashes/counts committed; raw pages local. Acceptance: 7 passed in 1.08s; D48. |
 | T228 (child of T118) | 67a47c6 | D49/D50: pinned local OCR tooling and three-page review packet, eight sample cells, six disagreements; all selections null. Machine acceptance: 10 passed in 3.88s. Owner review pending; full T118/S34 adapter remains pending and source disabled. |
-| T115 | This continuation commit | D51: S33 discovery pulled forward. Nine evidence pages; landing and three published dams URLs are HTTP-200 wrong-address errors. Main Monthly data link is electricity statistics. No reservoir artifact, history, units or file licence verified; source blocked/disabled. Acceptance: 8 passed in 0.11s. |
+| T115 | `e613666` | D51: S33 discovery pulled forward. Nine evidence pages; landing and three published dams URLs are HTTP-200 wrong-address errors. Main Monthly data link is electricity statistics. No reservoir artifact, history, units or file licence verified; source blocked/disabled. Acceptance: 8 passed in 0.11s. |
+| T116 | This continuation commit | Disabled S33 adapter raises SourceUnavailable before I/O, including forced-enable attempts. No dataset/field schema invented. Acceptance: 3 passed in 0.42s. |
+
+T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
+128 files pass formatting, dependency policy reports 0 problems and whitespace
+checks pass. Independent review found no actionable defect. The skip/warning
+remain the existing S36 PDF-tool absence and MLflow deprecation.
 
 T115 final validation: `427 passed, 1 skipped, 1 warning in 98.82s`; lint passes,
 126 files pass formatting, dependency policy reports 0 problems, and amendment
@@ -267,7 +274,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S23 data.gov.in mandi prices | T025 | blocked on licence/unit confirmation | Key was already used in discovery; do not ask for it again unless missing at execution |
 | S28 KWRIS | T008 | blocked | retry if KWRIS daily history arrives |
 | S32 KSEB daily levels | T113, T114, T227 | available, enabled in KL (partial history) | Strict quarantine; datum unknown; all 700 gap dates return validated empty reports |
-| S33 KSEB monthly statistics | T115 | blocked, disabled | Published archive pages return wrong-address errors; no verified reservoir file; T116 blocked adapter next |
+| S33 KSEB monthly statistics | T115, T116 | blocked, disabled adapter complete | Published archive pages return wrong-address errors; no verified reservoir file |
 | S34 KSDMA dam reports | T117 | available (scanned) | OCR T118, adapter |
 | S35 Kaggle Kerala floods | T119 | blocked | needs owner Kaggle sign-in (H10) |
 | S36 KSDMA memoranda | T121 | available | adapter T122 in P3 |
@@ -321,12 +328,12 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    continue full T118: validate per-layout cell extraction, dates, units and dam
    identity; retain quarantine and never infer alert colours from English OCR.
    T228 sample approval does not approve bulk extraction; S34 remains disabled.
-   Before T130, explicitly resolve its full-T129 dependency for the M07-only fallback and
-   the T115/T116 scheduling dependency. Full T129 remains a P3 task, not complete (D44).
+   Before T130, explicitly resolve its full-T129 dependency for the M07-only fallback.
+   T115/T116 scheduling is resolved by D51; full T129 remains P3 and pending (D44).
    T130 must verify known datum, >=3 years daily coverage across >=8 dams and new dated
    splits against the actual parsed history. The Jun 2020 archive start is not a gate pass.
-   Independent follow-up D51: T115 discovery is done (S33 blocked); T116 can implement
-   its disabled adapter without using unreviewed OCR. T115/T116 now run in P1.
+   Independent follow-up D51: T115/T116 are done (S33 blocked, disabled adapter
+   tested). This supplies a source-availability status, not observations for M07.
 7. **Prices:** T025 needs the owner's catalogue licence/unit confirmation, then T024/T026
    and T035 to T037. Its API key was already supplied; do not request it again without cause.
 8. Then A8 steps 9 to 13: map and product, hosting, C3 Ask, T225 case studies, T046 MVP

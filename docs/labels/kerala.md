@@ -98,5 +98,6 @@ audit (dam registry/datum, parsed labels, survey footprint, Kerala boundaries an
 shelters) stays pending on its original dependencies. T114/T227 are complete;
 the gap census found 700 validated empty reports (see `docs/sources/s32-history.md`).
 Next is T118 with the required owner OCR review.
-S33/T115-T116 is still a dependency to resolve
-before T130; it cannot be silently omitted or fabricated.
+S33/T115-T116 is resolved as a blocked source and tested disabled adapter (D51),
+not as verified monthly observations. T130 still needs its actual daily coverage,
+datum, split and full-T129 dependency checks; no data gate has been waived.
