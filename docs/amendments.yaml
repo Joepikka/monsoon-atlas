@@ -1,6 +1,21 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T234
+    parent: T043
+    title: "Bounded local CAP-only collection with durable evidence checkpoints"
+    phase: P1
+    state: KA
+    depends_on: [T230, T231, T232, T233]
+    files: [src/atlas/ingest/s09_collect.py, src/atlas/ingest/schedule.py, scripts/feeds.ps1, tests/sources/test_s09_collect.py, docs/feeds.md]
+    steps:
+      - "Admit a bounded CAP-only subset and preserve raw evidence plus successful per-document checkpoints"
+      - "Use ETag revalidation, bounded cache admission, durable Retry-After and local SQL cadence guards"
+      - "Enforce an independent subprocess deadline; report partial coverage without publication or activation"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s09_collect.py -q'
+      expected: "Interrupted/unchanged/failed collection preserves evidence, clocks and backoff without fake data or cloud activation"
+    hours: 3
   - id: T233
     parent: T043
     title: "Durable source-check admission for bounded weather and alert polling"

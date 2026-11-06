@@ -188,6 +188,15 @@ bypass weather/alert cadence caps. Estimate: 2 hours. Acceptance:
 Actual provider collection, workflow activation and browser polling remain in
 T043; full T042 and cloud admission remain pending H05.
 
+## A17. Bounded local CAP collection (D65, 6 November 2026)
+
+T234 is a child of T043 after T230/T231/T232/T233. It captures and validates a
+bounded CAP-only subset with ETag checkpoints, persistent local admission and
+Retry-After deferral, plus a hard parent-process deadline. Its result remains
+partial and local; no reviewed publication, cloud upload or recurring workflow
+is enabled. Estimate: 3 hours. Acceptance:
+`.\.venv\Scripts\python -m pytest tests/sources/test_s09_collect.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -208,6 +217,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T234
+    parent: T043
+    title: "Bounded local CAP-only collection with durable evidence checkpoints"
+    phase: P1
+    state: KA
+    depends_on: [T230, T231, T232, T233]
+    files: [src/atlas/ingest/s09_collect.py, src/atlas/ingest/schedule.py, scripts/feeds.ps1, tests/sources/test_s09_collect.py, docs/feeds.md]
+    steps:
+      - "Admit a bounded CAP-only subset and preserve raw evidence plus successful per-document checkpoints"
+      - "Use ETag revalidation, bounded cache admission, durable Retry-After and local SQL cadence guards"
+      - "Enforce an independent subprocess deadline; report partial coverage without publication or activation"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s09_collect.py -q'
+      expected: "Interrupted/unchanged/failed collection preserves evidence, clocks and backoff without fake data or cloud activation"
+    hours: 3
   - id: T233
     parent: T043
     title: "Durable source-check admission for bounded weather and alert polling"

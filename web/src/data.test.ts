@@ -28,6 +28,21 @@ describe('immutable snapshot loading', () => {
     expect(parsed.records[0].valid_at).toBe(record.valid_at);
     expect(parsed.records[0].fetched_at).toBe(record.fetched_at);
   });
+  it.each(['official', 'model', 'inferred'])('rejects availability before retrieval for %s records', provenance => {
+    const record = JSON.parse(readFileSync(new URL('../tests/fixtures/openmeteo-temperature-point.json', import.meta.url), 'utf8'));
+    const cutoff = record.available_at;
+    // Test-only clock mutation; the captured observation is unchanged.
+    record.fetched_at = '2099-01-01T00:00:00Z';
+    record.provenance = provenance;
+    expect(() => parseSnapshot({ ...snapshot, as_of: cutoff, records: [record] }, 'ka')).toThrow(/available.*fetched|retrieval/i);
+  });
+  it('preserves the explicit reconstructed availability exception', () => {
+    const record = JSON.parse(readFileSync(new URL('../tests/fixtures/openmeteo-temperature-point.json', import.meta.url), 'utf8'));
+    const cutoff = record.available_at;
+    record.fetched_at = new Date(Date.parse(cutoff) + 86400000).toISOString();
+    record.provenance = 'reconstructed'; // Test-only envelope metadata.
+    expect(parseSnapshot({ ...snapshot, as_of: cutoff, records: [record] }, 'ka').records[0].provenance).toBe('reconstructed');
+  });
   it('accepts an approved hash-matching snapshot without changing its timestamps', async () => {
     const result = await loadSnapshot('ka', null, { fetcher: await responses(), now });
     expect(result.status).toBe('ready');

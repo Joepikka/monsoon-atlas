@@ -129,6 +129,10 @@ export function parseSnapshot(value: unknown, state: StateId): Snapshot {
     if (!['point', 'area'].includes(String(row.spatial_scope))) throw new Error('Missing spatial scope.');
     const issued = nullableTime(row.issued_at, 'issued_at');
     const available = timestamp(row.available_at, 'available_at');
+    const fetched = timestamp(row.fetched_at, 'fetched_at');
+    if (row.provenance !== 'reconstructed' && Date.parse(available) < Date.parse(fetched)) {
+      throw new Error('available_at before fetched_at requires reconstructed provenance.');
+    }
     if (Date.parse(available) > Date.parse(asOf) || (issued && Date.parse(issued) > Date.parse(asOf))) {
       throw new Error('A record was not available at the snapshot cutoff.');
     }
@@ -158,7 +162,7 @@ export function parseSnapshot(value: unknown, state: StateId): Snapshot {
     return {
       id, title: text(row.title, 'record title'), ...point,
       source_id: sourceId, source_url: sourceUrl, provenance: row.provenance as MapRecord['provenance'],
-      valid_at: timestamp(row.valid_at, 'valid_at'), fetched_at: timestamp(row.fetched_at, 'fetched_at'),
+      valid_at: timestamp(row.valid_at, 'valid_at'), fetched_at: fetched,
       ...(row.location_note === undefined ? {} : { location_note: text(row.location_note, 'location note') }),
       kind: row.kind as LayerKind, spatial_scope: row.spatial_scope as MapRecord['spatial_scope'],
       issued_at: issued, available_at: available, expires_at: nullableTime(row.expires_at, 'expires_at'),

@@ -2,6 +2,21 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D65 — Bounded local CAP-only collection (6 Nov 2026), before implementation.**
+  Split T234 from T043 to implement the local collector before activating any
+  workflow. A cold CAP+polygon sweep has 200 one-second sleeps for the captured
+  100-item feed, already exceeding the three-minute job limit. Admit at most 30
+  CAP documents per run, omit supplemental polygons, and wrap the HTTP-only
+  child in a hard subprocess deadline. Keep raw evidence and durable per-document
+  checkpoints, revalidate with the existing Fetcher/ETags, and never refresh CAP
+  validation times from an RSS-only 304. Share admission caps locally through
+  SQLite; persist Retry-After deferral before stopping a run. New/changed and
+  oldest documents share admission capacity to prevent starvation. Every result
+  remains explicitly partial: CAP-only sender/area matching cannot certify full
+  Karnataka coverage. This child captures/validates documents and control headers;
+  it does not invent analytical rows for a header-only cancellation, publish a
+  reviewed snapshot, upload, create a cloud resource or enable cron/polling.
+
 - **D64 — Durable source-check admission before polling (6 Nov 2026), before
   implementation.** A volatile GitHub cache cannot enforce T043's check caps
   after a cache miss, delayed job or manual retry. Split T233 from T043 to add
