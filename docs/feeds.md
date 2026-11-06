@@ -104,7 +104,7 @@ Recoverable capture I/O failures are retained in `collection` diagnostics while
 usable dated evidence is still prepared. Explicit source-disable and invalid
 input errors stop the command before preparation.
 
-This runner is local S09 preparation. S01 preparation, authenticated cloud
+This runner is local S09 preparation. Authenticated cloud
 admission/upload, durable cloud restoration, scheduling and active-page polling
 remain in T043. No credential, account, recurring job or public release is used.
 
@@ -125,7 +125,7 @@ temperature cannot replace the validated-pair pointer. Waiting after an early
 capture does not certify its model vintage. Raw body bytes and every completed
 attempt receipt remain stored under `.cache/feeds/weather/`; later revalidation
 does not overwrite original receipts. The pointer also rejects older model runs
-and regressing capture clocks. Weather browser preparation remains a later task.
+and regressing capture clocks. Offline weather preparation is described below.
 Each newly completed receipt is saved before the previous head is checked. If
 that head or its old receipt is damaged, advancement fails and the result still
 includes the new immutable receipt's path/hash; the grouping is not lost.
@@ -138,3 +138,34 @@ Retry-After is durable and source-specific. A 120-second parent deadline bounds
 the child, with startup/cleanup overhead additional. Both local source producers
 check enabled-source flags before any provider call. No account, upload,
 projection, recurring job or deployment is created.
+
+## Offline weather preparation (T238)
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 weather-prepare
+```
+
+This command reads `.cache/feeds/weather/pairs/` and `weather/raw/` without
+network requests. `--root` accepts the common feed root. Only complete validated
+receipts for the verified Bengaluru `ecmwf_ifs025` request can supply the single
+temperature record. Receipt completion and all three HTTP clocks must precede
+the report cutoff. The newest eligible model initialization, then newest capture,
+supplies the first quality-passed finite temperature at or after the cutoff.
+The original value, unit and returned grid centre (13.0,77.5) are preserved;
+this is a model-grid forecast, with partial single-point coverage.
+
+For each model/run/forecast-content cohort, `fetched_at` remains its earliest
+qualified forecast HTTP retrieval and `available_at` waits for its earliest
+complete validated receipt. Revalidation advances only the selected cohort's
+actual `last_success_at`; preparing again cannot imply a provider check.
+Settling is verified at retrieval, so waiting cannot certify an early attempt.
+
+The shared immutable writer stores prepared-only envelopes and input manifests
+in `weather/prepared/`, with the same one-MiB canonical/compressed body bounds,
+quota, atomic monotonic pointer, same-cutoff conflicts and idempotent replay as
+CAP preparation. `published_at` is the actual local creation time. Receipt/raw
+corruption, missing known evidence, disabled source, or no eligible future row
+preserves the previous output. A missing latest-pair pointer may recover a fully
+qualified archived receipt; a present damaged pointer stops preparation.
+Keep all receipts and raw bytes. Nothing is purged, uploaded, scheduled,
+approved for publication or activated by this command.

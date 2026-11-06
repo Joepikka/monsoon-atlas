@@ -1,4 +1,4 @@
-# Local CAP capture or preparation; never enables scheduling or publication.
+# Local CAP/weather capture or preparation; never enables scheduling or publication.
 $ErrorActionPreference = 'Stop'
 $atlasRoot = Split-Path -Parent $PSScriptRoot
 $env:TEMP = Join-Path $atlasRoot '.cache/tmp'
@@ -17,6 +17,10 @@ elseif ($args.Count -gt 0 -and $args[0] -eq 'refresh') {
 }
 elseif ($args.Count -gt 0 -and $args[0] -eq 'weather') {
     $atlasModule = 'atlas.ingest.s01_collect'
+    $atlasArguments = @($args | Select-Object -Skip 1)
+}
+elseif ($args.Count -gt 0 -and $args[0] -eq 'weather-prepare') {
+    $atlasModule = 'atlas.ingest.s01_prepare'
     $atlasArguments = @($args | Select-Object -Skip 1)
 }
 & (Join-Path $atlasRoot '.venv/Scripts/python.exe') -m $atlasModule @atlasArguments

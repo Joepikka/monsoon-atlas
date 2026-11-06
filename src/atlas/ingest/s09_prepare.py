@@ -3,20 +3,16 @@
 from __future__ import annotations
 
 import argparse
-import gzip
 import hashlib
 import json
 import re
-import sqlite3
-from contextlib import closing
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from atlas.config import load_budgets, load_state
+from atlas.config import load_state
 from atlas.contracts import RawArtifact
-from atlas.data.budget import StorageQuota
-from atlas.data.manifest import _atomic_write
 from atlas.ingest.base import IngestError, SourceUnavailable
+from atlas.ingest.prepared import canonical, materialize, utc
 from atlas.ingest.raw_store import LEDGER
 from atlas.ingest.s09 import BASE, S09, _time, superseded_identities
 from atlas.ingest.s09_collect import validate_cap
@@ -24,24 +20,6 @@ from atlas.ingest.s09_collect import validate_cap
 ROOT = Path(__file__).resolve().parents[3]
 MAX_BYTES = 1024**2
 CAP_URL = re.compile(re.escape(BASE) + r"/FetchXMLFile\?identifier=\d+$")
-
-
-def canonical(value) -> str:
-    return json.dumps(
-        value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False
-    )
-
-
-def utc(value: datetime) -> str:
-    return value.isoformat().replace("+00:00", "Z")
-
-
-def immutable(path: Path, text: str) -> None:
-    if path.exists():
-        if path.read_bytes() != text.encode("utf-8"):
-            raise IngestError("Prepared immutable file failed content verification")
-        return
-    _atomic_write(path, text)
 
 
 def retained_artifacts(raw_root: Path) -> list[RawArtifact]:
@@ -249,76 +227,16 @@ def prepare(
             ],
         },
     }
-    # SQLite serializes competing head updates; the atomic JSON pointer remains the
-    # authority after a crash. Repeated input reuses its actual first preparation
-    # time, rather than fabricating a past publication clock or changing identity.
-    output_root.mkdir(parents=True, exist_ok=True)
-    with closing(sqlite3.connect(output_root / "prepared-control.sqlite", timeout=5)) as db, db:
-        db.execute("CREATE TABLE IF NOT EXISTS prepare_guard(id INTEGER PRIMARY KEY)")
-        db.execute("BEGIN IMMEDIATE")
-        head = output_root / "prepared.json"
-        prepared_at, previous_same = utc(datetime.now(UTC)), None
-        if head.exists():
-            previous = json.loads(head.read_text("utf-8"))
-            if datetime.fromisoformat(previous["as_of"]) > as_of:
-                raise IngestError("An older preparation cannot roll the local head back")
-            verify_retained_inputs(previous, output_root, inputs)
-            if datetime.fromisoformat(previous["as_of"]) == as_of:
-                if previous["inputs_sha256"] != revision:
-                    raise IngestError(
-                        "Different prepared inputs conflict at the same source cutoff"
-                    )
-                if not re.fullmatch(r"[0-9a-f]{64}", previous["sha256"]):
-                    raise IngestError("Prepared head has no valid content identity")
-                prior_bytes = (output_root / f"{previous['sha256']}.json").read_bytes()
-                if hashlib.sha256(prior_bytes).hexdigest() != previous["sha256"]:
-                    raise IngestError("Prepared head payload failed hash verification")
-                prepared_at = json.loads(prior_bytes)["snapshot"]["published_at"]
-                previous_same = previous["sha256"]
-        envelope["snapshot"]["published_at"] = prepared_at
-        text = canonical(envelope)
-        encoded = text.encode("utf-8")
-        if max(len(encoded), len(gzip.compress(encoded, mtime=0))) > max_bytes:
-            raise IngestError("Prepared CAP snapshot exceeds the transport byte cap")
-        digest = hashlib.sha256(encoded).hexdigest()
-        if previous_same is not None and previous_same != digest:
-            raise IngestError("Different prepared bytes conflict at the same source cutoff")
-        payload_path, inputs_path = (
-            output_root / f"{digest}.json",
-            output_root / f"{revision}.inputs.json",
-        )
-        roots = {ROOT / "data", raw_root, output_root}
-        quota_roots = [p for p in roots if not any(p != q and p.is_relative_to(q) for q in roots)]
-        incoming = sum(
-            len(body.encode("utf-8"))
-            for path, body in ((payload_path, text), (inputs_path, manifest))
-            if not path.exists()
-        )
-        StorageQuota.from_budget(
-            quota_roots, load_budgets(ROOT / "configs/budgets.yaml").storage
-        ).ensure_can_ingest(incoming)
-        immutable(inputs_path, manifest)
-        immutable(payload_path, text)
-        pointer = {
-            "schema_version": 1,
-            "status": "prepared_only",
-            "state": "ka",
-            "source_id": "S09",
-            "as_of": utc(as_of),
-            "sha256": digest,
-            "payload": payload_path.name,
-            "inputs_sha256": revision,
-            "inputs": inputs_path.name,
-        }
-        _atomic_write(head, canonical(pointer))
-    return {
-        "status": "prepared",
-        "coverage": "partial",
-        "sha256": digest,
-        "payload_path": str(payload_path),
-        "inputs_path": str(inputs_path),
-        "records": len(records),
-    }
+    return materialize(
+        raw_root,
+        output_root,
+        as_of=as_of,
+        max_bytes=max_bytes,
+        manifest=manifest,
+        envelope=envelope,
+        inputs=inputs,
+        verify_inputs=verify_retained_inputs,
+    )
 
 
 def main() -> None:
