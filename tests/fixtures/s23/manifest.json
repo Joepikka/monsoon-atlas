@@ -33,6 +33,39 @@
       "bytes": 40933,
       "raw_path": "S23/2026-11-05/aee99392a5a7398af8b6cae30d3203aa84dde09ce939d3963c1ab18396493837.json",
       "shows": "Karnataka filter, second page (offset 100): pagination check"
+    },
+    {
+      "id": "e04",
+      "url": "https://www.data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi",
+      "fetched_at": "2026-11-06T06:47:05.964000Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "ebfd5a1cdeceb9591dd5ee7ad42d220c62f40281aa48cbb84012bd1f46c3bfce",
+      "bytes": 2252,
+      "raw_path": "S23/2026-11-06/ebfd5a1cdeceb9591dd5ee7ad42d220c62f40281aa48cbb84012bd1f46c3bfce.json",
+      "shows": "Browser DOM projection: resource Catalog Info, NDSAP description, GODL licence notice and published licence links; not an unmodified HTTP response (D53)"
+    },
+    {
+      "id": "e05",
+      "url": "https://www.data.gov.in/backend/dms/v1/resource/current-daily-price-various-commodities-various-markets-mandi?_format=json",
+      "fetched_at": "2026-11-06T06:47:06.102000Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "9d32b62ecbe450f68fe0e74d91b264c289eecbf211ba9c03ff8ed1b77783677b",
+      "bytes": 1698,
+      "raw_path": "S23/2026-11-06/9d32b62ecbe450f68fe0e74d91b264c289eecbf211ba9c03ff8ed1b77783677b.json",
+      "shows": "Browser JSON projection: actual resource UUID/title and selected licence/description metadata fields, with original response hash; not an unmodified HTTP response (D53)"
+    },
+    {
+      "id": "e06",
+      "url": "https://www.data.gov.in/Godl",
+      "fetched_at": "2026-11-06T06:47:07.053000Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "efd1b685b0e39851ed54b032e375aeac06d6732dd6cb819354a96b602dc7c4a5",
+      "bytes": 10994,
+      "raw_path": "S23/2026-11-06/efd1b685b0e39851ed54b032e375aeac06d6732dd6cb819354a96b602dc7c4a5.json",
+      "shows": "Browser DOM projection: public GODL licence tabs, including reuse, attribution, exemptions and termination; not an unmodified HTTP response (D53)"
     }
   ]
 }

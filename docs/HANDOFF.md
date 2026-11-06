@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 6 Nov 2026, T115/T116 S33 blocked contract; S34 owner review pending,
+Last updated: 6 Nov 2026, T025 licence retry; S23 units and S34 owner review pending,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -180,7 +180,7 @@ and a YAML block `- id: T057`.
 | T034 | `e3f07bb` | Release framework (models/uncertainty.py, evaluate.py, registry.py): block bootstrap seed 42, validation-only intervals/thresholds, decide() gates, immutable release JSON + owner approval file, optional MLflow (D38) |
 | T023 | `41c763e` | S22 India Data Portal: **blocked** (client-side app, no link or licence in HTML, robots 403, browser unavailable); retry with a browser render; T025 data.gov.in is the other route |
 | T101 | `bbe7c25` | M05 target + features pass on IMD 1981-2024 (30 districts, SPI-3 ~N(0,1) on 1981-2010, lag and mutation checks, gate, purged manifest); 2023 missing day handled (D40) |
-| T025 | `f1af6cd` | S23 data.gov.in mandi: API works with owner key (current-day snapshot, Karnataka 565 rows, checks pass) but **blocked on licence**: owner to read licence + unit from Catalog Info |
+| T025 | `f1af6cd` | Original S23 discovery: owner key works (current-day snapshot, Karnataka 565 rows, checks pass). Licence and units unresolved at that capture; see 6 Nov retry below. |
 | T102 | `e6cb916` | M05 fit (src/atlas/models/m05.py): tune 2017-2018 MAE persistence 0.736, ridge 0.585, LightGBM 0.571 (gain not significant) -> ridge provisional; deterministic, test rows refused, artifacts in data/models (D41) |
 | T103 | `bea3eb9` | M05 locked test 2020-2024: ridge beats persistence on all gates (MAE 0.732 vs 0.808, CI lower 0.003, PR-AUC 0.217, Brier skill 0.116, CRPS lower); release v1 candidate_eligible, **owner approval pending**; intervals under-cover (65%) so not published (D42). Report: reports/models/m05.md |
 | T103 approval | `7f3780e` | Owner approved M05 v1 (D43): ridge is the champion; outputs labelled hindcast, no intervals |
@@ -189,7 +189,14 @@ and a YAML block `- id: T057`.
 | T227 (child of T114) | `e017b1e` | All 700 dates, 2024-08-15..2026-07-15, returned validated empty reports. 47 reused, 653 newly captured; zero failed/unattempted. Per-date hashes/counts committed; raw pages local. Acceptance: 7 passed in 1.08s; D48. |
 | T228 (child of T118) | 67a47c6 | D49/D50: pinned local OCR tooling and three-page review packet, eight sample cells, six disagreements; all selections null. Machine acceptance: 10 passed in 3.88s. Owner review pending; full T118/S34 adapter remains pending and source disabled. |
 | T115 | `e613666` | D51: S33 discovery pulled forward. Nine evidence pages; landing and three published dams URLs are HTTP-200 wrong-address errors. Main Monthly data link is electricity statistics. No reservoir artifact, history, units or file licence verified; source blocked/disabled. Acceptance: 8 passed in 0.11s. |
-| T116 | This continuation commit | Disabled S33 adapter raises SourceUnavailable before I/O, including forced-enable attempts. No dataset/field schema invented. Acceptance: 3 passed in 0.42s. |
+| T116 | `546ad49` | Disabled S33 adapter raises SourceUnavailable before I/O, including forced-enable attempts. No dataset/field schema invented. Acceptance: 3 passed in 0.42s. |
+| T025 retry | This continuation commit | D52/D53: public browser metadata verifies GODL-India, with three labelled local projections and hashes. Price denominator still unlabelled; S23 stays disabled. Original API captures unchanged. Acceptance: 8 passed in 0.16s. |
+
+T025 retry final validation: `432 passed, 1 skipped, 1 warning in 115.94s`;
+lint passes, 128 files pass formatting, dependency policy reports 0 problems
+and whitespace checks pass. Independent review found no actionable defect and
+confirmed that the projections are absent from the Fetcher cache ledger. The
+skip/warning remain the existing S36 PDF-tool absence and MLflow deprecation.
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
@@ -271,7 +278,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S17 geoBoundaries | T019, T020 | available, enabled | 30 Karnataka districts (no Vijayanagara); ODbL |
 | S18 Geofabrik OSM | T021, T022 | blocked | robots.txt disallows .osm.pbf (D34) |
 | S22 India Data Portal Agmarknet | T023 | blocked | client-side app; retry with a browser render; T025 is the other route |
-| S23 data.gov.in mandi prices | T025 | blocked on licence/unit confirmation | Key was already used in discovery; do not ask for it again unless missing at execution |
+| S23 data.gov.in mandi prices | T025 | blocked on price denominator; GODL verified | Key was already used in discovery; no new key or licence confirmation needed |
 | S28 KWRIS | T008 | blocked | retry if KWRIS daily history arrives |
 | S32 KSEB daily levels | T113, T114, T227 | available, enabled in KL (partial history) | Strict quarantine; datum unknown; all 700 gap dates return validated empty reports |
 | S33 KSEB monthly statistics | T115, T116 | blocked, disabled adapter complete | Published archive pages return wrong-address errors; no verified reservoir file |
@@ -298,8 +305,9 @@ M08 is a non-core descriptive 2018 replay (P3).
 - Before public deployment also: confirm you are 18+ (OpenFreeMap terms), check boundary maps
   against India's official mapping guidance (geoBoundaries has no disputed-boundary field), and
   label WorldPop counts for Bengaluru as an undercount (about 6.0 million in the GBA wards).
-- T025 already accessed data.gov.in with the owner's key. Remaining step: owner reads
-  the catalogue licence and unit information; see `docs/sources/s23.md`. Never print the key.
+- T025 already accessed data.gov.in with the owner's key, and the browser retry verified
+  GODL. Remaining blocker: a publisher statement establishing the API price denominator;
+  see `docs/sources/s23.md`. Do not request another key or repeat licence confirmation.
 - Optional: download `southern-zone-latest.osm.pbf` from Geofabrik in a browser into
   `data/raw/S18/` to unblock S18 (D34).
 
@@ -334,8 +342,10 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    splits against the actual parsed history. The Jun 2020 archive start is not a gate pass.
    Independent follow-up D51: T115/T116 are done (S33 blocked, disabled adapter
    tested). This supplies a source-availability status, not observations for M07.
-7. **Prices:** T025 needs the owner's catalogue licence/unit confirmation, then T024/T026
-   and T035 to T037. Its API key was already supplied; do not request it again without cause.
+7. **Prices:** T025's GODL licence is verified; the price denominator remains unverified.
+   Capture a publisher unit statement tied to the actual resource before enabling ingestion
+   in T026 or T035 to T037. T024 is the separate S22 blocked-adapter task. The S23 API key was
+   already supplied; do not request it again without cause.
 8. Then A8 steps 9 to 13: map and product, hosting, C3 Ask, T225 case studies, T046 MVP
    gate.
 

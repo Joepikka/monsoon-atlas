@@ -5,7 +5,7 @@ source_id: S23
 state: ka
 name: "data.gov.in mandi prices"
 verify_task: T025
-discovered_at: "2026-11-05T17:25:44Z"
+discovered_at: "2026-11-06T06:47:05.964Z"
 outcome: blocked
 landing_url: "https://www.data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi"
 publisher: "Ministry of Agriculture and Farmers Welfare, Department of Agriculture and Farmers Welfare, on data.gov.in"
@@ -19,17 +19,24 @@ access:
     9ef84268-d588-465a-a308-a864a43d0070 from the dataset's API tab (OAS 2.0) on 5 Nov 2026. The API
     confirms it: index_name is that ID and the title is "Current Daily Price of Various Commodities
     from Various Markets (Mandi)" (e01). Without a key the API answers "Authorization field missing";
-    with the key it returned 502 twice at 16:30 UTC, then 200 (e01 to e03). The website itself
-    refuses automated clients (Akamai "Access Denied", see failed_fetches).
-  evidence: [e01, e02, e03]
+    with the key it returned 502 twice at 16:30 UTC, then 200 (e01 to e03). Automated website
+    requests received Akamai 403 on 5 Nov (failed_fetches). On 6 Nov a fresh browser rendered
+    the public resource and licence pages without login or challenge, and its public metadata
+    response returned 200 (e04 to e06). No key was entered in any web form.
+  evidence: [e01, e02, e03, e04, e05, e06]
 
 licence:
-  status: unverified
+  status: open
   detail: >-
-    The API response names the publisher and sector but carries no licence (e01). The website's
-    dataset and terms pages refuse automated clients, so no licence text could be captured (see
-    failed_fetches). Until it is, raw responses stay local and nothing is redistributed.
-  evidence: [e01]
+    The actual resource page says published datasets/resources and metadata are licensed under
+    Government Open Data License-India; Catalog Info identifies this AGMARKNET dataset as
+    released under NDSAP and the page links to /Godl (e04). The public GODL text permits lawful
+    commercial and non-commercial reuse subject to attribution, non-endorsement and its
+    exclusions (e06). Cite provider, dataset, publication/version date, resource URL and licence
+    URL in any use. The numeric field_license value in e05 is not interpreted as a licence.
+    Evidence e04 to e06 is explicitly labelled browser-derived metadata, not original responses
+    (D53). No data redistribution is introduced by this retry.
+  evidence: [e04, e05, e06]
 
 provider_quota:
   status: not_published
@@ -49,8 +56,11 @@ units:
   status: unlabelled
   detail: >-
     Fields are min_price, max_price and modal_price as numbers with no unit in the response (e01);
-    Agmarknet's usual unit (Rs per quintal) is not stated here. No arrivals field is exposed (e01).
-  evidence: [e01]
+    the resource's rendered Catalog Info describes daily wholesale prices without a denominator
+    (e04). Selected metadata description/note/field definitions are empty (e05). Rs per quintal
+    remains unverified for this API resource; do not convert or expose modal_inr_quintal until a
+    publisher statement establishes the applicable unit. No arrivals field is exposed (e01).
+  evidence: [e01, e04, e05]
 
 source_check:
   status: pass
@@ -82,7 +92,7 @@ field_map:
     upstream: "modal_price"
     unit_status: unlabelled
     detail: "No unit in the response; unit must be confirmed before use."
-    evidence: [e01]
+    evidence: [e01, e04, e05]
   - canonical: arrivals_tonnes
     upstream: null
     unit_status: absent
@@ -91,9 +101,10 @@ field_map:
 
 dependents: [T026, T035, T036, T037]
 retry_condition: >-
-  Capture the dataset licence: the owner opens the dataset's Catalog Info (or the site's terms page)
-  and records the licence name and link, or a browser render captures it. If it is an open licence
-  (for example GODL-India) and the price unit is stated, re-run T025 to make S23 available.
+  Capture a publisher statement tied to resource 9ef84268-d588-465a-a308-a864a43d0070 establishing
+  the denominator of min_price, max_price and modal_price (including commodity-specific exceptions
+  if units vary). Then re-run T025 and validate the mapping before enabling S23 or implementing
+  ingestion in T026. GODL is verified; no new API key or licence confirmation is needed.
 
 failed_fetches:
   - url: "https://www.data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi"

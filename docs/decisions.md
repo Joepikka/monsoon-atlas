@@ -2,6 +2,32 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D53 — Browser metadata evidence for the T025 retry (6 Nov 2026), before
+  capture.** D52's public resource and GODL pages render without authentication.
+  Permit a narrow exception to D27 for this discovery retry: retain labelled
+  browser DOM projections of the resource's licence notice/catalogue description
+  and the public licence tabs, plus selected public resource-metadata fields.
+  Each projection records its source URL, capture time, observed response status,
+  selectors/field paths and transformation; JSON projections also retain the
+  original response SHA256. The manifest hashes the projection, never calls it an
+  unmodified HTTP response, and keeps its bytes in ignored `data/raw/S23`.
+  Projections do not enter the Fetcher's HTTP-cache ledger: a conditional fetch
+  must never reuse a filtered projection as the original server response.
+  Exclude contacts, user identifiers, cookies, credentials and authentication
+  redirects' query strings. This does not permit observation ingestion outside
+  the shared Fetcher or bypass a sign-in/challenge. A catalogue navigation reached
+  a sign-in page; do not proceed there. GODL verification alone cannot establish
+  the price denominator; S23 stays disabled unless that unit is verified too.
+
+- **D52 — Bounded public-catalogue retry while OCR review is pending (6 Nov
+  2026).** T025 already lists a browser render as a retry for S23 licence/unit
+  verification. Retry that public metadata check now, after T115/T116, without
+  accounts, passwords, API keys in forms, terms acceptance or challenge bypass.
+  This is independent P1 source discovery; it does not approve S34 OCR or change
+  model gates. Only a publisher statement tied to the actual resource can verify
+  licence and units. If the browser or page remains unavailable, preserve the
+  blocked record and distinguish a local tool failure from publisher evidence.
+
 - **D51 — Verify the remaining M07 source while OCR review is pending (6 Nov
   2026), before implementation.** Pull T115 (S33 monthly-statistics discovery)
   and its T116 adapter into P1 for the D17 core C1 fallback. Replace T115's full
