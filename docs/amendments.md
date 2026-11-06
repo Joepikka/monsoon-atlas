@@ -145,6 +145,15 @@ Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s32_history.py 
 each requested date has cited evidence or an explicit failure. T130 gains T227 as
 a dependency before using S32 historical coverage. Other D44 dependencies remain.
 
+## A12. Hot endpoint implementation child (D60, 6 November 2026)
+
+T229 implements T042's signed hot-data endpoint, D1 schema and local/CI checks
+after T006/T040. Full T042 remains pending H05 and the actual free/no-card service
+probe; no account, token, remote resource or deployment approval is created by
+this child. Windows 10 is outside current Wrangler support, so pure logic and
+SQLite run locally and the actual Miniflare/D1 runtime runs on Ubuntu CI. Estimate:
+3 hours. Acceptance: `.\.venv\Scripts\python -m pytest tests/test_worker_core.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -165,6 +174,22 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T229
+    parent: T042
+    title: "Hot Worker endpoint implementation and local/CI checks"
+    phase: P1
+    state: KA
+    depends_on: [T006, T040]
+    files: [worker/, scripts/worker.ps1, tests/test_worker_core.py, .github/workflows/worker.yml, docs/worker.md]
+    steps:
+      - "Implement signed bounded uploads, canonical snapshot validation and D1 atomic caps"
+      - "Check pure logic and SQLite locally; check actual Miniflare/D1 on supported Ubuntu CI"
+      - "Retain explicit unavailable/static fallback; never create accounts, tokens, remote resources or deployment approval"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_worker_core.py -q'
+      expected: "Authentication, timestamp/hash, last-good and capacity checks pass; no cloud capability or public deployment claimed"
+    human_gate: "Full T042 still requires owner H05 and an actual free/no-card service probe"
+    hours: 3
   - id: T228
     parent: T118
     title: "S34 pinned OCR tooling and owner review packet"

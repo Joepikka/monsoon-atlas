@@ -2,6 +2,23 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D60 — T042 local implementation child and cloud gate (6 Nov 2026), before
+  implementation.** Split T229 from T042 to implement and verify the Worker/D1
+  endpoint locally and in free CI while H05 remains pending. The owner has
+  signed in; no token, billing status or actual service capability is verified.
+  Full T042 and any deployment stay pending until the owner completes H05 and
+  the free/no-card probe. No account, API token or remote database is created by
+  this child. Wrangler 4.157.0 officially requires Windows 11 or supported Linux;
+  this laptop is Windows 10. Run pure TypeScript/SQLite checks locally and the
+  actual Miniflare/D1 runtime on Ubuntu CI. Keep all caches on D locally.
+  Reuse the tested browser snapshot validator for the owned JSON transport;
+  initially allow only enabled public KA hot feeds S01 and S09. Store canonical
+  validated bytes, not unchecked upload fields. HMAC binds timestamp, method,
+  path and exact compressed request bytes; idempotency is content-addressed.
+  Storage and daily writes fail closed with conservative reservations checked
+  in the same SQLite transaction. An unavailable binding/capability gate returns
+  an explicit static-fallback status; it never claims a deployed current feed.
+
 - **D59 — Frozen Place Lens links (T040, 6 Nov 2026), before implementation.**
   A latest pointer cannot reproduce an older approved view after a refresh.
   Shared links bind state, place ID, boundary version, as-of time and the exact

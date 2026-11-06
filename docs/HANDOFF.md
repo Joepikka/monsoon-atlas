@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 6 Nov 2026, T040 Place Lens checks; S23 units and S34 owner review pending,
+Last updated: 6 Nov 2026, T229 local Worker checks; Ubuntu runtime CI pending,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T228. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D59. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T229. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D60. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -111,6 +111,7 @@ and a YAML block `- id: T057`.
 | `web/`, `scripts/web.ps1` | T038 pinned React/Vite/MapLibre shell; approved immutable JSON loading, dated last-good state, responsive map/list and browser checks; no production data seeded |
 | `web/src/map/Layers.tsx`, `web/src/components/SourceBadge.tsx`, `EventTicker.tsx` | T039 per-layer filtering, original clocks/severity, source health, geodesic point radius, area-warning context and pausable dated alert ticker |
 | `web/src/components/PlaceLens.tsx`, `web/src/report.ts` | T040 six-tab reports, versioned place selection, immutable share identity and browser print/PDF from the same report; no production places or approvals seeded |
+| `worker/`, `scripts/worker.ps1` | T229 child of T042: signed bounded hot-data uploads, canonical source validation and atomic SQLite caps; cloud capability/deployment disabled; actual Miniflare/D1 checks on Ubuntu CI |
 | `configs/budgets.yaml` | Request, storage and DuckDB budgets |
 | `tests/` | Contracts, fetcher, storage, as-of, discovery/adapters, geography, model gates and state isolation; final continuation results below |
 
@@ -203,7 +204,8 @@ and a YAML block `- id: T057`.
 | T037 | `5da4702` | Source-bound blocked status and report; no achieved scores, release, champion or predictions (D55). Acceptance: 3 passed in 0.58s; full suite 448 passed, 1 skipped in 128.31s; lint/format pass. M06 remains unavailable. |
 | T038 | `4f3c36e` | Pinned Node/React/Vite/MapLibre shell; hash/approval/state checks, original source times/provenance, dated last-good view, responsive map/list and genuine CAP test fixture. Acceptance: 3 passed in 21.18s. Full suite: 451 passed, 1 skipped in 153.66s, including build, 9 unit checks and 18 Chromium checks. Lint/format and dependency policy pass; production npm audit reports 0 advisories. No production data or release approval seeded. |
 | T039 | `3dbbd04` | Original source clocks/provenance, provider severity/expiry, source health, per-layer toggles, keyboard geodesic radius and pausable dated alerts (D58). Source projections checked against S01/S09 adapters. Acceptance: 2 passed in 21.13s; full suite 453 passed, 1 skipped in 206.61s; 16 web unit checks and 30 browser checks, including populated axe/overflow checks. Lint/format pass; price/model/source gates unchanged. |
-| T040 | This continuation commit | Six tabs, versioned source-backed places, hash-bound historical share links and browser print/PDF from the same report (D59). Original CAP warning/instruction retained; unavailable facilities/scores stay unavailable. Acceptance: 4 passed in 37.80s. Full suite: 457 passed, 1 skipped in 288.83s, including 23 web unit checks and 45 browser checks. Lint/format (147 files), dependency policy and whitespace checks pass. Three generated A4 PDFs checked for original warning, attribution, place version and risk limits. No production places, facilities, scores or approvals seeded. |
+| T040 | `03383a2` | Six tabs, versioned source-backed places, hash-bound historical share links and browser print/PDF from the same report (D59). Original CAP warning/instruction retained; unavailable facilities/scores stay unavailable. Acceptance: 4 passed in 37.80s. Full suite: 457 passed, 1 skipped in 288.83s, including 23 web unit checks and 45 browser checks. Lint/format (147 files), dependency policy and whitespace checks pass. Three generated A4 PDFs checked for original warning, attribution, place version and risk limits. No production places, facilities, scores or approvals seeded. |
+| T229 (child of T042) | This continuation commit; runtime CI pending | Local acceptance: 4 passed in 1.14s, including 6 Node logic cases and SQLite cap/rollback checks. Full suite: 461 passed, 1 skipped in 231.59s. Lint/format (150 files), dependency policy, npm full audit (0 vulnerabilities), amendment parity and whitespace checks pass. Full T042 is pending H05 and an actual free/no-card capability probe; no remote resource, approval or service is created. |
 
 T025 retry final validation: `432 passed, 1 skipped, 1 warning in 115.94s`;
 lint passes, 128 files pass formatting, dependency policy reports 0 problems
@@ -217,6 +219,9 @@ installed the lock, built, ran unit tests and passed the shell browser checks.
 
 T039 remote web CI also passed both matrix jobs for `3dbbd04`:
 https://github.com/Joepikka/monsoon-atlas/actions/runs/42206285593 .
+
+T040 remote web CI passed both matrix jobs for `03383a2`:
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42211241573 .
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
@@ -316,6 +321,9 @@ M08 is a non-core descriptive 2018 replay (P3).
   are not configured locally. Account access does not certify a free/no-card
   capability probe or authorize public deployment. Do not create accounts,
   accept terms or enter keys on the owner's behalf.
+  The owner explicitly deferred tokens on 6 Nov: "I'll do this later; continue
+  local work." Do not repeat the token question; proceed with independent local
+  preparation. The concrete owner guide is `docs/account-setup.md`.
 
 - **Current next action: review the S34 OCR sample** at
   `D:\monsoon-atlas\data\raw\S34\ocr-review\index.html`. Compare the eight original
@@ -379,7 +387,9 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    blocked by S18 (T021/T022); no catchments or coverage results are invented.
    `scripts/web.ps1 run dev` serves the local
    map at http://127.0.0.1:5173. There is no approved public snapshot or deployment.
-   Next: dependency-ready T042 hosting preparation and then C3 Ask preparation,
+   T229's local T042 implementation passes; wait for its real Ubuntu runtime CI
+   before calling the child complete. Full T042 stays pending H05. Continue
+   independent local hosting preparation and then C3 Ask preparation,
    T225 case studies and T046;
    unresolved human/data gates must remain pending rather than blocking independent work.
 

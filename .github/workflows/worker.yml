@@ -1,0 +1,36 @@
+name: Worker local runtime
+on:
+  push:
+    paths: ['worker/**', 'web/src/data.ts', 'web/tests/fixtures/**', '.github/workflows/worker.yml']
+  pull_request:
+    paths: ['worker/**', 'web/src/data.ts', 'web/tests/fixtures/**', '.github/workflows/worker.yml']
+permissions:
+  contents: read
+jobs:
+  worker:
+    runs-on: ubuntu-24.04
+    env:
+      npm_config_cache: ${{ github.workspace }}/.cache/npm
+      XDG_CACHE_HOME: ${{ github.workspace }}/.cache
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22.16.0'
+      - name: Keep temporary files in the workspace
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/.cache/tmp"
+          echo "TMPDIR=$GITHUB_WORKSPACE/.cache/tmp" >> "$GITHUB_ENV"
+          echo "TEMP=$GITHUB_WORKSPACE/.cache/tmp" >> "$GITHUB_ENV"
+          echo "TMP=$GITHUB_WORKSPACE/.cache/tmp" >> "$GITHUB_ENV"
+      - run: npm ci --ignore-scripts
+        working-directory: worker
+      - run: npm run check
+        working-directory: worker
+      - run: npm test
+        working-directory: worker
+      - run: npm run test:runtime
+        working-directory: worker

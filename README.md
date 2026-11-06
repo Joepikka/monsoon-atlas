@@ -6,6 +6,8 @@ A free, public map of Indian states that shows what is happening now, what model
 
 Run the local map with the pinned Node toolchain: `powershell -NoProfile -File scripts/web.ps1 run dev`.
 Setup and checks: [web shell](docs/web-shell.md).
+Place reports: [frozen links and print/PDF](docs/web-lens.md).
+Hosting preparation: [local Worker](docs/worker.md); [owner account steps](docs/account-setup.md).
 
 > Monsoon Atlas is an independent research project. It is not an emergency service and does not replace official information. In an emergency, contact the appropriate emergency service.
 
