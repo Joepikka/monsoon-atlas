@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 6 Nov 2026, T233 admission implementation; full/Ubuntu checks in progress,
+Last updated: 6 Nov 2026, T233 admission local/Ubuntu checks passed,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -209,7 +209,7 @@ and a YAML block `- id: T057`.
 | T230 (child of T043) | `8565cc9` | Original area-only CAP projection checked against S09 with no supplemental polygon. Nullable coordinates allowed only for official S09 area text with an explicit location limit. List, ticker and report retain it; map makes no marker or fly-to point. Stored canonical hashes are checked before normalization, including ignored fields and older optional-field representations. Acceptance: 2 passed in 14.61s; full suite: 463 passed, 1 skipped in 258.38s, with 26 web unit checks, 48 browser checks and 11 Worker logic checks. Lint/format (151 files), amendment parity and whitespace pass. Actual Worker/D1 Ubuntu and web Windows/Ubuntu CI pass. Full T043's producer, schedule, polling and cloud gate remain pending. |
 | T231 (child of T043) | `9dbb233` | Known S09 entries are keyed by actual RSS item versions; changed versions at known URLs re-enter conditional GET. Bare identifier-only skip sets fail before network. Empty valid RSS stays distinct from wrong schema/missing links. Acceptance: 13 passed in 1.10s; full suite: 467 passed, 1 skipped in 482.34s. Lint/format (151 files), dependency policy, amendment parity and whitespace pass. No claim of immutable CAP URLs or guaranteed 15-minute freshness. T043 still needs bounded cache expiry/checkpoints, producer, scheduling and polling. |
 | T232 (child of T043) | `acd8168` | Full CAP sender/identifier/sent reference matching, equivalent timezones only, malformed/unmatched/self-reference preservation, Update/Cancel authority and active-warning control filtering (D63). Public rows require Actual/Public lifecycle values; unknown fields and naive dates fail closed. Declared mutated-copy regressions replace the earlier incorrect predecessor test. Acceptance: 31 passed in 1.11s; full suite: 485 passed, 1 skipped in 215.28s. Lint/format (151 files), amendment parity and whitespace pass. |
-| T233 (child of T043), in progress | This implementation commit; full/runtime checks pending | Signed server-clock admission, atomic elapsed cadence across UTC boundaries/cache loss/duplicate jobs, with shared storage/write guards (D64). Local acceptance: 8 passed in 3.13s; Worker type checking and 12 logic checks pass. Actual D1 concurrency and broad regression verification still required before completion. No provider collection, cron, cloud resource or activation created. |
+| T233 (child of T043) | `f48d418` | Signed server-clock admission, atomic elapsed cadence across UTC boundaries/cache loss/duplicate jobs, with shared storage/write guards (D64). Acceptance: 8 passed in 3.13s; full suite: 493 passed, 1 skipped in 194.23s. Worker type checking, 12 logic checks and actual D1 concurrent admission/cap rollback pass on Ubuntu CI. Lint/format (152 files), amendment parity and whitespace pass. No provider collection, cron, cloud resource or activation created. |
 
 T025 retry final validation: `432 passed, 1 skipped, 1 warning in 115.94s`;
 lint passes, 128 files pass formatting, dependency policy reports 0 problems
@@ -236,6 +236,9 @@ separately from report age. This is local simulation, not a cloud account probe.
 T230 actual area-only alert D1 round trip and all web viewports passed at `8565cc9`:
 https://github.com/Joepikka/monsoon-atlas/actions/runs/42215181966 (Worker),
 https://github.com/Joepikka/monsoon-atlas/actions/runs/42215181974 (Windows/Ubuntu web).
+
+T233 actual D1 admission concurrency and shared capacity guards passed at `f48d418`:
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42243904334 .
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
@@ -405,8 +408,8 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    stays pending H05. T230 preserves text-only S09 alerts through the browser
    and hot transport; local and web/Worker CI checks pass. T231 replaces permanent
    known identifiers with RSS item fingerprints; T232 fixes complete CAP
-   supersession identity and public lifecycle selection. Finish T233's full
-   regression and actual D1 admission checks, then implement the
+   supersession identity and public lifecycle selection. T233's durable source
+   admission passes locally and in actual D1. Next implement the
    bounded refresh producer, schedule and active-page poller. Research in
    `.cache/t043-research/findings.md` verifies that a full cold CAP+polygon sweep
    already needs 200 seconds of spacing alone; use bounded CAP-only admission,
