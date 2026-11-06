@@ -2,6 +2,17 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D54 — Continue independent P1 work while source/owner gates remain pending
+  (6 Nov 2026).** The owner explicitly requested continuous execution of the
+  plan. Complete T024/T026's prescribed disabled adapters, then T035-T037's
+  prescribed blocked-model state and evidence report. Neither unavailable prices
+  nor unreviewed OCR may become training rows, invented scores or predictions.
+  Continue dependency-ready T038-T040 and local hosting/Ask preparation in A8
+  order while their unrelated gates are pending. This is scheduling independent
+  work, not declaring the C1 review or any source dependency satisfied. Keep
+  T118/T130-T132, unavailable-data analyses, account-dependent deployment and
+  final phase gates explicitly pending until their own requirements pass.
+
 - **D53 — Browser metadata evidence for the T025 retry (6 Nov 2026), before
   capture.** D52's public resource and GODL pages render without authentication.
   Permit a narrow exception to D27 for this discovery retry: retain labelled
