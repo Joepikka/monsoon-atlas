@@ -219,14 +219,15 @@ def test_cooldown_is_saved_from_headers_before_a_response_body_can_block(tmp_pat
     assert replay(tmp_path, now=NOW + timedelta(minutes=30))[1] == []
 
 
-def test_header_only_cancel_is_retained_as_control_without_invented_row(tmp_path):
+@pytest.mark.parametrize("message_type", ["Cancel", "Update"])
+def test_header_only_control_is_retained_without_invented_row(tmp_path, message_type):
     def cancellation(request):
         if str(request.url) == FEED:
             return None
         # Test-only mutation of the actual captured CAP; no synthetic observation.
         root = ET.fromstring((FIXTURES / f"s09_sachet_cap_{IDS[0]}.xml").read_bytes())
         ns = {"cap": "urn:oasis:names:tc:emergency:cap:1.2"}
-        root.find("cap:msgType", ns).text = "Cancel"
+        root.find("cap:msgType", ns).text = message_type
         for info in root.findall("cap:info", ns):
             root.remove(info)
         return httpx.Response(200, content=ET.tostring(root))
@@ -235,7 +236,7 @@ def test_header_only_cancel_is_retained_as_control_without_invented_row(tmp_path
     row = documents(tmp_path)[IDS[0]]
     assert result["validated"] == 1
     header = json.loads(row["header_json"])
-    assert header["msg_type"] == "Cancel" and header["references"]
+    assert header["msg_type"] == message_type and header["references"]
     assert "event" not in header and "severity" not in header
 
 

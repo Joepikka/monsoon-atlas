@@ -69,6 +69,14 @@ test('area-only official CAP text survives hot validation without invented coord
   assert.equal(clean.snapshot.records[0].area_text,area.area_text);
 });
 
+test('partial CAP coverage survives transport with its actual validation clock',async()=>{
+  const partial={...snapshot,sources:[{...snapshot.sources[0],status:'partial',detail:'CAP-only subset; coverage incomplete'}]};
+  const clean=await decodeUpload(gzipSync(JSON.stringify({source_id:'S09',snapshot:partial})),now);
+  assert.equal(clean.snapshot.sources[0].status,'partial');
+  assert.equal(clean.snapshot.sources[0].last_success_at,cap.fetched_at);
+  assert.equal(clean.snapshot.records[0].fetched_at,cap.fetched_at);
+});
+
 test('corrupt stored data is a server availability failure, never a client input error',async()=>{
   await assert.rejects(()=>restoreUpload(new Uint8Array([1,2,3]),'a'.repeat(64),now),error=>error.status===503);
 });

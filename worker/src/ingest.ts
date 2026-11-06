@@ -54,7 +54,7 @@ function validateEnvelope(value: unknown, now: number): Pick<Upload, 'source_id'
   if (snapshot.records.some(record => record.source_id !== decoded.source_id || Date.parse(record.fetched_at) > cutoff ||
       record.kind !== (decoded.source_id === 'S09' ? 'alert' : 'weather'))) throw new UploadError('Record source, layer or fetch time does not match the upload.');
   if (snapshot.places.length || snapshot.facilities.length || snapshot.sources.length !== 1 ||
-      snapshot.sources[0].source_id !== decoded.source_id || snapshot.sources[0].status !== 'available' || !snapshot.sources[0].last_success_at) {
+      snapshot.sources[0].source_id !== decoded.source_id || !['available','partial'].includes(snapshot.sources[0].status) || !snapshot.sources[0].last_success_at) {
     throw new UploadError('A hot snapshot needs its own successful source health, without unrelated data.');
   }
   return { source_id: decoded.source_id, snapshot };

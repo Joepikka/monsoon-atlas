@@ -38,10 +38,12 @@ try {
   const get=()=>mf.dispatchFetch('https://atlas.invalid/api/v1/current?state=ka');
   assert.equal((await mf.dispatchFetch('https://atlas.invalid/internal/ingest',{method:'POST',body:'untrusted'})).status,401);
   const good=envelope(cap,'S09');
+  good.snapshot.sources[0].status='partial';
   const stored=await post(good); assert.equal(stored.status,201,await stored.clone().text());
   const id=(await stored.json()).snapshot_id;
   const first=await get(); assert.equal(first.status,200,await first.clone().text());
   const source=(await first.json()).sources[0];
+  assert.equal(source.snapshot.sources[0].status,'partial');
   assert.equal(source.sha256,id); assert.equal(source.snapshot.records[0].issued_at,cap.issued_at);
   assert.equal(source.snapshot.records[0].longitude,null);
   assert.equal(source.snapshot.records[0].area_text,cap.area_text);

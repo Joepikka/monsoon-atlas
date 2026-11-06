@@ -1,9 +1,15 @@
-# Single local CAP capture; never enables scheduling or publication.
+# Local CAP capture or preparation; never enables scheduling or publication.
 $ErrorActionPreference = 'Stop'
 $atlasRoot = Split-Path -Parent $PSScriptRoot
 $env:TEMP = Join-Path $atlasRoot '.cache/tmp'
 $env:TMP = $env:TEMP
 $env:PYTHONUTF8 = '1'
 Set-Location -LiteralPath $atlasRoot
-& (Join-Path $atlasRoot '.venv/Scripts/python.exe') -m atlas.ingest.s09_collect @args
+$atlasModule = 'atlas.ingest.s09_collect'
+$atlasArguments = $args
+if ($args.Count -gt 0 -and $args[0] -eq 'prepare') {
+    $atlasModule = 'atlas.ingest.s09_prepare'
+    $atlasArguments = @($args | Select-Object -Skip 1)
+}
+& (Join-Path $atlasRoot '.venv/Scripts/python.exe') -m $atlasModule @atlasArguments
 exit $LASTEXITCODE

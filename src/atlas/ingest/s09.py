@@ -12,7 +12,7 @@ import re
 import struct
 import time
 import xml.etree.ElementTree as ET
-from collections.abc import Mapping
+from collections.abc import Iterable, Mapping
 from datetime import UTC, datetime
 
 import pyarrow as pa
@@ -267,13 +267,8 @@ class S09:
         return with_mapping(table, mapping, MAPPING_VERSION)
 
 
-def supersede(table: pa.Table) -> pa.Table:
-    """Apply only Update/Cancel references to exact (sender,identifier,sent) targets.
-
-    Unmatched/malformed references stay unresolved; control messages are not
-    active hazard warnings. Input order does not confer authority on a reference.
-    """
-    rows = table.select(["sender", "alert_id", "sent_at", "msg_type", "references"]).to_pylist()
+def superseded_identities(rows: Iterable[Mapping]) -> set[tuple[str, str, datetime]]:
+    """Exact predecessor keys; also works with real header-only control metadata."""
     replaced = set()
     for row in rows:
         if row["msg_type"] not in {"Update", "Cancel"}:
@@ -289,6 +284,17 @@ def supersede(table: pa.Table) -> pa.Table:
             identity = (parts[0], parts[1], sent)
             if identity != (row["sender"], row["alert_id"], row["sent_at"]):
                 replaced.add(identity)
+    return replaced
+
+
+def supersede(table: pa.Table) -> pa.Table:
+    """Apply only Update/Cancel references to exact (sender,identifier,sent) targets.
+
+    Unmatched/malformed references stay unresolved; control messages are not
+    active hazard warnings. Input order does not confer authority on a reference.
+    """
+    rows = table.select(["sender", "alert_id", "sent_at", "msg_type", "references"]).to_pylist()
+    replaced = superseded_identities(rows)
     keep = [
         row["msg_type"] in {"Alert", "Update"}
         and (row["sender"], row["alert_id"], row["sent_at"]) not in replaced

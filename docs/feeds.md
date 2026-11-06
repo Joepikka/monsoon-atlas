@@ -40,3 +40,43 @@ to retained warnings belongs to the normalization/producer task.
 No reviewed snapshot, browser polling, cloud upload, resource or recurring
 workflow is created. Full T043 remains pending producer/projection, durable
 runner restoration/backoff integration, bounded workflow tests and H05.
+
+## Local snapshot preparation (T235)
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 prepare
+```
+
+This reads retained CAP evidence without provider calls. Every input hash/path
+is checked; 304 checks retain the original content's first retrieval clock.
+Only Actual/Public messages with issue times at or before the cutoff enter
+control handling. Exact sender/identifier/sent references apply even for
+header-only Updates and Cancels; these contribute no invented warning rows.
+Ack/Error and non-public controls cannot remove a
+warning. Expired messages stay in raw history and leave the current projection.
+Malformed documents retain dated last-good warnings and explicitly partial
+health; their downloads cannot refresh the successful validation clock.
+
+`.cache/feeds/prepared/` contains content-addressed envelopes and input manifests.
+Their local `prepared.json` pointer is **prepared_only**, without publication
+approval. Payload and input hashes are distinct and cover their exact bytes.
+Both raw and compressed transport sizes must fit one MiB. The pointer moves
+atomically after the immutable files exist; concurrent/older preparations cannot
+roll it back, and different bytes at the same cutoff conflict. Corruption or a
+failed preparation preserves the previous pointer. No files are purged.
+Preparation reads the ledger strictly. A damaged entry, even one the collector's
+tolerant reader can skip, stops preparation. Known input identities and their
+content clocks cannot disappear or move between later preparations; deleting or
+retargeting a completed control entry cannot resurrect its warning. Restore
+damaged evidence from retained originals rather than bypassing these checks.
+The report cutoff stays separate from the actual preparation time stored in
+`published_at`; repeated identical preparation preserves that first creation
+time and byte identity. This field does not grant public publication approval.
+
+All prepared S09 results remain partial, including empty/expired-state results.
+The Worker validator can carry partial health with its actual validation clock;
+it does not relabel that source available. Python-produced bytes are checked
+against the actual Worker validator in the optional local integration test.
+Preparation performs no upload or public release. Full T043 still needs the
+bounded scheduling/upload integration and active-page refresh, with H05/H11
+before cloud/public activation.

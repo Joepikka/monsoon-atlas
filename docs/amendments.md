@@ -197,6 +197,14 @@ partial and local; no reviewed publication, cloud upload or recurring workflow
 is enabled. Estimate: 3 hours. Acceptance:
 `.\.venv\Scripts\python -m pytest tests/sources/test_s09_collect.py -q`.
 
+## A18. Local CAP normalization and prepared snapshots (D66, 6 November 2026)
+
+T235 is a child of T043 after T229/T230/T232/T234. It turns retained real CAP
+evidence into a local bounded transport envelope, applying exact public control
+references and preserving source clocks, partial coverage and immutable inputs.
+It adds no upload, public approval or recurring work. Estimate: 3 hours.
+Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s09_prepare.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -217,6 +225,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T235
+    parent: T043
+    title: "Prepare bounded local CAP snapshots with exact control handling"
+    phase: P1
+    state: KA
+    depends_on: [T229, T230, T232, T234]
+    files: [src/atlas/ingest/s09_prepare.py, src/atlas/ingest/s09.py, src/atlas/ingest/s09_collect.py, tests/sources/test_s09_prepare.py, tests/sources/test_s09_collect.py, worker/src/ingest.ts, worker/tests/core.test.mjs, worker/tests/runtime.test.mjs, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Validate retained raw hashes and prepare source-backed warning records with original clocks"
+      - "Apply exact Actual/Public Update/Cancel references, including header-only controls; retain partial coverage"
+      - "Write bounded immutable envelopes and input manifests atomically without upload or publication approval"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s09_prepare.py -q'
+      expected: "Actual source clocks and control identities survive preparation; corrupt or oversized input preserves the last prepared snapshot"
+    hours: 3
   - id: T234
     parent: T043
     title: "Bounded local CAP-only collection with durable evidence checkpoints"

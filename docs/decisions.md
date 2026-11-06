@@ -2,6 +2,23 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D66 — Local CAP normalization and prepared transport snapshots (6 Nov 2026),
+  before implementation.** Split T235 from T043 after T234. Validate retained
+  raw evidence and preserve original content clocks; select exact CAP message
+  identities and apply Actual/Public Update/Cancel references, including
+  header-only controls, without inventing warning rows. Prepare a bounded
+  immutable local JSON envelope and source-input manifest with atomic pointer
+  movement. Expired messages and controls remain in raw history even when they
+  are absent from the current warning projection. CAP-only coverage remains
+  partial, including a valid empty Karnataka result. Permit explicitly partial
+  source health through the local Worker contract, preserving its classification
+  and actual check clocks. This child does not upload, approve publication,
+  activate workflows or claim complete coverage. Failed preparation and corrupt
+  evidence must not replace the last prepared snapshot. A mixed valid/malformed
+  capture may retain dated last-good warnings, with partial health and validation
+  clocks derived only from valid documents; malformed downloads cannot refresh
+  that clock.
+
 - **D65 — Bounded local CAP-only collection (6 Nov 2026), before implementation.**
   Split T234 from T043 to implement the local collector before activating any
   workflow. A cold CAP+polygon sweep has 200 one-second sleeps for the captured

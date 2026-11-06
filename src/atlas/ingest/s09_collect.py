@@ -105,9 +105,11 @@ def validate_cap(raw: RawArtifact) -> dict:
         if len(parts) != 3 or not all(parts):
             raise IngestError("S09: malformed CAP reference")
         _time(parts[2])
-    if header["msgType"] in {"Alert", "Update"}:
+    infos = root.findall("cap:info", NS)
+    if header["msgType"] == "Alert" or (header["msgType"] == "Update" and infos):
         S09("ka").parse(raw, load_state(ROOT / "configs/states/ka.yaml").source("S09"))
     header["msg_type"] = header.pop("msgType")
+    header["has_info"] = bool(infos)
     return header
 
 
