@@ -16,7 +16,10 @@ try {
   const db = await mf.getD1Database('DB');
   const schema = readFileSync(new URL('../schema.sql',import.meta.url),'utf8');
   for (const statement of schema.split(/\n(?=(?:CREATE TABLE|CREATE TRIGGER|INSERT INTO capacity|PRAGMA)\b)/)) {
-    if (statement.trim()) await db.prepare(statement).run();
+    if (statement.trim()) {
+      try { await db.prepare(statement).run(); }
+      catch (cause) { throw new Error(`Failed schema statement: ${statement.trim().split('\n')[0]}`,{cause}); }
+    }
   }
   const fixture = name => JSON.parse(readFileSync(new URL(`../../web/tests/fixtures/${name}.json`,import.meta.url),'utf8'));
   const cap=fixture('sachet-ka-point'); const weather=fixture('openmeteo-temperature-point');

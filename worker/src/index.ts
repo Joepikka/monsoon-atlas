@@ -50,7 +50,8 @@ async function current(url: URL, db: Database, now: number): Promise<Response> {
     const upload = await restoreUpload(Uint8Array.from(row.payload), row.sha256, now);
     if (upload.source_id !== row.source_id) return fallback('Stored source identity mismatch.');
     sources.push({ source_id: upload.source_id, sha256: upload.sha256,
-      age_seconds: Math.floor((now - Date.parse(upload.snapshot.as_of)) / 1000), snapshot: upload.snapshot });
+      age_seconds: Math.floor((now - Date.parse(upload.snapshot.sources[0].last_success_at!)) / 1000),
+      snapshot_age_seconds: Math.floor((now - Date.parse(upload.snapshot.as_of)) / 1000), snapshot: upload.snapshot });
   }
   const resultBody = JSON.stringify({ schema_version: 1, state: 'ka', sources });
   if (new TextEncoder().encode(resultBody).byteLength > 1024 * 1024) return fallback('Combined hot response exceeds the byte cap.');

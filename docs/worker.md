@@ -38,7 +38,9 @@ reservation. A conflicting snapshot at the same source/state/millisecond cutoff
 returns 409, preserving the prior head; the original as-of string remains in the
 payload. Newer successful cutoffs advance the head atomically. Stored corruption
 returns 503. `GET /api/v1/current?state=ka[&source=S01|S09]` returns each available
-source's canonical snapshot, SHA256 and age in seconds from its actual cutoff.
+source's canonical snapshot, SHA256 and age in seconds from its actual successful
+source fetch. `snapshot_age_seconds` separately measures the report cutoff's age;
+a later report cannot make old source data appear freshly fetched.
 An empty store is unavailable, not evidence of no hazards. S01 and S09 remain
 separate source entries, not a claim of complete source coverage.
 

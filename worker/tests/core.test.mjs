@@ -75,3 +75,18 @@ test('unsigned uploads and unknown state/query parameters are rejected without s
   assert.equal((await worker.fetch(new Request('https://atlas.invalid/api/v1/current?state=ka&url=https://elsewhere.invalid'),env)).status,400);
   assert.equal(touched,false);
 });
+
+test('source age uses the actual successful fetch, not a later report cutoff',async()=>{
+  const weather=JSON.parse(readFileSync(new URL('../../web/tests/fixtures/openmeteo-temperature-point.json',import.meta.url),'utf8'));
+  const packet=await decodeUpload(gzipSync(JSON.stringify({source_id:'S01',snapshot:{...snapshot,records:[weather],sources:[{
+    source_id:'S01',status:'available',last_success_at:weather.fetched_at,detail:'Actual captured forecast',
+  }]}})),Date.now());
+  const env={CAPABILITY_GATE:'verified_free_no_card',DB:{prepare(){return {bind(){return this;},async all(){return {results:[{
+    source_id:'S01',payload:Array.from(packet.compressed),sha256:packet.sha256,
+  }]};}};}}};
+  const before=Date.now();
+  const response=await worker.fetch(new Request('https://atlas.invalid/api/v1/current?state=ka'),env);
+  assert.equal(response.status,200);
+  const source=(await response.json()).sources[0];
+  assert.ok(Math.abs(source.age_seconds-Math.floor((before-Date.parse(weather.fetched_at))/1000))<=1);
+});
