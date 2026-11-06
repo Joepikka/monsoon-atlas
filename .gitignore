@@ -31,6 +31,8 @@ mlruns/
 # Frontend
 node_modules/
 dist/
+web/test-results/
+web/playwright-report/
 
 # OS / editor
 .DS_Store
