@@ -80,3 +80,27 @@ against the actual Worker validator in the optional local integration test.
 Preparation performs no upload or public release. Full T043 still needs the
 bounded scheduling/upload integration and active-page refresh, with H05/H11
 before cloud/public activation.
+
+## One bounded local refresh (T236)
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 refresh --max-documents 30
+```
+
+The parent gives the entire capture/preparation child 150 seconds. Neither phase
+launches another process. Completed raw/checkpoint writes and atomic prepared
+files survive a deadline. Startup/cleanup overhead is additional; this is not
+certification of a three-minute GitHub job.
+
+The JSON result reports both collection and preparation. A not-due/deferred or
+failed provider check can still prepare already retained evidence, including a
+completed control captured before an interruption. Its actual validation clock
+stays dated; preparing again does not make the source newly validated. Identical
+replay at one cutoff keeps its byte identity. Missing/corrupt evidence fails
+preparation and retains the previous head; absence of evidence cannot generate
+a fake empty feed. The public command exits unsuccessfully on failed preparation
+or a deadline.
+
+This runner is local S09 preparation. S01 preparation, authenticated cloud
+admission/upload, durable cloud restoration, scheduling and active-page polling
+remain in T043. No credential, account, recurring job or public release is used.

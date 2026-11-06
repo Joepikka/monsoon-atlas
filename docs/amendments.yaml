@@ -1,6 +1,21 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T236
+    parent: T043
+    title: "Bounded local CAP capture and preparation runner"
+    phase: P1
+    state: KA
+    depends_on: [T234, T235]
+    files: [src/atlas/ingest/refresh.py, scripts/feeds.ps1, tests/test_feed_refresh.py, docs/feeds.md]
+    steps:
+      - "Combine existing capture/preparation in one HTTP-only child with a 150-second parent bound"
+      - "Respect shared local admission/backoff and recover retained controls without inventing validation clocks"
+      - "Keep partial prepared-only output and preserve prior state after errors/deadlines without cloud activity"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_feed_refresh.py -q'
+      expected: "Duplicate/deferred capture makes no excess provider calls; preparation and capture share the hard deadline and retain completed evidence"
+    hours: 2
   - id: T235
     parent: T043
     title: "Prepare bounded local CAP snapshots with exact control handling"

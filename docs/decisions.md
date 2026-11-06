@@ -2,6 +2,17 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D67 — One bounded local CAP refresh command (6 Nov 2026), before implementation.**
+  Split T236 from T043 after T234/T235. Run capture and preparation in one
+  HTTP-only child with a 150-second parent deadline, rather than nesting child
+  launchers. Shared local admission/cooldown still controls provider calls.
+  Preparation can use already retained evidence after not-due, deferred or
+  failed collection, so a completed control from an interrupted run need not wait
+  for another provider call. Its validation clocks remain the actual retained
+  clocks, and coverage remains partial. A preparation error leaves its prior
+  pointer intact. This local-only runner does not implement S01, upload, recurring
+  jobs or cloud activation; full T043 still requires those steps and its gates.
+
 - **D66 — Local CAP normalization and prepared transport snapshots (6 Nov 2026),
   before implementation.** Split T235 from T043 after T234. Validate retained
   raw evidence and preserve original content clocks; select exact CAP message

@@ -253,9 +253,13 @@ https://github.com/Joepikka/monsoon-atlas/actions/runs/42250185879 ,
 https://github.com/Joepikka/monsoon-atlas/actions/runs/42250185714 ,
 https://github.com/Joepikka/monsoon-atlas/actions/runs/42250185614 .
 The tested batch is draft PR #5: https://github.com/Joepikka/monsoon-atlas/pull/5 .
-T235 local preparation and review fixes pass at `6aa8b24`; actual D1 verification
-of partial-health persistence follows the next push. The local integration test
-already validates Python-produced payloads with the actual Worker decoder/restore.
+T235 at `08fd4d0` passed core CI on Windows/Ubuntu, actual partial-health D1
+persistence on Ubuntu, and web checks on Windows/Ubuntu:
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42256005921 ,
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42256005957 ,
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42256006061 .
+The local integration test also validates Python-produced payloads with the
+actual Worker decoder/restore. T236's local bounded runner is in progress.
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace

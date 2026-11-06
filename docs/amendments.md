@@ -205,6 +205,14 @@ references and preserving source clocks, partial coverage and immutable inputs.
 It adds no upload, public approval or recurring work. Estimate: 3 hours.
 Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s09_prepare.py -q`.
 
+## A19. Bounded local CAP refresh runner (D67, 6 November 2026)
+
+T236 is a child of T043 after T234/T235. One local command captures and prepares
+retained KA CAP evidence under a single 150-second child deadline. Provider
+admission/backoff and actual source clocks survive recovery; no upload or
+recurring work is enabled. Estimate: 2 hours. Acceptance:
+`.\.venv\Scripts\python -m pytest tests/test_feed_refresh.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -225,6 +233,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T236
+    parent: T043
+    title: "Bounded local CAP capture and preparation runner"
+    phase: P1
+    state: KA
+    depends_on: [T234, T235]
+    files: [src/atlas/ingest/refresh.py, scripts/feeds.ps1, tests/test_feed_refresh.py, docs/feeds.md]
+    steps:
+      - "Combine existing capture/preparation in one HTTP-only child with a 150-second parent bound"
+      - "Respect shared local admission/backoff and recover retained controls without inventing validation clocks"
+      - "Keep partial prepared-only output and preserve prior state after errors/deadlines without cloud activity"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_feed_refresh.py -q'
+      expected: "Duplicate/deferred capture makes no excess provider calls; preparation and capture share the hard deadline and retain completed evidence"
+    hours: 2
   - id: T235
     parent: T043
     title: "Prepare bounded local CAP snapshots with exact control handling"
