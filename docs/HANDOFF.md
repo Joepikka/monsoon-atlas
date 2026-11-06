@@ -192,6 +192,7 @@ and a YAML block `- id: T057`.
 | T116 | `546ad49` | Disabled S33 adapter raises SourceUnavailable before I/O, including forced-enable attempts. No dataset/field schema invented. Acceptance: 3 passed in 0.42s. |
 | T025 retry | This continuation commit | D52/D53: public browser metadata verifies GODL-India, with three labelled local projections and hashes. Price denominator still unlabelled; S23 stays disabled. Original API captures unchanged. Acceptance: 8 passed in 0.16s. |
 | T024 | This continuation commit | S22 disabled adapter; forced config flags cannot enable network/file access or produce rows. Acceptance: 3 passed in 0.45s; full suite 435 passed, 1 skipped in 103.29s; lint/format pass. No unverified schema invented. |
+| T026 | This continuation commit | S23 disabled adapter retains the unit gate despite verified GODL. Acceptance: 3 passed in 0.06s; full suite 438 passed, 1 skipped in 91.97s; lint passes. |
 
 T025 retry final validation: `432 passed, 1 skipped, 1 warning in 115.94s`;
 lint passes, 128 files pass formatting, dependency policy reports 0 problems
@@ -345,7 +346,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    tested). This supplies a source-availability status, not observations for M07.
 7. **Prices:** T025's GODL licence is verified; the price denominator remains unverified.
    Capture a publisher unit statement tied to the actual resource before enabling ingestion
-   in T026 or T035 to T037. T024 is the separate S22 blocked-adapter task. The S23 API key was
+   in T026 or T035 to T037. T024/T026 disabled adapters are complete. The S23 API key was
    already supplied; do not request it again without cause.
 8. Then A8 steps 9 to 13: map and product, hosting, C3 Ask, T225 case studies, T046 MVP
    gate.
