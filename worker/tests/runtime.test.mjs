@@ -16,7 +16,7 @@ try {
   const db = await mf.getD1Database('DB');
   // Pinned workerd rejects a comment-only tail after a prepared statement.
   const schema = readFileSync(new URL('../schema.sql',import.meta.url),'utf8').replace(/^\s*--.*$/gm,'');
-  for (const statement of schema.split(/\n(?=(?:CREATE TABLE|CREATE TRIGGER|INSERT INTO capacity|PRAGMA)\b)/)) {
+  for (const statement of schema.split(/\n(?=(?:CREATE|INSERT INTO capacity|PRAGMA)\b)/)) {
     if (statement.trim()) {
       try { await db.prepare(statement).run(); }
       catch (cause) { throw new Error(`Failed schema statement: ${statement.trim().split('\n')[0]}`,{cause}); }
@@ -26,12 +26,13 @@ try {
   const cap=fixture('sachet-ka-area'); const weather=fixture('openmeteo-temperature-point');
   const envelope = (record,source) => ({source_id:source,snapshot:{schema_version:1,state:'ka',release_id:'actual-runtime-contract',data_revision:'e'.repeat(64),
     as_of:cap.fetched_at,published_at:cap.fetched_at,records:[record],sources:[{source_id:source,status:'available',last_success_at:record.fetched_at,detail:'Captured source sample'}]}});
-  const signed=async value=>{
-    const bytes=gzipSync(JSON.stringify(value)); const timestamp=String(Math.floor(Date.now()/1000));
+  const signed=async (value,path='/internal/ingest',contentType='application/gzip')=>{
+    const bytes=contentType==='application/gzip'?gzipSync(JSON.stringify(value)):new TextEncoder().encode(JSON.stringify(value));
+    const timestamp=String(Math.floor(Date.now()/1000));
     const hash=Buffer.from(await webcrypto.subtle.digest('SHA-256',bytes)).toString('hex');
     const secret=await webcrypto.subtle.importKey('raw',new TextEncoder().encode(key),{name:'HMAC',hash:'SHA-256'},false,['sign']);
-    const signature=Buffer.from(await webcrypto.subtle.sign('HMAC',secret,new TextEncoder().encode(`${timestamp}\nPOST\n/internal/ingest\n${hash}`))).toString('hex');
-    return {method:'POST',body:bytes,headers:{'Content-Type':'application/gzip','X-Atlas-Timestamp':timestamp,'X-Atlas-Signature':signature}};
+    const signature=Buffer.from(await webcrypto.subtle.sign('HMAC',secret,new TextEncoder().encode(`${timestamp}\nPOST\n${path}\n${hash}`))).toString('hex');
+    return {method:'POST',body:bytes,headers:{'Content-Type':contentType,'X-Atlas-Timestamp':timestamp,'X-Atlas-Signature':signature}};
   };
   const post=async value=>mf.dispatchFetch('https://atlas.invalid/internal/ingest',await signed(value));
   const get=()=>mf.dispatchFetch('https://atlas.invalid/api/v1/current?state=ka');
@@ -72,5 +73,23 @@ try {
   assert.equal((await get()).status,503);
   await db.prepare('UPDATE hot_snapshots SET payload=? WHERE id=?').bind(Uint8Array.from(original),id).run();
   assert.equal((await get()).status,200);
+  // A runner cache loss is irrelevant: two real D1 admissions race on one source slot.
+  await db.prepare('UPDATE capacity SET allocated_bytes=0').run();
+  await db.prepare('UPDATE daily_usage SET writes_reserved=0').run();
+  const claim=async source=>mf.dispatchFetch('https://atlas.invalid/internal/feed-check',await signed({state:'ka',source_id:source},'/internal/feed-check','application/json'));
+  const claims=await Promise.all([claim('S09'),claim('S09')]);
+  assert.ok(claims.every(result=>[200,201].includes(result.status)),await Promise.all(claims.map(r=>r.clone().text())));
+  const admitted=await Promise.all(claims.map(result=>result.json()));
+  assert.equal(admitted.filter(result=>result.admitted===true).length,1);
+  assert.equal(admitted.filter(result=>result.admitted===false).length,1);
+  assert.equal(await db.prepare('SELECT COUNT(*) n FROM feed_checks').first('n'),1);
+  assert.equal(await db.prepare('SELECT writes_reserved FROM daily_usage').first('writes_reserved'),20);
+  await db.prepare('UPDATE daily_usage SET writes_reserved=10000').run();
+  assert.equal((await claim('S01')).status,429);
+  await db.prepare('UPDATE daily_usage SET writes_reserved=20').run();
+  await db.prepare('UPDATE capacity SET allocated_bytes=399999999').run();
+  assert.equal((await claim('S01')).status,507);
+  assert.equal(await db.prepare('SELECT COUNT(*) n FROM feed_checks').first('n'),1);
   console.log('PASS: actual Miniflare/D1 auth, clocks/hash, duplicate concurrency, conflicting cutoff, storage/write rollback and last-good checks');
+  console.log('PASS: actual D1 source-check concurrency and atomic admission/cap guards');
 } finally { await mf.dispose(); }

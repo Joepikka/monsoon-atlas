@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D64 — Durable source-check admission before polling (6 Nov 2026), before
+  implementation.** A volatile GitHub cache cannot enforce T043's check caps
+  after a cache miss, delayed job or manual retry. Split T233 from T043 to add
+  signed, server-clock admission at the owned `/internal/feed-check` endpoint.
+  A D1 transaction allows at most one S01 admission per six elapsed hours and
+  one S09 admission per fifteen elapsed minutes, including across runners and
+  UTC bucket boundaries. Lost responses consume the slot rather than permitting
+  an unbounded retry. Reserve storage and row/index writes within the existing
+  caps; account failures or exhausted capacity deny provider calls. Only KA's
+  verified public S01/S09 feeds are eligible. This is a local/CI protocol child,
+  not a deployed coordinator or a completed fetch/schedule/poller pipeline.
+
 - **D63 — Match complete CAP reference identities (6 Nov 2026), before
   implementation.** OASIS CAP 1.2 section 3.2.1 defines an extended reference
   as sender, identifier and sent time. The existing identifier-only supersession

@@ -1,4 +1,6 @@
 import { authenticate, boundedBytes, decodeUpload, HOT_SOURCES, restoreUpload, UploadError } from './ingest.ts';
+import { claimFeedCheck } from './feed-check.ts';
+import { reply, fallback } from './responses.ts';
 
 interface Result<T> { results: T[]; meta: { size_after?: number; rows_written?: number } }
 interface Statement {
@@ -8,8 +10,6 @@ interface Statement {
 }
 export interface Database { prepare(sql: string): Statement; batch(statements: Statement[]): Promise<Result<unknown>[]> }
 export interface Env { CAPABILITY_GATE?: string; ATLAS_INGEST_HMAC_KEY?: string; DB?: Database }
-const reply = (data: unknown, status = 200) => Response.json(data, { status, headers: { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' } });
-const fallback = (message: string, status = 503) => reply({ status: 'unavailable', fallback: 'static_daily', message }, status);
 
 async function ingest(request: Request, env: Env, now: number): Promise<Response> {
   const bytes = await boundedBytes(request.body);
@@ -61,10 +61,11 @@ async function current(url: URL, db: Database, now: number): Promise<Response> {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
-    if (!['/internal/ingest', '/api/v1/current'].includes(url.pathname)) return reply({ error: 'Not found.' }, 404);
+    if (!['/internal/ingest', '/internal/feed-check', '/api/v1/current'].includes(url.pathname)) return reply({ error: 'Not found.' }, 404);
     if (env.CAPABILITY_GATE !== 'verified_free_no_card' || !env.DB) return fallback('Free/no-card capability or database binding has not been verified.');
     try {
       if (url.pathname === '/internal/ingest' && request.method === 'POST' && !url.search) return await ingest(request, env, Date.now());
+      if (url.pathname === '/internal/feed-check' && request.method === 'POST' && !url.search) return await claimFeedCheck(request, env, Date.now());
       if (url.pathname === '/api/v1/current' && request.method === 'GET') return await current(url, env.DB, Date.now());
       return reply({ error: 'Unsupported method or query.' }, 405);
     } catch (error) {

@@ -179,6 +179,15 @@ than dropping unrelated warnings. It also requires timezone-bearing dates and
 Actual/Public lifecycle messages for public warnings. Estimate: 1 hour. Acceptance:
 `.\.venv\Scripts\python -m pytest tests/sources/test_s09.py -q`.
 
+## A16. Durable bounded source-check admission (D64, 6 November 2026)
+
+T233 is a child of T043 after T229/T232. It adds authenticated, atomic source-check
+admission using D1's server clock so lost runner caches or duplicate jobs cannot
+bypass weather/alert cadence caps. Estimate: 2 hours. Acceptance:
+`.\.venv\Scripts\python -m pytest tests/test_schedule_feeds.py -q`.
+Actual provider collection, workflow activation and browser polling remain in
+T043; full T042 and cloud admission remain pending H05.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -199,6 +208,22 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T233
+    parent: T043
+    title: "Durable source-check admission for bounded weather and alert polling"
+    phase: P1
+    state: KA
+    depends_on: [T229, T232]
+    files: [worker/schema.sql, worker/src/, worker/tests/, tests/test_schedule_feeds.py, docs/worker.md]
+    steps:
+      - "Authenticate source-check admission using the server clock and existing HMAC contract"
+      - "Use atomic elapsed-cadence and storage/write guards across retries and UTC bucket boundaries"
+      - "Verify 24-hour 4/96 caps and actual D1 duplicate admission without deploying"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_schedule_feeds.py -q'
+      expected: "Duplicate/delayed jobs and absent runner cache cannot exceed source-check admission caps"
+    human_gate: "Cloud activation still requires H05 and the actual free/no-card capability probe"
+    hours: 2
   - id: T232
     parent: T043
     title: "Match complete CAP reference identities during supersession"

@@ -36,6 +36,34 @@ CREATE TRIGGER hot_guard BEFORE INSERT ON hot_snapshots BEGIN
   SELECT CASE WHEN (SELECT writes_reserved FROM daily_usage WHERE day=NEW.budget_day)
     + 20 > 10000 THEN RAISE(ABORT,'write_cap') END;
 END;
+
+CREATE TABLE feed_checks (
+  state TEXT NOT NULL CHECK(state='ka'),
+  source_id TEXT NOT NULL CHECK(source_id IN ('S01','S09')),
+  period_index INTEGER NOT NULL CHECK(period_index>=0),
+  admitted_ms INTEGER NOT NULL CHECK(admitted_ms>=0),
+  budget_day TEXT NOT NULL REFERENCES daily_usage(day),
+  database_bytes INTEGER NOT NULL CHECK(database_bytes>=0),
+  PRIMARY KEY(state,source_id,period_index)
+);
+CREATE INDEX feed_check_clock ON feed_checks(state,source_id,admitted_ms DESC);
+CREATE TRIGGER feed_check_guard BEFORE INSERT ON feed_checks BEGIN
+  SELECT CASE WHEN NEW.period_index<>CAST(NEW.admitted_ms /
+    CASE NEW.source_id WHEN 'S01' THEN 21600000 ELSE 900000 END AS INTEGER)
+    THEN RAISE(ABORT,'invalid_check_period') END;
+  SELECT CASE WHEN EXISTS (
+    SELECT 1 FROM feed_checks WHERE state=NEW.state AND source_id=NEW.source_id
+    AND admitted_ms > NEW.admitted_ms - CASE NEW.source_id WHEN 'S01' THEN 21600000 ELSE 900000 END
+  ) THEN RAISE(ABORT,'check_not_due') END;
+  SELECT CASE WHEN MAX((SELECT allocated_bytes FROM capacity WHERE id=1),NEW.database_bytes)
+    + 16384 > 400000000 THEN RAISE(ABORT,'storage_cap') END;
+  SELECT CASE WHEN (SELECT writes_reserved FROM daily_usage WHERE day=NEW.budget_day)
+    + 20 > 10000 THEN RAISE(ABORT,'write_cap') END;
+END;
+CREATE TRIGGER feed_check_account AFTER INSERT ON feed_checks BEGIN
+  UPDATE capacity SET allocated_bytes=MAX(allocated_bytes,NEW.database_bytes)+16384 WHERE id=1;
+  UPDATE daily_usage SET writes_reserved=writes_reserved+20 WHERE day=NEW.budget_day;
+END;
 CREATE TRIGGER hot_account AFTER INSERT ON hot_snapshots BEGIN
   UPDATE capacity SET allocated_bytes=MAX(allocated_bytes,NEW.database_bytes)+length(NEW.payload)+65536 WHERE id=1;
   UPDATE daily_usage SET writes_reserved=writes_reserved+20 WHERE day=NEW.budget_day;

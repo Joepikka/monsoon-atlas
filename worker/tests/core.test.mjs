@@ -19,12 +19,12 @@ const hex = bytes => Buffer.from(bytes).toString('hex');
 test('runtime harness uses options accepted by the actually installed Miniflare version',()=>{
   assert.doesNotThrow(()=>runtime.MiniflareOptionsSchema.parse(runtimeOptions('export default {}',key)));
 });
-async function signed(bytes=payload(), timestamp=String(Math.floor(now/1000))) {
+async function signed(bytes=payload(), timestamp=String(Math.floor(now/1000)), path='/internal/ingest', contentType='application/gzip') {
   const cryptoKey = await crypto.subtle.importKey('raw',new TextEncoder().encode(key),{name:'HMAC',hash:'SHA-256'},false,['sign']);
-  const message = await uploadMessage(timestamp,'POST','/internal/ingest',bytes);
+  const message = await uploadMessage(timestamp,'POST',path,bytes);
   const signature = hex(await crypto.subtle.sign('HMAC',cryptoKey,message));
-  return new Request('https://atlas.invalid/internal/ingest',{method:'POST',body:bytes,headers:{
-    'Content-Type':'application/gzip','X-Atlas-Timestamp':timestamp,'X-Atlas-Signature':signature,
+  return new Request('https://atlas.invalid'+path,{method:'POST',body:bytes,headers:{
+    'Content-Type':contentType,'X-Atlas-Timestamp':timestamp,'X-Atlas-Signature':signature,
   }});
 }
 
@@ -37,6 +37,19 @@ test('authentication binds exact bytes, timestamp, method and path before storag
   assert.equal(await authenticate(await signed(bytes),bytes,undefined,now),false);
   const changed = await signed(bytes);
   assert.equal(await authenticate(new Request('https://atlas.invalid/other',changed),bytes,key,now),false);
+});
+
+test('source-check admission rejects unsigned, unknown and client-clock requests before storage',async()=>{
+  let touched=false;
+  const env={CAPABILITY_GATE:'verified_free_no_card',ATLAS_INGEST_HMAC_KEY:key,DB:{prepare(){touched=true;throw Error('must not query');}}};
+  const path='/internal/feed-check';
+  assert.equal((await worker.fetch(new Request('https://atlas.invalid'+path,{method:'POST',body:'{}'}),env)).status,401);
+  for(const value of [{state:'kl',source_id:'S09'},{state:'ka',source_id:'S23'},{state:'ka',source_id:'S09',now:0}]){
+    const bytes=new TextEncoder().encode(JSON.stringify(value));
+    const request=await signed(bytes,String(Math.floor(Date.now()/1000)),path,'application/json');
+    assert.equal((await worker.fetch(request,env)).status,400);
+  }
+  assert.equal(touched,false);
 });
 
 test('canonical upload keeps original source clocks and discards unknown fields',async()=>{

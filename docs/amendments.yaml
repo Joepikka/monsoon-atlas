@@ -1,6 +1,22 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T233
+    parent: T043
+    title: "Durable source-check admission for bounded weather and alert polling"
+    phase: P1
+    state: KA
+    depends_on: [T229, T232]
+    files: [worker/schema.sql, worker/src/, worker/tests/, tests/test_schedule_feeds.py, docs/worker.md]
+    steps:
+      - "Authenticate source-check admission using the server clock and existing HMAC contract"
+      - "Use atomic elapsed-cadence and storage/write guards across retries and UTC bucket boundaries"
+      - "Verify 24-hour 4/96 caps and actual D1 duplicate admission without deploying"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_schedule_feeds.py -q'
+      expected: "Duplicate/delayed jobs and absent runner cache cannot exceed source-check admission caps"
+    human_gate: "Cloud activation still requires H05 and the actual free/no-card capability probe"
+    hours: 2
   - id: T232
     parent: T043
     title: "Match complete CAP reference identities during supersession"

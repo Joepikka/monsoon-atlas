@@ -8,6 +8,24 @@ An unavailable capability/binding returns HTTP 503 with `fallback: static_daily`
 it does not advertise a working current feed. The future browser integration
 must retain the dated approved static snapshot, or its existing unavailable view.
 
+T233 adds `POST /internal/feed-check` using the same HMAC message and headers,
+with a bounded `application/json` body containing only `state` and `source_id`.
+Only KA S01/S09 are allowed. The server supplies the admission clock; a client
+cannot supply a bucket or timestamp in the JSON body. An atomic D1 trigger
+requires six elapsed hours for S01 and fifteen elapsed minutes for S09, so a
+late job cannot burst across a UTC bucket or midnight boundary. Duplicate jobs
+receive `admitted: false`; only `admitted: true` authorizes the future producer
+to call a provider. A lost response consumes its slot. Missing capability,
+authentication, database, storage or write budget never authorizes a call.
+
+Each successful admission reserves 20 row/index writes and 16 KiB within the
+same shared caps as snapshots. The 24-hour simulation includes duplicate jobs
+with no runner memory and a late start, and permits exactly 4 weather and 96
+alert admissions. Actual D1 concurrency/cap tests run in Ubuntu CI. This is an
+offline protocol implementation; collection, cron activation and browser polling
+remain separate T043 work. The new table/index/triggers are part of the fresh
+bootstrap schema; no existing remote database was migrated or created.
+
 The owned transport accepts `POST /internal/ingest` with `application/gzip`:
 gzip-compressed UTF-8 JSON `{source_id, snapshot}`. The snapshot uses the shared
 browser validator in `web/src/data.ts`; only KA S01 weather and S09 official CAP
