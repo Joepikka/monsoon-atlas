@@ -740,6 +740,37 @@ h1,h2,h3,p{
   background: var(--paper);
   border: 1px solid #a6baab;
 }
+.place-lens { margin: 0 24px 24px; padding: 20px 0; border-top: 1px solid var(--line); font-size: 11px; line-height: 1.8; }
+.place-lens h3 { font-size: 16px; font-weight: 600; margin-bottom: 14px; }
+.place-select { display: flex; flex-direction: column; gap: 5px; color: var(--muted); }
+.place-select select { width: 100%; min-height: 42px; padding: 7px; color: var(--teal); background: var(--paper); border: 1px solid #9bb19e; }
+.report-identity { margin: 18px 0; overflow-wrap: anywhere; }
+.report-identity h4 { font-size: 19px; margin: 0 0 6px; font-weight: 550; }
+.report-identity p { margin-top: 6px; }
+.lens-tabs { display: flex; flex-wrap: wrap; gap: 2px; border-bottom: 1px solid var(--line); margin-bottom: 15px; }
+.lens-tabs button { border: none; border-bottom: 2px solid transparent; padding: 8px 6px; min-height: 38px; color: var(--teal); background: transparent; font-size: 10px; }
+.lens-tabs button[aria-selected=true] { border-color: var(--teal); background: #e8eee4; font-weight: 700; }
+#lens-panel p { margin-bottom: 10px; }
+.lens-records, .lens-sources { padding: 0; margin: 14px 0; list-style: none; }
+.lens-records>li, .lens-sources>li { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.lens-records h4 { margin: 0 0 10px; font-size: 12px; }
+.lens-sources span { display: block; margin-top: 7px; color: var(--muted); overflow-wrap: anywhere; }
+.report-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 20px; }
+.report-actions button { min-height: 38px; border: 1px solid #a6baab; background: var(--paper); color: var(--teal); font-size: 11px; padding: 7px 10px; }
+.print-report { display: none; }
+@media print {
+  @page { size: A4; margin: 18mm; }
+  body { background: white; color: #202c27; }
+  .masthead, .toolbar, .event-ticker, .map-panel, .site-footer, .skip-link, .record-panel> :not(.print-report) { display: none !important; }
+  .atlas, .workspace, .record-panel { display: block; margin: 0; border: 0; box-shadow: none; }
+  .print-report { display: block; font-size: 10pt; line-height: 1.6; }
+  .print-report h1 { font-size: 21pt; margin-bottom: 12pt; }
+  .print-report h2 { font-size: 15pt; margin: 18pt 0 8pt; break-after: avoid; }
+  .print-report .source-times, .print-report .source-times time { font-size: 9pt; }
+  .print-report section { margin-top: 15pt; }
+  .print-report li { break-inside: avoid; }
+  .print-report a, .report-hash { overflow-wrap: anywhere; }
+}
 @media(max-width:680px) {
   .event-ticker {
     padding: 10px 16px;

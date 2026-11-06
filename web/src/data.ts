@@ -5,6 +5,16 @@ export type Health = 'available' | 'stale' | 'unavailable' | 'partial' | 'unknow
 export interface SourceHealth {
   source_id: string; status: Health; last_success_at: string | null; detail: string;
 }
+export interface Place {
+  place_id: string; name: string; kind: 'state' | 'district' | 'ward' | 'h3'; state: StateId;
+  boundary_version: string; longitude: number; latitude: number;
+  source_id: string; source_url: string; licence_id: string; location_note: string;
+}
+export interface Facility {
+  facility_id: string; name: string; longitude: number; latitude: number;
+  source_id: 'S18'; source_url: string; fetched_at: string;
+  verification_status: 'unverified' | 'source_checked';
+}
 
 export interface MapRecord {
   id: string; title: string; longitude: number; latitude: number;
@@ -16,12 +26,17 @@ export interface MapRecord {
   severity: string | null; unit: string | null; value: number | null;
   market: string | null; missing_reason: string | null;
   evidence: 'forecast' | 'reanalysis' | 'hindcast' | null;
+  place_id: string | null; boundary_version: string | null;
+  model_id: string | null; model_status: 'champion' | 'baseline' | 'research_only' | null;
+  warning_text: string | null; instruction: string | null;
 }
 
 export interface Snapshot {
   schema_version: 1; state: StateId; release_id: string; data_revision: string;
   as_of: string; published_at: string; records: MapRecord[];
   sources: SourceHealth[];
+  places: Place[]; facilities: Facility[];
+  release_hash?: string; // Derived from verified bytes by the loader, never trusted from JSON.
 }
 
 export interface ViewState {
@@ -29,7 +44,7 @@ export interface ViewState {
   snapshot: Snapshot | null; message: string;
 }
 
-interface LoadOptions { fetcher?: typeof fetch; now?: number; signal?: AbortSignal }
+interface LoadOptions { fetcher?: typeof fetch; now?: number; signal?: AbortSignal; releaseHash?: string; asOf?: string }
 
 const HASH = /^[a-f0-9]{64}$/;
 const STALE_MS = 24 * 60 * 60 * 1000;
@@ -61,6 +76,22 @@ function nullableText(value: unknown, field: string): string | null {
   return value === null || value === undefined ? null : text(value, field);
 }
 
+function publicUrl(value: unknown): string {
+  const result = text(value, 'source URL');
+  const url = new URL(result);
+  if (url.protocol !== 'https:' || url.username || url.password ||
+      Array.from(url.searchParams.keys()).some(key => /^(api[-_]?key|key|map[-_]?key|access[-_]?token|token|secret|password|authorization)$/i.test(key))) {
+    throw new Error('Invalid public source URL or embedded credential.');
+  }
+  return result;
+}
+
+function coordinates(row: Record<string, unknown>): { longitude: number; latitude: number } {
+  if (typeof row.longitude !== 'number' || !Number.isFinite(row.longitude) || Math.abs(row.longitude) > 180 ||
+      typeof row.latitude !== 'number' || !Number.isFinite(row.latitude) || Math.abs(row.latitude) > 90) throw new Error('Invalid location.');
+  return { longitude: row.longitude, latitude: row.latitude };
+}
+
 export async function sha256(bytes: Uint8Array): Promise<string> {
   const digest = await crypto.subtle.digest('SHA-256', Uint8Array.from(bytes).buffer);
   return Array.from(new Uint8Array(digest), n => n.toString(16).padStart(2, '0')).join('');
@@ -80,16 +111,11 @@ export function parseSnapshot(value: unknown, state: StateId): Snapshot {
     const id = text(row.id, 'record ID');
     if (ids.has(id)) throw new Error('Duplicate snapshot record ID.');
     ids.add(id);
-    if (typeof row.longitude !== 'number' || !Number.isFinite(row.longitude) || Math.abs(row.longitude) > 180 ||
-        typeof row.latitude !== 'number' || !Number.isFinite(row.latitude) || Math.abs(row.latitude) > 90) {
-      throw new Error('Invalid record location.');
-    }
+    const point = coordinates(row);
     if (!['official', 'model', 'inferred', 'reconstructed'].includes(String(row.provenance))) throw new Error('Missing record provenance.');
     const sourceId = text(row.source_id, 'source ID');
     if (!/^S\d{2,}$/.test(sourceId)) throw new Error('Invalid source ID.');
-    const sourceUrl = text(row.source_url, 'source URL');
-    const url = new URL(sourceUrl);
-    if (url.protocol !== 'https:' || url.username || url.password) throw new Error('Invalid public source URL.');
+    const sourceUrl = publicUrl(row.source_url);
     if (!['weather', 'alert', 'price', 'model'].includes(String(row.kind))) throw new Error('Invalid record layer.');
     if (!['point', 'area'].includes(String(row.spatial_scope))) throw new Error('Missing spatial scope.');
     const issued = nullableTime(row.issued_at, 'issued_at');
@@ -113,8 +139,15 @@ export function parseSnapshot(value: unknown, state: StateId): Snapshot {
     if (row.kind === 'alert' && (sourceId !== 'S09' || row.provenance !== 'official')) {
       throw new Error('An inferred or model item cannot enter the official CAP alert layer.');
     }
+    const placeId = nullableText(row.place_id, 'place ID');
+    const boundary = nullableText(row.boundary_version, 'boundary version');
+    if (placeId && !boundary) throw new Error('A place association requires a boundary version.');
+    const modelId = nullableText(row.model_id, 'model ID');
+    const modelStatus = row.model_status ?? null;
+    if (modelId && !/^M\d{2,}$/.test(modelId)) throw new Error('Invalid model ID.');
+    if (modelStatus !== null && !['champion', 'baseline', 'research_only'].includes(String(modelStatus))) throw new Error('Invalid model status.');
     return {
-      id, title: text(row.title, 'record title'), longitude: row.longitude, latitude: row.latitude,
+      id, title: text(row.title, 'record title'), ...point,
       source_id: sourceId, source_url: sourceUrl, provenance: row.provenance as MapRecord['provenance'],
       valid_at: timestamp(row.valid_at, 'valid_at'), fetched_at: timestamp(row.fetched_at, 'fetched_at'),
       ...(row.location_note === undefined ? {} : { location_note: text(row.location_note, 'location note') }),
@@ -123,6 +156,8 @@ export function parseSnapshot(value: unknown, state: StateId): Snapshot {
       severity: nullableText(row.severity, 'provider severity'), unit, value,
       market, missing_reason: nullableText(row.missing_reason, 'missing reason'),
       evidence: evidence as MapRecord['evidence'],
+      place_id: placeId, boundary_version: boundary, model_id: modelId, model_status: modelStatus as MapRecord['model_status'],
+      warning_text: nullableText(row.warning_text, 'original warning'), instruction: nullableText(row.instruction, 'source instruction'),
     };
   });
   if (data.sources !== undefined && !Array.isArray(data.sources)) throw new Error('Invalid source health metadata.');
@@ -140,23 +175,50 @@ export function parseSnapshot(value: unknown, state: StateId): Snapshot {
       last_success_at: lastSuccess, detail: text(source.detail, 'source health detail') };
   });
   if (new Set(sources.map(source => source.source_id)).size !== sources.length) throw new Error('Duplicate source health entry.');
+  if (data.places !== undefined && !Array.isArray(data.places)) throw new Error('Invalid places.');
+  const places: Place[] = ((data.places ?? []) as unknown[]).map(value => {
+    const place = object(value);
+    if (place.state !== state || !['state', 'district', 'ward', 'h3'].includes(String(place.kind))) throw new Error('Invalid place state or kind.');
+    const placeId = text(place.place_id, 'place ID');
+    if ((place.kind === 'h3') !== placeId.startsWith('h3:')) throw new Error('H3 cells cannot be labelled as administrative places.');
+    return { place_id: placeId, name: text(place.name, 'place name'), kind: place.kind as Place['kind'], state,
+      boundary_version: text(place.boundary_version, 'boundary version'), ...coordinates(place),
+      source_id: text(place.source_id, 'place source'), source_url: publicUrl(place.source_url),
+      licence_id: text(place.licence_id, 'place licence'), location_note: text(place.location_note, 'place location note') };
+  });
+  if (new Set(places.map(place => place.place_id + '\0' + place.boundary_version)).size !== places.length) throw new Error('Duplicate place version.');
+  if (data.facilities !== undefined && !Array.isArray(data.facilities)) throw new Error('Invalid facilities.');
+  const facilities: Facility[] = ((data.facilities ?? []) as unknown[]).map(value => {
+    const facility = object(value);
+    if (facility.source_id !== 'S18' || !['unverified', 'source_checked'].includes(String(facility.verification_status))) throw new Error('Invalid facility source or verification.');
+    const fetched = timestamp(facility.fetched_at, 'facility fetched_at');
+    if (Date.parse(fetched) > Date.parse(asOf)) throw new Error('Facility was not known at this cutoff.');
+    return { facility_id: text(facility.facility_id, 'facility ID'), name: text(facility.name, 'facility name'),
+      ...coordinates(facility), source_id: 'S18', source_url: publicUrl(facility.source_url), fetched_at: fetched,
+      verification_status: facility.verification_status as Facility['verification_status'] };
+  });
+  if (new Set(facilities.map(facility => facility.facility_id)).size !== facilities.length) throw new Error('Duplicate facility ID.');
   return { schema_version: 1, state, release_id: text(data.release_id, 'release ID'),
     data_revision: revision, as_of: asOf,
-    published_at: timestamp(data.published_at, 'published_at'), records, sources };
+    published_at: timestamp(data.published_at, 'published_at'), records, sources, places, facilities };
 }
 
 export async function loadSnapshot(state: StateId, previous: Snapshot | null, options: LoadOptions = {}): Promise<ViewState> {
   const fetcher = options.fetcher ?? fetch;
-  const lastGood = previous?.state === state ? previous : null;
+  const lastGood = previous?.state === state && (!options.releaseHash || previous.release_hash === options.releaseHash) &&
+    (!options.asOf || previous.as_of === options.asOf) ? previous : null;
   try {
-    const response = await fetcher(`/data/${state}/latest.json`, {
+    if (options.releaseHash && !HASH.test(options.releaseHash)) throw new Error('Invalid frozen release hash.');
+    const pointerUrl = options.releaseHash ? `/data/${state}/releases/${options.releaseHash}.approval.json` : `/data/${state}/latest.json`;
+    const response = await fetcher(pointerUrl, {
       cache: 'no-store', signal: options.signal, headers: { Accept: 'application/json' },
     });
-    if (response.status === 404 && !lastGood) return { status: 'empty', snapshot: null, message: 'No approved snapshot has been released yet.' };
+    if (response.status === 404 && !lastGood && !options.releaseHash) return { status: 'empty', snapshot: null, message: 'No approved snapshot has been released yet.' };
     if (!response.ok) throw new Error('The latest snapshot could not be reached.');
     const pointer = object(await response.json());
     if (pointer.schema_version !== 1 || pointer.state !== state) throw new Error('Invalid release pointer.');
     if (pointer.approval !== 'approved') throw new Error('Publication approval is pending.');
+    if (options.releaseHash && pointer.sha256 !== options.releaseHash) throw new Error('Frozen release approval does not match the requested hash.');
     if (typeof pointer.sha256 !== 'string' || !HASH.test(pointer.sha256) ||
         pointer.manifest_url !== `/data/${state}/releases/${pointer.sha256}.json`) {
       throw new Error('The snapshot URL is not an immutable release for this state.');
@@ -169,6 +231,8 @@ export async function loadSnapshot(state: StateId, previous: Snapshot | null, op
     if (bytes.byteLength > MAX_BYTES) throw new Error('The snapshot exceeds the one-megabyte limit.');
     if (await sha256(bytes) !== pointer.sha256) throw new Error('Snapshot integrity check failed.');
     const snapshot = parseSnapshot(JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)), state);
+    snapshot.release_hash = pointer.sha256;
+    if (options.asOf && snapshot.as_of !== options.asOf) throw new Error('Snapshot as-of time does not match the shared report.');
     const now = options.now ?? Date.now();
     if (Date.parse(snapshot.as_of) > now) throw new Error('The snapshot as-of time is in the future.');
     const stale = now - Date.parse(snapshot.as_of) > STALE_MS;

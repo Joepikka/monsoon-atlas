@@ -3,6 +3,8 @@ import { loadSnapshot, stateNames, type LayerKind, type Snapshot, type StateId, 
 import Layers, { layerConfigs, visibleRecords, type Coordinates } from './map/Layers';
 import SourceBadge from './components/SourceBadge';
 import EventTicker from './components/EventTicker';
+import PlaceLens from './components/PlaceLens';
+import { readShare, sourceNames } from './report';
 import { localTime } from './time';
 import './styles.css';
 
@@ -10,6 +12,15 @@ const MapView = lazy(() => import('./MapView').catch(() => ({ default: () =>
   <p className="map-message">The map could not load. The record list remains available.</p> })));
 
 export default function App() {
+  const [share] = useState(() => {
+    try {
+      const identity = readShare(window.location.search);
+      if (identity && identity.state !== 'ka') throw new Error('This state has no released atlas yet.');
+      return { identity, error: '' };
+    } catch (error) {
+      return { identity: null, error: error instanceof Error ? error.message : 'Invalid shared report.' };
+    }
+  });
   const [state, setState] = useState<StateId>('ka');
   const [radius, setRadius] = useState('25');
   const [attempt, setAttempt] = useState(0);
@@ -24,16 +35,17 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
   useEffect(() => {
+    if (share.error) { setView({ status: 'error', snapshot: null, message: share.error }); return; }
     const controller = new AbortController();
     const previous = cache.current[state] ?? null;
     setView({ status: 'loading', snapshot: previous, message: '' });
-    loadSnapshot(state, previous, { signal: controller.signal }).then(result => {
+    loadSnapshot(state, previous, { signal: controller.signal, releaseHash: share.identity?.release, asOf: share.identity?.asOf }).then(result => {
       if (controller.signal.aborted) return;
       if (result.snapshot) cache.current[state] = result.snapshot;
       setView(result);
     });
     return () => controller.abort();
-  }, [state, attempt]);
+  }, [state, attempt, share]);
   const snapshot = view.snapshot;
   const records = useMemo(() => visibleRecords(snapshot?.records ?? [], active, center, Number(radius)), [snapshot, active, center, radius]);
   const toggle = (kind: LayerKind) => setActive(previous => {
@@ -99,11 +111,14 @@ export default function App() {
               <p className="muted">An unavailable feed does not mean there are no hazards.</p>
             </div> : <ol className="record-list" data-testid="record-list">{records.map(record => <li key={record.id}>
               <button className="record-title" aria-pressed={selected === record.id} onClick={() => setSelected(record.id)}>{record.title}</button>
+              {record.warning_text && <p className="location-note">{record.warning_text}</p>}
+              {record.instruction && <p className="location-note">{record.instruction}</p>}
               <SourceBadge record={record} health={snapshot?.sources.find(source => source.source_id === record.source_id)} now={clock} />
               {record.location_note && <p className="location-note">{record.location_note}</p>}
-              <a href={record.source_url} target="_blank" rel="noopener noreferrer">{record.source_id} · Original source ↗</a>
+              <a href={record.source_url} target="_blank" rel="noopener noreferrer">{record.source_id} · {sourceNames[record.source_id] ?? 'Original source'} ↗</a>
             </li>)}</ol>}
           </section>
+          <PlaceLens snapshot={snapshot} shared={share.identity} now={clock} />
           <div className="reading-key"><h3>How to read the atlas</h3><p>Official reports, model outputs, inferred and reconstructed items stay separately labelled. Dates belong to the source snapshot.</p></div>
         </section>
 

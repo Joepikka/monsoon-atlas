@@ -1,0 +1,13 @@
+{
+  "place_id": "gb-IND-ADM2-76128533B76927648517269",
+  "name": "Bangalore",
+  "kind": "district",
+  "state": "ka",
+  "boundary_version": "geoboundaries-IND-ADM2-9469f09",
+  "longitude": 77.532483,
+  "latitude": 12.94451,
+  "source_id": "S17",
+  "source_url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/IND/ADM2/geoBoundaries-IND-ADM2.geojson",
+  "licence_id": "odbl-1.0-geoboundaries-pathways",
+  "location_note": "Representative point within the source district boundary; not a street address."
+}

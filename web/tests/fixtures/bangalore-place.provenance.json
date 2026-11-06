@@ -1,0 +1,18 @@
+{
+  "test_only": true,
+  "source_id": "S17",
+  "licence": "ODbL-1.0; geoBoundaries, wmgeolab contributors",
+  "derivation": "S17 adapter s17-v1; shapely 2.2.0 representative_point rounded to 6 decimals; source name and version preserved",
+  "source_evidence": {
+    "e05": {
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/IND/ADM1/geoBoundaries-IND-ADM1_simplified.geojson",
+      "sha256": "4c63fe43294a391e8f2de4e9f86f3edb60f8688275b9fee90c61fb2aa0c26061",
+      "raw_path": "S17/2026-11-05/4c63fe43294a391e8f2de4e9f86f3edb60f8688275b9fee90c61fb2aa0c26061.bin"
+    },
+    "e06": {
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/IND/ADM2/geoBoundaries-IND-ADM2.geojson",
+      "sha256": "8bef6929fd65432e7dc775e7c44473e84efff064ebddbfd6b834e6291546db40",
+      "raw_path": "S17/2026-11-05/8bef6929fd65432e7dc775e7c44473e84efff064ebddbfd6b834e6291546db40.bin"
+    }
+  }
+}
