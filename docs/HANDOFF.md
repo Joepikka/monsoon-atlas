@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 6 Nov 2026, T229 local Worker checks; Ubuntu runtime CI pending,
+Last updated: 6 Nov 2026, T229 local/Ubuntu Worker checks passed; cloud setup deferred,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -205,7 +205,7 @@ and a YAML block `- id: T057`.
 | T038 | `4f3c36e` | Pinned Node/React/Vite/MapLibre shell; hash/approval/state checks, original source times/provenance, dated last-good view, responsive map/list and genuine CAP test fixture. Acceptance: 3 passed in 21.18s. Full suite: 451 passed, 1 skipped in 153.66s, including build, 9 unit checks and 18 Chromium checks. Lint/format and dependency policy pass; production npm audit reports 0 advisories. No production data or release approval seeded. |
 | T039 | `3dbbd04` | Original source clocks/provenance, provider severity/expiry, source health, per-layer toggles, keyboard geodesic radius and pausable dated alerts (D58). Source projections checked against S01/S09 adapters. Acceptance: 2 passed in 21.13s; full suite 453 passed, 1 skipped in 206.61s; 16 web unit checks and 30 browser checks, including populated axe/overflow checks. Lint/format pass; price/model/source gates unchanged. |
 | T040 | `03383a2` | Six tabs, versioned source-backed places, hash-bound historical share links and browser print/PDF from the same report (D59). Original CAP warning/instruction retained; unavailable facilities/scores stay unavailable. Acceptance: 4 passed in 37.80s. Full suite: 457 passed, 1 skipped in 288.83s, including 23 web unit checks and 45 browser checks. Lint/format (147 files), dependency policy and whitespace checks pass. Three generated A4 PDFs checked for original warning, attribution, place version and risk limits. No production places, facilities, scores or approvals seeded. |
-| T229 (child of T042) | This continuation commit; runtime CI pending | Local acceptance: 4 passed in 1.14s, including 6 Node logic cases and SQLite cap/rollback checks. Full suite: 461 passed, 1 skipped in 231.59s. Lint/format (150 files), dependency policy, npm full audit (0 vulnerabilities), amendment parity and whitespace checks pass. Full T042 is pending H05 and an actual free/no-card capability probe; no remote resource, approval or service is created. |
+| T229 (child of T042) | `d5dc0f2`..`4cdffde` | Local acceptance: 4 passed in 1.61s, including 8 Node logic cases and SQLite cap/rollback checks. Full suite: 461 passed, 1 skipped in 229.96s. Actual Miniflare/D1 Ubuntu CI passed at `4cdffde`, including duplicate concurrency, conflicting cutoffs, original clocks/hash, corruption and storage/write rollback. Lint/format, dependency policy, npm full audit (0 vulnerabilities), amendment parity and whitespace pass. Full T042 is pending H05 and an actual free/no-card capability probe; no remote resource, approval or service is created. |
 
 T025 retry final validation: `432 passed, 1 skipped, 1 warning in 115.94s`;
 lint passes, 128 files pass formatting, dependency policy reports 0 problems
@@ -222,6 +222,12 @@ https://github.com/Joepikka/monsoon-atlas/actions/runs/42206285593 .
 
 T040 remote web CI passed both matrix jobs for `03383a2`:
 https://github.com/Joepikka/monsoon-atlas/actions/runs/42211241573 .
+
+T229 actual Miniflare/workerd/D1 CI passed on Ubuntu for `4cdffde`:
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42213687569 . The harness
+uses the installed Miniflare 5 options converter and removes comment-only SQL
+tails rejected by its pinned workerd. The test suite covers source data age
+separately from report age. This is local simulation, not a cloud account probe.
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
@@ -387,8 +393,9 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    blocked by S18 (T021/T022); no catchments or coverage results are invented.
    `scripts/web.ps1 run dev` serves the local
    map at http://127.0.0.1:5173. There is no approved public snapshot or deployment.
-   T229's local T042 implementation passes; wait for its real Ubuntu runtime CI
-   before calling the child complete. Full T042 stays pending H05. Continue
+   T229's local T042 implementation and real Ubuntu runtime CI pass. Full T042
+   stays pending H05. Preserve text-only S09 alerts before building the refresh
+   producer: no geometry must not mean the official warning vanishes. Continue
    independent local hosting preparation and then C3 Ask preparation,
    T225 case studies and T046;
    unresolved human/data gates must remain pending rather than blocking independent work.
