@@ -16,7 +16,6 @@ from collections.abc import Mapping
 from datetime import UTC, datetime
 
 import pyarrow as pa
-import pyarrow.compute as pc
 
 from atlas.config import SourceConfig
 from atlas.contracts import FetchContext, RawArtifact
@@ -102,7 +101,15 @@ def wkb_multipolygon(polygons: list[list[tuple[float, float]]]) -> bytes:
 
 
 def _time(text: str | None) -> datetime | None:
-    return datetime.fromisoformat(text).astimezone(UTC) if text else None
+    if text is None:
+        return None
+    try:
+        value = datetime.fromisoformat(text)
+    except ValueError as exc:
+        raise IngestError(f"{SOURCE_ID}: invalid CAP timestamp") from exc
+    if value.tzinfo is None or value.utcoffset() is None:
+        raise IngestError(f"{SOURCE_ID}: CAP timestamp requires a UTC offset")
+    return value.astimezone(UTC)
 
 
 class S09:
@@ -175,6 +182,13 @@ class S09:
             raise IngestError(
                 f"{SOURCE_ID}: CAP fields missing: {sorted(k for k, v in required.items() if not v)}"  # noqa: E501
             )
+        status, scope = get(root, "status"), get(root, "scope")
+        if (
+            status not in {"Actual", "Exercise", "System", "Test", "Draft"}
+            or scope not in {"Public", "Restricted", "Private"}
+            or required["msgType"] not in {"Alert", "Update", "Cancel", "Ack", "Error"}
+        ):
+            raise IngestError(f"{SOURCE_ID}: missing or unsupported CAP lifecycle fields")
         area = info.find("cap:area", NS)
         fields = {
             t: get(info, t) for t in ("event", "severity", "effective", "expires", "instruction")
@@ -185,7 +199,11 @@ class S09:
 
         polygons = rings(polygon)
         rows = []
-        if self.in_state(required["sender"], area_text, polygons):
+        if (
+            status == "Actual"
+            and scope == "Public"
+            and self.in_state(required["sender"], area_text, polygons)
+        ):
             rows.append(
                 {
                     "alert_id": required["identifier"],
@@ -250,15 +268,30 @@ class S09:
 
 
 def supersede(table: pa.Table) -> pa.Table:
-    """Drop alerts that a later Update or Cancel references, and the Cancel messages themselves."""
-    replaced = {
-        ref.split(",")[1]
-        for refs in table["references"].drop_null().to_pylist()
-        for ref in refs.split()
-        if ref.count(",") == 2
-    }
-    keep = pc.and_(
-        pc.invert(pc.is_in(table["alert_id"], pa.array(sorted(replaced), pa.string()))),
-        pc.not_equal(table["msg_type"], "Cancel"),
-    )
-    return table.filter(keep)
+    """Apply only Update/Cancel references to exact (sender,identifier,sent) targets.
+
+    Unmatched/malformed references stay unresolved; control messages are not
+    active hazard warnings. Input order does not confer authority on a reference.
+    """
+    rows = table.select(["sender", "alert_id", "sent_at", "msg_type", "references"]).to_pylist()
+    replaced = set()
+    for row in rows:
+        if row["msg_type"] not in {"Update", "Cancel"}:
+            continue
+        for reference in (row["references"] or "").split():
+            parts = reference.split(",")
+            if len(parts) != 3 or not parts[0] or not parts[1]:
+                continue
+            try:
+                sent = _time(parts[2])
+            except IngestError:
+                continue
+            identity = (parts[0], parts[1], sent)
+            if identity != (row["sender"], row["alert_id"], row["sent_at"]):
+                replaced.add(identity)
+    keep = [
+        row["msg_type"] in {"Alert", "Update"}
+        and (row["sender"], row["alert_id"], row["sent_at"]) not in replaced
+        for row in rows
+    ]
+    return table.filter(pa.array(keep, type=pa.bool_()))

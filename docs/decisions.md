@@ -2,6 +2,23 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D63 — Match complete CAP reference identities (6 Nov 2026), before
+  implementation.** OASIS CAP 1.2 section 3.2.1 defines an extended reference
+  as sender, identifier and sent time. The existing identifier-only supersession
+  could drop an unrelated issuer/revision; its predecessor test also retained
+  the relay sender despite a different sender in the real reference. Split
+  T232 from T043 to match all three fields, normalizing only equivalent timezone
+  representations. Preserve unmatched/malformed references instead of guessing.
+  A relay may reference another sender's real message, but does not license
+  rewriting that sender or time. No NDMA relay exception was found in targeted
+  primary documentation. Raw Cancel/Update documents remain archived; Cancel
+  messages are not themselves displayed as active hazard warnings.
+  Primary specification: https://docs.oasis-open.org/emergency/cap/v1.2/CAP-v1.2-os.html .
+  This lifecycle check also requires valid timezone-bearing CAP dates and
+  explicitly Actual/Public messages. Test/Exercise or restricted documents must
+  not enter the public warning set. Only Update/Cancel can supersede references;
+  Ack/Error control messages cannot themselves become active hazard warnings.
+
 - **D62 — Version RSS cache entries, not permanent GUIDs (6 Nov 2026), before
   implementation.** The captured S09 CAP Update `IN-1793881986295019_19`
   references `IN-1793881986295019_51`, while the RSS GUID and download URL use

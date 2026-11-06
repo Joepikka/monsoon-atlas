@@ -171,6 +171,14 @@ is fetched again through the existing HTTP boundary. T043 still owns cache-age
 expiry, durable checkpoints and the bounded producer. Estimate: 1 hour.
 Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s09.py -q`.
 
+## A15. Complete CAP supersession identity (D63, 6 November 2026)
+
+T232 is a child of T043 after T014/T231. It matches CAP references by the full
+sender/identifier/sent-time identity, preserving unresolved references rather
+than dropping unrelated warnings. It also requires timezone-bearing dates and
+Actual/Public lifecycle messages for public warnings. Estimate: 1 hour. Acceptance:
+`.\.venv\Scripts\python -m pytest tests/sources/test_s09.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -191,6 +199,22 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T232
+    parent: T043
+    title: "Match complete CAP reference identities during supersession"
+    phase: P1
+    state: KA
+    depends_on: [T014, T231]
+    files: [src/atlas/ingest/s09.py, tests/sources/test_s09.py, docs/sources/s09.md]
+    steps:
+      - "Match the complete sender, identifier and sent-time reference required by CAP 1.2"
+      - "Preserve unresolved or malformed reference targets instead of guessing"
+      - "Keep non-Actual/non-Public messages and Ack/Error controls out of active hazard warnings; reject naive dates"
+      - "Test issuer/time collisions and equivalent timezone representations using source-backed copies"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s09.py -q'
+      expected: "An update/cancel cannot supersede another issuer or timestamp that merely shares an identifier"
+    hours: 1
   - id: T231
     parent: T043
     title: "Version S09 RSS cache entries instead of permanently skipping identifiers"
