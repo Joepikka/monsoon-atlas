@@ -147,6 +147,11 @@ a dependency before using S32 historical coverage. Other D44 dependencies remain
 
 ## Appendix Y: new and changed tasks (YAML)
 
+D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
+S34 owner review is pending. T115 depends on T113/T226 instead of T110; T116
+depends on T115/T006/T226. Monthly statistics are EDA only and never daily model
+labels. This makes no change to the pending OCR gate or the general Kerala phase.
+
 T228 (D49, 6 November 2026) is a child of T118 in P1, after T117/T226. It pins the
 local OCR toolchain/model, extracts existing PDF images with provenance and builds
 an offline owner review packet. The source images and OCR text stay in ignored
@@ -251,6 +256,8 @@ moved_tasks:
     before: T046
   - {ids: [T085, T086], from: P2, to: P1, after: T030}
 changed_tasks:
+  - {id: T115, change: "D51: move to P1 for M07 source discovery; replace T110 with T113/T226"}
+  - {id: T116, change: "D51: move to P1; depends on T115/T006/T226; monthly EDA only"}
   - {id: T118, change: "D49: add T228 dependency and require owner OCR review before using extracted values"}
   - {id: T114, change: "D46: adapter contract complete independently; daily gap census split into child T227"}
   - {id: T130, change: "D46: add T227 dependency before claiming S32 historical coverage"}

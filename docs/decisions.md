@@ -2,6 +2,17 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D51 — Verify the remaining M07 source while OCR review is pending (6 Nov
+  2026), before implementation.** Pull T115 (S33 monthly-statistics discovery)
+  and its T116 adapter into P1 for the D17 core C1 fallback. Replace T115's full
+  Karnataka-v1 gate dependency T110 with T113/T226 for this bounded source check;
+  T116 keeps T115/T006 and gains T226. This resolves the scheduling prerequisite
+  identified in D44 without starting the general Kerala phase. Monthly data may
+  support EDA only, never interpolated daily labels or seven-day evaluation.
+  The latest instruction to continue is not OCR approval: T118 and S34 values
+  remain pending the owner review in D49/D50. If S33 cannot be verified, record
+  the blocked outcome and retry condition and keep it disabled; do not invent data.
+
 - **D50 — OCR disagreements stay unresolved (6 Nov 2026), before changing the
   review contract.** Three attempts at one preprocessing recipe failed across the
   mixed layouts. The doubtful assumption was that one recipe could preserve every

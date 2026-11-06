@@ -92,6 +92,8 @@ moved_tasks:
     before: T046
   - {ids: [T085, T086], from: P2, to: P1, after: T030}
 changed_tasks:
+  - {id: T115, change: "D51: move to P1 for M07 source discovery; replace T110 with T113/T226"}
+  - {id: T116, change: "D51: move to P1; depends on T115/T006/T226; monthly EDA only"}
   - {id: T118, change: "D49: add T228 dependency and require owner OCR review before using extracted values"}
   - {id: T114, change: "D46: adapter contract complete independently; daily gap census split into child T227"}
   - {id: T130, change: "D46: add T227 dependency before claiming S32 historical coverage"}
