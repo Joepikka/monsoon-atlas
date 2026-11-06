@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 6 Nov 2026, T114 KSEB adapter after T226 Kerala bootstrap,
+Last updated: 6 Nov 2026, T114 adapter and T227 KSEB daily gap census,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -182,14 +182,21 @@ and a YAML block `- id: T057`.
 | T102 | `e6cb916` | M05 fit (src/atlas/models/m05.py): tune 2017-2018 MAE persistence 0.736, ridge 0.585, LightGBM 0.571 (gain not significant) -> ridge provisional; deterministic, test rows refused, artifacts in data/models (D41) |
 | T103 | `bea3eb9` | M05 locked test 2020-2024: ridge beats persistence on all gates (MAE 0.732 vs 0.808, CI lower 0.003, PR-AUC 0.217, Brier skill 0.116, CRPS lower); release v1 candidate_eligible, **owner approval pending**; intervals under-cover (65%) so not published (D42). Report: reports/models/m05.md |
 | T103 approval | `7f3780e` | Owner approved M05 v1 (D43): ridge is the champion; outputs labelled hindcast, no intervals |
-| T226 (child of T129) | This continuation commit | D44: isolated disabled Kerala config and existing-evidence audit; full T129 pending. D45: ignore local model artifacts without removing them. Acceptance: 7 tests passed. |
-| T114 | This continuation commit | S32 fetch/parse contract, real attributed CI samples and quarantine checks; D46. D47 fixes empty typed-table validation. T227 owns the still-pending daily gap census. |
+| T226 (child of T129) | `7c0c8f5` | D44: isolated disabled Kerala config and existing-evidence audit; full T129 pending. D45: ignore local model artifacts without removing them. Acceptance: 7 tests passed. |
+| T114 | `812e111` | S32 fetch/parse contract, real attributed CI samples and quarantine checks; D46. D47 fixes empty typed-table validation. |
+| T227 (child of T114) | This continuation commit | All 700 dates, 2024-08-15..2026-07-15, returned validated empty reports. 47 reused, 653 newly captured; zero failed/unattempted. Per-date hashes/counts committed; raw pages local. Acceptance: 7 passed in 1.08s; D48. |
+
+T227 final validation: `407 passed, 1 skipped, 1 warning in 108.98s`; adapter/history
+acceptance is covered by the full suite. Ruff lint passes, 120 files pass format,
+dependency policy reports 0 problems, and whitespace checks pass for this diff.
+The skip/warning remain the S36 PDF tool absence and upstream MLflow deprecation.
 
 T114 verification (6 Nov 2026): 34 adapter checks pass (also run with coverage:
 89% of the adapter); source/isolation/as-of checks: 69 passed. Full suite:
 `400 passed, 1 skipped, 1 warning in 169.45s`. Ruff lint passes; format check:
 117 files formatted. Dependency policy: 0 problems. Amendment Markdown/YAML
-parity and whitespace checks pass. The skip and warning are the same S36
+parity passes. Code/doc whitespace checks pass; unchanged upstream HTML fixtures
+retain trailing spaces (D48). The skip and warning are the same S36
 `pdftotext` absence and MLflow deprecation described below. Independent read-only
 review found no actionable defect. All 77 captured S32 report pages replayed:
 50 empty; other pages contain 224 valid, 154 quarantined and 54 incomplete rows.
@@ -220,7 +227,7 @@ found no actionable issues in T226; it did not certify future adapters or rerun 
 
 | Slot | Model | Status |
 |---|---|---|
-| C1 | **M07 Kerala seven-day dam forecast** (D17) | T226/T114 done; S32 adapter enabled, daily gap census T227 pending. S34 needs T118 OCR/review. Both sources report unknown datum; model readiness still blocked pending T130's gate. |
+| C1 | **M07 Kerala seven-day dam forecast** (D17) | T226/T114/T227 done. S32's public reports contain no rows throughout the checked 700-day gap; S34 needs T118 OCR/review. Both sources report unknown datum; model readiness still blocked pending T130's gate. |
 | C2 | **M05 Karnataka drought outlook** (D29): SPI-3 of the issue month and drought probability, per district | T101-T103 done; ridge approved in D43. Hindcast only (D39); do not publish the under-covering intervals (D42). |
 | C3 | Ask (question answering, English first) | T179 to T181; uses Cloudflare Workers AI free tier with an extractive fallback (D08) |
 
@@ -242,7 +249,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S22 India Data Portal Agmarknet | T023 | blocked | client-side app; retry with a browser render; T025 is the other route |
 | S23 data.gov.in mandi prices | T025 | blocked on licence/unit confirmation | Key was already used in discovery; do not ask for it again unless missing at execution |
 | S28 KWRIS | T008 | blocked | retry if KWRIS daily history arrives |
-| S32 KSEB daily levels | T113, T114 | available, enabled in KL (partial history) | Strict units/percentage quarantine; datum unknown; T227 daily census pending |
+| S32 KSEB daily levels | T113, T114, T227 | available, enabled in KL (partial history) | Strict quarantine; datum unknown; all 700 gap dates return validated empty reports |
 | S34 KSDMA dam reports | T117 | available (scanned) | OCR T118, adapter |
 | S35 Kaggle Kerala floods | T119 | blocked | needs owner Kaggle sign-in (H10) |
 | S36 KSDMA memoranda | T121 | available | adapter T122 in P3 |
@@ -285,8 +292,8 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    `models/registry/M05/v1.json`). Ridge passed every gate on 2020-2024; status
    `candidate_eligible`, **approved by the owner (D43)**: ridge is the champion.
    Before publishing intervals, recalibrate them (they cover 65%, not 80%).
-6. **C1 = M07 (Kerala): T226 and T114 are done; next task T227 (daily gap census).** Then T118 (OCR for
-   S34; pin a free OCR and record it in decisions; owner reviews a real OCR sample).
+6. **C1 = M07 (Kerala): T226, T114 and T227 are done; next task T118.** Prepare
+   S34 OCR, pin the free tool and record it in decisions; owner reviews a real OCR sample.
    Before T130, explicitly resolve its full-T129 dependency for the M07-only fallback and
    the T115/T116 scheduling dependency. Full T129 remains a P3 task, not complete (D44).
    T130 must verify known datum, >=3 years daily coverage across >=8 dams and new dated

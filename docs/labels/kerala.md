@@ -95,7 +95,8 @@ T226 acceptance: `python -m pytest tests/test_kl_data.py -q`, plus this evidence
 audit. It proved isolated config and disabled source registration. T114 updates
 the isolation checks to permit only its tested S32 adapter. The full T129
 audit (dam registry/datum, parsed labels, survey footprint, Kerala boundaries and
-shelters) stays pending on its original dependencies. T114 is complete; T227's
-daily gap audit is pending, followed by T118 with the required owner OCR review.
+shelters) stays pending on its original dependencies. T114/T227 are complete;
+the gap census found 700 validated empty reports (see `docs/sources/s32-history.md`).
+Next is T118 with the required owner OCR review.
 S33/T115-T116 is still a dependency to resolve
 before T130; it cannot be silently omitted or fabricated.

@@ -21,6 +21,7 @@ htmlcov/
 data/raw/
 data/clean/
 data/models/
+data/manifests/S32/history.json
 *.duckdb
 *.duckdb.wal
 

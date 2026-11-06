@@ -2,6 +2,22 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D48 — T227 daily census (6 Nov 2026), before implementation.** Use the
+  shared Fetcher and S32 parser for all 700 dates, 2024-08-15 through 2026-07-15.
+  Reuse hash-checked captures; rate-limit every live HTTP attempt to at least
+  3 seconds, including redirects/retries. Check current robots.txt first. Cap a
+  run at 1000 HTTP attempts, 1 MiB per response and 256 MiB of fetched artifacts.
+  Save an atomic checkpoint after each date. Each date records data/empty/parse
+  or fetch failure, with raw hashes where available. Three consecutive failures
+  stop further requests and explicitly mark remaining dates unattempted; a failed
+  request is never evidence of an empty day. Do not override TLS or sign-in gates.
+  The committed census contains provenance/counts only, not raw pages. Its
+  acceptance permits explicitly reported failures and must distinguish a complete
+  availability census from an incomplete audit. This does not waive M07's datum gate.
+  Correction to T114 verification wording: the untouched HTML excerpts retain
+  upstream trailing whitespace. Whitespace checks pass for code/docs; the fixture
+  warnings are expected and are not removed, preserving their exact excerpt hashes.
+
 - **D46 — T114 S32 adapter policy (6 Nov 2026), recorded before implementation.** Parse the
   captured KSEB report with stdlib HTMLParser; no new dependency. Require the exact
   17-column header and the report's dated 07:00 IST title. Use operator + published

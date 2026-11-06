@@ -112,4 +112,5 @@ dependents: [T114, T130, T131, T132]
 retry_condition: >-
   Before T130: check the other Kerala dam sources for 2017 to 2023 daily history, S34 KSDMA dam
   level reports (T118) and S33 KSEB monthly statistics (T116), and confirm the Aug 2024 to Jul 2026
-    gap day by day in T227 (split from T114 by D46; adapter complete, backfill pending).
+    gap against the completed T227 census (docs/sources/s32-history.md). It must not be
+    interpolated or treated as zero readings. T130 still requires known datum and verified history.

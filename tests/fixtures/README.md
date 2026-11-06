@@ -39,3 +39,9 @@ than the repository's MIT code licence. Licence text:
 
 Tests create corrupted copies only in temporary directories. The full discovery
 pages remain local; `tests/fixtures/s32/` still contains only the evidence manifest.
+
+`s32_history_manifest.json` is T227's 700-date availability census. It contains
+original report URLs, fetch times, relative raw paths, hashes and row counts;
+it contains no raw HTML or invented observations. Attribution: KSEB, daily water
+level reports; the source and licence information above applies. Full results
+and limits are in `docs/sources/s32-history.md`.
