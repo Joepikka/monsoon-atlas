@@ -165,7 +165,8 @@ def test_disabled_source_fails_closed():
         S09("kl")
 
 
-def test_fetch_skips_known_alerts(tmp_path, monkeypatch):
+@pytest.mark.parametrize("changed_version", [False, True])
+def test_fetch_skips_only_known_rss_versions(tmp_path, monkeypatch, changed_version):
     idents = feed_identifiers(artifact(FEED))
     assert len(idents) == 100 and idents[0] == "1793881986295019"
     seen = []
@@ -186,6 +187,71 @@ def test_fetch_skips_known_alerts(tmp_path, monkeypatch):
         budget=Budget(max_requests=5, max_bytes=5 * 1024**2),
         raw_root=tmp_path,
     )
-    raws = S09("ka", fetcher).fetch(ctx, known=idents[1:])
+    known = s09_mod.feed_versions(artifact(FEED))
+    if changed_version:
+        known[idents[0]] = "0" * 64  # Technical stale-cache token; no observation invented.
+    else:
+        known.pop(idents[0])
+    raws = S09("ka", fetcher).fetch(ctx, known=known)
     assert len(raws) == 3 and seen[1].endswith("FetchXMLFile?identifier=1793881986295019")
     assert seen[2].endswith("FetchPolygonXMLFile?identifier=1793881986295019")
+
+
+def test_identifier_only_cache_is_rejected_before_network(tmp_path, monkeypatch):
+    seen = []
+
+    def handler(request):
+        seen.append(str(request.url))
+        return httpx.Response(200, content=FEED.read_bytes(), headers={"content-type": "text/xml"})
+
+    monkeypatch.setattr(s09_mod.time, "sleep", lambda s: None)
+    fetcher = Fetcher(RawStore(tmp_path), HOSTS, transport=httpx.MockTransport(handler))
+    ctx = FetchContext(
+        source_id="S09",
+        state="ka",
+        run_id="legacy-cache",
+        requested_at=FETCHED,
+        budget=Budget(max_requests=5, max_bytes=5 * 1024**2),
+        raw_root=tmp_path,
+    )
+    with pytest.raises(IngestError, match="version|fingerprint"):
+        S09("ka", fetcher).fetch(ctx, known=set(feed_identifiers(artifact(FEED))))
+    assert not seen
+
+
+def test_item_versions_ignore_channel_clock_but_detect_an_item_change(tmp_path):
+    import xml.etree.ElementTree as ET
+
+    original = s09_mod.feed_versions(artifact(FEED))
+    root = ET.fromstring(FEED.read_bytes())
+    root.find("channel/pubDate").text = "Thu, 05 Nov 2026 12:35:12 GMT"
+    path = tmp_path / "channel-clock-copy.xml"
+    path.write_bytes(ET.tostring(root))
+    assert s09_mod.feed_versions(artifact(path)) == original
+    first = root.find("channel/item/pubDate")
+    first.text = first.text.replace("12:35:12", "12:35:13")  # Mutated version-marker test copy.
+    path.write_bytes(ET.tostring(root))
+    changed = s09_mod.feed_versions(artifact(path))
+    assert changed["1793881986295019"] != original["1793881986295019"]
+    assert {k: v for k, v in changed.items() if k != "1793881986295019"} == {
+        k: v for k, v in original.items() if k != "1793881986295019"
+    }
+
+
+def test_empty_rss_channel_is_distinct_from_changed_or_malformed_schema(tmp_path):
+    import xml.etree.ElementTree as ET
+
+    with pytest.raises(IngestError, match="RSS"):
+        s09_mod.feed_versions(artifact(KA_CAP))
+    root = ET.fromstring(FEED.read_bytes())
+    root.find("channel/item").remove(root.find("channel/item/link"))
+    bad = tmp_path / "missing-link-copy.xml"
+    bad.write_bytes(ET.tostring(root))
+    with pytest.raises(IngestError, match="CAP link"):
+        s09_mod.feed_versions(artifact(bad))
+    channel = root.find("channel")
+    for item in channel.findall("item"):
+        channel.remove(item)
+    empty = tmp_path / "empty-channel-copy.xml"
+    empty.write_bytes(ET.tostring(root))
+    assert s09_mod.feed_versions(artifact(empty)) == {}

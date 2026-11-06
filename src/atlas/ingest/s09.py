@@ -12,7 +12,7 @@ import re
 import struct
 import time
 import xml.etree.ElementTree as ET
-from collections.abc import Iterable
+from collections.abc import Mapping
 from datetime import UTC, datetime
 
 import pyarrow as pa
@@ -54,12 +54,28 @@ MEASURES = pa.schema(
 
 def feed_identifiers(raw: RawArtifact) -> list[str]:
     """Identifiers of the CAP files the feed links, newest first."""
+    return list(feed_versions(raw))
+
+
+def feed_versions(raw: RawArtifact) -> dict[str, str]:
+    """Local fingerprints of actual RSS items, not provider CAP revision IDs."""
     try:
         root = ET.fromstring(raw.path.read_bytes())
     except ET.ParseError as exc:
         raise IngestError(f"{SOURCE_ID}: feed is not XML") from exc
-    links = [i.findtext("link") or "" for i in root.iter("item")]
-    return [m.group(1) for link in links if (m := re.search(r"identifier=(\d+)$", link))]
+    if root.tag != "rss" or root.find("channel") is None:
+        raise IngestError(f"{SOURCE_ID}: not an RSS channel")
+    versions = {}
+    for item in root.iter("item"):
+        match = re.search(r"identifier=(\d+)$", item.findtext("link") or "")
+        if match is None:
+            raise IngestError(f"{SOURCE_ID}: RSS item has no supported CAP link")
+        ident = match.group(1)
+        version = hashlib.sha256(ET.tostring(item, encoding="utf-8")).hexdigest()
+        if ident in versions and versions[ident] != version:
+            raise IngestError(f"{SOURCE_ID}: conflicting RSS versions for one identifier")
+        versions[ident] = version
+    return versions
 
 
 def rings(raw: RawArtifact | None) -> list[list[tuple[float, float]]]:
@@ -95,12 +111,28 @@ class S09:
             raise SourceUnavailable(f"{SOURCE_ID}: no alert filter for state {state}")
         self.state, self.fetcher = state, fetcher
 
-    def fetch(self, ctx: FetchContext, known: Iterable[str] = ()) -> list[RawArtifact]:
-        """[feed, then (CAP, polygon) for each identifier not already known], 1 s apart."""
+    def fetch(self, ctx: FetchContext, known: Mapping[str, str] | None = None) -> list[RawArtifact]:
+        """[feed, then (CAP, polygon) for unknown/changed RSS items], 1 s apart.
+
+        `known` maps numeric identifiers to item fingerprints. The caller expires
+        this cache and checkpoints entries only after successful processing.
+        Bare identifiers cannot establish that linked CAP content is unchanged.
+        """
+        if known is not None and (
+            not isinstance(known, Mapping)
+            or any(
+                not isinstance(ident, str)
+                or not ident.isdigit()
+                or not isinstance(version, str)
+                or not re.fullmatch(r"[a-f0-9]{64}", version)
+                for ident, version in known.items()
+            )
+        ):
+            raise IngestError(f"{SOURCE_ID}: known cache requires RSS version fingerprints")
         feed = self.fetcher.fetch_bytes(ctx, FEED, mapping_version=MAPPING_VERSION)
-        out, skip = [feed], set(known)
-        for ident in feed_identifiers(feed):
-            if ident in skip:
+        out, cache = [feed], known or {}
+        for ident, version in feed_versions(feed).items():
+            if cache.get(ident) == version:
                 continue
             for path in ("FetchXMLFile", "FetchPolygonXMLFile"):
                 time.sleep(1.0)

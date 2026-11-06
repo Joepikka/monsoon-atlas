@@ -163,6 +163,14 @@ inventing a map point. Estimate: 1 hour. Acceptance:
 `.\.venv\Scripts\python -m pytest tests/test_alert_area_context.py -q`.
 It does not complete T043's producer, schedule, polling or cloud gate.
 
+## A14. Version RSS cache entries (D62, 6 November 2026)
+
+T231 is a child of T043 after T014/T230. It replaces permanent RSS-identifier
+skip sets with hashes of actual item contents, so a changed item at a known URL
+is fetched again through the existing HTTP boundary. T043 still owns cache-age
+expiry, durable checkpoints and the bounded producer. Estimate: 1 hour.
+Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s09.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -183,6 +191,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T231
+    parent: T043
+    title: "Version S09 RSS cache entries instead of permanently skipping identifiers"
+    phase: P1
+    state: KA
+    depends_on: [T014, T230]
+    files: [src/atlas/ingest/s09.py, tests/sources/test_s09.py, docs/sources/s09.md]
+    steps:
+      - "Hash actual RSS item contents and compare version fingerprints"
+      - "Refetch changed items at known URLs using the existing conditional-GET boundary"
+      - "Reject legacy identifier-only skip sets; leave cache-age/checkpoint policy to T043"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s09.py -q'
+      expected: "Changed RSS versions cannot disappear behind a previously seen identifier"
+    hours: 1
   - id: T230
     parent: T043
     title: "Preserve official area-only alerts in browser and hot transport"

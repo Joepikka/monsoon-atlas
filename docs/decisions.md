@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D62 — Version RSS cache entries, not permanent GUIDs (6 Nov 2026), before
+  implementation.** The captured S09 CAP Update `IN-1793881986295019_19`
+  references `IN-1793881986295019_51`, while the RSS GUID and download URL use
+  the common base `1793881986295019`. Inferring that a seen RSS GUID identifies
+  immutable CAP content is not justified. Split T231 from T043: compare a hash
+  of the actual RSS item contents, and reject legacy bare-identifier skip sets.
+  A changed item must re-enter the shared conditional-GET fetcher, even at a
+  known URL. RSS fingerprints describe index versions, not a guarantee that a
+  provider cannot silently revise a linked document. T043 must bound cache age,
+  persist checkpoints only after successful processing and retain source clocks.
+  No new provider field or observed alert is invented by this cache contract.
+
 - **D61 — Preserve area-only CAP alerts before refresh (6 Nov 2026), before
   implementation.** T014 legitimately parses CAP area descriptions without a
   polygon. Requiring a map point in the browser/hot transport would reject a
