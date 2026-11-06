@@ -194,6 +194,7 @@ and a YAML block `- id: T057`.
 | T024 | This continuation commit | S22 disabled adapter; forced config flags cannot enable network/file access or produce rows. Acceptance: 3 passed in 0.45s; full suite 435 passed, 1 skipped in 103.29s; lint/format pass. No unverified schema invented. |
 | T026 | This continuation commit | S23 disabled adapter retains the unit gate despite verified GODL. Acceptance: 3 passed in 0.06s; full suite 438 passed, 1 skipped in 91.97s; lint passes. |
 | T035 | This continuation commit | M06 blocked data gate: actual source/config hashes, planned target/split dates, unknown publication lag and no labels/features/predictions. Acceptance: 4 passed in 0.56s; full suite 442 passed, 1 skipped in 122.47s; lint/format pass. This completes only the prescribed blocked branch. |
+| T036 | This continuation commit | Blocked M06 fit/predict contract, local no-model record and clean-process status notebook. Acceptance: 3 passed in 1.56s; full suite 445 passed, 1 skipped in 101.12s; lint/format pass. No fitting or evaluation performed. |
 
 T025 retry final validation: `432 passed, 1 skipped, 1 warning in 115.94s`;
 lint passes, 128 files pass formatting, dependency policy reports 0 problems
