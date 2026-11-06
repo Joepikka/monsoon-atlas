@@ -1,0 +1,23 @@
+# Planned M06 definition, not a fitted model or a claim that labels exist. T035.
+model_id: M06
+state: ka
+enabled: false
+task: classification
+unit: market x commodity-variety-grade x issue day
+sources: [S22, S23]
+target:
+  price_multiplier: 1.25
+  prior_observed_days: 28
+  min_prior_observations: 20
+  horizon_calendar_days: 16
+  min_future_observations: 8
+planned_splits:
+  train: ["2021-01-01", "2023-12-31"]
+  tune: ["2024-01-01", "2024-06-30"]
+  calibrate: ["2024-07-01", "2024-12-31"]
+  locked_test: ["2025-01-01", "2026-05-31"]
+purge_days: 16
+label_publication_delay_days: null
+split_manifest: null
+status: blocked
+reason: No verified licensed Karnataka price history covering the planned splits with known units.
