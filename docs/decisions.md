@@ -2,6 +2,14 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D55 — M06 blocked status is not a model release (6 Nov 2026).** T037's
+  `models/registry/m06.json` records the failed data gate and its actual evidence
+  hashes, with null dataset/split/model hashes and null achieved scores. Do not
+  construct a T034 `Release` by inventing a dataset, training timestamp, baseline
+  or evaluation. No `M06/v*.json` release or approval is generated, so the serving
+  registry cannot select this status record as a champion. Completing the blocked
+  branch is not fitting M06 or satisfying the final MVP's model requirements.
+
 - **D54 — Continue independent P1 work while source/owner gates remain pending
   (6 Nov 2026).** The owner explicitly requested continuous execution of the
   plan. Complete T024/T026's prescribed disabled adapters, then T035-T037's

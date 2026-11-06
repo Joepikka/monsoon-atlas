@@ -195,6 +195,7 @@ and a YAML block `- id: T057`.
 | T026 | This continuation commit | S23 disabled adapter retains the unit gate despite verified GODL. Acceptance: 3 passed in 0.06s; full suite 438 passed, 1 skipped in 91.97s; lint passes. |
 | T035 | This continuation commit | M06 blocked data gate: actual source/config hashes, planned target/split dates, unknown publication lag and no labels/features/predictions. Acceptance: 4 passed in 0.56s; full suite 442 passed, 1 skipped in 122.47s; lint/format pass. This completes only the prescribed blocked branch. |
 | T036 | This continuation commit | Blocked M06 fit/predict contract, local no-model record and clean-process status notebook. Acceptance: 3 passed in 1.56s; full suite 445 passed, 1 skipped in 101.12s; lint/format pass. No fitting or evaluation performed. |
+| T037 | This continuation commit | Source-bound blocked status and report; no achieved scores, release, champion or predictions (D55). Acceptance: 3 passed in 0.58s; full suite 448 passed, 1 skipped in 128.31s; lint/format pass. M06 remains unavailable. |
 
 T025 retry final validation: `432 passed, 1 skipped, 1 warning in 115.94s`;
 lint passes, 128 files pass formatting, dependency policy reports 0 problems
@@ -350,6 +351,8 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    Capture a publisher unit statement tied to the actual resource before enabling ingestion
    in T026 or T035 to T037. T024/T026 disabled adapters are complete. The S23 API key was
    already supplied; do not request it again without cause.
+   T035-T037's prescribed blocked branch is complete; `reports/models/m06.md`
+   records why there is no trained price model. Continue independent P1 work (D54).
 8. Then A8 steps 9 to 13: map and product, hosting, C3 Ask, T225 case studies, T046 MVP
    gate.
 
