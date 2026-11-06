@@ -147,10 +147,35 @@ a dependency before using S32 historical coverage. Other D44 dependencies remain
 
 ## Appendix Y: new and changed tasks (YAML)
 
+T228 (D49, 6 November 2026) is a child of T118 in P1, after T117/T226. It pins the
+local OCR toolchain/model, extracts existing PDF images with provenance and builds
+an offline owner review packet. The source images and OCR text stay in ignored
+`data/raw`. Machine acceptance is `python -m pytest tests/sources/test_s34_ocr.py -q`;
+it verifies the packet without inventing approval or promoting observations. The
+owner must review the sample before any extracted value is used. Full T118 gains
+T228 as a dependency and stays pending. Estimate: 3 hours. Files and detailed steps
+are in the synchronized YAML below.
+
 ```yaml
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T228
+    parent: T118
+    title: "S34 pinned OCR tooling and owner review packet"
+    phase: P1
+    state: KL
+    depends_on: [T117, T226]
+    files: [requirements/ocr.in, requirements/ocr.txt, configs/ocr/s34.json, src/atlas/ingest/s34_ocr.py, scripts/s34_ocr_review.py, tests/sources/test_s34_ocr.py, docs/sources/s34-ocr.md]
+    steps:
+      - "Pin and hash-lock local OCR dependencies and the official language model; record embedded engine version"
+      - "Extract real captured PDF images and retain hashes, page numbers, OCR text and word boxes"
+      - "Generate an offline local owner review packet; keep source images/text in ignored data/raw"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s34_ocr.py -q'
+      expected: "Machine checks pass and a real local review packet exists; no values promoted or owner approval invented"
+    human_gate: "Owner reviews the OCR sample before any extracted value is used (T117/T118)"
+    hours: 3
   - id: T227
     parent: T114
     title: "S32 daily gap census"
@@ -226,6 +251,7 @@ moved_tasks:
     before: T046
   - {ids: [T085, T086], from: P2, to: P1, after: T030}
 changed_tasks:
+  - {id: T118, change: "D49: add T228 dependency and require owner OCR review before using extracted values"}
   - {id: T114, change: "D46: adapter contract complete independently; daily gap census split into child T227"}
   - {id: T130, change: "D46: add T227 dependency before claiming S32 historical coverage"}
   - {id: T129, change: "D44: add T226 dependency; retain original dependencies and P3 full-audit scope"}

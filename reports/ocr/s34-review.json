@@ -1,0 +1,29 @@
+[
+  {
+    "evidence_id": "e08",
+    "packet_sha256": "78a00c49f34abce70878c8db821781df2d310112d633b5b1af511218ab355311",
+    "review_status": "pending",
+    "pages": [
+      3
+    ],
+    "word_count": 229,
+    "sample_cells": 2,
+    "disagreements": 2,
+    "source_sha256": "e533d6d422c93326297b918055f32dc27a3597d54a438e2d8afca672fb650619",
+    "source_url": "https://sdma.kerala.gov.in/wp-content/uploads/2020/06/20_06_2020-1.pdf"
+  },
+  {
+    "evidence_id": "e10",
+    "packet_sha256": "cbb1c68aca697271855ee2fb85b21c9d57f2e9ce081cedc5e61e242f150a314f",
+    "review_status": "pending",
+    "pages": [
+      2,
+      3
+    ],
+    "word_count": 492,
+    "sample_cells": 6,
+    "disagreements": 4,
+    "source_sha256": "f84fd2926c1c99d61a5762bc5efcfe46b0d83d0b5ddf3acfa7b7eb7bc62c48ec",
+    "source_url": "https://sdma.kerala.gov.in/wp-content/uploads/2023/08/Archives.pdf"
+  }
+]

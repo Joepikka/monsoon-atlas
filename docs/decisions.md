@@ -2,6 +2,37 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D50 — OCR disagreements stay unresolved (6 Nov 2026), before changing the
+  review contract.** Three attempts at one preprocessing recipe failed across the
+  mixed layouts. The doubtful assumption was that one recipe could preserve every
+  digit. Keep two reproducible OCR candidates per numeric sample: contrast/Lanczos
+  and binary/tight-crop/nearest. Record their original crop, settings, word boxes
+  and raw text; mark agreement/disagreement and leave selection null. Do not select
+  the candidate matching an expected number, edit OCR digits or claim extraction
+  accuracy from these development samples. The owner reviews the actual source
+  crop and supplies the verified value, as already required by T117/T118. Machine
+  acceptance checks provenance and unresolved disagreements, not perfect OCR.
+  S34 and the full T118 adapter remain disabled/pending. A later adapter needs
+  separately validated layout rules; approving this sample does not approve bulk OCR.
+
+- **D49 — T118 OCR prerequisite split (6 Nov 2026).** Add child **T228** for a
+  reproducible, local-only OCR review packet before implementing/using S34 parsed
+  values. This separates the required owner review from the multi-layout adapter.
+  Pin pypdf 6.21.4, tesserocr 2.12.0 and Pillow 13.0.0 in an optional hash-locked
+  OCR group, constrained to core. PyPI provides the Python 3.12 Windows tesserocr
+  wheel with bundled Tesseract/Leptonica; use it without an admin installer. Record
+  its actual embedded engine version after installation. Use only a commit-pinned
+  official tessdata_fast English model with a recorded SHA256 and Apache-2.0
+  licence. Dependencies/models/caches and all outputs stay on D. Extract existing
+  PDF images through pypdf and preserve source PDF hashes, page numbers, image
+  hashes, OCR text/word boxes and engine/settings metadata. OCR output remains an
+  unreviewed draft, not observation rows or labels; source S34 stays disabled.
+  Restricted source pages, images and OCR text remain under git-ignored data/raw.
+  Prepare an offline HTML review packet for the owner, then stop for the manual
+  review required by T117/T118. Full T118 remains pending and gains T228 as a
+  dependency. T228's machine checks may finish while owner review remains pending;
+  neither completion certifies datum, daily coverage or M07 readiness.
+
 - **D48 — T227 daily census (6 Nov 2026), before implementation.** Use the
   shared Fetcher and S32 parser for all 700 dates, 2024-08-15 through 2026-07-15.
   Reuse hash-checked captures; rate-limit every live HTTP attempt to at least

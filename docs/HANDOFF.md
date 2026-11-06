@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 6 Nov 2026, T114 adapter and T227 KSEB daily gap census,
+Last updated: 6 Nov 2026, T228 OCR packet ready for required owner review,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 (5 Nov 2026). **They win where they conflict with the plan.** Adds T222 to T226, GATE-CORE (A4), human-only steps H01 to H14 (A5), P1 order (A8) and Kerala bootstrap split (A10) |
-| `docs/decisions.md` | Decisions D01 to D47. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T228. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D50. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -104,6 +104,7 @@ and a YAML block `- id: T057`.
 | `configs/states/ka.yaml` | Karnataka sources; enabled: S01, S02, S08, S09, S15, S16, S17, S40 |
 | `configs/states/kl.yaml` | T226 Kerala bootstrap: isolated output paths; every source disabled pending Kerala adapter checks |
 | `src/atlas/ingest/s32.py`, `schemas/s32.json` | T114 KSEB daily report adapter: observed 07:00 IST, strict layout, unit/percentage quarantine, unknown datum retained; S32 enabled only in Kerala |
+| `src/atlas/ingest/s34_ocr.py`, `scripts/s34_ocr_review.py` | T228 local OCR review packets, pinned toolchain/model, two unselected candidates per cell and explicit owner gate; full S34 adapter pending |
 | `configs/budgets.yaml` | Request, storage and DuckDB budgets |
 | `tests/` | Contracts, fetcher, storage, as-of, discovery/adapters, geography, model gates and state isolation; final continuation results below |
 
@@ -184,7 +185,15 @@ and a YAML block `- id: T057`.
 | T103 approval | `7f3780e` | Owner approved M05 v1 (D43): ridge is the champion; outputs labelled hindcast, no intervals |
 | T226 (child of T129) | `7c0c8f5` | D44: isolated disabled Kerala config and existing-evidence audit; full T129 pending. D45: ignore local model artifacts without removing them. Acceptance: 7 tests passed. |
 | T114 | `812e111` | S32 fetch/parse contract, real attributed CI samples and quarantine checks; D46. D47 fixes empty typed-table validation. |
-| T227 (child of T114) | This continuation commit | All 700 dates, 2024-08-15..2026-07-15, returned validated empty reports. 47 reused, 653 newly captured; zero failed/unattempted. Per-date hashes/counts committed; raw pages local. Acceptance: 7 passed in 1.08s; D48. |
+| T227 (child of T114) | `e017b1e` | All 700 dates, 2024-08-15..2026-07-15, returned validated empty reports. 47 reused, 653 newly captured; zero failed/unattempted. Per-date hashes/counts committed; raw pages local. Acceptance: 7 passed in 1.08s; D48. |
+| T228 (child of T118) | This continuation commit | D49/D50: pinned local OCR tooling and three-page review packet, eight sample cells, six disagreements; all selections null. Machine acceptance: 10 passed in 3.88s. Owner review pending; full T118/S34 adapter remains pending and source disabled. |
+
+T228 final validation: `419 passed, 1 skipped, 1 warning in 106.21s`; lint passes,
+124 files pass format, dependency policy reports 0 problems, `pip check` passes,
+amendment Markdown/YAML parity passes, and all 13 local HTML/image links resolve.
+The skip/warning are the existing S36 PDF-tool absence and MLflow deprecation.
+Independent code review found no actionable defect. This verifies machine
+preparation only; it is not an OCR accuracy claim or owner approval.
 
 T227 final validation: `407 passed, 1 skipped, 1 warning in 108.98s`; adapter/history
 acceptance is covered by the full suite. Ruff lint passes, 120 files pass format,
@@ -258,6 +267,12 @@ M08 is a non-core descriptive 2018 replay (P3).
 
 ### Pending human-only steps (owner)
 
+- **Current next action: review the S34 OCR sample** at
+  `D:\monsoon-atlas\data\raw\S34\ocr-review\index.html`. Compare the eight original
+  cell crops with both OCR readings and confirm/correct values and units. Six cells
+  disagree. No candidate is selected, including the two that agree. T117/T118
+  requires this owner review before values are used; it does not approve bulk OCR.
+
 - Send the drafted KWRIS helpdesk request to ACIWRM (daily reservoir history). If data arrives
   with units, datum and licence, re-run T008.
 - H04: Delhi Open Transit Data registration (needed in P4).
@@ -292,8 +307,11 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    `models/registry/M05/v1.json`). Ridge passed every gate on 2020-2024; status
    `candidate_eligible`, **approved by the owner (D43)**: ridge is the champion.
    Before publishing intervals, recalibrate them (they cover 65%, not 80%).
-6. **C1 = M07 (Kerala): T226, T114 and T227 are done; next task T118.** Prepare
-   S34 OCR, pin the free tool and record it in decisions; owner reviews a real OCR sample.
+6. **C1 = M07 (Kerala): T226/T114/T227 and T228 machine preparation are done.**
+   First obtain the required owner review of the S34 packet (section 8). Then
+   continue full T118: validate per-layout cell extraction, dates, units and dam
+   identity; retain quarantine and never infer alert colours from English OCR.
+   T228 sample approval does not approve bulk extraction; S34 remains disabled.
    Before T130, explicitly resolve its full-T129 dependency for the M07-only fallback and
    the T115/T116 scheduling dependency. Full T129 remains a P3 task, not complete (D44).
    T130 must verify known datum, >=3 years daily coverage across >=8 dams and new dated
