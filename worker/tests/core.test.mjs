@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { authenticate, decodeUpload, restoreUpload, uploadMessage, MAX_BLOB } from '../src/ingest.ts';
 import worker from '../src/index.ts';
+import { runtime, runtimeOptions } from './runtime-config.mjs';
 
 const cap = JSON.parse(readFileSync(new URL('../../web/tests/fixtures/sachet-ka-point.json', import.meta.url), 'utf8'));
 const now = Date.parse(cap.fetched_at) + 1000;
@@ -14,6 +15,10 @@ const snapshot = {schema_version:1,state:'ka',release_id:'worker-contract',data_
 const payload = () => gzipSync(JSON.stringify({source_id:'S09',snapshot}));
 const key = 'ephemeral-test-secret-not-an-account-token';
 const hex = bytes => Buffer.from(bytes).toString('hex');
+
+test('runtime harness uses options accepted by the actually installed Miniflare version',()=>{
+  assert.doesNotThrow(()=>runtime.MiniflareOptionsSchema.parse(runtimeOptions('export default {}',key)));
+});
 async function signed(bytes=payload(), timestamp=String(Math.floor(now/1000))) {
   const cryptoKey = await crypto.subtle.importKey('raw',new TextEncoder().encode(key),{name:'HMAC',hash:'SHA-256'},false,['sign']);
   const message = await uploadMessage(timestamp,'POST','/internal/ingest',bytes);

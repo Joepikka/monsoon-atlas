@@ -4,14 +4,14 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { webcrypto, randomBytes } from 'node:crypto';
+import { runtime, runtimeOptions } from './runtime-config.mjs';
 
 const requireWrangler = createRequire(new URL('../node_modules/wrangler/package.json', import.meta.url));
-const { Miniflare } = requireWrangler('miniflare');
+const { Miniflare } = runtime;
 const { build } = requireWrangler('esbuild');
 const bundle = await build({entryPoints:[new URL('../src/index.ts',import.meta.url).pathname],bundle:true,format:'esm',platform:'browser',write:false,target:'es2023'});
 const key = randomBytes(32).toString('hex');
-const mf = new Miniflare({modules:true,script:bundle.outputFiles[0].text,compatibilityDate:'2026-11-06',
-  d1Databases:{DB:'local-test-hot'},bindings:{CAPABILITY_GATE:'verified_free_no_card',ATLAS_INGEST_HMAC_KEY:key}});
+const mf = new Miniflare(runtimeOptions(bundle.outputFiles[0].text,key));
 try {
   const db = await mf.getD1Database('DB');
   const schema = readFileSync(new URL('../schema.sql',import.meta.url),'utf8');
