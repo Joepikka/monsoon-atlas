@@ -48,7 +48,7 @@ test('a genuine CAP sample has matching list and map entries with original prove
   await expect(list.getByRole('button', { name: record.title, exact: true })).toBeVisible();
   await expect(list.getByText('official', { exact: true })).toBeVisible();
   await expect(list.getByRole('link')).toHaveAttribute('href', record.source_url);
-  await expect(list.locator('time')).toHaveAttribute('datetime', record.valid_at);
+  await expect(list.getByTestId('valid-time')).toHaveAttribute('datetime', record.valid_at);
   await expect(list.getByText(record.location_note)).toBeVisible();
   await expect(page.locator('.map-pin')).toHaveCount(1);
 });

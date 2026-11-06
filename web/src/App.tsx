@@ -1,22 +1,28 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import { loadSnapshot, stateNames, type MapRecord, type Snapshot, type StateId, type ViewState } from './data';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { loadSnapshot, stateNames, type LayerKind, type Snapshot, type StateId, type ViewState } from './data';
+import Layers, { layerConfigs, visibleRecords, type Coordinates } from './map/Layers';
+import SourceBadge from './components/SourceBadge';
+import EventTicker from './components/EventTicker';
+import { localTime } from './time';
 import './styles.css';
 
 const MapView = lazy(() => import('./MapView').catch(() => ({ default: () =>
   <p className="map-message">The map could not load. The record list remains available.</p> })));
-const EMPTY: MapRecord[] = [];
-
-export function localTime(value: string): string {
-  return new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(value)) + ' IST';
-}
 
 export default function App() {
   const [state, setState] = useState<StateId>('ka');
   const [radius, setRadius] = useState('25');
   const [attempt, setAttempt] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
+  const [active, setActive] = useState<Set<LayerKind>>(() => new Set(layerConfigs.map(layer => layer.kind)));
+  const [center, setCenter] = useState<Coordinates | null>(null);
+  const [clock, setClock] = useState(Date.now);
   const [view, setView] = useState<ViewState>({ status: 'loading', snapshot: null, message: '' });
   const cache = useRef<Partial<Record<StateId, Snapshot>>>({});
+  useEffect(() => {
+    const timer = setInterval(() => setClock(Date.now()), 60000);
+    return () => clearInterval(timer);
+  }, []);
   useEffect(() => {
     const controller = new AbortController();
     const previous = cache.current[state] ?? null;
@@ -29,7 +35,12 @@ export default function App() {
     return () => controller.abort();
   }, [state, attempt]);
   const snapshot = view.snapshot;
-  const records = snapshot?.records ?? EMPTY;
+  const records = useMemo(() => visibleRecords(snapshot?.records ?? [], active, center, Number(radius)), [snapshot, active, center, radius]);
+  const toggle = (kind: LayerKind) => setActive(previous => {
+    const next = new Set(previous);
+    if (next.has(kind)) next.delete(kind); else next.add(kind);
+    return next;
+  });
   const headline = view.status === 'loading' ? 'Loading snapshot'
     : view.status === 'empty' ? 'No released snapshot yet'
     : view.status === 'error' ? snapshot ? 'Refresh failed' : 'Snapshot unavailable'
@@ -67,6 +78,7 @@ export default function App() {
         </button>
       </div>
 
+      <EventTicker records={records} now={clock} />
       <div className="workspace">
         <section className="record-panel" aria-labelledby="region-heading">
           <div className="region-heading"><p className="eyebrow">STATE ATLAS / 01</p>
@@ -78,6 +90,7 @@ export default function App() {
               {snapshot && <p className="asof">As of <time data-testid="snapshot-time" dateTime={snapshot.as_of}>{localTime(snapshot.as_of)}</time></p>}
             </div>
           </div>
+          <Layers snapshot={snapshot} active={active} onToggle={toggle} center={center} onClear={() => setCenter(null)} />
           <section id="records" className="records" tabIndex={-1} aria-labelledby="records-heading">
             <div className="section-title"><h3 id="records-heading">In this view</h3><span>{records.length} records</span></div>
             {records.length === 0 ? <div className="empty-records">
@@ -85,9 +98,8 @@ export default function App() {
               <p>{snapshot ? 'No mapped records in this snapshot.' : 'Dated records will appear with their sources when a reviewed snapshot is released.'}</p>
               <p className="muted">An unavailable feed does not mean there are no hazards.</p>
             </div> : <ol className="record-list" data-testid="record-list">{records.map(record => <li key={record.id}>
-              <span className={`provenance ${record.provenance}`}>{record.provenance}</span>
               <button className="record-title" aria-pressed={selected === record.id} onClick={() => setSelected(record.id)}>{record.title}</button>
-              <time dateTime={record.valid_at}>{localTime(record.valid_at)}</time>
+              <SourceBadge record={record} health={snapshot?.sources.find(source => source.source_id === record.source_id)} now={clock} />
               {record.location_note && <p className="location-note">{record.location_note}</p>}
               <a href={record.source_url} target="_blank" rel="noopener noreferrer">{record.source_id} · Original source ↗</a>
             </li>)}</ol>}
@@ -98,7 +110,7 @@ export default function App() {
         <section className="map-panel" aria-label="Karnataka map">
           <div className="map-caption"><span className="map-cross" aria-hidden="true">⊕</span><span>{stateNames[state]}<small>Map &amp; matching record list</small></span></div>
           <Suspense fallback={<p className="map-message">Loading map…</p>}>
-            <MapView records={records} selected={selected} onSelect={setSelected} />
+            <MapView records={records} selected={selected} onSelect={setSelected} center={center} onCenter={setCenter} />
           </Suspense>
           <div className="map-note">{snapshot ? 'Records belong to the dated snapshot' : 'Basemap only · no released observations'}</div>
         </section>

@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D58 — Radius and source-health semantics (T039, 6 Nov 2026), before
+  implementation.** A polygon alert's representative point cannot establish
+  distance to the whole alert area. Keep area-scoped official alerts in the
+  state context when filtering a point radius; label that limit rather than
+  silently excluding an intersecting warning. Point records use great-circle
+  distance from a user-chosen map point. No browser location permission or
+  persisted location/query history is needed. Missing health metadata is
+  unknown/unavailable, never evidence of no hazards. Preserve the common
+  envelope's official/model/inferred/reconstructed provenance, original issue,
+  valid, fetched and available times. Reconstructed and inferred records cannot
+  masquerade as official alerts; unknown price units cannot be rendered as prices.
+  The ticker refers to the dated snapshot and preserves provider severity/expiry.
+
 - **D57 — Align the browser-test transport version (6 Nov 2026), before
   changing the lock.** T038's first TypeScript build found incompatible Page
   types: axe 4.14.0 resolved playwright-core 1.65.0 while @playwright/test 1.64.1

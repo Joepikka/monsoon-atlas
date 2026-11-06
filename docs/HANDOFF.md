@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 6 Nov 2026, price blocked contracts and T038 local map shell; S23 units and S34 owner review pending,
+Last updated: 6 Nov 2026, T039 provenance/layers checks; S23 units and S34 owner review pending,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -26,7 +26,7 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
 | `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T228. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D57. Every deviation from the plan is recorded here before it is made |
+| `docs/decisions.md` | Decisions D01 to D58. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -109,6 +109,7 @@ and a YAML block `- id: T057`.
 | `src/atlas/ingest/s22.py`, `s23.py` | T024/T026 blocked price sources fail before network/file access, even if force-enabled |
 | `src/atlas/features/m06.py`, `src/atlas/models/m06.py` | Evidence-bound blocked M06 path; no labels, weights, metrics or predictions |
 | `web/`, `scripts/web.ps1` | T038 pinned React/Vite/MapLibre shell; approved immutable JSON loading, dated last-good state, responsive map/list and browser checks; no production data seeded |
+| `web/src/map/Layers.tsx`, `web/src/components/SourceBadge.tsx`, `EventTicker.tsx` | T039 per-layer filtering, original clocks/severity, source health, geodesic point radius, area-warning context and pausable dated alert ticker |
 | `configs/budgets.yaml` | Request, storage and DuckDB budgets |
 | `tests/` | Contracts, fetcher, storage, as-of, discovery/adapters, geography, model gates and state isolation; final continuation results below |
 
@@ -199,13 +200,18 @@ and a YAML block `- id: T057`.
 | T035 | `882521b` | M06 blocked data gate: actual source/config hashes, planned target/split dates, unknown publication lag and no labels/features/predictions. Acceptance: 4 passed in 0.56s; full suite 442 passed, 1 skipped in 122.47s; lint/format pass. This completes only the prescribed blocked branch. |
 | T036 | `aa3ca68` | Blocked M06 fit/predict contract, local no-model record and clean-process status notebook. Acceptance: 3 passed in 1.56s; full suite 445 passed, 1 skipped in 101.12s; lint/format pass. No fitting or evaluation performed. |
 | T037 | `5da4702` | Source-bound blocked status and report; no achieved scores, release, champion or predictions (D55). Acceptance: 3 passed in 0.58s; full suite 448 passed, 1 skipped in 128.31s; lint/format pass. M06 remains unavailable. |
-| T038 | This continuation commit | Pinned Node/React/Vite/MapLibre shell; hash/approval/state checks, original source times/provenance, dated last-good view, responsive map/list and genuine CAP test fixture. Acceptance: 3 passed in 21.18s. Full suite: 451 passed, 1 skipped in 153.66s, including build, 9 unit checks and 18 Chromium checks. Lint/format and dependency policy pass; production npm audit reports 0 advisories. No production data or release approval seeded. |
+| T038 | `4f3c36e` | Pinned Node/React/Vite/MapLibre shell; hash/approval/state checks, original source times/provenance, dated last-good view, responsive map/list and genuine CAP test fixture. Acceptance: 3 passed in 21.18s. Full suite: 451 passed, 1 skipped in 153.66s, including build, 9 unit checks and 18 Chromium checks. Lint/format and dependency policy pass; production npm audit reports 0 advisories. No production data or release approval seeded. |
+| T039 | This continuation commit | Original source clocks/provenance, provider severity/expiry, source health, per-layer toggles, keyboard geodesic radius and pausable dated alerts (D58). Source projections checked against S01/S09 adapters. Acceptance: 2 passed in 21.13s; full suite 453 passed, 1 skipped in 206.61s; 16 web unit checks and 30 browser checks, including populated axe/overflow checks. Lint/format pass; price/model/source gates unchanged. |
 
 T025 retry final validation: `432 passed, 1 skipped, 1 warning in 115.94s`;
 lint passes, 128 files pass formatting, dependency policy reports 0 problems
 and whitespace checks pass. Independent review found no actionable defect and
 confirmed that the projections are absent from the Fetcher cache ledger. The
 skip/warning remain the existing S36 PDF-tool absence and MLflow deprecation.
+
+T038 remote web CI passed on Windows and Ubuntu for commit `4f3c36e`:
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42201637045 . Both matrix jobs
+installed the lock, built, ran unit tests and passed the shell browser checks.
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
@@ -357,8 +363,8 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    already supplied; do not request it again without cause.
    T035-T037's prescribed blocked branch is complete; `reports/models/m06.md`
    records why there is no trained price model. Continue independent P1 work (D54).
-8. **A8 step 9:** T038 shell checks pass; continue T039
-   provenance/layers and T040 Place Lens. `scripts/web.ps1 run dev` serves the local
+8. **A8 step 9:** T038/T039 checks pass; next is T040 Place Lens.
+   `scripts/web.ps1 run dev` serves the local
    map at http://127.0.0.1:5173. There is no approved public snapshot or deployment.
    Then dependency-ready hosting/C3 Ask preparation, T225 case studies and T046;
    unresolved human/data gates must remain pending rather than blocking independent work.

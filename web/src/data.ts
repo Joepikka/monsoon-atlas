@@ -1,16 +1,27 @@
 export type StateId = 'ka' | 'kl' | 'dl';
 export const stateNames: Record<StateId, string> = { ka: 'Karnataka', kl: 'Kerala', dl: 'Delhi' };
+export type LayerKind = 'weather' | 'alert' | 'price' | 'model';
+export type Health = 'available' | 'stale' | 'unavailable' | 'partial' | 'unknown';
+export interface SourceHealth {
+  source_id: string; status: Health; last_success_at: string | null; detail: string;
+}
 
 export interface MapRecord {
   id: string; title: string; longitude: number; latitude: number;
   source_id: string; source_url: string; provenance: 'official' | 'model' | 'inferred' | 'reconstructed';
   valid_at: string; fetched_at: string;
   location_note?: string;
+  kind: LayerKind; spatial_scope: 'point' | 'area';
+  issued_at: string | null; available_at: string; expires_at: string | null;
+  severity: string | null; unit: string | null; value: number | null;
+  market: string | null; missing_reason: string | null;
+  evidence: 'forecast' | 'reanalysis' | 'hindcast' | null;
 }
 
 export interface Snapshot {
   schema_version: 1; state: StateId; release_id: string; data_revision: string;
   as_of: string; published_at: string; records: MapRecord[];
+  sources: SourceHealth[];
 }
 
 export interface ViewState {
@@ -42,6 +53,14 @@ function timestamp(value: unknown, field: string): string {
   return result;
 }
 
+function nullableTime(value: unknown, field: string): string | null {
+  return value === null || value === undefined ? null : timestamp(value, field);
+}
+
+function nullableText(value: unknown, field: string): string | null {
+  return value === null || value === undefined ? null : text(value, field);
+}
+
 export async function sha256(bytes: Uint8Array): Promise<string> {
   const digest = await crypto.subtle.digest('SHA-256', Uint8Array.from(bytes).buffer);
   return Array.from(new Uint8Array(digest), n => n.toString(16).padStart(2, '0')).join('');
@@ -52,11 +71,12 @@ export function parseSnapshot(value: unknown, state: StateId): Snapshot {
   if (data.schema_version !== 1) throw new Error('Unsupported snapshot schema.');
   if (data.state !== state) throw new Error('Snapshot state does not match the selected state.');
   const revision = text(data.data_revision, 'data revision');
+  const asOf = timestamp(data.as_of, 'as_of');
   if (!HASH.test(revision)) throw new Error('Invalid data revision hash.');
   if (!Array.isArray(data.records)) throw new Error('Snapshot records are missing.');
   const ids = new Set<string>();
-  const records = data.records.map(value => {
-    const row = object(value);
+  const records = data.records.map(entry => {
+    const row = object(entry);
     const id = text(row.id, 'record ID');
     if (ids.has(id)) throw new Error('Duplicate snapshot record ID.');
     ids.add(id);
@@ -70,16 +90,59 @@ export function parseSnapshot(value: unknown, state: StateId): Snapshot {
     const sourceUrl = text(row.source_url, 'source URL');
     const url = new URL(sourceUrl);
     if (url.protocol !== 'https:' || url.username || url.password) throw new Error('Invalid public source URL.');
+    if (!['weather', 'alert', 'price', 'model'].includes(String(row.kind))) throw new Error('Invalid record layer.');
+    if (!['point', 'area'].includes(String(row.spatial_scope))) throw new Error('Missing spatial scope.');
+    const issued = nullableTime(row.issued_at, 'issued_at');
+    const available = timestamp(row.available_at, 'available_at');
+    if (Date.parse(available) > Date.parse(asOf) || (issued && Date.parse(issued) > Date.parse(asOf))) {
+      throw new Error('A record was not available at the snapshot cutoff.');
+    }
+    const unit = nullableText(row.unit, 'unit');
+    const market = nullableText(row.market, 'market');
+    const value = row.value === undefined || row.value === null ? null : row.value;
+    if (value !== null && (typeof value !== 'number' || !Number.isFinite(value))) throw new Error('Invalid numeric measure.');
+    if (value !== null && !unit) throw new Error('A numeric measure requires a documented unit.');
+    if (value === null && ['weather', 'model'].includes(String(row.kind)) && !row.missing_reason) {
+      throw new Error('A missing measure requires a missing reason.');
+    }
+    if (row.kind === 'price' && (!unit || !market || value === null || value <= 0)) {
+      throw new Error('A price requires a verified unit, market and positive value.');
+    }
+    const evidence = row.evidence ?? null;
+    if (evidence !== null && !['forecast', 'reanalysis', 'hindcast'].includes(String(evidence))) throw new Error('Invalid model evidence label.');
+    if (row.kind === 'alert' && (sourceId !== 'S09' || row.provenance !== 'official')) {
+      throw new Error('An inferred or model item cannot enter the official CAP alert layer.');
+    }
     return {
       id, title: text(row.title, 'record title'), longitude: row.longitude, latitude: row.latitude,
       source_id: sourceId, source_url: sourceUrl, provenance: row.provenance as MapRecord['provenance'],
       valid_at: timestamp(row.valid_at, 'valid_at'), fetched_at: timestamp(row.fetched_at, 'fetched_at'),
       ...(row.location_note === undefined ? {} : { location_note: text(row.location_note, 'location note') }),
+      kind: row.kind as LayerKind, spatial_scope: row.spatial_scope as MapRecord['spatial_scope'],
+      issued_at: issued, available_at: available, expires_at: nullableTime(row.expires_at, 'expires_at'),
+      severity: nullableText(row.severity, 'provider severity'), unit, value,
+      market, missing_reason: nullableText(row.missing_reason, 'missing reason'),
+      evidence: evidence as MapRecord['evidence'],
     };
   });
+  if (data.sources !== undefined && !Array.isArray(data.sources)) throw new Error('Invalid source health metadata.');
+  const sources: SourceHealth[] = ((data.sources ?? []) as unknown[]).map(value => {
+    const source = object(value);
+    const sourceId = text(source.source_id, 'source ID');
+    if (!/^S\d{2,}$/.test(sourceId) || !['available', 'stale', 'unavailable', 'partial', 'unknown'].includes(String(source.status))) {
+      throw new Error('Invalid source health.');
+    }
+    const lastSuccess = nullableTime(source.last_success_at, 'last success');
+    if ((source.status === 'available' && !lastSuccess) || (lastSuccess && Date.parse(lastSuccess) > Date.parse(asOf))) {
+      throw new Error('Source health has no valid success time at this cutoff.');
+    }
+    return { source_id: sourceId, status: source.status as Health,
+      last_success_at: lastSuccess, detail: text(source.detail, 'source health detail') };
+  });
+  if (new Set(sources.map(source => source.source_id)).size !== sources.length) throw new Error('Duplicate source health entry.');
   return { schema_version: 1, state, release_id: text(data.release_id, 'release ID'),
-    data_revision: revision, as_of: timestamp(data.as_of, 'as_of'),
-    published_at: timestamp(data.published_at, 'published_at'), records };
+    data_revision: revision, as_of: asOf,
+    published_at: timestamp(data.published_at, 'published_at'), records, sources };
 }
 
 export async function loadSnapshot(state: StateId, previous: Snapshot | null, options: LoadOptions = {}): Promise<ViewState> {

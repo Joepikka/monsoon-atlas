@@ -2,11 +2,7 @@
 
 import hashlib
 import json
-import os
-import subprocess
 from pathlib import Path
-
-import pytest
 
 from atlas.config import load_state
 from atlas.contracts import RawArtifact
@@ -15,7 +11,6 @@ from atlas.ingest.s09 import S09
 
 ROOT = Path(__file__).resolve().parents[1]
 WEB = ROOT / "web"
-NODE_DIR = ROOT / ".tools/node/node-v22.16.0-win-x64"
 
 
 def test_public_cap_fixture_matches_the_existing_source_adapter():
@@ -71,29 +66,6 @@ def test_exact_web_dependencies_and_no_seeded_production_data():
     assert not list((WEB / "public/data").rglob("*.json"))
 
 
-def test_web_build_unit_and_browser_contracts():
-    node = NODE_DIR / "node.exe"
-    npm = NODE_DIR / "node_modules/npm/bin/npm-cli.js"
-    if not node.exists() or not (WEB / "node_modules").exists():
-        pytest.skip("Optional pinned web toolchain is not installed in this core-only environment")
-    env = os.environ.copy()
-    env.update(
-        {
-            "TEMP": str(ROOT / ".cache/tmp"),
-            "TMP": str(ROOT / ".cache/tmp"),
-            "npm_config_cache": str(ROOT / ".cache/npm"),
-            "PLAYWRIGHT_BROWSERS_PATH": str(ROOT / ".cache/ms-playwright"),
-            "PATH": str(NODE_DIR) + os.pathsep + env.get("PATH", ""),
-        }
-    )
+def test_web_build_unit_and_browser_contracts(web_check):
     for args in (["run", "build"], ["run", "test"], ["run", "test:e2e", "--", "shell.spec.ts"]):
-        result = subprocess.run(
-            [str(node), str(npm), *args],
-            cwd=WEB,
-            env=env,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            timeout=300,
-        )
-        assert result.returncode == 0, result.stdout[-7000:] + result.stderr[-3000:]
+        web_check(*args)

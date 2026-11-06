@@ -38,5 +38,5 @@ jobs:
         working-directory: web
       - run: npm run test
         working-directory: web
-      - run: npm run test:e2e -- shell.spec.ts
+      - run: npm run test:e2e
         working-directory: web

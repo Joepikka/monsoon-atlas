@@ -17,5 +17,6 @@
   "value": null,
   "missing_reason": null,
   "location_note": "Representative point within the official alert area; not an incident location.",
-  "area_text": "5 districts of Karnataka"
+  "area_text": "5 districts of Karnataka",
+  "spatial_scope": "area"
 }
