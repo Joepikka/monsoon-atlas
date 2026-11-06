@@ -14,7 +14,8 @@ const key = randomBytes(32).toString('hex');
 const mf = new Miniflare(runtimeOptions(bundle.outputFiles[0].text,key));
 try {
   const db = await mf.getD1Database('DB');
-  const schema = readFileSync(new URL('../schema.sql',import.meta.url),'utf8');
+  // Pinned workerd rejects a comment-only tail after a prepared statement.
+  const schema = readFileSync(new URL('../schema.sql',import.meta.url),'utf8').replace(/^\s*--.*$/gm,'');
   for (const statement of schema.split(/\n(?=(?:CREATE TABLE|CREATE TRIGGER|INSERT INTO capacity|PRAGMA)\b)/)) {
     if (statement.trim()) {
       try { await db.prepare(statement).run(); }

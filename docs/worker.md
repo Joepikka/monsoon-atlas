@@ -60,6 +60,10 @@ local checks use Node's type erasure and SQLite. Actual Worker/D1 checks run on
 Ubuntu 24.04 CI with the bundled Miniflare, no account, remote binding or secret.
 Local npm/temp caches remain on D via `scripts/worker.ps1`. Runtime tests use
 ephemeral keys and genuine S01/S09 projections, including corrupt copies.
+The harness uses Miniflare 5's exported v4-options converter, verified against
+the installed options schema without starting workerd on Windows. It strips
+full-line SQL comments before preparing schema statements because the pinned
+workerd rejects a comment-only tail. Ubuntu CI exercises the actual engine.
 
 Owner setup remains separate from implementation. Use a scoped Cloudflare API
 token for Workers/D1 and later Pages; keep it in ignored `.env` or Actions secrets,
