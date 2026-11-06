@@ -2,6 +2,21 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D69 — Local weather snapshot preparation (6 Nov 2026), before implementation.**
+  Split T238 from T043 after T235/T237. Project one quality-passed future
+  temperature from the verified Bengaluru model grid, with explicit partial
+  scope. Consume grouped validated capture receipts; never independently select
+  latest metadata and forecast files. Fence receipt completion and every input
+  validation at the report cutoff. Preserve the earliest forecast retrieval
+  and complete-pair availability clocks for the selected model/run/content
+  cohort across revalidation, while using its latest actual successful check
+  for source health. Use actual returned coordinates and S01's normalized
+  null/quality policy. Reuse a small shared immutable prepared-envelope writer
+  extracted from T235, retaining CAP's strict input-continuity guard. Both
+  producers keep partial prepared-only output, monotonic/idempotent heads and
+  actual creation time distinct from historical cutoff. No source call, upload,
+  approval or activation occurs during preparation.
+
 - **D68 — Bounded paired weather capture (6 Nov 2026), before implementation.**
   Split T237 from T043 after T010/T234/T236. Start with the already verified
   Bengaluru query (12.97,77.59), named `ecmwf_ifs025`, whose returned grid point

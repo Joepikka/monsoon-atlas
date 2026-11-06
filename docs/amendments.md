@@ -221,6 +221,13 @@ shared cadence/backoff and weather-specific spacing/attempt caps. It remains
 local and partial, with no projection, upload or workflow. Estimate: 3 hours.
 Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s01_collect.py -q`.
 
+## A21. Source-bound weather preparation (D69, 6 November 2026)
+
+T238 is a child of T043 after T235/T237. It prepares the verified single-point
+temperature projection using grouped model-run evidence and a shared immutable
+envelope writer, preserving partial coverage and true clocks. Estimate: 3 hours.
+Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s01_prepare.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -241,6 +248,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T238
+    parent: T043
+    title: "Prepare a source-bound partial weather snapshot from paired captures"
+    phase: P1
+    state: KA
+    depends_on: [T235, T237]
+    files: [src/atlas/ingest/prepared.py, src/atlas/ingest/s09_prepare.py, src/atlas/ingest/s01_prepare.py, tests/sources/test_s01_prepare.py, tests/sources/test_s09_prepare.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Extract the reusable bounded immutable envelope writer without changing CAP preparation behavior"
+      - "Validate paired receipt/raw hashes, model/point/settling and cutoff eligibility; preserve per-cohort original clocks"
+      - "Prepare the first quality-passed future temperature at actual returned grid coordinates, with partial source health and no publication"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s01_prepare.py -q'
+      expected: "Weather records preserve genuine values, coordinates, model and availability clocks; corrupt/future/mismatched inputs cannot replace the prepared head"
+    hours: 3
   - id: T237
     parent: T043
     title: "Bounded paired S01 capture for the verified Bengaluru profile"
