@@ -20,3 +20,22 @@ Each real-record fixture states where it came from. Malformed copies are built i
 Open-Meteo data is CC BY 4.0 (attribution: Open-Meteo.com). Dates in this response are local Asia/Kolkata calendar days (`utc_offset_seconds: 19800`).
 
 Sachet CAP files are public domain (feed `<copyright>`, T013 e02).
+
+## KSEB S32 title/table excerpts (T114)
+
+`s32_kseb_e02.html`, `s32_kseb_e03.html`, `s32_kseb_e04.html`,
+`s32_kseb_e09.html` and `s32_kseb_e10.html` contain unchanged report headings and
+tables extracted from the T113 captures. Surrounding page content was omitted;
+no measurement was edited. `s32_samples.json` records the exact source URLs,
+original retrieval times, original raw hashes and excerpt hashes.
+
+Attribution: **Kerala State Electricity Board Limited (KSEB), Daily report: water
+levels of main reservoirs**, retrieved 5 November 2026 from
+<https://kseb.in/dashboard/view/waterlevel> (dated requests in the manifest).
+These excerpts retain **CC BY-SA 2.5 India or later**, as recorded in the captured
+[KSEB terms](https://kseb.in/articledetail/terms_and_conditions) (T113 e06), rather
+than the repository's MIT code licence. Licence text:
+<https://creativecommons.org/licenses/by-sa/2.5/in/>.
+
+Tests create corrupted copies only in temporary directories. The full discovery
+pages remain local; `tests/fixtures/s32/` still contains only the evidence manifest.

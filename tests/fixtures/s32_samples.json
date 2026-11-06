@@ -1,0 +1,57 @@
+[
+  {
+    "file": "s32_kseb_e02.html",
+    "evidence_id": "e02",
+    "source_url": "https://kseb.in/dashboard/view/waterlevel",
+    "fetched_at": "2026-11-05T10:35:20.053617Z",
+    "raw_sha256": "a495f7f76f0100dc7c839149a58356fe49981fe2683dc928d687593fdf2ea79c",
+    "excerpt_sha256": "e840f22e84a695b7afbb2152f6abeea0b8d34eb5c04ffc4d1d0017f399ae9aa3",
+    "licence": "CC BY-SA 2.5 India or later (T113 e06)",
+    "attribution": "Kerala State Electricity Board Limited, Daily report: water levels of main reservoirs",
+    "transformation": "Unchanged report h3 and table extracted; surrounding page omitted"
+  },
+  {
+    "file": "s32_kseb_e03.html",
+    "evidence_id": "e03",
+    "source_url": "https://kseb.in/dashboard/view/waterlevel?date=2023-10-26",
+    "fetched_at": "2026-11-05T10:35:23.431959Z",
+    "raw_sha256": "e70382f41b05bd9375574b752479b6305bbdb6b0b24bf2155150babebfbb4392",
+    "excerpt_sha256": "26461b46082d3996c684c93c92b092d64d012e258ec311e26f64deb3905f00da",
+    "licence": "CC BY-SA 2.5 India or later (T113 e06)",
+    "attribution": "Kerala State Electricity Board Limited, Daily report: water levels of main reservoirs",
+    "transformation": "Unchanged report h3 and table extracted; surrounding page omitted"
+  },
+  {
+    "file": "s32_kseb_e04.html",
+    "evidence_id": "e04",
+    "source_url": "https://kseb.in/dashboard/view/waterlevel?date=2023-10-25",
+    "fetched_at": "2026-11-05T10:35:26.752867Z",
+    "raw_sha256": "ff2d1c496dc167944d832bdc82e0f7cb65523b54709e14364e766da693c3972f",
+    "excerpt_sha256": "3d7d391e28d8aa9a559fe23cc64797eaaa3bbfe332bccf91452f2660af8f224a",
+    "licence": "CC BY-SA 2.5 India or later (T113 e06)",
+    "attribution": "Kerala State Electricity Board Limited, Daily report: water levels of main reservoirs",
+    "transformation": "Unchanged report h3 and table extracted; surrounding page omitted"
+  },
+  {
+    "file": "s32_kseb_e09.html",
+    "evidence_id": "e09",
+    "source_url": "https://kseb.in/dashboard/view/waterlevel?date=2023-11-15",
+    "fetched_at": "2026-11-05T10:35:43.367865Z",
+    "raw_sha256": "10ba0fe1de88fc8f58801da259acf3d6ab9acf78896e0d2c822c38fa90d7e5dc",
+    "excerpt_sha256": "b591153796552769bce99a942b5541467d7fc7215167407dd67da71d5cc7a564",
+    "licence": "CC BY-SA 2.5 India or later (T113 e06)",
+    "attribution": "Kerala State Electricity Board Limited, Daily report: water levels of main reservoirs",
+    "transformation": "Unchanged report h3 and table extracted; surrounding page omitted"
+  },
+  {
+    "file": "s32_kseb_e10.html",
+    "evidence_id": "e10",
+    "source_url": "https://kseb.in/dashboard/view/waterlevel?date=2023-12-01",
+    "fetched_at": "2026-11-05T10:35:46.720541Z",
+    "raw_sha256": "a483dece7fb8ee88132edab14160c9fff8b72129e889e39dc6ac7d2ecaba59bc",
+    "excerpt_sha256": "e82d6f27935afa559d2f21706aad0fc6f9d6425fe579ca17d4a7b23ce7e94db7",
+    "licence": "CC BY-SA 2.5 India or later (T113 e06)",
+    "attribution": "Kerala State Electricity Board Limited, Daily report: water levels of main reservoirs",
+    "transformation": "Unchanged report h3 and table extracted; surrounding page omitted"
+  }
+]

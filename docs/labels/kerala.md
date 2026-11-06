@@ -5,6 +5,11 @@ This is a record of evidence already collected, not a new source verification.
 **Full T129 remains pending. M07 is not training-ready.** Decision D44 splits the
 configuration prerequisite from the later adapter, geography and label audit.
 
+**6 November update (T114):** S32 is now the only enabled Kerala source. Its
+adapter normalizes today's report and quarantines missing/conflicting rows; all
+other sources remain disabled. The historical bootstrap descriptions below refer
+to T226's state at completion. No datum or M07 readiness gate has been cleared.
+
 ## State isolation
 
 `configs/states/kl.yaml` loads through the existing `StateConfig`. Its raw, clean and
@@ -87,8 +92,10 @@ terms must follow any permitted derived publication.
 ## Completion boundary and next task
 
 T226 acceptance: `python -m pytest tests/test_kl_data.py -q`, plus this evidence
-audit. It proves isolated config and disabled source registration. The full T129
+audit. It proved isolated config and disabled source registration. T114 updates
+the isolation checks to permit only its tested S32 adapter. The full T129
 audit (dam registry/datum, parsed labels, survey footprint, Kerala boundaries and
-shelters) stays pending on its original dependencies. Next: T114, then T118 with
-the required owner OCR review. S33/T115-T116 is still a dependency to resolve
+shelters) stays pending on its original dependencies. T114 is complete; T227's
+daily gap audit is pending, followed by T118 with the required owner OCR review.
+S33/T115-T116 is still a dependency to resolve
 before T130; it cannot be silently omitted or fabricated.

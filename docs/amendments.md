@@ -129,12 +129,43 @@ Before T130, record the resolution of its full-T129 dependency for the M07-only
 fallback and of T115/T116 scheduling; neither is waived by T226. Known datum,
 reviewed OCR, daily coverage and honest splits remain mandatory gates.
 
+## A11. S32 daily coverage census split (D46, 6 November 2026)
+
+**T227**, child of T114, runs in P1 after T113/T114 and before T130. T114 implements
+the adapter; its discovery follow-up requested a date-by-date audit of the sampled
+15 Aug 2024-15 Jul 2026 gap. That backfill is a separate resumable task, not proof
+already supplied by the twice-monthly discovery sample. Estimate: 2 hours.
+
+Files: `scripts/s32_history.py`, `docs/sources/s32-history.md`,
+`tests/sources/test_s32_history.py`. Use only the verified date form and shared
+fetcher; space requests by at least 3 seconds and obey budgets. Report every date
+as validated data, a validated empty report, quarantine, or a fetch/layout failure.
+Never infer the entire gap from a sample or invent daily values from monthly data.
+Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s32_history.py -q`;
+each requested date has cited evidence or an explicit failure. T130 gains T227 as
+a dependency before using S32 historical coverage. Other D44 dependencies remain.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 ```yaml
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T227
+    parent: T114
+    title: "S32 daily gap census"
+    phase: P1
+    state: KL
+    depends_on: [T113, T114]
+    files: [scripts/s32_history.py, docs/sources/s32-history.md, tests/sources/test_s32_history.py]
+    steps:
+      - "Fetch every date from 2024-08-15 through 2026-07-15 using the verified date form and shared Fetcher"
+      - "Space requests by at least 3 seconds, enforce budgets, resume from immutable evidence"
+      - "Separate valid empty reports, quarantined rows and fetch/layout failures; never interpolate missing days"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s32_history.py -q'
+      expected: "Every requested date accounted for by cited evidence or explicit failure; no sampled gap claimed as a verified daily gap"
+    hours: 2
   - id: T226
     parent: T129
     title: "Kerala configuration bootstrap and existing-evidence audit"
@@ -195,6 +226,8 @@ moved_tasks:
     before: T046
   - {ids: [T085, T086], from: P2, to: P1, after: T030}
 changed_tasks:
+  - {id: T114, change: "D46: adapter contract complete independently; daily gap census split into child T227"}
+  - {id: T130, change: "D46: add T227 dependency before claiming S32 historical coverage"}
   - {id: T129, change: "D44: add T226 dependency; retain original dependencies and P3 full-audit scope"}
   - {id: T114, change: "D44: add T226 dependency for disabled Kerala configuration"}
   - {id: T118, change: "D44: add T226 dependency for disabled Kerala configuration"}

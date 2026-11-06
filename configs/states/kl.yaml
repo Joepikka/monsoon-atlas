@@ -1,6 +1,6 @@
 # T226: minimal Kerala bootstrap, split from T129 by D44 for the D17 M07 fallback.
-# Discovery references record evidence, not adapter readiness. All sources stay disabled
-# until their Kerala adapter and source-specific acceptance tests pass.
+# Discovery references record evidence, not adapter readiness. Enable a source only
+# after its Kerala adapter and source-specific acceptance tests pass (S32: T114).
 state_id: kl
 name: Kerala
 storage_tz: UTC
@@ -53,7 +53,8 @@ sources:
     name: "KSEB daily water level"
     verify_task: T113
     cost: free
-    enabled: false
+    schedule: "daily; one report per requested date"
+    enabled: true
     verified_by: configs/sources/s32.yaml
   - source_id: S33
     name: "KSEB monthly dam statistics"

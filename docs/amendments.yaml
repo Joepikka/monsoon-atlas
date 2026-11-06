@@ -1,6 +1,21 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T227
+    parent: T114
+    title: "S32 daily gap census"
+    phase: P1
+    state: KL
+    depends_on: [T113, T114]
+    files: [scripts/s32_history.py, docs/sources/s32-history.md, tests/sources/test_s32_history.py]
+    steps:
+      - "Fetch every date from 2024-08-15 through 2026-07-15 using the verified date form and shared Fetcher"
+      - "Space requests by at least 3 seconds, enforce budgets, resume from immutable evidence"
+      - "Separate valid empty reports, quarantined rows and fetch/layout failures; never interpolate missing days"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s32_history.py -q'
+      expected: "Every requested date accounted for by cited evidence or explicit failure; no sampled gap claimed as a verified daily gap"
+    hours: 2
   - id: T226
     parent: T129
     title: "Kerala configuration bootstrap and existing-evidence audit"
@@ -61,6 +76,8 @@ moved_tasks:
     before: T046
   - {ids: [T085, T086], from: P2, to: P1, after: T030}
 changed_tasks:
+  - {id: T114, change: "D46: adapter contract complete independently; daily gap census split into child T227"}
+  - {id: T130, change: "D46: add T227 dependency before claiming S32 historical coverage"}
   - {id: T129, change: "D44: add T226 dependency; retain original dependencies and P3 full-audit scope"}
   - {id: T114, change: "D44: add T226 dependency for disabled Kerala configuration"}
   - {id: T118, change: "D44: add T226 dependency for disabled Kerala configuration"}

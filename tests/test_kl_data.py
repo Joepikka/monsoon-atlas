@@ -37,11 +37,11 @@ def test_state_paths_cannot_mix_karnataka_and_kerala(kl):
         assert kl_path not in ka_path.parents
 
 
-def test_bootstrap_does_not_enable_unimplemented_or_ka_only_adapters(kl):
+def test_kerala_does_not_enable_unimplemented_or_ka_only_adapters(kl):
     assert {"S32", "S33", "S34", "S35", "S36", "S37", "S40", "S43"} <= {
         source.source_id for source in kl.sources
     }
-    assert not any(source.enabled for source in kl.sources)
+    assert {source.source_id for source in kl.sources if source.enabled} == {"S32"}
     # Karnataka discovery is not evidence for Kerala wards or flood labels.
     assert kl.source("S40").verified_by is None
     assert kl.source("S43").verified_by is None
@@ -56,7 +56,7 @@ def test_existing_discovery_references_belong_to_kerala(kl, source_id):
     assert discovery.source_id == source_id
     assert discovery.state == "kl"
     assert discovery.verify_task == source.verify_task
-    # A discovery being available is not an implemented, tested adapter.
-    assert not source.enabled
+    # T114 is the only completed Kerala adapter; discovery alone enables nothing else.
+    assert source.enabled == (source_id == "S32")
     if source_id == "S35":
         assert discovery.outcome == "blocked"

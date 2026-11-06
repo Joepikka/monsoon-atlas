@@ -2,6 +2,33 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D46 — T114 S32 adapter policy (6 Nov 2026), recorded before implementation.** Parse the
+  captured KSEB report with stdlib HTMLParser; no new dependency. Require the exact
+  17-column header and the report's dated 07:00 IST title. Use operator + published
+  district code + normalized dam name as an internal ID, preserving the original
+  name; do not assert an official ID, alias, geometry or vertical datum. Normalize
+  today's level, live storage and live capacity only. Explicit ft suffixes convert
+  to metres; unlabelled contradictions are quarantined, not guessed. Reject a row
+  if level exceeds its stated MWL (converted units), capacity is not positive, or
+  the reported storage percentage differs from 100 * storage/capacity by more than
+  0.1 percentage points (rounding tolerance). Missing or rejected core measures
+  null the whole core measure group, following D23; retain raw hash and quality
+  details. Inflow m3/s and datum remain null with per-field reasons. Previous-year
+  columns stay in the raw evidence and are not emitted as backdated observations.
+  Date-matched header-only reports return a typed empty table; blank/malformed or
+  changed-layout responses fail. Small unchanged title/table excerpts from the
+  already captured CC BY-SA KSEB reports are committed as attributed test fixtures,
+  with original and excerpt hashes; the discovery raw archive remains local.
+  The existing twice-monthly sample is not a daily coverage census. Split that
+  follow-up into **T227** (child of T114), recorded in both amendment task lists,
+  required before T130: audit every date in the sampled gap at a respectful cadence.
+  T114 finishes the adapter contract, not the full backfill or M07 readiness.
+- **D47 — Empty typed tables (6 Nov 2026).** T114's real header-only report exposed
+  a shared validator bug: its empty missing-flag array inferred Arrow null rather
+  than boolean, so the boolean OR failed. Give that array an explicit boolean type;
+  keep validation and all other rules intact. A direct T005 regression and the S32
+  empty-report test cover it. No rows or zero-valued observations are invented.
+
 - **D44 — T129 bootstrap split, before implementation.** The handoff puts T129 before
   T114/T118, but the plan makes the full T129 depend on those adapters, T046, T116,
   T120, T122 and T124. D29 also returned the full label audit to P3. Add **T226**, a

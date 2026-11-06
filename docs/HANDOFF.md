@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 5 Nov 2026, Codex continuation review and T226 Kerala bootstrap,
+Last updated: 6 Nov 2026, T114 KSEB adapter after T226 Kerala bootstrap,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -26,7 +26,7 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
 | `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 (5 Nov 2026). **They win where they conflict with the plan.** Adds T222 to T226, GATE-CORE (A4), human-only steps H01 to H14 (A5), P1 order (A8) and Kerala bootstrap split (A10) |
-| `docs/decisions.md` | Decisions D01 to D45. Every deviation from the plan is recorded here before it is made |
+| `docs/decisions.md` | Decisions D01 to D47. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -103,6 +103,7 @@ and a YAML block `- id: T057`.
 | `scripts/audit_dependencies.py` | Licence and Windows-wheel audit (T007) |
 | `configs/states/ka.yaml` | Karnataka sources; enabled: S01, S02, S08, S09, S15, S16, S17, S40 |
 | `configs/states/kl.yaml` | T226 Kerala bootstrap: isolated output paths; every source disabled pending Kerala adapter checks |
+| `src/atlas/ingest/s32.py`, `schemas/s32.json` | T114 KSEB daily report adapter: observed 07:00 IST, strict layout, unit/percentage quarantine, unknown datum retained; S32 enabled only in Kerala |
 | `configs/budgets.yaml` | Request, storage and DuckDB budgets |
 | `tests/` | Contracts, fetcher, storage, as-of, discovery/adapters, geography, model gates and state isolation; final continuation results below |
 
@@ -182,6 +183,16 @@ and a YAML block `- id: T057`.
 | T103 | `bea3eb9` | M05 locked test 2020-2024: ridge beats persistence on all gates (MAE 0.732 vs 0.808, CI lower 0.003, PR-AUC 0.217, Brier skill 0.116, CRPS lower); release v1 candidate_eligible, **owner approval pending**; intervals under-cover (65%) so not published (D42). Report: reports/models/m05.md |
 | T103 approval | `7f3780e` | Owner approved M05 v1 (D43): ridge is the champion; outputs labelled hindcast, no intervals |
 | T226 (child of T129) | This continuation commit | D44: isolated disabled Kerala config and existing-evidence audit; full T129 pending. D45: ignore local model artifacts without removing them. Acceptance: 7 tests passed. |
+| T114 | This continuation commit | S32 fetch/parse contract, real attributed CI samples and quarantine checks; D46. D47 fixes empty typed-table validation. T227 owns the still-pending daily gap census. |
+
+T114 verification (6 Nov 2026): 34 adapter checks pass (also run with coverage:
+89% of the adapter); source/isolation/as-of checks: 69 passed. Full suite:
+`400 passed, 1 skipped, 1 warning in 169.45s`. Ruff lint passes; format check:
+117 files formatted. Dependency policy: 0 problems. Amendment Markdown/YAML
+parity and whitespace checks pass. The skip and warning are the same S36
+`pdftotext` absence and MLflow deprecation described below. Independent read-only
+review found no actionable defect. All 77 captured S32 report pages replayed:
+50 empty; other pages contain 224 valid, 154 quarantined and 54 incomplete rows.
 
 T226 final verification (Python 3.12.14 in `D:\monsoon-atlas\.venv`):
 
@@ -209,7 +220,7 @@ found no actionable issues in T226; it did not certify future adapters or rerun 
 
 | Slot | Model | Status |
 |---|---|---|
-| C1 | **M07 Kerala seven-day dam forecast** (D17) | T226 bootstrap done. S34 archive starts Jun 2020 but needs T118 OCR/review; S32 needs T114. Both sources report unknown datum, so model readiness is blocked until T130's gate passes. |
+| C1 | **M07 Kerala seven-day dam forecast** (D17) | T226/T114 done; S32 adapter enabled, daily gap census T227 pending. S34 needs T118 OCR/review. Both sources report unknown datum; model readiness still blocked pending T130's gate. |
 | C2 | **M05 Karnataka drought outlook** (D29): SPI-3 of the issue month and drought probability, per district | T101-T103 done; ridge approved in D43. Hindcast only (D39); do not publish the under-covering intervals (D42). |
 | C3 | Ask (question answering, English first) | T179 to T181; uses Cloudflare Workers AI free tier with an extractive fallback (D08) |
 
@@ -231,7 +242,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S22 India Data Portal Agmarknet | T023 | blocked | client-side app; retry with a browser render; T025 is the other route |
 | S23 data.gov.in mandi prices | T025 | blocked on licence/unit confirmation | Key was already used in discovery; do not ask for it again unless missing at execution |
 | S28 KWRIS | T008 | blocked | retry if KWRIS daily history arrives |
-| S32 KSEB daily levels | T113 | available (partial history) | adapter T114 |
+| S32 KSEB daily levels | T113, T114 | available, enabled in KL (partial history) | Strict units/percentage quarantine; datum unknown; T227 daily census pending |
 | S34 KSDMA dam reports | T117 | available (scanned) | OCR T118, adapter |
 | S35 Kaggle Kerala floods | T119 | blocked | needs owner Kaggle sign-in (H10) |
 | S36 KSDMA memoranda | T121 | available | adapter T122 in P3 |
@@ -274,7 +285,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    `models/registry/M05/v1.json`). Ridge passed every gate on 2020-2024; status
    `candidate_eligible`, **approved by the owner (D43)**: ridge is the champion.
    Before publishing intervals, recalibrate them (they cover 65%, not 80%).
-6. **C1 = M07 (Kerala): T226 is done; next task T114 (S32 adapter).** Then T118 (OCR for
+6. **C1 = M07 (Kerala): T226 and T114 are done; next task T227 (daily gap census).** Then T118 (OCR for
    S34; pin a free OCR and record it in decisions; owner reviews a real OCR sample).
    Before T130, explicitly resolve its full-T129 dependency for the M07-only fallback and
    the T115/T116 scheduling dependency. Full T129 remains a P3 task, not complete (D44).
@@ -295,8 +306,8 @@ Amendments A8 order, with the D17 and D29 fallbacks:
   another source with the same URL).
 - Indian government sites often have broken TLS chains (BBMP, GBA): record the failure, never
   disable verification.
-- Kerala has a disabled bootstrap config (T226). Discovery availability alone does not
-  certify the adapter or state filter; full T129 and M07 readiness are still pending.
+- Kerala's config enables S32 only (T114); other sources remain disabled. Discovery
+  availability alone does not certify adapters, full T129 or M07 readiness.
 - Full suite took 117.61 seconds before this continuation (358 passed, 1 skipped);
   S08/model tests parse real local rainfall data. MLflow emits an upstream deprecation warning.
 - IMD Pune speed varies a lot (10 s to 5 minutes per 25 MB year file); run big fetches in the
