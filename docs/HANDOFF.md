@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 6 Nov 2026, T233 admission local/Ubuntu checks passed,
+Last updated: 6 Nov 2026, T234 local collector and batch review fixes passed,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T233. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D64. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T234. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D65. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -210,6 +210,12 @@ and a YAML block `- id: T057`.
 | T231 (child of T043) | `9dbb233` | Known S09 entries are keyed by actual RSS item versions; changed versions at known URLs re-enter conditional GET. Bare identifier-only skip sets fail before network. Empty valid RSS stays distinct from wrong schema/missing links. Acceptance: 13 passed in 1.10s; full suite: 467 passed, 1 skipped in 482.34s. Lint/format (151 files), dependency policy, amendment parity and whitespace pass. No claim of immutable CAP URLs or guaranteed 15-minute freshness. T043 still needs bounded cache expiry/checkpoints, producer, scheduling and polling. |
 | T232 (child of T043) | `acd8168` | Full CAP sender/identifier/sent reference matching, equivalent timezones only, malformed/unmatched/self-reference preservation, Update/Cancel authority and active-warning control filtering (D63). Public rows require Actual/Public lifecycle values; unknown fields and naive dates fail closed. Declared mutated-copy regressions replace the earlier incorrect predecessor test. Acceptance: 31 passed in 1.11s; full suite: 485 passed, 1 skipped in 215.28s. Lint/format (151 files), amendment parity and whitespace pass. |
 | T233 (child of T043) | `f48d418` | Signed server-clock admission, atomic elapsed cadence across UTC boundaries/cache loss/duplicate jobs, with shared storage/write guards (D64). Acceptance: 8 passed in 3.13s; full suite: 493 passed, 1 skipped in 194.23s. Worker type checking, 12 logic checks and actual D1 concurrent admission/cap rollback pass on Ubuntu CI. Lint/format (152 files), amendment parity and whitespace pass. No provider collection, cron, cloud resource or activation created. |
+| T234 (child of T043) | `2b949c7` | Bounded CAP-only local capture, per-attempt spacing, shared SQLite cadence/cooldown, fair queue, conditional linked-document revalidation, raw hash checks, retained content/check clocks and per-document checkpoints. A hard parent deadline kills/reaps the HTTP-only child; completed evidence survives. Header-only control messages retain actual headers without fake warning rows. Acceptance: 20 passed in 19.55s; full suite: 513 passed, 1 skipped in 247.64s. Web: 30 unit and 48 browser checks pass; build/lint/format (157 files), dependency policy, parity and whitespace pass. Live smoke: 2 actual CAP documents validated in 8.34s, 0 failures, 98 pending, always partial. Independent review's two Important findings fixed with failing-then-passing tests: terminal/interrupted Retry-After and non-reconstructed availability before retrieval. No approval, public snapshot, upload or recurring job created. |
+
+T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
+Both Important findings are fixed; no Critical or Minor findings remain from that
+review. Cloud capability, normalized control application, complete coverage and
+blocked-source/model gates remain explicitly pending, rather than certified.
 
 T025 retry final validation: `432 passed, 1 skipped, 1 warning in 115.94s`;
 lint passes, 128 files pass formatting, dependency policy reports 0 problems
@@ -409,13 +415,17 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    and hot transport; local and web/Worker CI checks pass. T231 replaces permanent
    known identifiers with RSS item fingerprints; T232 fixes complete CAP
    supersession identity and public lifecycle selection. T233's durable source
-   admission passes locally and in actual D1. Next implement the
-   bounded refresh producer, schedule and active-page poller. Research in
+   admission passes locally and in actual D1. T234's local bounded collector and
+   independent review fixes pass. Next implement normalization/prepared snapshots,
+   the bounded refresh producer, schedule and active-page poller. Research in
    `.cache/t043-research/findings.md` verifies that a full cold CAP+polygon sweep
    already needs 200 seconds of spacing alone; use bounded CAP-only admission,
    persisted ETag/checkpoints and a hard subprocess deadline, with partial/dating
    limits. Never infer complete Karnataka coverage from CAP-only text filtering.
-   Continue
+   Run a single local capture with `scripts/feeds.ps1 --max-documents 30`; its
+   evidence and control database remain under `.cache/feeds`. Do not reset that
+   database to bypass admission/cooldown, or publish its partial results as a
+   complete warning feed. `docs/feeds.md` describes the scope. Continue
    independent local hosting preparation and then C3 Ask preparation,
    T225 case studies and T046;
    unresolved human/data gates must remain pending rather than blocking independent work.
