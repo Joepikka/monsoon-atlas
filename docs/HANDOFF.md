@@ -246,6 +246,14 @@ https://github.com/Joepikka/monsoon-atlas/actions/runs/42215181974 (Windows/Ubun
 T233 actual D1 admission concurrency and shared capacity guards passed at `f48d418`:
 https://github.com/Joepikka/monsoon-atlas/actions/runs/42243904334 .
 
+T234 at `c186d5e` passed core CI on Windows/Ubuntu, real Worker/D1 Ubuntu CI,
+and web checks on Windows/Ubuntu:
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42250185879 ,
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42250185714 ,
+https://github.com/Joepikka/monsoon-atlas/actions/runs/42250185614 .
+The tested batch is draft PR #5: https://github.com/Joepikka/monsoon-atlas/pull/5 .
+T235 local preparation is in progress; its final verification/commit is pending.
+
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
 checks pass. Independent review found no actionable defect. The skip/warning
