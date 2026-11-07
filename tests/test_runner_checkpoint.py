@@ -5,7 +5,7 @@ import json
 import shutil
 import sqlite3
 import sys
-from contextlib import closing
+from contextlib import closing, contextmanager
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
@@ -121,25 +121,28 @@ def test_unchanged_is_idempotent_and_stale_writer_is_rejected_before_copy(
 
 
 def test_failed_catalogue_advance_keeps_prior_head_and_retry_reuses_verified_object(
-    runner, root, tmp_path
+    runner, root, tmp_path, monkeypatch
 ):
     store = tmp_path / "persistent"
     first = runner.commit_checkpoint(root, store, expected_head=None)
     set_cooldown(root)
-    with closing(sqlite3.connect(store / "catalog.sqlite")) as db, db:
-        db.execute("""
-            CREATE TRIGGER abort_advance BEFORE UPDATE ON current_checkpoint
-            BEGIN SELECT RAISE(ABORT, 'injected commit failure'); END
-        """)
-    with pytest.raises(sqlite3.IntegrityError, match="injected commit failure"):
-        runner.commit_checkpoint(root, store, expected_head=first)
+    lock = runner._locked_catalogue
+
+    @contextmanager
+    def interrupted(*args, **kwargs):
+        with lock(*args, **kwargs) as db:
+            yield db
+            raise OSError("injected interruption before commit")
+
+    with monkeypatch.context() as patch:
+        patch.setattr(runner, "_locked_catalogue", interrupted)
+        with pytest.raises(OSError, match="injected interruption"):
+            runner.commit_checkpoint(root, store, expected_head=first)
     (orphan,) = {p.name for p in (store / "objects").iterdir()} - {first}
     newer = root.rename(tmp_path / "newer")
     assert runner.resume_checkpoint(root, store) == first
     root.rename(tmp_path / "earlier")
     newer.rename(root)
-    with closing(sqlite3.connect(store / "catalog.sqlite")) as db, db:
-        db.execute("DROP TRIGGER abort_advance")
     assert runner.commit_checkpoint(root, store, expected_head=first) == orphan
     assert {p.name for p in (store / "objects").iterdir()} == {first, orphan}
     root.rename(tmp_path / "latest")
@@ -169,6 +172,17 @@ def test_invalid_store_leaves_missing_target_absent(runner, root, tmp_path, dama
     assert fingerprint(held) == prior
     if damage == "catalogue":
         assert not (store / "catalog.sqlite").exists()
+
+
+def test_bootstrap_cannot_replace_lost_catalogue_beside_objects(runner, root, tmp_path):
+    store = tmp_path / "persistent"
+    digest = runner.commit_checkpoint(root, store, expected_head=None)
+    catalog = store / "catalog.sqlite"
+    catalog.rename(tmp_path / "held-catalogue")
+    with pytest.raises(IngestError, match="catalogue"):
+        runner.commit_checkpoint(root, store, expected_head=None)
+    assert not catalog.exists()
+    assert {p.name for p in (store / "objects").iterdir()} == {digest}
 
 
 def test_store_lock_serializes_commit_and_resume(runner, root, tmp_path):
@@ -206,7 +220,12 @@ def test_quota_counts_all_stored_generations_before_staging(runner, root, tmp_pa
     set_cooldown(root)
     second = runner.commit_checkpoint(root, store, expected_head=first)
     budget = load_budgets(ROOT / "configs/budgets.yaml")
-    single_copy_allowance = 2 * bytes_used([root]) + bytes_used([store / "objects" / second])
+    single_copy_allowance = (
+        bytes_used([root])
+        + 2 * bytes_used([store / "objects" / second])
+        + (store / "catalog.sqlite").stat().st_size
+        + 8192  # Head update journal margin. A single retained bundle fits.
+    )
     budget = budget.model_copy(
         update={
             "storage": budget.storage.model_copy(
@@ -223,6 +242,24 @@ def test_quota_counts_all_stored_generations_before_staging(runner, root, tmp_pa
     with pytest.raises(ArchiveOnly):
         runner.commit_checkpoint(root, store, expected_head=second)
     assert {p.name for p in (store / "objects").iterdir()} == {first, second}
+
+
+def test_bootstrap_quota_counts_pending_catalogue_before_install(
+    runner, root, tmp_path, monkeypatch
+):
+    store = tmp_path / "persistent"
+    budget = load_budgets(ROOT / "configs/budgets.yaml")
+    stop_bytes = 2 * bytes_used([root]) + 4096
+    storage = budget.storage.model_copy(
+        update={"archive_budget_gb": stop_bytes / GB / budget.storage.stop_at_fraction}
+    )
+    monkeypatch.setattr(checkpoint_bundle, "ROOT", tmp_path)
+    monkeypatch.setattr(
+        checkpoint_bundle, "load_budgets", lambda _: budget.model_copy(update={"storage": storage})
+    )
+    with pytest.raises(ArchiveOnly):
+        runner.commit_checkpoint(root, store, expected_head=None)
+    assert not list((store / "objects").iterdir())
 
 
 def test_command_reports_head_for_the_next_run(runner, root, tmp_path, monkeypatch, capsys):

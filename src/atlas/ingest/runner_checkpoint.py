@@ -49,6 +49,9 @@ def _locked_catalogue(store: Path, *, create: bool) -> Iterator[sqlite3.Connecti
             continue
         raise IngestError("Runner catalogue requires rollback journal mode")
 
+    if create and not catalog.exists() and any(store.iterdir()):
+        raise IngestError("Runner catalogue is missing from a nonempty store")
+
     mode = "rwc" if create else "rw"
     with closing(sqlite3.connect(f"{catalog.as_uri()}?mode={mode}", uri=True, timeout=0)) as db, db:
         db.execute("PRAGMA trusted_schema=OFF")
@@ -100,18 +103,27 @@ def commit_checkpoint(root: Path, store: Path, *, expected_head: str | None) -> 
                 target = bundles._path(objects / digest)
             except FileNotFoundError:
                 target = bundles._path(objects / digest, destination=True)
-                staged.rename(target)
+                install = True
             else:
+                install = False
                 # The newly sealed bytes already passed source reference checks.
                 entries = bundles._manifest(target, root, digest)
                 files = target / "files"
                 bundles._verify_files(files, bundles._inventory(files, strict=True), entries)
-        if digest != expected_head:
-            db.execute(
-                "INSERT INTO current_checkpoint(singleton, root, digest) VALUES(1, ?, ?) "
-                "ON CONFLICT(singleton) DO UPDATE SET digest=excluded.digest",
-                (str(root), digest),
-            )
+            if digest != expected_head:
+                db.execute(
+                    "INSERT INTO current_checkpoint(singleton, root, digest) VALUES(1, ?, ?) "
+                    "ON CONFLICT(singleton) DO UPDATE SET digest=excluded.digest",
+                    (str(root), digest),
+                )
+                # Pending SQLite pages may only reach the file after the copy check.
+                pages = db.execute("PRAGMA page_count").fetchone()[0]
+                page_size = db.execute("PRAGMA page_size").fetchone()[0]
+                pending = max(0, pages * page_size - (store / "catalog.sqlite").stat().st_size)
+                bundles._reserve(root, target, pending, (store,))
+            if install:
+                staged.rename(target)
+        # SQLite exposes the new head only after the immutable object is installed.
     return digest
 
 

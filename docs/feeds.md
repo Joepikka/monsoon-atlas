@@ -318,15 +318,17 @@ digest that run actually restored. A stale value fails before copying. Both
 commands default to `.cache/feeds`; `--root` selects the same canonical
 absolute feed path used at initialization.
 
-The trusted `catalog.sqlite` serializes store operations. Save verifies and
-installs an immutable bundle under `objects/<manifest_sha256>` before advancing
-the current digest. It preserves older generations. A process interruption
+The trusted `catalog.sqlite` serializes store operations. A missing catalogue
+requires an empty directory for bootstrap. Save verifies and installs an
+immutable bundle under `objects/<manifest_sha256>` before committing the
+current digest. It preserves older generations. A process interruption
 before the catalogue commits can leave a complete unreferenced bundle. A
 retry verifies its bytes before using it. After interruption, restore selects
 the last committed digest and verifies it before creating the feed directory.
-The quota counts repository data, the whole store and the incoming copy,
-including the temporary copy used to verify an unchanged save. Physical
-free-space checks apply on the destination drive.
+The quota counts repository data, the feed tree during save, the whole store
+and the incoming copy. It includes pending catalogue pages and the temporary
+copy used to verify an unchanged save. Physical free-space checks apply on
+the destination drive.
 
 The store is a local trust boundary. Keep its catalogue and objects together
 on a local filesystem, with access restricted to the operator or runner.
