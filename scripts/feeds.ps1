@@ -34,5 +34,8 @@ elseif ($args.Count -gt 0 -and $args[0] -eq 'capture-admitted') {
 elseif ($args.Count -gt 0 -and $args[0] -in @('checkpoint-save', 'checkpoint-restore')) {
     $atlasModule = 'atlas.ingest.checkpoint_bundle'
 }
+elseif ($args.Count -gt 0 -and $args[0] -in @('runner-save', 'runner-restore')) {
+    $atlasModule = 'atlas.ingest.runner_checkpoint'
+}
 & (Join-Path $atlasRoot '.venv/Scripts/python.exe') -m $atlasModule @atlasArguments
 exit $LASTEXITCODE

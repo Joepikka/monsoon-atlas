@@ -158,9 +158,11 @@ def _inventory(root: Path, *, strict: bool) -> dict[str, tuple]:
     return files
 
 
-def _reserve(source: Path, destination: Path, incoming: int) -> None:
+def _reserve(
+    source: Path, destination: Path, incoming: int, additional_quota_roots: tuple[Path, ...]
+) -> None:
     budget = load_budgets(ROOT / "configs/budgets.yaml").storage
-    roots = {ROOT / "data", source}
+    roots = {ROOT / "data", source, *additional_quota_roots}
     roots = {p for p in roots if not any(p != other and p.is_relative_to(other) for other in roots)}
     StorageQuota.from_budget(roots, budget).ensure_can_ingest(incoming)
     if shutil.disk_usage(destination.parent).free - incoming < budget.preflight_min_free_gb * GB:
@@ -470,7 +472,9 @@ def _manifest(bundle: Path, original: Path, expected: str) -> dict:
         raise IngestError("Checkpoint manifest is malformed") from None
 
 
-def save_checkpoint(root: Path, bundle: Path) -> str:
+def save_checkpoint(
+    root: Path, bundle: Path, *, additional_quota_roots: tuple[Path, ...] = ()
+) -> str:
     """Copy quiescent feed state and return the canonical manifest SHA-256."""
     root, bundle = _path(root), _path(bundle, destination=True)
     _disjoint(root, bundle)
@@ -483,7 +487,12 @@ def save_checkpoint(root: Path, bundle: Path) -> str:
     manifest_size = len(canonical(manifest).encode("utf-8"))
     if manifest_size > MANIFEST_LIMIT:
         raise IngestError("Checkpoint manifest exceeds its byte bound")
-    _reserve(root, bundle, sum(entry["bytes"] for entry in entries.values()) + manifest_size)
+    _reserve(
+        root,
+        bundle,
+        sum(entry["bytes"] for entry in entries.values()) + manifest_size,
+        additional_quota_roots,
+    )
     with tempfile.TemporaryDirectory(prefix=".checkpoint-", dir=bundle.parent) as temporary:
         stage = Path(temporary)
         files = stage / "files"
@@ -504,7 +513,13 @@ def save_checkpoint(root: Path, bundle: Path) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-def restore_checkpoint(root: Path, bundle: Path, expected_sha256: str) -> None:
+def restore_checkpoint(
+    root: Path,
+    bundle: Path,
+    expected_sha256: str,
+    *,
+    additional_quota_roots: tuple[Path, ...] = (),
+) -> None:
     """Verify staged state against a separately retained digest and restore it."""
     root, bundle = _path(root, destination=True), _path(bundle)
     _disjoint(bundle, root)
@@ -515,7 +530,9 @@ def restore_checkpoint(root: Path, bundle: Path, expected_sha256: str) -> None:
         name: entry["bytes"] for name, entry in entries.items()
     }:
         raise IngestError("Checkpoint bundle inventory or size differs from the manifest")
-    _reserve(bundle, root, sum(entry["bytes"] for entry in entries.values()))
+    _reserve(
+        bundle, root, sum(entry["bytes"] for entry in entries.values()), additional_quota_roots
+    )
     with tempfile.TemporaryDirectory(prefix=".checkpoint-", dir=root.parent) as temporary:
         stage = Path(temporary)
         for name, entry in entries.items():
