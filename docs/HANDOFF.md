@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 7 Nov 2026, T239 local signed upload passed tests and review,
+Last updated: 7 Nov 2026, T240 active-page polling passed tests and review,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T239. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D71. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T240. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D73. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -217,6 +217,7 @@ and a YAML block `- id: T057`.
 | T238 (child of T043) | `4d46546` | Offline partial weather preparation from immutable validated metadata/forecast/metadata receipts. Exact hashes, model/point/settling and cutoff checks precede selection; per-model/run/content cohorts preserve first retrieval and complete-pair availability, while source health uses the latest actual validation. Shared immutable writing retains CAP continuity, byte/quota caps and atomic monotonic/idempotent prepared-only heads. Acceptance: 43 passed in 22.95s; serial combined source/capture checks: 147 passed in 55.89s; full final suite: 606 passed, 1 skipped, 1 existing MLflow warning in 278.69s. Ruff/format (168 files), policy, amendment parity and whitespace pass; actual Worker decode/restore round-trip ran locally. Independent task review: spec PASS, quality APPROVED, no Critical/Important findings. Retained-live no-network smoke produced one real 20.6 degC forecast for 19:00Z at (13,77.5), with original retrieval/completion clocks; same-cutoff replay preserved exact bytes. No upload, approval, activation or statewide coverage. |
 | T235 review fixes (D70) | `6ea389c` | Preserve the selected CAP info headline with description/event fallbacks and unchanged normalized schema. Refuse disabled S09 before retained-input reads, including header-only and no-display evidence. Prepared v2 keeps exact v1 history. CAP acceptance 31 passed, actual Worker round-trip passed, full final suite 613 passed with 1 skip and the existing warning. Both Important branch-review findings were addressed in a separate scoped review. |
 | T239 (child of T043) | `05ff03f` | The local sender verifies prepared source identity, cutoff, payload and input hashes, then signs exact gzip bytes for an explicit loopback Worker origin. It checks a bounded acknowledgement and preserves preparation on repeat or failure. Acceptance 63 passed in 28.37s. Full rerun 676 passed, 1 skipped and the existing MLflow warning in 745.35s. Lint, format, dependency policy, amendment parity and whitespace passed. Actual PowerShell and Worker-code smoke returned stored then unchanged with equal Worker IDs and unchanged preparation. Task and incremental integration review passed. |
+| T240 (child of T043) | `47fee40`, `77b0c16` | The approved normal Karnataka view checks S09 every 15 minutes and S01 every six hours while visible. One bounded request, elapsed deadline and per-source high-water checks preserve honest dates and coverage. Map, list and ticker use the source overlay with dated daily fallback. Place Lens, frozen links and print use the approved daily release. D73 preserves older stored IDs and verifies their normalized GET projection separately. Mounted acceptance 9 passed in 20.6s after review fixes. Full pre-fix browser run 57 passed, final web units 42 passed, Worker 13 passed and build/typechecks passed. Scoped review cleared the legacy compatibility finding. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -314,6 +315,18 @@ wrapper when installed and uses the active Python CLI on the core-only runners.
 The missing-venv failure reproduced in an isolated checkout and passed after
 the test correction. All 63 local acceptance tests passed again in 24.16s.
 The first T239 Worker and browser workflows passed.
+Final T239 `aba2c2a` passed core Windows/Ubuntu run 42364436644, Worker/D1
+42364436647 and browser Windows/Ubuntu 42364436645.
+
+T240 final acceptance passed at `77b0c16`. The source overlay uses the existing
+same-origin Worker path and actual source cutoffs. It stops in hidden, frozen,
+invalid shared and unreleased views. D73 separates the verified stored hash
+from `wire_sha256`, so a supported older stored payload can normalize without
+losing its identity or failing browser verification. The review and focused
+regressions are in `docs/reviews/2026-11-07-t240.md`. The response still uses a
+1 MiB cap. The additional field reduces headroom by 81 bytes per returned source.
+The existing MapLibre bundle warning remains. No full local Python rerun was
+needed for this web/Worker scope. Core and actual D1 checks run in CI.
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
@@ -491,9 +504,10 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    `scripts/feeds.ps1 weather` is raw capture only, not statewide coverage.
    T238 now prepares that source-bound point with `scripts/feeds.ps1 weather-prepare`;
    the output stays partial and prepared-only. T239 local signed upload passes
-   under D71/A22. Continue active-page polling with a dated daily fallback and
-   preserve frozen reports. Remote upload, durable cloud restoration and
-   scheduling remain separate hosting work. Research in
+   under D71/A22. T240 active-page polling and dated fallback pass with exact
+   frozen report identity. Continue durable restoration and bounded scheduling
+   preparation locally. Remote upload and activation retain the capability and
+   release gates. Research in
    `.cache/t043-research/findings.md` verifies that a full cold CAP+polygon sweep
    already needs 200 seconds of spacing alone; use bounded CAP-only admission,
    persisted ETag/checkpoints and a hard subprocess deadline, with partial/dating
