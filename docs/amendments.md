@@ -276,6 +276,8 @@ Resume restores the catalogue's verified current generation at the original
 absent path and returns its digest for the next save. Apply the quota to the
 whole store. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/test_runner_checkpoint.py -q`.
+D78 also requires an empty store for a missing catalogue and includes pending
+SQLite pages in the final quota check before installing a generation.
 
 ## Appendix Y: new and changed tasks (YAML)
 
@@ -306,7 +308,7 @@ new_tasks:
     files: [src/atlas/ingest/runner_checkpoint.py, src/atlas/ingest/checkpoint_bundle.py, tests/test_runner_checkpoint.py, scripts/feeds.ps1, docs/feeds.md]
     steps:
       - "Serialize and compare the expected head before sealing and advancing an immutable generation"
-      - "Restore a verified current generation to its original absent root and enforce aggregate storage quota"
+      - "Restore a verified current generation to its original absent root and enforce aggregate quota including pending catalogue pages (D78)"
       - "Prove recovery after an interrupted catalogue advance, stale writer, and corrupted generation"
     acceptance:
       command: '.\.venv\Scripts\python -m pytest tests/test_runner_checkpoint.py -q'

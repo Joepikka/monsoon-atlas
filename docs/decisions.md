@@ -2,6 +2,15 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D78 — Protect catalogue recovery and count pending SQLite pages (7 Nov 2026).**
+  T243 review found two gaps. An explicit bootstrap could recreate a missing
+  catalogue beside retained generations, and buffered SQLite pages could
+  exceed the quota after the initial copy check. Bootstrap a missing catalogue
+  only in an empty store. Keep the proposed head uncommitted while measuring
+  the catalogue's pending size and verifying aggregate space. Install the
+  generation before committing the transaction. This preserves the prior
+  committed head on failure and lets a quota refusal discard owned staging.
+
 - **D77 — Store verified runner checkpoint generations locally (7 Nov 2026).**
   Split T243 from T043 after T241/T242. Keep immutable bundles in a durable
   local directory outside the feed workspace and store the current digest in
