@@ -16,6 +16,13 @@ const payload = () => gzipSync(JSON.stringify({source_id:'S09',snapshot}));
 const key = 'ephemeral-test-secret-not-an-account-token';
 const hex = bytes => Buffer.from(bytes).toString('hex');
 
+function getCurrent(source_id, bytes, sha256) {
+  const env={CAPABILITY_GATE:'verified_free_no_card',DB:{prepare(){return {bind(){return this;},async all(){return {results:[{
+    source_id,payload:Array.from(bytes),sha256,
+  }]};}};}}};
+  return worker.fetch(new Request(`https://atlas.invalid/api/v1/current?state=ka&source=${source_id}`),env);
+}
+
 test('runtime harness uses options accepted by the actually installed Miniflare version',()=>{
   assert.doesNotThrow(()=>runtime.MiniflareOptionsSchema.parse(runtimeOptions('export default {}',key)));
 });
@@ -88,15 +95,30 @@ test('storage integrity covers exact bytes, including changes to ignored fields'
   await assert.rejects(()=>restoreUpload(gzipSync(JSON.stringify(changed)),clean.sha256,now),error=>error.status===503);
 });
 
-test('older stored bytes retain their hash when a newly optional field is absent',async()=>{
+test('GET retains the older stored hash and separately hashes the normalized wire snapshot',async()=>{
   const clean=await decodeUpload(payload(),now);
   const old=JSON.parse(gunzipSync(clean.compressed).toString('utf8'));
+  // Simulate an earlier canonical schema using the captured CAP point.
   delete old.snapshot.records[0].area_text;
   const original=new TextEncoder().encode(JSON.stringify(old));
   const hash=hex(await crypto.subtle.digest('SHA-256',original));
-  const restored=await restoreUpload(gzipSync(original),hash,now);
+  const stored=gzipSync(original);
+  const restored=await restoreUpload(stored,hash,now);
   assert.equal(restored.sha256,hash);
   assert.equal(restored.snapshot.records[0].issued_at,cap.issued_at);
+
+  const response=await getCurrent('S09',stored,hash);
+  assert.equal(response.status,200);
+  const [source]=(await response.json()).sources;
+  assert.equal(source.sha256,hash);
+  assert.equal(source.snapshot.records[0].area_text,null);
+  const wire=new TextEncoder().encode(JSON.stringify({source_id:source.source_id,snapshot:source.snapshot}));
+  assert.equal(source.wire_sha256,hex(await crypto.subtle.digest('SHA-256',wire)));
+  assert.notEqual(source.wire_sha256,source.sha256);
+
+  const corrupt=await getCurrent('S09',stored,clean.sha256);
+  assert.equal(corrupt.status,503);
+  assert.deepEqual(await corrupt.json(),{error:'Stored snapshot integrity failure.'});
 });
 
 test('unknown sources, future cutoffs and malformed or oversized compression fail closed',async()=>{
@@ -127,12 +149,11 @@ test('source age uses the actual successful fetch, not a later report cutoff',as
   const packet=await decodeUpload(gzipSync(JSON.stringify({source_id:'S01',snapshot:{...snapshot,records:[weather],sources:[{
     source_id:'S01',status:'available',last_success_at:weather.fetched_at,detail:'Actual captured forecast',
   }]}})),Date.now());
-  const env={CAPABILITY_GATE:'verified_free_no_card',DB:{prepare(){return {bind(){return this;},async all(){return {results:[{
-    source_id:'S01',payload:Array.from(packet.compressed),sha256:packet.sha256,
-  }]};}};}}};
   const before=Date.now();
-  const response=await worker.fetch(new Request('https://atlas.invalid/api/v1/current?state=ka'),env);
+  const response=await getCurrent('S01',packet.compressed,packet.sha256);
   assert.equal(response.status,200);
   const source=(await response.json()).sources[0];
+  assert.equal(source.sha256,packet.sha256);
+  assert.equal(source.wire_sha256,packet.sha256);
   assert.ok(Math.abs(source.age_seconds-Math.floor((before-Date.parse(weather.fetched_at))/1000))<=1);
 });

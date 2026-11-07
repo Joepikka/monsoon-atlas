@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
+import { gzipSync } from 'node:zlib';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { parseSnapshot } from './data';
 import { currentView, pollCurrentSources, readCurrentSource, type CurrentSource } from './live-data';
@@ -57,6 +58,40 @@ describe('bounded Worker GET reader', () => {
     await expect(read(JSON.stringify(response))).resolves.toMatchObject({ sha256: response.sources[0].sha256 });
     response.sources[0].sha256 = envelope().sources[0].sha256;
     await expect(read(JSON.stringify(response))).rejects.toThrow();
+  });
+
+  it('reads current and older stored snapshots through actual Worker GET and preserves stored identity', async () => {
+    vi.setSystemTime(now);
+    const { default: worker } = await vi.importActual<{ default: { fetch(request: Request, env: unknown): Promise<Response> } }>(
+      '../../worker/src/index.ts',
+    );
+    const current = payload();
+    // Simulate the earlier canonical schema with the original captured CAP point.
+    const { area_text, ...legacyRecord } = current.records[0];
+    const legacy = { ...current, records: [legacyRecord] };
+    for (const snapshot of [current, legacy]) {
+      const canonical = JSON.stringify({ source_id: 'S09', snapshot });
+      const sha256 = createHash('sha256').update(canonical).digest('hex');
+      const row = { source_id: 'S09', payload: Array.from(gzipSync(canonical)), sha256 };
+      vi.stubGlobal('fetch', (path: string) => worker.fetch(new Request(new URL(path, 'https://atlas.invalid')), {
+        CAPABILITY_GATE: 'verified_free_no_card',
+        DB: { prepare() { return { bind() { return this; }, async all() { return { results: [row] }; } }; } },
+      }));
+      const result = await readCurrentSource('S09', new AbortController().signal);
+      expect(result).toMatchObject({ sha256, records: [{ id: cap.id, area_text: snapshot === current ? area_text : null }] });
+    }
+  });
+
+  it('rejects a malformed stored or wire digest and a changed wire body without downgrading to the stored digest', async () => {
+    vi.setSystemTime(now);
+    const response = envelope();
+    const source = response.sources[0];
+    for (const invalid of [
+      { ...source, wire_sha256: null }, { ...source, wire_sha256: source.sha256.toUpperCase() },
+      { ...source, wire_sha256: '0'.repeat(64) },
+      { ...source, wire_sha256: source.sha256, sha256: source.sha256.toUpperCase() },
+      { ...source, wire_sha256: source.sha256, snapshot: { ...payload(), unchecked: 'changed wire field' } },
+    ]) await expect(read(JSON.stringify({ ...response, sources: [invalid] }))).rejects.toThrow();
   });
 
   it('streams exactly one MiB and rejects oversized or invalid UTF-8 responses', async () => {

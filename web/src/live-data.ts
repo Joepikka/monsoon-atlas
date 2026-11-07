@@ -13,6 +13,7 @@ export const currentSources = ['S09', 'S01'] as const;
 const intervals = { S09: 15 * 60_000, S01: 6 * 60 * 60_000 };
 const maxBytes = 1024 * 1024;
 const deadlineMs = 5000;
+const digest = /^[a-f0-9]{64}$/;
 
 function compareTimes(left: string, right: string): number {
   const milliseconds = Date.parse(left) - Date.parse(right);
@@ -63,13 +64,15 @@ export async function readCurrentSource(source_id: CurrentSource, signal: AbortS
   if (packet?.schema_version !== 1 || packet.state !== 'ka' || !Array.isArray(packet.sources) || packet.sources.length !== 1) {
     throw new Error('Invalid current response schema.');
   }
-  const entry = packet.sources[0];
-  if (entry?.source_id !== source_id || typeof entry.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(entry.sha256) ||
-      await sha256(new TextEncoder().encode(JSON.stringify({ source_id, snapshot: entry.snapshot }))) !== entry.sha256) {
+  const { source_id: responseSource, sha256: storedSha256, wire_sha256: wireSha256 = storedSha256,
+    snapshot: wireSnapshot } = packet.sources[0] ?? {};
+  if (responseSource !== source_id || typeof storedSha256 !== 'string' || !digest.test(storedSha256) ||
+      typeof wireSha256 !== 'string' || !digest.test(wireSha256) ||
+      await sha256(new TextEncoder().encode(JSON.stringify({ source_id, snapshot: wireSnapshot }))) !== wireSha256) {
     throw new Error('The current source or its digest does not match.');
   }
   signal.throwIfAborted();
-  const snapshot = parseSnapshot(entry.snapshot, 'ka');
+  const snapshot = parseSnapshot(wireSnapshot, 'ka');
   const { as_of: asOf, published_at: published, records, sources, places, facilities } = snapshot;
   const now = new Date().toISOString();
   if (compareTimes(published, asOf) < 0 || compareTimes(published, now) > 0 || compareTimes(asOf, now) > 0) {
@@ -82,7 +85,7 @@ export async function readCurrentSource(source_id: CurrentSource, signal: AbortS
         record.kind !== (source_id === 'S09' ? 'alert' : 'weather') || compareTimes(record.fetched_at, asOf) > 0)) {
     throw new Error('The current response includes invalid source data.');
   }
-  return { sha256: entry.sha256, asOf, health: { ...health, last_success_at: health.last_success_at }, records };
+  return { sha256: storedSha256, asOf, health: { ...health, last_success_at: health.last_success_at }, records };
 }
 
 export function pollCurrentSources(onResult: (source: CurrentSource, update: SourceUpdate | null) => void): () => void {

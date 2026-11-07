@@ -26,7 +26,8 @@ function packet(source_id: 'S09' | 'S01', records: unknown[], as_of: string, las
   const snapshot = parseSnapshot({ ...release, release_id: `hot-${source_id}-contract`, as_of, published_at: as_of,
     records, places: [], sources: [{ source_id, status: 'partial', last_success_at,
       detail: source_id === 'S09' ? 'Limited CAP feed coverage.' : 'One Bengaluru model grid point.' }] }, 'ka');
-  return { schema_version: 1, state: 'ka', sources: [{ source_id, snapshot, sha256: hash(JSON.stringify({ source_id, snapshot })),
+  const sha256 = hash(JSON.stringify({ source_id, snapshot }));
+  return { schema_version: 1, state: 'ka', sources: [{ source_id, snapshot, sha256, wire_sha256: sha256,
     age_seconds: 1, snapshot_age_seconds: 2 }] };
 }
 

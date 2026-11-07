@@ -1,4 +1,5 @@
 import { authenticate, boundedBytes, decodeUpload, HOT_SOURCES, restoreUpload, UploadError } from './ingest.ts';
+import { sha256 } from '../../web/src/data.ts';
 import { claimFeedCheck } from './feed-check.ts';
 import { reply, fallback } from './responses.ts';
 
@@ -46,15 +47,17 @@ async function current(url: URL, db: Database, now: number): Promise<Response> {
     .bind('ka', url.searchParams.get('source'), url.searchParams.get('source')).all<{ source_id: string; payload: number[]; sha256: string }>();
   if (!result.results.length) return fallback('No successful hot snapshot is stored.');
   const sources = [];
+  const encoder = new TextEncoder();
   for (const row of result.results) {
-    const upload = await restoreUpload(Uint8Array.from(row.payload), row.sha256, now);
-    if (upload.source_id !== row.source_id) return fallback('Stored source identity mismatch.');
-    sources.push({ source_id: upload.source_id, sha256: upload.sha256,
-      age_seconds: Math.floor((now - Date.parse(upload.snapshot.sources[0].last_success_at!)) / 1000),
-      snapshot_age_seconds: Math.floor((now - Date.parse(upload.snapshot.as_of)) / 1000), snapshot: upload.snapshot });
+    const { source_id, snapshot, sha256: storedSha256 } = await restoreUpload(Uint8Array.from(row.payload), row.sha256, now);
+    if (source_id !== row.source_id) return fallback('Stored source identity mismatch.');
+    const wireSha256 = await sha256(encoder.encode(JSON.stringify({ source_id, snapshot })));
+    sources.push({ source_id, sha256: storedSha256, wire_sha256: wireSha256,
+      age_seconds: Math.floor((now - Date.parse(snapshot.sources[0].last_success_at!)) / 1000),
+      snapshot_age_seconds: Math.floor((now - Date.parse(snapshot.as_of)) / 1000), snapshot });
   }
   const resultBody = JSON.stringify({ schema_version: 1, state: 'ka', sources });
-  if (new TextEncoder().encode(resultBody).byteLength > 1024 * 1024) return fallback('Combined hot response exceeds the byte cap.');
+  if (encoder.encode(resultBody).byteLength > 1024 * 1024) return fallback('Combined hot response exceeds the byte cap.');
   return new Response(resultBody, { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public,max-age=60', 'X-Content-Type-Options': 'nosniff' } });
 }
 

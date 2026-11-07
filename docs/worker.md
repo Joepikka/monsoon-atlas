@@ -5,8 +5,8 @@ has signed into Cloudflare in regular Chrome, but no cloud token, remote D1
 binding or service probe is configured here. No Worker or database was deployed.
 `wrangler.toml` disables workers.dev and keeps `CAPABILITY_GATE = "blocked"`.
 An unavailable capability/binding returns HTTP 503 with `fallback: static_daily`;
-it does not advertise a working current feed. The future browser integration
-must retain the dated approved static snapshot, or its existing unavailable view.
+it does not advertise a working current feed. The browser retains the dated
+approved static snapshot or shows the unavailable view.
 
 T233 adds `POST /internal/feed-check` using the same HMAC message and headers,
 with a bounded `application/json` body containing only `state` and `source_id`.
@@ -22,8 +22,8 @@ Each successful admission reserves 20 row/index writes and 16 KiB within the
 same shared caps as snapshots. The 24-hour simulation includes duplicate jobs
 with no runner memory and a late start, and permits exactly 4 weather and 96
 alert admissions. Actual D1 concurrency/cap tests run in Ubuntu CI. This is an
-offline protocol implementation; collection, cron activation and browser polling
-remain separate T043 work. The new table/index/triggers are part of the fresh
+offline protocol implementation; collection and cron activation remain separate
+T043 work. The new table/index/triggers are part of the fresh
 bootstrap schema; no existing remote database was migrated or created.
 
 The owned transport accepts `POST /internal/ingest` with `application/gzip`:
@@ -61,9 +61,14 @@ reservation. A conflicting snapshot at the same source/state/millisecond cutoff
 returns 409, preserving the prior head; the original as-of string remains in the
 payload. Newer successful cutoffs advance the head atomically. Stored corruption
 returns 503. `GET /api/v1/current?state=ka[&source=S01|S09]` returns each available
-source's canonical snapshot, SHA256 and age in seconds from its actual successful
-source fetch. `snapshot_age_seconds` separately measures the report cutoff's age;
-a later report cannot make old source data appear freshly fetched.
+source's normalized snapshot, stored `sha256` and `wire_sha256`. The wire digest
+covers UTF-8 `JSON.stringify({source_id, snapshot})` using the returned snapshot.
+An older stored snapshot can retain a different `sha256` when the parser adds an
+optional field. The browser verifies the wire digest before normalizing the snapshot
+and uses the stored digest for source identity. Older GET replies without
+`wire_sha256` use `sha256` for both checks.
+`age_seconds` measures time since the actual successful source fetch.
+`snapshot_age_seconds` separately measures time since the report cutoff.
 An empty store is unavailable, not evidence of no hazards. S01 and S09 remain
 separate source entries, not a claim of complete source coverage.
 
@@ -74,7 +79,7 @@ storage basis is the greater of the existing reservation and D1's actual observe
 `meta.size_after`. This intentionally stops before filling a free 500 MB database.
 The trigger and D1 batch make cap failures roll back the snapshot and head changes.
 No purge/delete endpoint exists. T044 must prove archive durability before adding
-deletion. Public read budgets, export and polling are later tasks.
+deletion. Public read budgets and export are later tasks.
 
 Wrangler is exactly 4.157.0 (Node 22+, MIT OR Apache-2.0), bringing Miniflare
 5.20261103.0-beta and workerd 1.20261103.1. TypeScript is exactly 7.0.2. npm lock
