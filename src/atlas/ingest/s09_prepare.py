@@ -67,7 +67,7 @@ def verify_retained_inputs(previous: dict, output_root: Path, inputs: list[dict]
         raise IngestError("Previously retained CAP input evidence is missing or changed") from None
 
 
-def warning(row: dict) -> dict:
+def warning(row: dict, warning_text: str) -> dict:
     record = {
         "id": row["record_id"],
         "title": f"{row['event']} — {row['area_text']}",
@@ -81,7 +81,7 @@ def warning(row: dict) -> dict:
         "location_note": (
             "Area description only; map geometry unavailable. See the original source."
         ),
-        "warning_text": row["event"],
+        "warning_text": warning_text,
         "area_text": row["area_text"],
         "instruction": row["instruction"],
         "severity": row["severity"],
@@ -105,6 +105,9 @@ def warning(row: dict) -> dict:
 def prepare(
     raw_root: Path, output_root: Path, *, as_of: datetime, max_bytes: int = MAX_BYTES
 ) -> dict:
+    config = load_state(ROOT / "configs/states/ka.yaml").source("S09")
+    if not config.enabled:
+        raise SourceUnavailable(f"S09 is disabled; {config.verify_task} must pass")
     if as_of.utcoffset() != timedelta(0) or as_of > datetime.now(UTC):
         raise ValueError("Preparation cutoff must be aware UTC and cannot be in the future")
     if not 1 <= max_bytes <= MAX_BYTES:
@@ -176,7 +179,6 @@ def prepare(
         for _, h, _ in selected.values()
     ]
     replaced = superseded_identities(controls)
-    config = load_state(ROOT / "configs/states/ka.yaml").source("S09")
     records = []
     for identity, (raw, header, _) in sorted(selected.items()):
         if (
@@ -185,13 +187,14 @@ def prepare(
             or not header["has_info"]
         ):
             continue
-        for row in S09("ka").parse(raw, config).to_pylist():
+        rows, warning_text = S09("ka").parse_with_warning_text(raw, config)
+        for row in rows.to_pylist():
             if row["expires_at"] is None or row["expires_at"] > as_of:
-                records.append(warning(row))
+                records.append(warning(row, warning_text))
     manifest = canonical(
         {
             "schema_version": 1,
-            "mapping_version": "s09-prepared-v1",
+            "mapping_version": "s09-prepared-v2",
             "state": "ka",
             "source_id": "S09",
             "as_of": utc(as_of),

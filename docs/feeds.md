@@ -47,8 +47,9 @@ runner restoration/backoff integration, bounded workflow tests and H05.
 rtk proxy powershell -NoProfile -File scripts/feeds.ps1 prepare
 ```
 
-This reads retained CAP evidence without provider calls. Every input hash/path
-is checked; 304 checks retain the original content's first retrieval clock.
+This reads retained CAP evidence without provider calls. If S09 is disabled,
+preparation stops before reading the ledger. Every input hash/path is checked.
+A 304 check retains the original content's first retrieval clock.
 Only Actual/Public messages with issue times at or before the cutoff enter
 control handling. Exact sender/identifier/sent references apply even for
 header-only Updates and Cancels; these contribute no invented warning rows.
@@ -56,6 +57,11 @@ Ack/Error and non-public controls cannot remove a
 warning. Expired messages stay in raw history and leave the current projection.
 Malformed documents retain dated last-good warnings and explicitly partial
 health; their downloads cannot refresh the successful validation clock.
+
+The `s09-prepared-v2` projection uses the selected CAP info block's original
+headline as warning text. It falls back to that block's description and then its
+event. The adapter selects the first English info block when present and the
+first info block otherwise. Existing v1 prepared files remain immutable.
 
 `.cache/feeds/prepared/` contains content-addressed envelopes and input manifests.
 Their local `prepared.json` pointer is **prepared_only**, without publication

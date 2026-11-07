@@ -163,6 +163,13 @@ class S09:
         self, raw: RawArtifact, config: SourceConfig, *, polygon: RawArtifact | None = None
     ) -> pa.Table:
         """One CAP file to at most one row (English info block); empty if not in the state."""
+        table, _ = self.parse_with_warning_text(raw, config, polygon=polygon)
+        return table
+
+    def parse_with_warning_text(
+        self, raw: RawArtifact, config: SourceConfig, *, polygon: RawArtifact | None = None
+    ) -> tuple[pa.Table, str]:
+        """Return normalized rows and the selected CAP info block's warning text."""
         if not config.enabled:
             raise SourceUnavailable(f"{SOURCE_ID} is disabled; {config.verify_task} must pass")
         try:
@@ -196,6 +203,13 @@ class S09:
         area_text = get(area, "areaDesc") if area is not None else None
         if not fields["event"] or not fields["severity"] or not area_text:
             raise IngestError(f"{SOURCE_ID}: event, severity or area text missing")
+
+        warning_text = info.findtext("cap:event", "", NS)
+        for tag in ("headline", "description"):
+            text = info.findtext(f"cap:{tag}", "", NS)
+            if text.strip():
+                warning_text = text
+                break
 
         polygons = rings(polygon)
         rows = []
@@ -264,7 +278,7 @@ class S09:
             "cap:info/cap:instruction": "instruction",
             "cap:references": "references",
         }
-        return with_mapping(table, mapping, MAPPING_VERSION)
+        return with_mapping(table, mapping, MAPPING_VERSION), warning_text
 
 
 def superseded_identities(rows: Iterable[Mapping]) -> set[tuple[str, str, datetime]]:

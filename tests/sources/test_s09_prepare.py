@@ -13,6 +13,7 @@ import pytest
 
 from atlas.config import load_state
 from atlas.contracts import RawArtifact
+from atlas.ingest import s09_collect, s09_prepare
 from atlas.ingest.base import IngestError, SourceUnavailable
 from atlas.ingest.discovery import load_manifest
 from atlas.ingest.raw_store import RawStore
@@ -54,6 +55,14 @@ def payload(result):
     return json.loads(path.read_text("utf-8"))
 
 
+def english_info(root):
+    return next(
+        info
+        for info in root.findall("cap:info", NS)
+        if info.findtext("cap:language", "", NS) == "en-IN"
+    )
+
+
 def control(store, original, *, mismatch=None, message_type="Cancel"):
     # Header-only control derived from the actual fixture, never used as an observation.
     root = ET.fromstring(original.path.read_bytes())
@@ -93,7 +102,9 @@ def test_prepared_warning_matches_real_adapter_and_keeps_original_clocks(tmp_pat
     )
     record = snapshot["records"][0]
     assert record["id"] == row["record_id"]
-    assert record["warning_text"] == row["event"] and record["area_text"] == row["area_text"]
+    info = english_info(ET.fromstring(raw.path.read_bytes()))
+    assert record["warning_text"] == info.findtext("cap:headline", namespaces=NS)
+    assert record["area_text"] == row["area_text"]
     assert record["instruction"] == row["instruction"]
     assert record["longitude"] is None and record["latitude"] is None
     for field in ("issued_at", "valid_at", "fetched_at", "available_at", "expires_at"):
@@ -103,7 +114,31 @@ def test_prepared_warning_matches_real_adapter_and_keeps_original_clocks(tmp_pat
     assert pointer["status"] == "prepared_only" and "approval" not in pointer
     inputs = Path(result["inputs_path"]).read_bytes()
     assert hashlib.sha256(inputs).hexdigest() == snapshot["data_revision"]
+    assert json.loads(inputs)["mapping_version"] == "s09-prepared-v2"
     assert not list(tmp_path.rglob("*.approval.json"))
+
+
+@pytest.mark.parametrize("field", ["description", "event", "first_info"])
+def test_warning_text_follows_selected_info_and_falls_back_within_it(tmp_path, field):
+    original = captured(RawStore(tmp_path / "original"))
+    root = ET.fromstring(original.path.read_bytes())
+    english = english_info(root)
+    root.remove(english)
+    root.append(english)  # The retained Kannada block now comes first.
+    if field == "first_info":
+        english.remove(english.find("cap:language", NS))
+        expected = root.findtext("cap:info/cap:headline", namespaces=NS)
+    else:
+        headline = english.find("cap:headline", NS)
+        english.remove(headline)
+        if field == "description":
+            english.find("cap:description", NS).text = headline.text
+        expected = english.findtext(f"cap:{field}", namespaces=NS)
+    store = RawStore(tmp_path / "raw")
+    path, digest = store.put(ET.tostring(root), "S09", original.fetched_at, "xml")
+    store.record(original.model_copy(update={"path": path, "sha256": digest}), {"status": 200})
+    result = prepare(store.root, tmp_path / "prepared", as_of=CUTOFF)
+    assert payload(result)["snapshot"]["records"][0]["warning_text"] == expected
 
 
 def test_304_advances_exact_document_check_clock_without_changing_content_clock(tmp_path):
@@ -127,6 +162,41 @@ def test_header_only_control_applies_exact_reference_without_fake_warning_row(
     result = prepare(store.root, tmp_path / "prepared", as_of=CUTOFF)
     assert payload(result)["snapshot"]["records"] == []
     assert raw.path.exists() and cancelled.path.exists()
+
+
+@pytest.mark.parametrize("evidence", ["Cancel", "Update", "out-of-state", "damaged-ledger"])
+def test_disabled_source_refuses_before_reading_ledger_and_keeps_pointer(
+    tmp_path, monkeypatch, evidence
+):
+    store = RawStore(tmp_path / "raw")
+    if evidence in {"Cancel", "Update"}:
+        original = captured(RawStore(tmp_path / "original"))
+        control(store, original, message_type=evidence)
+    else:
+        captured(store, AP)
+    output = tmp_path / "prepared"
+    first = prepare(store.root, output, as_of=CUTOFF)
+    assert payload(first)["snapshot"]["records"] == []
+    files = {path.name: path.read_bytes() for path in output.iterdir()}
+    if evidence == "damaged-ledger":
+        (store.root / "ledger.jsonl").write_bytes(b"{damaged-ledger\n")
+
+    state = load_state(ROOT / "configs/states/ka.yaml")
+    disabled = state.model_copy(
+        update={
+            "sources": tuple(
+                source.model_copy(update={"enabled": False})
+                if source.source_id == "S09"
+                else source
+                for source in state.sources
+            )
+        }
+    )
+    monkeypatch.setattr(s09_prepare, "load_state", lambda _: disabled)
+    monkeypatch.setattr(s09_collect, "load_state", lambda _: disabled)
+    with pytest.raises(SourceUnavailable, match="S09 is disabled"):
+        prepare(store.root, output, as_of=CUTOFF + timedelta(minutes=1))
+    assert {path.name: path.read_bytes() for path in output.iterdir()} == files
 
 
 @pytest.mark.parametrize("damage", ["malformed_entry", "missing_entry", "retargeted_entry"])
@@ -288,7 +358,7 @@ def test_python_prepared_bytes_round_trip_through_actual_worker_validator(tmp_pa
     if not node.is_file():
         pytest.skip("Optional pinned local Node toolchain is absent in core-only CI")
     store = RawStore(tmp_path / "raw")
-    captured(store)
+    raw = captured(store)
     result = prepare(store.root, tmp_path / "prepared", as_of=CUTOFF)
     validator_uri = (ROOT / "worker/src/ingest.ts").as_uri()
     script = (
@@ -300,7 +370,8 @@ def test_python_prepared_bytes_round_trip_through_actual_worker_validator(tmp_pa
         "Date.parse(process.argv[2]));"
         "if(restored.snapshot.sources[0].status!=='partial'||restored.snapshot.records.length!==1)"
         "throw new Error('Prepared source/coverage mismatch');"
-        "console.log('Python prepared bytes passed actual Worker validation and restore');"
+        "console.log(JSON.stringify([clean.snapshot.records[0].warning_text,"
+        "restored.snapshot.records[0].warning_text]));"
     )
     env = os.environ.copy()
     env.update({"TEMP": str(ROOT / ".cache/tmp"), "TMP": str(ROOT / ".cache/tmp")})
@@ -321,3 +392,7 @@ def test_python_prepared_bytes_round_trip_through_actual_worker_validator(tmp_pa
         timeout=30,
     )
     assert checked.returncode == 0, checked.stderr
+    headline = english_info(ET.fromstring(raw.path.read_bytes())).findtext(
+        "cap:headline", namespaces=NS
+    )
+    assert json.loads(checked.stdout) == [headline, headline]
