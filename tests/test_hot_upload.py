@@ -6,6 +6,7 @@ import hmac
 import importlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 import threading
@@ -408,7 +409,7 @@ def local_server(respond):
         thread.join(timeout=2)
 
 
-def test_public_powershell_cli_loopback_ignores_proxy_environment(uploader, tmp_path):
+def test_public_cli_loopback_ignores_proxy_environment(uploader, tmp_path):
     output, pointer = prepared(tmp_path)
     before = retained(output)
     env = os.environ | {
@@ -419,21 +420,19 @@ def test_public_powershell_cli_loopback_ignores_proxy_environment(uploader, tmp_
     reply = json.dumps(
         {"status": "stored", "snapshot_id": WORKER_ID, "as_of": pointer["as_of"]}
     ).encode()
+    command = [sys.executable, "-m", "atlas.ingest.upload"]
+    powershell = shutil.which("powershell")
+    if powershell and (ROOT / ".venv/Scripts/python.exe").is_file():
+        command = [
+            powershell,
+            "-NoProfile",
+            "-File",
+            str(ROOT / "scripts/feeds.ps1"),
+            "upload-local",
+        ]
     with local_server(lambda _: (201, reply)) as (origin, calls):
         result = subprocess.run(
-            [
-                "powershell",
-                "-NoProfile",
-                "-File",
-                str(ROOT / "scripts/feeds.ps1"),
-                "upload-local",
-                "--source",
-                "S09",
-                "--origin",
-                origin,
-                "--root",
-                str(tmp_path),
-            ],
+            [*command, "--source", "S09", "--origin", origin, "--root", str(tmp_path)],
             env=env,
             cwd=ROOT,
             capture_output=True,

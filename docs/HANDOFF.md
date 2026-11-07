@@ -308,6 +308,12 @@ exited 0 with 676 passes, 1 skip and the existing MLflow warning. The recorded
 scope and integration review are in `docs/reviews/2026-11-07-t239.md`. The
 local smoke used a loopback receiver with the actual Worker authentication
 and decoder. Real D1 storage remains covered by the separate Worker CI.
+The first remote core run exposed a test harness assumption about PowerShell
+and a repository-local `.venv`. The loopback smoke now selects the PowerShell
+wrapper when installed and uses the active Python CLI on the core-only runners.
+The missing-venv failure reproduced in an isolated checkout and passed after
+the test correction. All 63 local acceptance tests passed again in 24.16s.
+The first T239 Worker and browser workflows passed.
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
