@@ -250,8 +250,10 @@ Both commands default to `.cache/feeds`. Use `--root` for a different local feed
 directory and supply that same canonical absolute location on restore. The
 versioned `manifest.json` binds that location and lists each member of `files/`
 by relative path, byte length and SHA-256. The separately saved digest is the
-integrity check for the manifest and its file list. Save and restore apply the
-configured archive quota and leave the configured free-space reserve available.
+integrity check for the manifest and its file list. The archive quota counts
+repository data, the current input tree and the incoming copy. Sibling bundles
+count toward that quota when they sit within repository data. Save and restore
+leave the configured physical free-space reserve on the destination drive.
 
 The bundle requires the shared `control.sqlite` and retains exact SQLite
 controls, raw S09 and S01 objects and ledgers,
@@ -260,6 +262,7 @@ prepared history and pointers. Unrelated files, credentials, configuration and
 interrupted temporary writes are outside the inventory. The commands refuse
 links, reparse points and SQLite sidecars in the inspected layout. A damaged
 ledger or missing referenced artifact causes verification to fail.
+CAP preparation and control clocks must match their retained ledger events.
 
 Restore copies to staging beside the missing destination, checks the manifest,
 bytes, SQLite integrity and references there, then publishes with a single

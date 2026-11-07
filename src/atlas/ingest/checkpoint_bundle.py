@@ -12,6 +12,7 @@ import sqlite3
 import stat
 import tempfile
 from contextlib import closing
+from datetime import datetime
 from pathlib import Path, PureWindowsPath
 
 from atlas.config import load_budgets
@@ -63,6 +64,9 @@ MANIFEST_LIMIT = 16 * 1024**2
 INPUT_LIMIT = 64 * 1024**2
 MEMBER_LIMIT = 100_000
 BLOCK = 1024**2
+
+# URL, content digest, clock, required original path (if any), required HTTP status (if any).
+type CapEvent = tuple[str, str, datetime, str | None, int | None]
 
 
 def _member(name: str) -> bool:
@@ -228,7 +232,9 @@ def _raw_reference(
     return raw, relative
 
 
-def _check_sqlite(path: Path, entries: dict, original: Path, required: set) -> None:
+def _check_sqlite(
+    path: Path, entries: dict, original: Path, required: set, cap_events: set[CapEvent]
+) -> None:
     # Immutable mode only reads the staged main file, with no recovery or sidecar writes.
     with closing(sqlite3.connect(path.as_uri() + "?mode=ro&immutable=1", uri=True)) as db:
         db.execute("PRAGMA trusted_schema=OFF")
@@ -254,11 +260,15 @@ def _check_sqlite(path: Path, entries: dict, original: Path, required: set) -> N
                 ):
                     raise IngestError("Checkpoint CAP control disagrees with its artifact")
                 required.add((relative, raw.source_url))
+                # A later day's identical 200 can move the artifact path while keeping its origin.
+                cap_events.add((raw.source_url, raw.sha256, raw.fetched_at, None, 200))
             elif origin is not None:
                 raise IngestError("Checkpoint CAP content clock has no artifact")
 
 
-def _check_prepared(stage: Path, entries: dict, source: str, receipts: dict, required: set) -> None:
+def _check_prepared(
+    stage: Path, entries: dict, source: str, receipts: dict, cap_events: set[CapEvent]
+) -> None:
     base = OUTPUT[source]
     manifests, payloads = {}, {}
     for name in entries:
@@ -274,11 +284,18 @@ def _check_prepared(stage: Path, entries: dict, source: str, receipts: dict, req
             ):
                 raise IngestError("Checkpoint prepared inputs have the wrong identity")
             manifests[digest] = document["as_of"]
+            cutoff = receipt_time(document["as_of"])
             for item in document["inputs"]:
                 if source == "S09":
                     relative = "raw/" + item["path"]
                     _object_reference(entries, relative, item["sha256"], "raw/S09")
-                    required.add((relative, item["source_url"]))
+                    origin = receipt_time(item["content_fetched_at"])
+                    checked = receipt_time(item["checked_at"])
+                    if not origin <= checked <= cutoff:
+                        raise IngestError("Checkpoint prepared CAP clocks disagree with the cutoff")
+                    identity = (item["source_url"], item["sha256"])
+                    cap_events.add((*identity, origin, relative, 200))
+                    cap_events.add((*identity, checked, None, None))
                 elif receipts.get(item["receipt_path"]) != item:
                     raise IngestError(
                         "Checkpoint prepared weather inputs disagree with their receipt"
@@ -312,8 +329,9 @@ def _check_prepared(stage: Path, entries: dict, source: str, receipts: dict, req
 def _check_references(stage: Path, entries: dict, original: Path) -> None:
     try:
         required = set()
+        cap_events: set[CapEvent] = set()
         for name in DATABASES.intersection(entries):
-            _check_sqlite(stage / name, entries, original, required)
+            _check_sqlite(stage / name, entries, original, required, cap_events)
 
         receipts = {}
         for name, entry in entries.items():
@@ -373,7 +391,7 @@ def _check_references(stage: Path, entries: dict, original: Path) -> None:
                 raise IngestError("Checkpoint weather head has the wrong identity")
             latest_pair(stage)
         for source in OUTPUT:
-            _check_prepared(stage, entries, source, receipts, required)
+            _check_prepared(stage, entries, source, receipts, cap_events)
         for source, base in RAW_DIR.items():
             name = f"{base}/{LEDGER}"
             if name not in entries:
@@ -388,8 +406,16 @@ def _check_references(stage: Path, entries: dict, original: Path) -> None:
                         raise IngestError("Checkpoint ledger has inconsistent HTTP status")
                     if raw.response_status == 200:
                         required.discard((relative, raw.source_url))
+                    if source == "S09":
+                        event = (raw.source_url, raw.sha256, raw.fetched_at)
+                        cap_events.discard((*event, None, None))
+                        if raw.response_status == 200:
+                            cap_events.discard((*event, None, 200))
+                            cap_events.discard((*event, relative, 200))
         if required:
             raise IngestError("Checkpoint required evidence has no original raw ledger entry")
+        if cap_events:
+            raise IngestError("Checkpoint CAP clocks have no matching raw ledger event")
     except (
         KeyError,
         TypeError,

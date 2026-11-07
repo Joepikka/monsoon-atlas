@@ -65,7 +65,14 @@ def cap(request):
         body = ET.tostring(feed)
     else:
         body = (FIXTURES / f"s09_sachet_cap_{request.url.params['identifier']}.xml").read_bytes()
-    return httpx.Response(200, content=body, headers={"content-type": "application/xml"})
+    return httpx.Response(
+        200, content=body, headers={"content-type": "application/xml", "etag": '"retained-fixture"'}
+    )
+
+
+def unchanged_cap(request):
+    assert request.headers["if-none-match"] == '"retained-fixture"'
+    return httpx.Response(304)
 
 
 def replay(collector, root, when, handler):
@@ -289,6 +296,86 @@ def test_copied_database_must_pass_sqlite_integrity(control_only, tmp_path):
     with pytest.raises(IngestError):
         api.restore_checkpoint(control_only, bundle, digest)
     assert not control_only.exists()
+
+
+@pytest.mark.parametrize("status", [200, 304])
+def test_checkpoint_refuses_retimed_cap_ledger(feed, tmp_path, status):
+    api = checkpoint()
+    cutoff = CUTOFF
+    if status == 304:
+        cutoff += timedelta(minutes=15)
+        assert replay(collect, feed, cutoff, unchanged_cap)["validated"] == 1
+        prepare(feed / "raw", feed / "prepared", as_of=cutoff)
+    bundle = tmp_path / "bundle"
+    api.save_checkpoint(feed, bundle)
+    name = "raw/ledger.jsonl"
+    ledger = feed / name
+    before = ledger.read_bytes()
+    entries = [json.loads(line) for line in before.splitlines()]
+    artifact = next(
+        entry["artifact"]
+        for entry in entries
+        if entry["artifact"]["source_url"].endswith(CAP)
+        and entry["artifact"]["response_status"] == status
+    )
+    artifact["fetched_at"] = (cutoff + timedelta(seconds=1)).isoformat()
+    changed = "".join(json.dumps(entry) + "\n" for entry in entries).encode()
+    ledger.write_bytes(changed)
+
+    with pytest.raises(IngestError):
+        api.save_checkpoint(feed, tmp_path / "inconsistent")
+    assert ledger.read_bytes() == changed
+    ledger.write_bytes(before)
+    (bundle / "files" / name).write_bytes(changed)
+
+    def rehash(files):
+        entry = next(entry for entry in files if entry["path"] == name)
+        entry.update(bytes=len(changed), sha256=hashlib.sha256(changed).hexdigest())
+
+    digest = rewrite_manifest(bundle, rehash)
+    feed.rename(tmp_path / "held-aside")
+    with pytest.raises(IngestError):
+        api.restore_checkpoint(feed, bundle, digest)
+    assert not feed.exists()
+
+
+def test_checkpoint_retains_repeated_cap_bytes_on_new_day_and_304(feed, tmp_path):
+    api = checkpoint()
+    refetched = CUTOFF + timedelta(days=1)
+    assert replay(collect, feed, refetched, cap)["validated"] == 1
+    checked = refetched + timedelta(minutes=15)
+    assert replay(collect, feed, checked, unchanged_cap)["validated"] == 1
+    with closing(sqlite3.connect(feed / "control.sqlite")) as db:
+        encoded = db.execute("SELECT artifact_json FROM cap_documents").fetchone()[0]
+    artifact = json.loads(encoded)
+    assert datetime.fromisoformat(artifact["fetched_at"]) == CUTOFF
+    assert Path(artifact["path"]).parent.name == refetched.date().isoformat()
+    assert artifact["response_status"] == 304
+    prepared = prepare(feed / "raw", feed / "prepared", as_of=checked)
+    manifest = json.loads(Path(prepared["inputs_path"]).read_bytes())
+    assert datetime.fromisoformat(manifest["inputs"][0]["checked_at"]) == checked
+
+    bundle = tmp_path / "bundle"
+    digest = api.save_checkpoint(feed, bundle)
+    prior = feed.rename(tmp_path / "held-aside")
+    api.restore_checkpoint(feed, bundle, digest)
+    assert contents(feed) == contents(prior)
+    result = prepare(feed / "raw", feed / "prepared", as_of=checked)
+    assert result["sha256"] == prepared["sha256"]
+
+
+def test_checkpoint_refuses_cap_control_without_matching_origin_event(feed, tmp_path):
+    api = checkpoint()
+    with closing(sqlite3.connect(feed / "control.sqlite")) as db, db:
+        encoded = db.execute("SELECT artifact_json FROM cap_documents").fetchone()[0]
+        changed = json.loads(encoded)
+        changed["fetched_at"] = (CUTOFF - timedelta(seconds=1)).isoformat()
+        db.execute(
+            "UPDATE cap_documents SET artifact_json=?,content_fetched_at=? WHERE identifier=?",
+            (json.dumps(changed), changed["fetched_at"], CAP),
+        )
+    with pytest.raises(IngestError):
+        api.save_checkpoint(feed, tmp_path / "inconsistent")
 
 
 @pytest.mark.parametrize("failure", ["copy", "mutation", "quota", "space"])
