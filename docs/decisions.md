@@ -2,6 +2,15 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D75 — Bind CAP checkpoint evidence to retained clocks (7 Nov 2026), before fix.**
+  T241 review showed that a raw ledger timestamp shifted by one second could
+  pass staging verification and prevent preparation at the saved cutoff. Check
+  CAP prepared input origin and validation clocks against retained ledger
+  events and bind CAP control origin to its recorded content identity. Identical
+  bytes fetched on a later day can have a new raw path with the same retained
+  content clock. A valid HTTP 304 still records a check of existing bytes.
+  Keep the bundle format and exact saved bytes unchanged.
+
 - **D74 — Verified local feed checkpoint bundles (7 Nov 2026), before implementation.**
   Split T241 from T043 after the local capture, preparation and polling children.
   Preserve the actual quiescent S01/S09 feed tree as an immutable, hash-indexed

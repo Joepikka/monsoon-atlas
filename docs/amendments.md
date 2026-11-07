@@ -257,6 +257,8 @@ feed state and restore it only at its original absent path using the saved
 manifest digest. Preserve source bytes, clocks and admission across recovery.
 Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/test_feed_checkpoint_bundle.py -q`.
+D75 requires CAP prepared and control clocks to agree with the retained
+ledger, including unchanged-content revalidation and later duplicate bytes.
 
 ## Appendix Y: new and changed tasks (YAML)
 
@@ -288,7 +290,7 @@ new_tasks:
     steps:
       - "Inventory and seal the approved local feed-state files with exact manifest hashes and bounded staged copying"
       - "Verify the trusted manifest, stored references and storage budget before restoring to the original absent root"
-      - "Prove recovered cadence, cooldown and source snapshot replay using genuine retained fixtures"
+      - "Prove recovered cadence, cooldown and source snapshot replay using genuine retained fixtures, with CAP clocks checked against the ledger (D75)"
     acceptance:
       command: '.\.venv\Scripts\python -m pytest tests/test_feed_checkpoint_bundle.py -q'
       expected: "Exact state recovers at the original root; corrupt, incomplete or misdirected bundles preserve the prior state"

@@ -11,7 +11,7 @@ new_tasks:
     steps:
       - "Inventory and seal the approved local feed-state files with exact manifest hashes and bounded staged copying"
       - "Verify the trusted manifest, stored references and storage budget before restoring to the original absent root"
-      - "Prove recovered cadence, cooldown and source snapshot replay using genuine retained fixtures"
+      - "Prove recovered cadence, cooldown and source snapshot replay using genuine retained fixtures, with CAP clocks checked against the ledger (D75)"
     acceptance:
       command: '.\.venv\Scripts\python -m pytest tests/test_feed_checkpoint_bundle.py -q'
       expected: "Exact state recovers at the original root; corrupt, incomplete or misdirected bundles preserve the prior state"
