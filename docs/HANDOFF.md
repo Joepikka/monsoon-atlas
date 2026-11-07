@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 7 Nov 2026, T238 and the CAP branch-review corrections passed locally,
+Last updated: 7 Nov 2026, T239 local signed upload passed tests and review,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -216,6 +216,7 @@ and a YAML block `- id: T057`.
 | T237 (child of T043) | `c848989` | Paired local S01 capture for verified Bengaluru query (12.97,77.59), returned ECMWF grid point (13.0,77.5). Immutable receipts bind metadata-before/forecast/metadata-after artifacts; stable initialization, settling at retrieval, quality-passed future temperature and monotonic model/head checks precede advancement. Shared source-specific pacing/cooldown enforces S01 five-second spacing, five attempts per six-hour admission (20/day cap) and S09 one-second spacing. Both producers stop before network when disabled. Acceptance: 15 passed in 14.13s; joint refresh/weather checks: 24 passed in 21.72s; full suite: 563 passed, 1 skipped in 255.16s. Lint/format (164 files), policy, parity and whitespace pass. Live capture succeeded with 3 actual requests; repeat was not-due with 0 requests. Joint review's two Important findings fixed RED→GREEN: recoverable CAP capture I/O still prepares retained data, and bad previous weather heads cannot lose new completed receipts. Raw capture only, partial single-point coverage; no weather projection, upload or activation. |
 | T238 (child of T043) | `4d46546` | Offline partial weather preparation from immutable validated metadata/forecast/metadata receipts. Exact hashes, model/point/settling and cutoff checks precede selection; per-model/run/content cohorts preserve first retrieval and complete-pair availability, while source health uses the latest actual validation. Shared immutable writing retains CAP continuity, byte/quota caps and atomic monotonic/idempotent prepared-only heads. Acceptance: 43 passed in 22.95s; serial combined source/capture checks: 147 passed in 55.89s; full final suite: 606 passed, 1 skipped, 1 existing MLflow warning in 278.69s. Ruff/format (168 files), policy, amendment parity and whitespace pass; actual Worker decode/restore round-trip ran locally. Independent task review: spec PASS, quality APPROVED, no Critical/Important findings. Retained-live no-network smoke produced one real 20.6 degC forecast for 19:00Z at (13,77.5), with original retrieval/completion clocks; same-cutoff replay preserved exact bytes. No upload, approval, activation or statewide coverage. |
 | T235 review fixes (D70) | `6ea389c` | Preserve the selected CAP info headline with description/event fallbacks and unchanged normalized schema. Refuse disabled S09 before retained-input reads, including header-only and no-display evidence. Prepared v2 keeps exact v1 history. CAP acceptance 31 passed, actual Worker round-trip passed, full final suite 613 passed with 1 skip and the existing warning. Both Important branch-review findings were addressed in a separate scoped review. |
+| T239 (child of T043) | `05ff03f` | The local sender verifies prepared source identity, cutoff, payload and input hashes, then signs exact gzip bytes for an explicit loopback Worker origin. It checks a bounded acknowledgement and preserves preparation on repeat or failure. Acceptance 63 passed in 28.37s. Full rerun 676 passed, 1 skipped and the existing MLflow warning in 745.35s. Lint, format, dependency policy, amendment parity and whitespace passed. Actual PowerShell and Worker-code smoke returned stored then unchanged with equal Worker IDs and unchanged preparation. Task and incremental integration review passed. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -298,7 +299,15 @@ The final suite passed 613 tests with 1 skip and the existing MLflow warning in
 666.53s. A focused startup-deadline test failed once and passed isolated and full
 reruns. Scoped review marked both findings addressed with no new blocking issue.
 See `docs/reviews/2026-11-07-p1-branch.md` for the review and fix assessment.
-Commit-specific CI for the CAP fixes follows the next push.
+At `a58a47c`, all three CI workflows passed. The core run is 42338290277,
+Worker/D1 is 42338290369, and web Windows/Ubuntu is 42338290272.
+
+T239 local upload passes at `05ff03f`. The original full test session was
+interrupted when the implementer reached its usage limit. The saved rerun
+exited 0 with 676 passes, 1 skip and the existing MLflow warning. The recorded
+scope and integration review are in `docs/reviews/2026-11-07-t239.md`. The
+local smoke used a loopback receiver with the actual Worker authentication
+and decoder. Real D1 storage remains covered by the separate Worker CI.
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
@@ -475,9 +484,10 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    T237 now captures weather pairs for the verified single Bengaluru grid point;
    `scripts/feeds.ps1 weather` is raw capture only, not statewide coverage.
    T238 now prepares that source-bound point with `scripts/feeds.ps1 weather-prepare`;
-   the output stays partial and prepared-only. T239 local signed upload is now
-   being implemented under D71/A22. Then continue remote upload/
-   durable cloud restoration, scheduling and active-page polling. Research in
+   the output stays partial and prepared-only. T239 local signed upload passes
+   under D71/A22. Continue active-page polling with a dated daily fallback and
+   preserve frozen reports. Remote upload, durable cloud restoration and
+   scheduling remain separate hosting work. Research in
    `.cache/t043-research/findings.md` verifies that a full cold CAP+polygon sweep
    already needs 200 seconds of spacing alone; use bounded CAP-only admission,
    persisted ETag/checkpoints and a hard subprocess deadline, with partial/dating
