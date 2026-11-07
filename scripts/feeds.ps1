@@ -1,4 +1,4 @@
-# Local CAP/weather capture or preparation; never enables scheduling or publication.
+# Local CAP/weather capture, preparation or checkpoint commands.
 $ErrorActionPreference = 'Stop'
 $atlasRoot = Split-Path -Parent $PSScriptRoot
 $env:TEMP = Join-Path $atlasRoot '.cache/tmp'
@@ -26,6 +26,9 @@ elseif ($args.Count -gt 0 -and $args[0] -eq 'weather-prepare') {
 elseif ($args.Count -gt 0 -and $args[0] -eq 'upload-local') {
     $atlasModule = 'atlas.ingest.upload'
     $atlasArguments = @($args | Select-Object -Skip 1)
+}
+elseif ($args.Count -gt 0 -and $args[0] -in @('checkpoint-save', 'checkpoint-restore')) {
+    $atlasModule = 'atlas.ingest.checkpoint_bundle'
 }
 & (Join-Path $atlasRoot '.venv/Scripts/python.exe') -m $atlasModule @atlasArguments
 exit $LASTEXITCODE

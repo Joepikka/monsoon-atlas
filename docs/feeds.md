@@ -224,3 +224,45 @@ The daily release still provides the cutoff and verified hash for Place Lens,
 frozen links and print. Frozen, invalid shared and unreleased views skip the
 active checks. Cloud routing, remote upload, durable restoration, archiving
 and public activation stay behind their existing gates.
+
+## Local checkpoint and recovery (T241)
+
+1. Stop local capture, refresh and preparation processes. Keep the feed tree,
+   bundle and their parent directories idle until each command finishes. Run
+   one checkpoint operation at a time.
+2. Save to a new directory with an existing parent, outside the feed tree.
+
+   ```powershell
+   rtk proxy powershell -NoProfile -File scripts/feeds.ps1 checkpoint-save --bundle .cache/feeds-checkpoint-01
+   ```
+
+   Record the reported `manifest_sha256` separately from the bundle. Keep both
+   for recovery.
+3. When recovery is needed, hold any remaining feed tree aside so the original
+   path is absent. Set `$savedManifestSha256` to the separately recorded digest
+   and restore to that original path.
+
+   ```powershell
+   rtk proxy powershell -NoProfile -File scripts/feeds.ps1 checkpoint-restore --bundle .cache/feeds-checkpoint-01 --expected-sha256 $savedManifestSha256
+   ```
+
+Both commands default to `.cache/feeds`. Use `--root` for a different local feed
+directory and supply that same canonical absolute location on restore. The
+versioned `manifest.json` binds that location and lists each member of `files/`
+by relative path, byte length and SHA-256. The separately saved digest is the
+integrity check for the manifest and its file list. Save and restore apply the
+configured archive quota and leave the configured free-space reserve available.
+
+The bundle requires the shared `control.sqlite` and retains exact SQLite
+controls, raw S09 and S01 objects and ledgers,
+partial and validated weather receipts, the latest pair pointer, and immutable
+prepared history and pointers. Unrelated files, credentials, configuration and
+interrupted temporary writes are outside the inventory. The commands refuse
+links, reparse points and SQLite sidecars in the inspected layout. A damaged
+ledger or missing referenced artifact causes verification to fail.
+
+Restore copies to staging beside the missing destination, checks the manifest,
+bytes, SQLite integrity and references there, then publishes with a single
+directory rename. The bundle remains available for another recovery. Restored
+collectors and preparers use the retained source bytes, admission, cooldown and
+clocks at the original path. The checkpoint commands run entirely offline.
