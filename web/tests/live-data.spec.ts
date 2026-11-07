@@ -133,6 +133,12 @@ test('the visible map and list poll by source, retain a partial empty feed, and 
 test('Place Lens, print and frozen links keep the daily warning and verified release identity', async ({ page }) => {
   await pauseClock(page);
   const sha256 = await dailyRoutes(page);
+  let releaseMap!: () => void;
+  const deferredMap = new Promise<void>(resolve => { releaseMap = resolve; });
+  await page.route('**/src/MapView.tsx*', async route => {
+    await deferredMap;
+    await route.fallback();
+  });
   const calls: string[] = [];
   await page.route('**/api/v1/current?*', route => {
     const source = new URL(route.request().url()).searchParams.get('source')!;
@@ -145,7 +151,12 @@ test('Place Lens, print and frozen links keep the daily warning and verified rel
   await page.clock.runFor(100);
   await expect(page.getByTestId('record-list').getByText(area.location_note, { exact: true })).toBeVisible();
   await page.clock.runFor(100);
-  await expect(page.locator('.map-pin.model')).toHaveCount(1);
+  releaseMap();
+  // Lazy map mounting can finish after a single virtual-clock advance.
+  await expect.poll(async () => {
+    await page.clock.runFor(100);
+    return page.locator('.map-pin.model').count();
+  }).toBe(1);
   await expect(page.locator('.map-pin.official')).toHaveCount(0);
   await page.clock.runFor(100);
   await expect.poll(() => calls).toEqual(['S09', 'S01']);

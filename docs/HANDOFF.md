@@ -327,6 +327,11 @@ regressions are in `docs/reviews/2026-11-07-t240.md`. The response still uses a
 1 MiB cap. The additional field reduces headroom by 81 bytes per returned source.
 The existing MapLibre bundle warning remains. No full local Python rerun was
 needed for this web/Worker scope. Core and actual D1 checks run in CI.
+At `d495dbe`, core and Worker/D1 passed. Ubuntu browser CI passed 55 cases and
+failed two marker assertions while the test clock was paused and the lazy map
+was still loading. Holding the map import reproduced both failures locally.
+The test now advances virtual time while waiting for the actual marker. All
+nine acceptance cases passed in 19.0s with the delayed import in place.
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
