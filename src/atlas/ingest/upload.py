@@ -38,6 +38,48 @@ def signing_key(origin: str) -> str:
     return key
 
 
+def post_local_signed(
+    origin: str,
+    path: str,
+    body: bytes,
+    content_type: str,
+    *,
+    key: str,
+    transport: httpx.BaseTransport | None,
+) -> tuple[int, bytes]:
+    """Post once to an origin already checked by signing_key."""
+    timestamp = str(int(time.time()))
+    message = f"{timestamp}\nPOST\n{path}\n{hashlib.sha256(body).hexdigest()}"
+    signature = hmac.new(key.encode("utf-8"), message.encode(), hashlib.sha256).hexdigest()
+    with httpx.Client(
+        transport=transport,
+        trust_env=False,
+        follow_redirects=False,
+        timeout=httpx.Timeout(5.0, connect=2.0),
+        headers={"Accept-Encoding": "identity"},
+    ) as client:
+        with client.stream(
+            "POST",
+            origin + path,
+            content=body,
+            headers={
+                "Content-Type": content_type,
+                "X-Atlas-Timestamp": timestamp,
+                "X-Atlas-Signature": signature,
+            },
+        ) as response:
+            if response.status_code not in {200, 201}:
+                return response.status_code, b""
+            if response.headers.get("content-encoding", "identity").lower() != "identity":
+                raise IngestError("Invalid acknowledgement encoding")
+            reply = bytearray()
+            for chunk in response.iter_bytes(chunk_size=MAX_REPLY + 1):
+                reply.extend(chunk)
+                if len(reply) > MAX_REPLY:
+                    raise IngestError("Acknowledgement exceeds the byte bound")
+            return response.status_code, bytes(reply)
+
+
 def cutoff(value: str) -> datetime:
     parsed = datetime.fromisoformat(value)
     if parsed.utcoffset() != timedelta(0) or parsed > datetime.now(UTC):
@@ -121,48 +163,20 @@ def upload_local(
         compressed = gzip.compress(payload, mtime=0)
         if len(compressed) > MAX_BYTES:
             raise IngestError("Compressed prepared payload exceeds the byte bound")
-        timestamp = str(int(time.time()))
-        message = f"{timestamp}\nPOST\n{INGEST_PATH}\n{hashlib.sha256(compressed).hexdigest()}"
-        signature = hmac.new(key.encode("utf-8"), message.encode(), hashlib.sha256).hexdigest()
-        with httpx.Client(
-            transport=transport,
-            trust_env=False,
-            follow_redirects=False,
-            timeout=httpx.Timeout(5.0, connect=2.0),
-            headers={"Accept-Encoding": "identity"},
-        ) as client:
-            with client.stream(
-                "POST",
-                origin + INGEST_PATH,
-                content=compressed,
-                headers={
-                    "Content-Type": "application/gzip",
-                    "X-Atlas-Timestamp": timestamp,
-                    "X-Atlas-Signature": signature,
-                },
-            ) as response:
-                if response.status_code not in {200, 201}:
-                    return {
-                        "status": "failed",
-                        "stage": "upload",
-                        "http_status": response.status_code,
-                    }
-                if response.headers.get("content-encoding", "identity").lower() != "identity":
-                    raise IngestError("Invalid acknowledgement encoding")
-                reply = bytearray()
-                for chunk in response.iter_bytes(chunk_size=MAX_REPLY + 1):
-                    reply.extend(chunk)
-                    if len(reply) > MAX_REPLY:
-                        raise IngestError("Acknowledgement exceeds the byte bound")
-                value = json.loads(reply)
-                status = "stored" if response.status_code == 201 else "unchanged"
-                if (
-                    value["status"] != status
-                    or not isinstance(value["snapshot_id"], str)
-                    or not DIGEST.fullmatch(value["snapshot_id"])
-                    or (status == "stored" and value["as_of"] != pointer["as_of"])
-                ):
-                    raise IngestError("Invalid Worker acknowledgement")
+        http_status, reply = post_local_signed(
+            origin, INGEST_PATH, compressed, "application/gzip", key=key, transport=transport
+        )
+        if http_status not in {200, 201}:
+            return {"status": "failed", "stage": "upload", "http_status": http_status}
+        value = json.loads(reply)
+        status = "stored" if http_status == 201 else "unchanged"
+        if (
+            value["status"] != status
+            or not isinstance(value["snapshot_id"], str)
+            or not DIGEST.fullmatch(value["snapshot_id"])
+            or (status == "stored" and value["as_of"] != pointer["as_of"])
+        ):
+            raise IngestError("Invalid Worker acknowledgement")
         return {
             "status": status,
             "source_id": source_id,

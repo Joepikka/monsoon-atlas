@@ -269,3 +269,28 @@ bytes, SQLite integrity and references there, then publishes with a single
 directory rename. The bundle remains available for another recovery. Restored
 collectors and preparers use the retained source bytes, admission, cooldown and
 clocks at the original path. The checkpoint commands run entirely offline.
+
+## Capture with local Worker admission (T242)
+
+With the trusted local Worker running and its `ATLAS_INGEST_HMAC_KEY` available
+in the command environment, run one capture for `S09` or `S01`.
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 capture-admitted --source S09 --origin http://127.0.0.1:8787
+```
+
+The command checks source enablement and sends one signed request to
+`/internal/feed-check`. A matching HTTP 201 acknowledgement grants admission.
+A matching HTTP 200 denial returns `not_due` at the admission stage. Errors,
+wrong-source replies and timeouts fail closed before the collector starts.
+Use an explicit `http://127.0.0.1:<port>` origin. The signed transport disables
+environment proxies and redirects and bounds successful replies to 4096 bytes.
+
+After admission the existing collector still applies its SQLite cadence,
+Retry-After cooldown and quota. Its result uses `stage: capture`. A lost Worker
+reply or a later local deferral can consume the Worker slot. The command runs
+the claim and capture in one child with a 150-second parent deadline. Startup
+and cleanup add overhead. Completed capture evidence remains in `--root`,
+which defaults to `.cache/feeds`. Use `--max-documents` to bound S09 work.
+Preparation, upload, durable runner persistence and scheduling are separate
+steps. The cloud capability and release gates apply before activation.

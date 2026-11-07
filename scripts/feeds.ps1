@@ -27,6 +27,10 @@ elseif ($args.Count -gt 0 -and $args[0] -eq 'upload-local') {
     $atlasModule = 'atlas.ingest.upload'
     $atlasArguments = @($args | Select-Object -Skip 1)
 }
+elseif ($args.Count -gt 0 -and $args[0] -eq 'capture-admitted') {
+    $atlasModule = 'atlas.ingest.admission'
+    $atlasArguments = @($args | Select-Object -Skip 1)
+}
 elseif ($args.Count -gt 0 -and $args[0] -in @('checkpoint-save', 'checkpoint-restore')) {
     $atlasModule = 'atlas.ingest.checkpoint_bundle'
 }
