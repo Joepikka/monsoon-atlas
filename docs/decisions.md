@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D74 — Verified local feed checkpoint bundles (7 Nov 2026), before implementation.**
+  Split T241 from T043 after the local capture, preparation and polling children.
+  Preserve the actual quiescent S01/S09 feed tree as an immutable, hash-indexed
+  local folder. It includes admission, cooldown, checkpoints and the raw and
+  prepared bytes they depend on. The existing ledgers and weather receipts
+  bind absolute raw paths, so v1 restores only to the original canonical feed
+  root. Require the saved manifest digest and a missing target. Validate safe
+  member paths, bytes and authoritative references in staging before atomic
+  publication. Use the existing storage budget and retain original data.
+  Cross-path restoration, remote persistence and runner activation are later
+  T043 work. This child grants no publication or scheduling authority.
+
 - **D73 — Preserve older Worker snapshot identities (7 Nov 2026), before fix.**
   T240 review reproduced a contract mismatch for an older supported stored
   snapshot whose parser fills in an optional field. The Worker checks the

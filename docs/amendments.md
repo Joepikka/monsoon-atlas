@@ -250,6 +250,14 @@ continues to identify the verified stored bytes. The browser verifies the wire
 projection with the new digest and supports the earlier response shape when its
 digest matches the wire bytes.
 
+## A24. Verified local checkpoint restore (D74, 7 November 2026)
+
+T241 is a child of T043 after T234/T235/T237/T238/T240. Seal a quiescent local
+feed state and restore it only at its original absent path using the saved
+manifest digest. Preserve source bytes, clocks and admission across recovery.
+Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/test_feed_checkpoint_bundle.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -270,6 +278,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T241
+    parent: T043
+    title: "Seal and restore a verified path-bound local feed checkpoint"
+    phase: P1
+    state: KA
+    depends_on: [T234, T235, T237, T238, T240]
+    files: [src/atlas/ingest/checkpoint_bundle.py, tests/test_feed_checkpoint_bundle.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Inventory and seal the approved local feed-state files with exact manifest hashes and bounded staged copying"
+      - "Verify the trusted manifest, stored references and storage budget before restoring to the original absent root"
+      - "Prove recovered cadence, cooldown and source snapshot replay using genuine retained fixtures"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_feed_checkpoint_bundle.py -q'
+      expected: "Exact state recovers at the original root; corrupt, incomplete or misdirected bundles preserve the prior state"
+    hours: 3
   - id: T240
     parent: T043
     title: "Poll validated hot sources while active and retain dated daily reports"
