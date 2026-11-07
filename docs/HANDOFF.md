@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 7 Nov 2026, T241 local checkpoint save and recovery,
+Last updated: 7 Nov 2026, T242 local Worker-gated feed capture,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T241. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D75. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T242. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D76. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -219,6 +219,7 @@ and a YAML block `- id: T057`.
 | T239 (child of T043) | `05ff03f` | The local sender verifies prepared source identity, cutoff, payload and input hashes, then signs exact gzip bytes for an explicit loopback Worker origin. It checks a bounded acknowledgement and preserves preparation on repeat or failure. Acceptance 63 passed in 28.37s. Full rerun 676 passed, 1 skipped and the existing MLflow warning in 745.35s. Lint, format, dependency policy, amendment parity and whitespace passed. Actual PowerShell and Worker-code smoke returned stored then unchanged with equal Worker IDs and unchanged preparation. Task and incremental integration review passed. |
 | T240 (child of T043) | `47fee40`, `77b0c16` | The approved normal Karnataka view checks S09 every 15 minutes and S01 every six hours while visible. One bounded request, elapsed deadline and per-source high-water checks preserve honest dates and coverage. Map, list and ticker use the source overlay with dated daily fallback. Place Lens, frozen links and print use the approved daily release. D73 preserves older stored IDs and verifies their normalized GET projection separately. Mounted acceptance 9 passed in 20.6s after review fixes. Full pre-fix browser run 57 passed, final web units 42 passed, Worker 13 passed and build/typechecks passed. Scoped review cleared the legacy compatibility finding. |
 | T241 (child of T043) | `2f44faf`, `cdefdb8` | Seal quiescent S09/S01 state and restore verified bytes to the original absent path. The bundle retains raw evidence, prepared history, SQLite admission and cooldown. D75 binds CAP capture clocks to ledger events and preserves valid cross-day revalidation. Acceptance 27 passed in 24.45s, plus 53 S09 regression checks. The real local export matched 27 files by path, size and SHA-256. |
+| T242 (child of T043) | `0f1775a` | A signed claim to the explicit loopback Worker precedes one S01 or S09 capture. Wrong or unavailable acknowledgements fail closed. The collector retains its own cadence and cooldown. Acceptance 22 passed in 2.89s, with 139 combined transport, cadence and collector tests. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -343,6 +344,16 @@ clocks and verify actual preparation and cadence after restoration. The initial
 full local suite passed 698 tests with one skip and the existing MLflow warning.
 The final focused and S09 regressions ran after D75. The real local bundle also
 passed the stricter staged reference check. See `docs/reviews/2026-11-07-t241.md`.
+Final T241 `4bb7130` passed core Windows/Ubuntu run 42388198767, Worker/D1
+42388198770 and browser Windows/Ubuntu 42388198815.
+
+T242's smoke used the actual Worker handler and checked-in SQL with a local
+Node SQLite adapter. The signed S01 request received HTTP 201 and replayed
+three retained fixture responses. The PowerShell duplicate received HTTP 200
+`not_due` and left its feed root absent. The 150-second child bound includes
+claim and capture. Ruff, formatting, dependency policy, parity and whitespace
+checks passed. The Ubuntu Worker runtime workflow covers actual D1 separately.
+Independent review approved the change. See `docs/reviews/2026-11-07-t242.md`.
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
@@ -522,9 +533,10 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    the output stays partial and prepared-only. T239 local signed upload passes
    under D71/A22. T240 active-page polling and dated fallback pass with exact
    frozen report identity. T241 proves offline recovery of an absent original
-   feed directory using a separately saved digest. Continue with durable runner
-   persistence and bounded scheduling preparation. Remote upload and activation
-   retain the capability and release gates. Research in
+   feed directory using a separately saved digest. T242 verifies the signed
+   Worker admission before one enabled collector runs. Continue with durable
+   runner persistence and bounded scheduling preparation. Remote upload and
+   activation retain the capability and release gates. Research in
    `.cache/t043-research/findings.md` verifies that a full cold CAP+polygon sweep
    already needs 200 seconds of spacing alone; use bounded CAP-only admission,
    persisted ETag/checkpoints and a hard subprocess deadline, with partial/dating
