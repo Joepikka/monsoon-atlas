@@ -1,6 +1,21 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T243
+    parent: T043
+    title: "Persist verified local runner checkpoint generations"
+    phase: P1
+    state: KA
+    depends_on: [T241, T242]
+    files: [src/atlas/ingest/runner_checkpoint.py, src/atlas/ingest/checkpoint_bundle.py, tests/test_runner_checkpoint.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Serialize and compare the expected head before sealing and advancing an immutable generation"
+      - "Restore a verified current generation to its original absent root and enforce aggregate storage quota"
+      - "Prove recovery after an interrupted catalogue advance, stale writer, and corrupted generation"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_runner_checkpoint.py -q'
+      expected: "Fresh runs resume exact verified state; stale or interrupted writes and invalid recovery leave the prior committed head intact"
+    hours: 3
   - id: T242
     parent: T043
     title: "Require signed local Worker admission before feed capture"

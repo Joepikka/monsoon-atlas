@@ -2,6 +2,17 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D77 — Store verified runner checkpoint generations locally (7 Nov 2026).**
+  Split T243 from T043 after T241/T242. Keep immutable bundles in a durable
+  local directory outside the feed workspace and store the current digest in
+  a SQLite catalogue. One transaction compares the caller's expected head,
+  seals a new generation and advances the head only after the bundle exists.
+  Recovery uses the trusted catalogue and the same absent canonical feed root.
+  Count the whole store in the existing storage quota. Keep prior generations
+  and allow retry after an interrupted catalogue update. The runner must carry
+  forward the digest it restored. Hosted storage, relocation and recurring
+  scheduling are later T043 work.
+
 - **D76 — Gate local producer capture on Worker admission (7 Nov 2026).**
   Split T242 from T043 after signed upload, browser polling and checkpoint
   recovery. Add a bounded one-source capture command using the owned signed
