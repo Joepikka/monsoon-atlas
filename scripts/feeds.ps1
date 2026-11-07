@@ -23,5 +23,9 @@ elseif ($args.Count -gt 0 -and $args[0] -eq 'weather-prepare') {
     $atlasModule = 'atlas.ingest.s01_prepare'
     $atlasArguments = @($args | Select-Object -Skip 1)
 }
+elseif ($args.Count -gt 0 -and $args[0] -eq 'upload-local') {
+    $atlasModule = 'atlas.ingest.upload'
+    $atlasArguments = @($args | Select-Object -Skip 1)
+}
 & (Join-Path $atlasRoot '.venv/Scripts/python.exe') -m $atlasModule @atlasArguments
 exit $LASTEXITCODE

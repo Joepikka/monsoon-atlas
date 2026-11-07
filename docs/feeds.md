@@ -175,3 +175,28 @@ preserves the previous output. A missing latest-pair pointer may recover a fully
 qualified archived receipt; a present damaged pointer stops preparation.
 Keep all receipts and raw bytes. Nothing is purged, uploaded, scheduled,
 approved for publication or activated by this command.
+
+## Signed local Worker upload (T239)
+
+With a local Worker already running and `ATLAS_INGEST_HMAC_KEY` set in the
+environment to the same value (at least 32 characters), run:
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 upload-local --source S09 --origin http://127.0.0.1:8787
+```
+
+Choose `S01` for `weather/prepared/` or `S09` for `prepared/`; `--root` accepts
+the common feed root. The explicit origin must be `http://127.0.0.1:<port>`
+without a trailing slash, path, query, fragment or credentials. Environment
+proxies and redirects are disabled. The environment key is never a CLI argument.
+
+The sender verifies the prepared-only pointer, immutable payload and streamed
+input-manifest hash, then signs a deterministic gzip of the exact prepared
+bytes. One HTTP-only child has a 15-second deadline, finite request timeouts,
+one request and a 4096-byte acknowledgement limit. Startup/cleanup add overhead.
+Success reports the Worker's normalized `snapshot_id` separately from the local
+`prepared_sha256`. A repeat sends identical bytes for Worker idempotency.
+Failures preserve preparation and report bounded diagnostics without response
+bodies. This local acknowledgement grants no static publication approval.
+Remote destinations, durable cloud restoration, scheduled admission and active
+page polling remain T043 work behind the existing activation gates.
