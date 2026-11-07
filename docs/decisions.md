@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D71 — Local signed snapshot upload (7 Nov 2026), before implementation.**
+  Split T239 from T043 after T229/T235/T238 to exercise the prepared-snapshot
+  sender through an explicit loopback Worker origin. Verify retained payload
+  and input hashes, source identity, cutoff and transport bounds before signing
+  the exact deterministic gzip bytes with the existing HMAC protocol. Use an
+  environment key, one request, bounded response and a 15-second child deadline.
+  The acknowledgement reports the Worker's normalized snapshot identity
+  separately from the local payload hash. Keep preparation immutable across
+  retries and failures. Restrict this child to `http://127.0.0.1:<port>`.
+  Cloud configuration, durable restoration and scheduled use retain their
+  existing capability and approval gates.
+
 - **D70 — CAP preparation review fixes (7 Nov 2026), before implementation.**
   Correct the T235 projection to use the selected CAP info block's actual
   headline, with its description and event as ordered fallbacks. The event

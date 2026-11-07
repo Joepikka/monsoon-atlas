@@ -228,6 +228,14 @@ temperature projection using grouped model-run evidence and a shared immutable
 envelope writer, preserving partial coverage and true clocks. Estimate: 3 hours.
 Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s01_prepare.py -q`.
 
+## A22. Local signed upload proof (D71, 7 November 2026)
+
+T239 is a child of T043 after T229/T235/T238. It validates and signs the exact
+prepared envelope for the local Worker ingest contract, checks bounded replies
+and preserves prepared state through failures. Its explicit loopback destination
+keeps cloud configuration behind the existing capability gate. Estimate 3 hours.
+Acceptance is `.\.venv\Scripts\python -m pytest tests/test_hot_upload.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -248,6 +256,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T239
+    parent: T043
+    title: "Verify and sign prepared snapshots for a bounded local Worker upload"
+    phase: P1
+    state: KA
+    depends_on: [T229, T235, T238]
+    files: [src/atlas/ingest/upload.py, tests/test_hot_upload.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Verify retained preparation identity, hashes, source and cutoff before signing exact gzip bytes"
+      - "Send one bounded signed request to an explicit loopback origin and validate the Worker acknowledgement"
+      - "Preserve prepared state after repeat or failed sends and prove compatibility using genuine source data"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_hot_upload.py -q'
+      expected: "Exact signed bytes pass Worker authentication; invalid inputs, destinations and replies fail without modifying prepared state"
+    hours: 3
   - id: T238
     parent: T043
     title: "Prepare a source-bound partial weather snapshot from paired captures"
