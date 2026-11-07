@@ -2,6 +2,16 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D70 — CAP preparation review fixes (7 Nov 2026), before implementation.**
+  Correct the T235 projection to use the selected CAP info block's actual
+  headline, with its description and event as ordered fallbacks. The event
+  alone omits district and timing details in the retained Karnataka sample.
+  Reuse the adapter's language selection and retain its normalized row schema.
+  Version the changed prepared projection as `s09-prepared-v2`. Keep older
+  immutable files and reject conflicting bytes at the same cutoff. Check the
+  S09 enable flag before reading retained evidence so header-only controls
+  cannot produce a prepared result for a disabled source.
+
 - **D69 — Local weather snapshot preparation (6 Nov 2026), before implementation.**
   Split T238 from T043 after T235/T237. Project one quality-passed future
   temperature from the verified Bengaluru model grid, with explicit partial
