@@ -2,6 +2,16 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D76 — Gate local producer capture on Worker admission (7 Nov 2026).**
+  Split T242 from T043 after signed upload, browser polling and checkpoint
+  recovery. Add a bounded one-source capture command using the owned signed
+  admission endpoint on explicit loopback. Only a matching affirmative Worker
+  reply permits the existing collector to run. Keep its separate persisted
+  local cooldown and cadence check. A Worker slot can be consumed when the
+  reply is lost or the collector later declines. Reuse the uploader's local
+  transport policy. Durable runner persistence, scheduling and cloud activation
+  are later work.
+
 - **D75 — Bind CAP checkpoint evidence to retained clocks (7 Nov 2026), before fix.**
   T241 review showed that a raw ledger timestamp shifted by one second could
   pass staging verification and prevent preparation at the saved cutoff. Check

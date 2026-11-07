@@ -1,6 +1,21 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T242
+    parent: T043
+    title: "Require signed local Worker admission before feed capture"
+    phase: P1
+    state: KA
+    depends_on: [T233, T234, T237, T239, T241]
+    files: [src/atlas/ingest/admission.py, src/atlas/ingest/upload.py, tests/test_feed_admission.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Send one bounded signed source claim to the explicit loopback Worker"
+      - "Fail closed on denial, mismatched replies or unavailable admission; retain the local collector guard"
+      - "Verify exact signing and genuine fixture capture through the bounded entry point"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_feed_admission.py -q'
+      expected: "Only matching Worker admission can reach an enabled collector, whose local cadence and cooldown still apply"
+    hours: 3
   - id: T241
     parent: T043
     title: "Seal and restore a verified path-bound local feed checkpoint"
