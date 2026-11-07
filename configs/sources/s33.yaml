@@ -1,0 +1,119 @@
+source_id: S33
+state: kl
+name: KSEB monthly dam statistics
+verify_task: T115
+discovered_at: '2026-11-06T06:28:27.798294Z'
+outcome: blocked
+landing_url: https://dams.kseb.in/
+publisher: Kerala State Electricity Board Limited / Dam Safety Organisation
+no_card: true
+account_required: false
+access:
+  status: soft_404
+  detail: The planned landing page and three published article URLs return HTTP 200 with only a wrong-address
+    error, not dam statistics (e04,e07,e08,e09). No sign-in, payment or card gate was encountered. The
+    dams host robots.txt returned HTTP 404 (failed_fetches). RFC 9309 permits bounded access when robots
+    is unavailable (e05); no restriction was bypassed. Main KSEB robots allows access (e01).
+  evidence:
+  - e01
+  - e04
+  - e05
+  - e07
+  - e08
+  - e09
+licence:
+  status: unverified
+  detail: The main KSEB website terms state CC BY-SA 2.5 India or later (e03). No actual monthly reservoir
+    file was obtained from the dams host, so its file-specific licence and redistribution terms remain
+    unverified; the main-site statement does not certify a missing artifact.
+  evidence:
+  - e03
+  - e04
+  - e07
+provider_quota:
+  status: not_published
+  detail: No source-specific quota was found in the checked pages. Requests were bounded and spaced by
+    at least 3 seconds; unavailable pages are recorded rather than worked around.
+  evidence:
+  - e03
+  - e04
+  - e07
+history:
+  status: not_public
+  detail: No usable public reservoir archive artifact was obtained during this check. The landing, Monthly
+    Statistics and Statistics pages are error responses (e04,e07,e08); the main-site Monthly data link
+    contains electricity consumers and consumption instead (e02,e06). This outcome does not prove the
+    underlying records do not exist. Dates and archive depth remain unknown.
+  evidence:
+  - e02
+  - e04
+  - e06
+  - e07
+  - e08
+earliest_date: null
+latest_date: null
+units:
+  status: not_checked
+  detail: No dam table, PDF or spreadsheet was obtained, so reservoir level/storage units, vertical datum,
+    observation times and within-file daily/monthly resolution cannot be checked. Electricity-dashboard
+    MU is not substituted for reservoir measurements.
+  evidence:
+  - e04
+  - e06
+  - e07
+  - e08
+source_check:
+  status: fail
+  detail: The source-specific check requires verified archive depth and temporal resolution. All sampled
+    dams-host pages contain only a wrong-address error. Monthly aggregates must not become interpolated
+    daily labels; the M07 card keeps S33 EDA-only. A search snippet describing daily rows within monthly
+    reports is not a downloaded, verified artifact.
+  evidence:
+  - e04
+  - e07
+  - e08
+  - e09
+field_map:
+- canonical: reservoir_id
+  upstream: null
+  unit_status: absent
+  detail: No reservoir artifact was obtained; this canonical field has no verified upstream mapping.
+  evidence:
+  - e04
+  - e07
+  - e08
+- canonical: date_local
+  upstream: null
+  unit_status: absent
+  detail: No reservoir artifact was obtained; this canonical field has no verified upstream mapping.
+  evidence:
+  - e04
+  - e07
+  - e08
+- canonical: level_m
+  upstream: null
+  unit_status: absent
+  detail: No reservoir artifact was obtained; this canonical field has no verified upstream mapping.
+  evidence:
+  - e04
+  - e07
+  - e08
+- canonical: storage_mcm
+  upstream: null
+  unit_status: absent
+  detail: No reservoir artifact was obtained; this canonical field has no verified upstream mapping.
+  evidence:
+  - e04
+  - e07
+  - e08
+dependents:
+- T116
+- T130
+retry_condition: Re-run T115 when the KSEB Dam Safety Organisation restores its Monthly Statistics/Statistics
+  pages or supplies a directly linked monthly reservoir PDF/spreadsheet with dates, units, datum and licence.
+  Verify actual within-file resolution; keep monthly aggregates EDA-only and never interpolate daily observations.
+  Owner OCR review of S34 remains independently required.
+failed_fetches:
+- url: https://dams.kseb.in/robots.txt
+  attempted_at: '2026-11-06T06:24:11.951039Z'
+  error: 'S33: HTTP 404 for https://dams.kseb.in/robots.txt'

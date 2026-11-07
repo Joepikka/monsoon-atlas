@@ -1,0 +1,10 @@
+{
+  "$comment": "T116 blocked source contract. T115 obtained no reservoir artifact. No upstream fields or observations are invented; retry discovery before defining a usable source schema.",
+  "source_id": "S33",
+  "schema_version": 1,
+  "mapping_version": "s33-v1",
+  "status": "disabled",
+  "verify_task": "T115",
+  "fields": [],
+  "temporal_use": "Monthly aggregates are EDA-only under the current M07 card; no interpolation to daily labels. Actual within-file granularity remains unverified."
+}

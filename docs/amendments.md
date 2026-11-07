@@ -110,12 +110,395 @@ The plan has notebooks and web dashboards, but no tools that data analyst job po
 
 All of the plan's leakage rules, split protocols, baselines, promotion gates, model cards, source catalogue, schemas, privacy and legal rules, the Rs 0 and no-card policy, the MIT code licence, and the Kerala-then-Delhi phase order.
 
+## A10. Kerala bootstrap child task (D44, 5 November 2026)
+
+The handoff's next-task list placed full T129 before its own adapter prerequisites.
+Split out **T226**, a child of T129, for the already approved D17 core C1 fallback.
+T226 runs now in P1, after T003, T113, T117, T119 and T121. It creates isolated
+`configs/states/kl.yaml`, the existing-evidence audit `docs/labels/kerala.md`, and
+`tests/test_kl_data.py`. Every Kerala source stays disabled. Estimate: 2 hours.
+
+Acceptance: `.\.venv\Scripts\python -m pytest tests/test_kl_data.py -q` passes;
+two states load with separate paths, no Kerala source is enabled, and the audit
+reports real history, unknown datum, unavailable labels and unverified geography.
+This is bootstrap acceptance, not completion of the full T129 audit.
+
+T114 and T118 gain T226 as a dependency. Full T129 retains its P3 scope and all
+original dependencies (T046, T114, T116, T118, T120, T122, T124), plus T226.
+Before T130, record the resolution of its full-T129 dependency for the M07-only
+fallback and of T115/T116 scheduling; neither is waived by T226. Known datum,
+reviewed OCR, daily coverage and honest splits remain mandatory gates.
+
+## A11. S32 daily coverage census split (D46, 6 November 2026)
+
+**T227**, child of T114, runs in P1 after T113/T114 and before T130. T114 implements
+the adapter; its discovery follow-up requested a date-by-date audit of the sampled
+15 Aug 2024-15 Jul 2026 gap. That backfill is a separate resumable task, not proof
+already supplied by the twice-monthly discovery sample. Estimate: 2 hours.
+
+Files: `scripts/s32_history.py`, `docs/sources/s32-history.md`,
+`tests/sources/test_s32_history.py`. Use only the verified date form and shared
+fetcher; space requests by at least 3 seconds and obey budgets. Report every date
+as validated data, a validated empty report, quarantine, or a fetch/layout failure.
+Never infer the entire gap from a sample or invent daily values from monthly data.
+Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s32_history.py -q`;
+each requested date has cited evidence or an explicit failure. T130 gains T227 as
+a dependency before using S32 historical coverage. Other D44 dependencies remain.
+
+## A12. Hot endpoint implementation child (D60, 6 November 2026)
+
+T229 implements T042's signed hot-data endpoint, D1 schema and local/CI checks
+after T006/T040. Full T042 remains pending H05 and the actual free/no-card service
+probe; no account, token, remote resource or deployment approval is created by
+this child. Windows 10 is outside current Wrangler support, so pure logic and
+SQLite run locally and the actual Miniflare/D1 runtime runs on Ubuntu CI. Estimate:
+3 hours. Acceptance: `.\.venv\Scripts\python -m pytest tests/test_worker_core.py -q`.
+
+## A13. Preserve area-only alerts before refresh (D61, 6 November 2026)
+
+T230 is a child of T043 after T014/T040/T229. It retains official CAP warnings
+whose original area text is known but whose geometry is unavailable. The list,
+Place Lens, ticker and hot transport preserve the warning and its clocks without
+inventing a map point. Estimate: 1 hour. Acceptance:
+`.\.venv\Scripts\python -m pytest tests/test_alert_area_context.py -q`.
+It does not complete T043's producer, schedule, polling or cloud gate.
+
+## A14. Version RSS cache entries (D62, 6 November 2026)
+
+T231 is a child of T043 after T014/T230. It replaces permanent RSS-identifier
+skip sets with hashes of actual item contents, so a changed item at a known URL
+is fetched again through the existing HTTP boundary. T043 still owns cache-age
+expiry, durable checkpoints and the bounded producer. Estimate: 1 hour.
+Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s09.py -q`.
+
+## A15. Complete CAP supersession identity (D63, 6 November 2026)
+
+T232 is a child of T043 after T014/T231. It matches CAP references by the full
+sender/identifier/sent-time identity, preserving unresolved references rather
+than dropping unrelated warnings. It also requires timezone-bearing dates and
+Actual/Public lifecycle messages for public warnings. Estimate: 1 hour. Acceptance:
+`.\.venv\Scripts\python -m pytest tests/sources/test_s09.py -q`.
+
+## A16. Durable bounded source-check admission (D64, 6 November 2026)
+
+T233 is a child of T043 after T229/T232. It adds authenticated, atomic source-check
+admission using D1's server clock so lost runner caches or duplicate jobs cannot
+bypass weather/alert cadence caps. Estimate: 2 hours. Acceptance:
+`.\.venv\Scripts\python -m pytest tests/test_schedule_feeds.py -q`.
+Actual provider collection, workflow activation and browser polling remain in
+T043; full T042 and cloud admission remain pending H05.
+
+## A17. Bounded local CAP collection (D65, 6 November 2026)
+
+T234 is a child of T043 after T230/T231/T232/T233. It captures and validates a
+bounded CAP-only subset with ETag checkpoints, persistent local admission and
+Retry-After deferral, plus a hard parent-process deadline. Its result remains
+partial and local; no reviewed publication, cloud upload or recurring workflow
+is enabled. Estimate: 3 hours. Acceptance:
+`.\.venv\Scripts\python -m pytest tests/sources/test_s09_collect.py -q`.
+
+## A18. Local CAP normalization and prepared snapshots (D66, 6 November 2026)
+
+T235 is a child of T043 after T229/T230/T232/T234. It turns retained real CAP
+evidence into a local bounded transport envelope, applying exact public control
+references and preserving source clocks, partial coverage and immutable inputs.
+It adds no upload, public approval or recurring work. Estimate: 3 hours.
+Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s09_prepare.py -q`.
+
+## A19. Bounded local CAP refresh runner (D67, 6 November 2026)
+
+T236 is a child of T043 after T234/T235. One local command captures and prepares
+retained KA CAP evidence under a single 150-second child deadline. Provider
+admission/backoff and actual source clocks survive recovery; no upload or
+recurring work is enabled. Estimate: 2 hours. Acceptance:
+`.\.venv\Scripts\python -m pytest tests/test_feed_refresh.py -q`.
+
+## A20. Bounded paired weather capture (D68, 6 November 2026)
+
+T237 is a child of T043 after T010/T234/T236. Capture the verified single-point
+S01 profile with immutable paired metadata/forecast evidence, model settling,
+shared cadence/backoff and weather-specific spacing/attempt caps. It remains
+local and partial, with no projection, upload or workflow. Estimate: 3 hours.
+Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s01_collect.py -q`.
+
+## A21. Source-bound weather preparation (D69, 6 November 2026)
+
+T238 is a child of T043 after T235/T237. It prepares the verified single-point
+temperature projection using grouped model-run evidence and a shared immutable
+envelope writer, preserving partial coverage and true clocks. Estimate: 3 hours.
+Acceptance: `.\.venv\Scripts\python -m pytest tests/sources/test_s01_prepare.py -q`.
+
+## A22. Local signed upload proof (D71, 7 November 2026)
+
+T239 is a child of T043 after T229/T235/T238. It validates and signs the exact
+prepared envelope for the local Worker ingest contract, checks bounded replies
+and preserves prepared state through failures. Its explicit loopback destination
+keeps cloud configuration behind the existing capability gate. Estimate 3 hours.
+Acceptance is `.\.venv\Scripts\python -m pytest tests/test_hot_upload.py -q`.
+
+## A23. Active-page source polling (D72, 7 November 2026)
+
+T240 is a child of T043 after T040/T229/T239. It adds bounded active-page
+polling of the existing S01/S09 Worker response, dated daily fallback and
+separate source cutoffs in the map and list. Frozen reports retain their
+approved daily release. Estimate 3 hours. Acceptance is
+`powershell -NoProfile -File scripts/web.ps1 run test:e2e -- tests/live-data.spec.ts`.
+
+D73 adds the GET `wire_sha256` field to cover supported older stored snapshots
+whose current normalization changes optional fields. The original `sha256`
+continues to identify the verified stored bytes. The browser verifies the wire
+projection with the new digest and supports the earlier response shape when its
+digest matches the wire bytes.
+
 ## Appendix Y: new and changed tasks (YAML)
+
+D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
+S34 owner review is pending. T115 depends on T113/T226 instead of T110; T116
+depends on T115/T006/T226. Monthly statistics are EDA only and never daily model
+labels. This makes no change to the pending OCR gate or the general Kerala phase.
+
+T228 (D49, 6 November 2026) is a child of T118 in P1, after T117/T226. It pins the
+local OCR toolchain/model, extracts existing PDF images with provenance and builds
+an offline owner review packet. The source images and OCR text stay in ignored
+`data/raw`. Machine acceptance is `python -m pytest tests/sources/test_s34_ocr.py -q`;
+it verifies the packet without inventing approval or promoting observations. The
+owner must review the sample before any extracted value is used. Full T118 gains
+T228 as a dependency and stays pending. Estimate: 3 hours. Files and detailed steps
+are in the synchronized YAML below.
 
 ```yaml
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T240
+    parent: T043
+    title: "Poll validated hot sources while active and retain dated daily reports"
+    phase: P1
+    state: KA
+    depends_on: [T040, T229, T239]
+    files: [web/src/live-data.ts, web/src/live-data.test.ts, web/src/App.tsx, web/src/map/Layers.tsx, web/src/styles.css, web/tests/live-data.spec.ts, docs/feeds.md, worker/src/index.ts, worker/tests/core.test.mjs, docs/worker.md]
+    steps:
+      - "Validate bounded same-origin Worker replies, wire_sha256 and actual source clocks while preserving stored identity"
+      - "Poll alerts at fifteen minutes and weather at six hours with visibility, deadlines and monotonic source checks"
+      - "Apply the dated source overlay in the map and list while keeping approved reports immutable"
+    acceptance:
+      command: 'powershell -NoProfile -File scripts/web.ps1 run test:e2e -- tests/live-data.spec.ts'
+      expected: "Mounted browser proves cadence, visibility and dated fallback while frozen reports retain exact identity"
+    hours: 3
+  - id: T239
+    parent: T043
+    title: "Verify and sign prepared snapshots for a bounded local Worker upload"
+    phase: P1
+    state: KA
+    depends_on: [T229, T235, T238]
+    files: [src/atlas/ingest/upload.py, tests/test_hot_upload.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Verify retained preparation identity, hashes, source and cutoff before signing exact gzip bytes"
+      - "Send one bounded signed request to an explicit loopback origin and validate the Worker acknowledgement"
+      - "Preserve prepared state after repeat or failed sends and prove compatibility using genuine source data"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_hot_upload.py -q'
+      expected: "Exact signed bytes pass Worker authentication; invalid inputs, destinations and replies fail without modifying prepared state"
+    hours: 3
+  - id: T238
+    parent: T043
+    title: "Prepare a source-bound partial weather snapshot from paired captures"
+    phase: P1
+    state: KA
+    depends_on: [T235, T237]
+    files: [src/atlas/ingest/prepared.py, src/atlas/ingest/s09_prepare.py, src/atlas/ingest/s01_prepare.py, tests/sources/test_s01_prepare.py, tests/sources/test_s09_prepare.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Extract the reusable bounded immutable envelope writer without changing CAP preparation behavior"
+      - "Validate paired receipt/raw hashes, model/point/settling and cutoff eligibility; preserve per-cohort original clocks"
+      - "Prepare the first quality-passed future temperature at actual returned grid coordinates, with partial source health and no publication"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s01_prepare.py -q'
+      expected: "Weather records preserve genuine values, coordinates, model and availability clocks; corrupt/future/mismatched inputs cannot replace the prepared head"
+    hours: 3
+  - id: T237
+    parent: T043
+    title: "Bounded paired S01 capture for the verified Bengaluru profile"
+    phase: P1
+    state: KA
+    depends_on: [T010, T234, T236]
+    files: [src/atlas/ingest/s01_collect.py, src/atlas/ingest/schedule.py, src/atlas/ingest/s09_collect.py, src/atlas/ingest/refresh.py, tests/sources/test_s01_collect.py, tests/sources/test_s09_collect.py, tests/test_feed_refresh.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Retain stable metadata-before/forecast/metadata-after receipts from the verified named-model point"
+      - "Enforce five-second request spacing, five attempts per six-hour admission and durable source-specific cooldown"
+      - "Advance only validated settled pairs, with source-enable gates and a bounded child; no projection or cloud activity"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s01_collect.py -q'
+      expected: "Real paired evidence survives capture; failed/unsettled/disabled/limited runs cannot advance the validated pointer or invent forecasts"
+    hours: 3
+  - id: T236
+    parent: T043
+    title: "Bounded local CAP capture and preparation runner"
+    phase: P1
+    state: KA
+    depends_on: [T234, T235]
+    files: [src/atlas/ingest/refresh.py, scripts/feeds.ps1, tests/test_feed_refresh.py, docs/feeds.md]
+    steps:
+      - "Combine existing capture/preparation in one HTTP-only child with a 150-second parent bound"
+      - "Respect shared local admission/backoff and recover retained controls without inventing validation clocks"
+      - "Keep partial prepared-only output and preserve prior state after errors/deadlines without cloud activity"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_feed_refresh.py -q'
+      expected: "Duplicate/deferred capture makes no excess provider calls; preparation and capture share the hard deadline and retain completed evidence"
+    hours: 2
+  - id: T235
+    parent: T043
+    title: "Prepare bounded local CAP snapshots with exact control handling"
+    phase: P1
+    state: KA
+    depends_on: [T229, T230, T232, T234]
+    files: [src/atlas/ingest/s09_prepare.py, src/atlas/ingest/s09.py, src/atlas/ingest/s09_collect.py, tests/sources/test_s09_prepare.py, tests/sources/test_s09_collect.py, worker/src/ingest.ts, worker/tests/core.test.mjs, worker/tests/runtime.test.mjs, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Validate retained raw hashes and prepare source-backed warning records with original clocks"
+      - "Apply exact Actual/Public Update/Cancel references, including header-only controls; retain partial coverage"
+      - "Write bounded immutable envelopes and input manifests atomically without upload or publication approval"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s09_prepare.py -q'
+      expected: "Actual source clocks and control identities survive preparation; corrupt or oversized input preserves the last prepared snapshot"
+    hours: 3
+  - id: T234
+    parent: T043
+    title: "Bounded local CAP-only collection with durable evidence checkpoints"
+    phase: P1
+    state: KA
+    depends_on: [T230, T231, T232, T233]
+    files: [src/atlas/ingest/s09_collect.py, src/atlas/ingest/schedule.py, scripts/feeds.ps1, tests/sources/test_s09_collect.py, docs/feeds.md]
+    steps:
+      - "Admit a bounded CAP-only subset and preserve raw evidence plus successful per-document checkpoints"
+      - "Use ETag revalidation, bounded cache admission, durable Retry-After and local SQL cadence guards"
+      - "Enforce an independent subprocess deadline; report partial coverage without publication or activation"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s09_collect.py -q'
+      expected: "Interrupted/unchanged/failed collection preserves evidence, clocks and backoff without fake data or cloud activation"
+    hours: 3
+  - id: T233
+    parent: T043
+    title: "Durable source-check admission for bounded weather and alert polling"
+    phase: P1
+    state: KA
+    depends_on: [T229, T232]
+    files: [worker/schema.sql, worker/src/, worker/tests/, tests/test_schedule_feeds.py, docs/worker.md]
+    steps:
+      - "Authenticate source-check admission using the server clock and existing HMAC contract"
+      - "Use atomic elapsed-cadence and storage/write guards across retries and UTC bucket boundaries"
+      - "Verify 24-hour 4/96 caps and actual D1 duplicate admission without deploying"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_schedule_feeds.py -q'
+      expected: "Duplicate/delayed jobs and absent runner cache cannot exceed source-check admission caps"
+    human_gate: "Cloud activation still requires H05 and the actual free/no-card capability probe"
+    hours: 2
+  - id: T232
+    parent: T043
+    title: "Match complete CAP reference identities during supersession"
+    phase: P1
+    state: KA
+    depends_on: [T014, T231]
+    files: [src/atlas/ingest/s09.py, tests/sources/test_s09.py, docs/sources/s09.md]
+    steps:
+      - "Match the complete sender, identifier and sent-time reference required by CAP 1.2"
+      - "Preserve unresolved or malformed reference targets instead of guessing"
+      - "Keep non-Actual/non-Public messages and Ack/Error controls out of active hazard warnings; reject naive dates"
+      - "Test issuer/time collisions and equivalent timezone representations using source-backed copies"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s09.py -q'
+      expected: "An update/cancel cannot supersede another issuer or timestamp that merely shares an identifier"
+    hours: 1
+  - id: T231
+    parent: T043
+    title: "Version S09 RSS cache entries instead of permanently skipping identifiers"
+    phase: P1
+    state: KA
+    depends_on: [T014, T230]
+    files: [src/atlas/ingest/s09.py, tests/sources/test_s09.py, docs/sources/s09.md]
+    steps:
+      - "Hash actual RSS item contents and compare version fingerprints"
+      - "Refetch changed items at known URLs using the existing conditional-GET boundary"
+      - "Reject legacy identifier-only skip sets; leave cache-age/checkpoint policy to T043"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s09.py -q'
+      expected: "Changed RSS versions cannot disappear behind a previously seen identifier"
+    hours: 1
+  - id: T230
+    parent: T043
+    title: "Preserve official area-only alerts in browser and hot transport"
+    phase: P1
+    state: KA
+    depends_on: [T014, T040, T229]
+    files: [web/src/, web/tests/area.spec.ts, web/tests/fixtures/sachet-ka-area.json, tests/test_alert_area_context.py, worker/src/ingest.ts, worker/tests/core.test.mjs, worker/tests/runtime.test.mjs]
+    steps:
+      - "Preserve actual CAP area text and original clocks when a polygon is unavailable"
+      - "Keep area-only warnings in state/list/report context without a marker or invented distance"
+      - "Verify the real source projection and shared Worker/browser validation"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_alert_area_context.py -q'
+      expected: "Official warning survives missing geometry with no fake point, distance or incident claim"
+    hours: 1
+  - id: T229
+    parent: T042
+    title: "Hot Worker endpoint implementation and local/CI checks"
+    phase: P1
+    state: KA
+    depends_on: [T006, T040]
+    files: [worker/, scripts/worker.ps1, tests/test_worker_core.py, .github/workflows/worker.yml, docs/worker.md]
+    steps:
+      - "Implement signed bounded uploads, canonical snapshot validation and D1 atomic caps"
+      - "Check pure logic and SQLite locally; check actual Miniflare/D1 on supported Ubuntu CI"
+      - "Retain explicit unavailable/static fallback; never create accounts, tokens, remote resources or deployment approval"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_worker_core.py -q'
+      expected: "Authentication, timestamp/hash, last-good and capacity checks pass; no cloud capability or public deployment claimed"
+    human_gate: "Full T042 still requires owner H05 and an actual free/no-card service probe"
+    hours: 3
+  - id: T228
+    parent: T118
+    title: "S34 pinned OCR tooling and owner review packet"
+    phase: P1
+    state: KL
+    depends_on: [T117, T226]
+    files: [requirements/ocr.in, requirements/ocr.txt, configs/ocr/s34.json, src/atlas/ingest/s34_ocr.py, scripts/s34_ocr_review.py, tests/sources/test_s34_ocr.py, docs/sources/s34-ocr.md]
+    steps:
+      - "Pin and hash-lock local OCR dependencies and the official language model; record embedded engine version"
+      - "Extract real captured PDF images and retain hashes, page numbers, OCR text and word boxes"
+      - "Generate an offline local owner review packet; keep source images/text in ignored data/raw"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s34_ocr.py -q'
+      expected: "Machine checks pass and a real local review packet exists; no values promoted or owner approval invented"
+    human_gate: "Owner reviews the OCR sample before any extracted value is used (T117/T118)"
+    hours: 3
+  - id: T227
+    parent: T114
+    title: "S32 daily gap census"
+    phase: P1
+    state: KL
+    depends_on: [T113, T114]
+    files: [scripts/s32_history.py, docs/sources/s32-history.md, tests/sources/test_s32_history.py]
+    steps:
+      - "Fetch every date from 2024-08-15 through 2026-07-15 using the verified date form and shared Fetcher"
+      - "Space requests by at least 3 seconds, enforce budgets, resume from immutable evidence"
+      - "Separate valid empty reports, quarantined rows and fetch/layout failures; never interpolate missing days"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s32_history.py -q'
+      expected: "Every requested date accounted for by cited evidence or explicit failure; no sampled gap claimed as a verified daily gap"
+    hours: 2
+  - id: T226
+    parent: T129
+    title: "Kerala configuration bootstrap and existing-evidence audit"
+    phase: P1
+    state: KL
+    depends_on: [T003, T113, T117, T119, T121]
+    files: [configs/states/kl.yaml, docs/labels/kerala.md, tests/test_kl_data.py]
+    steps:
+      - "Load isolated Kerala paths through the existing StateConfig; keep every source disabled"
+      - "Audit captured history, units, datum, flood labels and unverified geography without inventing records"
+      - "Keep full T129 pending; T226 is only the prerequisite for the D17 dam fallback adapters"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_kl_data.py -q'
+      expected: "Two states load with isolated paths; no Kerala source enabled; evidence audit exists"
+    hours: 2
   - id: T222
     title: "GATE-CORE: core data availability report"
     phase: P1
@@ -161,6 +544,15 @@ moved_tasks:
     before: T046
   - {ids: [T085, T086], from: P2, to: P1, after: T030}
 changed_tasks:
+  - {id: T115, change: "D51: move to P1 for M07 source discovery; replace T110 with T113/T226"}
+  - {id: T116, change: "D51: move to P1; depends on T115/T006/T226; monthly EDA only"}
+  - {id: T118, change: "D49: add T228 dependency and require owner OCR review before using extracted values"}
+  - {id: T114, change: "D46: adapter contract complete independently; daily gap census split into child T227"}
+  - {id: T130, change: "D46: add T227 dependency before claiming S32 historical coverage"}
+  - {id: T129, change: "D44: add T226 dependency; retain original dependencies and P3 full-audit scope"}
+  - {id: T114, change: "D44: add T226 dependency for disabled Kerala configuration"}
+  - {id: T118, change: "D44: add T226 dependency for disabled Kerala configuration"}
+  - {id: T130, change: "D44: before starting, record resolution of full-T129 dependency and T115/T116 scheduling; no readiness gate is waived"}
   - {id: T001, change: "Also copy docs/amendments.md and docs/amendments.yaml"}
   - {id: T002, change: "Default 16 GB; DuckDB 4 GB/4 threads if measured >= 16 GB"}
   - {id: T046, change: "Add A3 extra acceptance checks; depends on T225"}

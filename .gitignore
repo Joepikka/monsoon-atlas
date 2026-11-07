@@ -20,6 +20,8 @@ htmlcov/
 # Data (versioned outside git)
 data/raw/
 data/clean/
+data/models/
+data/manifests/S32/history.json
 *.duckdb
 *.duckdb.wal
 
@@ -29,6 +31,8 @@ mlruns/
 # Frontend
 node_modules/
 dist/
+web/test-results/
+web/playwright-report/
 
 # OS / editor
 .DS_Store

@@ -78,7 +78,9 @@ def validate_table(table: pa.Table, *, measures: Sequence[str] = ()) -> pa.Table
         problems.append(f"schema_version {sorted(versions)} not supported by this reader")
 
     has_reason = pc.is_valid(table["missing_reason"])
-    flagged_missing = pa.array(["missing" in flags for flags in table["quality_flags"].to_pylist()])
+    flagged_missing = pa.array(
+        ["missing" in flags for flags in table["quality_flags"].to_pylist()], type=pa.bool_()
+    )
     for m in measures:
         null = pc.is_null(table[m])
         if pc.any(pc.and_(null, pc.invert(has_reason))).as_py():

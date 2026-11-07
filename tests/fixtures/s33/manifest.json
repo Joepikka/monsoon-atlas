@@ -1,0 +1,104 @@
+{
+  "source_id": "S33",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://kseb.in/robots.txt",
+      "fetched_at": "2026-11-06T06:24:15.306012Z",
+      "status": 304,
+      "media_type": "text/plain",
+      "sha256": "e5c4b84484ee4216e9373be99380320c25dd94805f99f0a805846f087636553f",
+      "bytes": 24,
+      "raw_path": "S32/2026-11-05/e5c4b84484ee4216e9373be99380320c25dd94805f99f0a805846f087636553f.bin",
+      "shows": "KSEB website robots guidance for linked dashboard and licence evidence"
+    },
+    {
+      "id": "e02",
+      "url": "https://kseb.in/ksebdashboard",
+      "fetched_at": "2026-11-06T06:24:18.754912Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "08461d3847a9a5b2f121b801fed65167a5eed63514f01c31885adaa2c9df1539",
+      "bytes": 241166,
+      "raw_path": "S33/2026-11-06/08461d3847a9a5b2f121b801fed65167a5eed63514f01c31885adaa2c9df1539.html",
+      "shows": "Main KSEB historic-data dashboard and its published Monthly data link; no reservoir archive artifact verified"
+    },
+    {
+      "id": "e03",
+      "url": "https://kseb.in/articledetail/terms_and_conditions",
+      "fetched_at": "2026-11-06T06:24:22.255344Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "2c0a92ec8ef135bcc580867ac67a5b09f3aeffa92e016ef233cc07f81da769b7",
+      "bytes": 135420,
+      "raw_path": "S33/2026-11-06/2c0a92ec8ef135bcc580867ac67a5b09f3aeffa92e016ef233cc07f81da769b7.html",
+      "shows": "Main KSEB website terms state CC BY-SA 2.5 India or later; missing reservoir file licence remains unverified"
+    },
+    {
+      "id": "e04",
+      "url": "https://dams.kseb.in/",
+      "fetched_at": "2026-11-06T06:25:22.906141Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "c48abf535ad8d482adae69aeba2dfa9b89ad1a635ac6898025069a70a3d9096e",
+      "bytes": 54,
+      "raw_path": "S33/2026-11-06/c48abf535ad8d482adae69aeba2dfa9b89ad1a635ac6898025069a70a3d9096e.html",
+      "shows": "Planned landing page returns HTTP 200 with wrong-address error text, not reservoir data"
+    },
+    {
+      "id": "e05",
+      "url": "https://www.rfc-editor.org/rfc/rfc9309.html",
+      "fetched_at": "2026-11-06T06:25:26.489965Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "bbaa280636d3e38f0a1a130a5ce40e9753db1ed18c860945b0bf795ff8dc1a87",
+      "bytes": 82367,
+      "raw_path": "S33/2026-11-06/bbaa280636d3e38f0a1a130a5ce40e9753db1ed18c860945b0bf795ff8dc1a87.html",
+      "shows": "RFC 9309 section 2.3.1.3: unavailable robots.txt (HTTP 4xx) permits resource access; 5xx/network failures do not"
+    },
+    {
+      "id": "e06",
+      "url": "https://kseb.in/dashboard/view/consumers",
+      "fetched_at": "2026-11-06T06:25:59.702241Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "879f901f2c861af1199f87df242459f45daf36cf32372ce5a29c2449b46a19ae",
+      "bytes": 152297,
+      "raw_path": "S33/2026-11-06/879f901f2c861af1199f87df242459f45daf36cf32372ce5a29c2449b46a19ae.html",
+      "shows": "Published Monthly data link displays electricity Consumer Count and Consumption, not a reservoir dataset"
+    },
+    {
+      "id": "e07",
+      "url": "https://dams.kseb.in/?p=329",
+      "fetched_at": "2026-11-06T06:26:36.939686Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "c48abf535ad8d482adae69aeba2dfa9b89ad1a635ac6898025069a70a3d9096e",
+      "bytes": 54,
+      "raw_path": "S33/2026-11-06/c48abf535ad8d482adae69aeba2dfa9b89ad1a635ac6898025069a70a3d9096e.html",
+      "shows": "URL titled Monthly Statistics in search results returns HTTP 200 with wrong-address error text; no report links"
+    },
+    {
+      "id": "e08",
+      "url": "https://dams.kseb.in/?page_id=45",
+      "fetched_at": "2026-11-06T06:26:40.035349Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "c48abf535ad8d482adae69aeba2dfa9b89ad1a635ac6898025069a70a3d9096e",
+      "bytes": 54,
+      "raw_path": "S33/2026-11-06/c48abf535ad8d482adae69aeba2dfa9b89ad1a635ac6898025069a70a3d9096e.html",
+      "shows": "URL titled Statistics in search results returns HTTP 200 with wrong-address error text; no archive index"
+    },
+    {
+      "id": "e09",
+      "url": "https://dams.kseb.in/?page_id=39",
+      "fetched_at": "2026-11-06T06:26:43.134629Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "c48abf535ad8d482adae69aeba2dfa9b89ad1a635ac6898025069a70a3d9096e",
+      "bytes": 54,
+      "raw_path": "S33/2026-11-06/c48abf535ad8d482adae69aeba2dfa9b89ad1a635ac6898025069a70a3d9096e.html",
+      "shows": "URL titled Dams in search results returns HTTP 200 with wrong-address error text; no registry, units or datum verified"
+    }
+  ]
+}

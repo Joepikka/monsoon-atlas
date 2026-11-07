@@ -1,0 +1,26 @@
+{
+  "$comment": "S32 KSEB daily water levels (T114, D46). Today's readings only; no vertical datum asserted.",
+  "source_id": "S32",
+  "schema_version": 1,
+  "mapping_version": "s32-v1",
+  "fields": [
+    {"name": "reservoir_id", "type": "string", "nullable": false, "meaning": "Internal kseb:<district-code>:<normalized-published-name>; not an official ID"},
+    {"name": "reservoir_name", "type": "string", "nullable": false, "meaning": "Published name, whitespace normalized"},
+    {"name": "operator", "type": "string", "nullable": false, "meaning": "KSEB; never conflated with irrigation dams of the same name"},
+    {"name": "district_code", "type": "string", "nullable": false, "meaning": "Published code, no inferred place or boundary mapping"},
+    {"name": "date_local", "type": "date32", "nullable": false, "meaning": "Date in report title, Asia/Kolkata"},
+    {"name": "level_m", "type": "float64", "nullable": true, "meaning": "Today's level in metres; unknown vertical datum"},
+    {"name": "storage_mcm", "type": "float64", "nullable": true, "meaning": "Today's live storage, million cubic metres"},
+    {"name": "capacity_mcm", "type": "float64", "nullable": true, "meaning": "Live storage at FRL, million cubic metres"},
+    {"name": "inflow_m3s", "type": "float64", "nullable": true, "meaning": "Always null: upstream MU is energy, not discharge"},
+    {"name": "inflow_missing_reason", "type": "string", "nullable": false, "meaning": "not_reported (no volumetric discharge)"},
+    {"name": "vertical_datum", "type": "string", "nullable": true, "meaning": "Always null until independently verified"},
+    {"name": "datum_missing_reason", "type": "string", "nullable": false, "meaning": "not_reported"},
+    {"name": "quality_details", "type": "list<string>", "nullable": false, "meaning": "Unit conversions, datum limitation and quarantine explanations"}
+  ],
+  "observed_at": "07:00 IST on date_local, stored as UTC; also valid_at",
+  "available_at": "Actual fetch time, never backdated to a report date",
+  "missing": "Core measures are an atomic group under D23; missing or inconsistent rows retain identity but have null level, storage and capacity. Unsupported inflow and datum have independent reasons.",
+  "quality": "Exact header and row width; level <= explicit MWL; positive capacity; nonnegative storage/percentage; percentage discrepancy <= 0.1 percentage points. No implicit unit repair.",
+  "history": "Previous-year columns remain in raw evidence; not emitted as historical observations. Header-only report is a typed empty table, not zero levels."
+}

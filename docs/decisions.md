@@ -1,5 +1,405 @@
 # Decisions log
 
+## Continuation review (5 Nov 2026)
+
+- **D73 — Preserve older Worker snapshot identities (7 Nov 2026), before fix.**
+  T240 review reproduced a contract mismatch for an older supported stored
+  snapshot whose parser fills in an optional field. The Worker checks the
+  exact stored bytes and keeps their `sha256` identity. Current GET replies
+  also expose `wire_sha256`, the digest of the exact normalized source envelope
+  returned to the browser. The browser verifies that projection and uses
+  `sha256` as the stored identity for monotonic checks. Replies that omit the
+  additive field use the existing digest when it matches their wire bytes.
+  Extend T240's scope to the GET response, its compatibility tests and contract
+  documentation. Stored bytes, identifiers, SQL and upload protocol stay intact.
+
+- **D72 — Active-page source polling (7 Nov 2026), before implementation.**
+  Split T240 from T043 after T040/T229/T239. Read the existing same-origin
+  Worker current endpoint only from the normal Karnataka view with an approved
+  daily snapshot. Verify the bounded per-source response, normalized Worker
+  digest and source clocks. Poll S09 every 15 minutes and S01 every six hours
+  while visible, with one request in flight and a five-second request deadline.
+  Hidden or ended views cancel pending work. A started attempt consumes its
+  cadence slot. Keep per-source high-water clocks across failures. Show hot
+  results as a separate map and list overlay with their own dates and coverage.
+  Failures use the dated daily source. Place Lens, print and frozen links keep
+  the approved immutable daily snapshot. Cloud routing and publication still
+  require their existing gates.
+
+- **D71 — Local signed snapshot upload (7 Nov 2026), before implementation.**
+  Split T239 from T043 after T229/T235/T238 to exercise the prepared-snapshot
+  sender through an explicit loopback Worker origin. Verify retained payload
+  and input hashes, source identity, cutoff and transport bounds before signing
+  the exact deterministic gzip bytes with the existing HMAC protocol. Use an
+  environment key, one request, bounded response and a 15-second child deadline.
+  The acknowledgement reports the Worker's normalized snapshot identity
+  separately from the local payload hash. Keep preparation immutable across
+  retries and failures. Restrict this child to `http://127.0.0.1:<port>`.
+  Cloud configuration, durable restoration and scheduled use retain their
+  existing capability and approval gates.
+
+- **D70 — CAP preparation review fixes (7 Nov 2026), before implementation.**
+  Correct the T235 projection to use the selected CAP info block's actual
+  headline, with its description and event as ordered fallbacks. The event
+  alone omits district and timing details in the retained Karnataka sample.
+  Reuse the adapter's language selection and retain its normalized row schema.
+  Version the changed prepared projection as `s09-prepared-v2`. Keep older
+  immutable files and reject conflicting bytes at the same cutoff. Check the
+  S09 enable flag before reading retained evidence so header-only controls
+  cannot produce a prepared result for a disabled source.
+
+- **D69 — Local weather snapshot preparation (6 Nov 2026), before implementation.**
+  Split T238 from T043 after T235/T237. Project one quality-passed future
+  temperature from the verified Bengaluru model grid, with explicit partial
+  scope. Consume grouped validated capture receipts; never independently select
+  latest metadata and forecast files. Fence receipt completion and every input
+  validation at the report cutoff. Preserve the earliest forecast retrieval
+  and complete-pair availability clocks for the selected model/run/content
+  cohort across revalidation, while using its latest actual successful check
+  for source health. Use actual returned coordinates and S01's normalized
+  null/quality policy. Reuse a small shared immutable prepared-envelope writer
+  extracted from T235, retaining CAP's strict input-continuity guard. Both
+  producers keep partial prepared-only output, monotonic/idempotent heads and
+  actual creation time distinct from historical cutoff. No source call, upload,
+  approval or activation occurs during preparation.
+
+- **D68 — Bounded paired weather capture (6 Nov 2026), before implementation.**
+  Split T237 from T043 after T010/T234/T236. Start with the already verified
+  Bengaluru query (12.97,77.59), named `ecmwf_ifs025`, whose returned grid point
+  is (13.0,77.5); do not invent a statewide query grid or coverage claim. Retain
+  each metadata-before/forecast/metadata-after attempt as an immutable local
+  receipt so later preparation cannot mix independently latest raw files.
+  Only a stable, settled pair with a quality-passed future temperature can
+  advance the latest validated-pair pointer. Use shared six-hour admission,
+  five-second per-attempt spacing and five HTTP attempts per admitted run,
+  bounding four nominal checks to at most 20 attempts per UTC day locally.
+  Refactor the existing cadence/backoff transport for both verified profiles;
+  enabled-source flags must be checked before provider calls. A 120-second
+  HTTP-only child bound covers this local capture. Failed, incomplete, changed
+  or unsettled pairs preserve the last pointer, and raw observations remain
+  untouched. This child does not create a browser projection, upload, schedule
+  or cloud resource; coverage remains the single verified point and partial.
+  The joint refresh/weather review additionally requires retaining usable CAP
+  preparation after recoverable capture I/O errors, and saving each completed
+  weather receipt before validating a possibly damaged previous head.
+
+- **D67 — One bounded local CAP refresh command (6 Nov 2026), before implementation.**
+  Split T236 from T043 after T234/T235. Run capture and preparation in one
+  HTTP-only child with a 150-second parent deadline, rather than nesting child
+  launchers. Shared local admission/cooldown still controls provider calls.
+  Preparation can use already retained evidence after not-due, deferred or
+  failed collection, so a completed control from an interrupted run need not wait
+  for another provider call. Its validation clocks remain the actual retained
+  clocks, and coverage remains partial. A preparation error leaves its prior
+  pointer intact. This local-only runner does not implement S01, upload, recurring
+  jobs or cloud activation; full T043 still requires those steps and its gates.
+
+- **D66 — Local CAP normalization and prepared transport snapshots (6 Nov 2026),
+  before implementation.** Split T235 from T043 after T234. Validate retained
+  raw evidence and preserve original content clocks; select exact CAP message
+  identities and apply Actual/Public Update/Cancel references, including
+  header-only controls, without inventing warning rows. Prepare a bounded
+  immutable local JSON envelope and source-input manifest with atomic pointer
+  movement. Expired messages and controls remain in raw history even when they
+  are absent from the current warning projection. CAP-only coverage remains
+  partial, including a valid empty Karnataka result. Permit explicitly partial
+  source health through the local Worker contract, preserving its classification
+  and actual check clocks. This child does not upload, approve publication,
+  activate workflows or claim complete coverage. Failed preparation and corrupt
+  evidence must not replace the last prepared snapshot. A mixed valid/malformed
+  capture may retain dated last-good warnings, with partial health and validation
+  clocks derived only from valid documents; malformed downloads cannot refresh
+  that clock.
+
+- **D65 — Bounded local CAP-only collection (6 Nov 2026), before implementation.**
+  Split T234 from T043 to implement the local collector before activating any
+  workflow. A cold CAP+polygon sweep has 200 one-second sleeps for the captured
+  100-item feed, already exceeding the three-minute job limit. Admit at most 30
+  CAP documents per run, omit supplemental polygons, and wrap the HTTP-only
+  child in a hard subprocess deadline. Keep raw evidence and durable per-document
+  checkpoints, revalidate with the existing Fetcher/ETags, and never refresh CAP
+  validation times from an RSS-only 304. Share admission caps locally through
+  SQLite; persist Retry-After deferral before stopping a run. New/changed and
+  oldest documents share admission capacity to prevent starvation. Every result
+  remains explicitly partial: CAP-only sender/area matching cannot certify full
+  Karnataka coverage. This child captures/validates documents and control headers;
+  it does not invent analytical rows for a header-only cancellation, publish a
+  reviewed snapshot, upload, create a cloud resource or enable cron/polling.
+
+- **D64 — Durable source-check admission before polling (6 Nov 2026), before
+  implementation.** A volatile GitHub cache cannot enforce T043's check caps
+  after a cache miss, delayed job or manual retry. Split T233 from T043 to add
+  signed, server-clock admission at the owned `/internal/feed-check` endpoint.
+  A D1 transaction allows at most one S01 admission per six elapsed hours and
+  one S09 admission per fifteen elapsed minutes, including across runners and
+  UTC bucket boundaries. Lost responses consume the slot rather than permitting
+  an unbounded retry. Reserve storage and row/index writes within the existing
+  caps; account failures or exhausted capacity deny provider calls. Only KA's
+  verified public S01/S09 feeds are eligible. This is a local/CI protocol child,
+  not a deployed coordinator or a completed fetch/schedule/poller pipeline.
+
+- **D63 — Match complete CAP reference identities (6 Nov 2026), before
+  implementation.** OASIS CAP 1.2 section 3.2.1 defines an extended reference
+  as sender, identifier and sent time. The existing identifier-only supersession
+  could drop an unrelated issuer/revision; its predecessor test also retained
+  the relay sender despite a different sender in the real reference. Split
+  T232 from T043 to match all three fields, normalizing only equivalent timezone
+  representations. Preserve unmatched/malformed references instead of guessing.
+  A relay may reference another sender's real message, but does not license
+  rewriting that sender or time. No NDMA relay exception was found in targeted
+  primary documentation. Raw Cancel/Update documents remain archived; Cancel
+  messages are not themselves displayed as active hazard warnings.
+  Primary specification: https://docs.oasis-open.org/emergency/cap/v1.2/CAP-v1.2-os.html .
+  This lifecycle check also requires valid timezone-bearing CAP dates and
+  explicitly Actual/Public messages. Test/Exercise or restricted documents must
+  not enter the public warning set. Only Update/Cancel can supersede references;
+  Ack/Error control messages cannot themselves become active hazard warnings.
+
+- **D62 — Version RSS cache entries, not permanent GUIDs (6 Nov 2026), before
+  implementation.** The captured S09 CAP Update `IN-1793881986295019_19`
+  references `IN-1793881986295019_51`, while the RSS GUID and download URL use
+  the common base `1793881986295019`. Inferring that a seen RSS GUID identifies
+  immutable CAP content is not justified. Split T231 from T043: compare a hash
+  of the actual RSS item contents, and reject legacy bare-identifier skip sets.
+  A changed item must re-enter the shared conditional-GET fetcher, even at a
+  known URL. RSS fingerprints describe index versions, not a guarantee that a
+  provider cannot silently revise a linked document. T043 must bound cache age,
+  persist checkpoints only after successful processing and retain source clocks.
+  No new provider field or observed alert is invented by this cache contract.
+
+- **D61 — Preserve area-only CAP alerts before refresh (6 Nov 2026), before
+  implementation.** T014 legitimately parses CAP area descriptions without a
+  polygon. Requiring a map point in the browser/hot transport would reject a
+  valid official warning or encourage invented coordinates. Split T230 from
+  T043 to preserve these rows through the shared validator, record list, ticker,
+  Place Lens and Worker. Allow both coordinates to be explicitly null only for
+  S09 official area alerts with original area text and a location-limit note.
+  Such rows stay in state context, never become a marker, radius distance or
+  point-specific incident. Weather, facilities and administrative places still
+  require verified numeric coordinates. Check stored canonical bytes before
+  revalidation so new optional fields cannot alter old identity or hide a
+  modified field behind normalization. Full T043 still needs its producer,
+  bounded schedule, polling/fallback integration and the pending cloud gate.
+
+- **D60 — T042 local implementation child and cloud gate (6 Nov 2026), before
+  implementation.** Split T229 from T042 to implement and verify the Worker/D1
+  endpoint locally and in free CI while H05 remains pending. The owner has
+  signed in; no token, billing status or actual service capability is verified.
+  Full T042 and any deployment stay pending until the owner completes H05 and
+  the free/no-card probe. No account, API token or remote database is created by
+  this child. Wrangler 4.157.0 officially requires Windows 11 or supported Linux;
+  this laptop is Windows 10. Run pure TypeScript/SQLite checks locally and the
+  actual Miniflare/D1 runtime on Ubuntu CI. Keep all caches on D locally.
+  Reuse the tested browser snapshot validator for the owned JSON transport;
+  initially allow only enabled public KA hot feeds S01 and S09. Store canonical
+  validated bytes, not unchecked upload fields. HMAC binds timestamp, method,
+  path and exact compressed request bytes; idempotency is content-addressed.
+  Storage and daily writes fail closed with conservative reservations checked
+  in the same SQLite transaction. An unavailable binding/capability gate returns
+  an explicit static-fallback status; it never claims a deployed current feed.
+
+- **D59 — Frozen Place Lens links (T040, 6 Nov 2026), before implementation.**
+  A latest pointer cannot reproduce an older approved view after a refresh.
+  Shared links bind state, place ID, boundary version, as-of time and the exact
+  browser-snapshot SHA256. Resolve that hash through a same-origin immutable
+  `<hash>.approval.json` pointer before reading `<hash>.json`; require approved
+  status, the matching hash and exact place/boundary/as-of identity. A failed
+  historical lookup must not substitute a different last-good release. No
+  production approval files are generated by T040; T045 must publish them only
+  after the actual review gate. Print and tab views use one report object.
+  Source S18 remains blocked, so Nearby states that facilities/operation cannot
+  be verified. No facility, risk score or model forecast is fabricated.
+
+- **D58 — Radius and source-health semantics (T039, 6 Nov 2026), before
+  implementation.** A polygon alert's representative point cannot establish
+  distance to the whole alert area. Keep area-scoped official alerts in the
+  state context when filtering a point radius; label that limit rather than
+  silently excluding an intersecting warning. Point records use great-circle
+  distance from a user-chosen map point. No browser location permission or
+  persisted location/query history is needed. Missing health metadata is
+  unknown/unavailable, never evidence of no hazards. Preserve the common
+  envelope's official/model/inferred/reconstructed provenance, original issue,
+  valid, fetched and available times. Reconstructed and inferred records cannot
+  masquerade as official alerts; unknown price units cannot be rendered as prices.
+  The ticker refers to the dated snapshot and preserves provider severity/expiry.
+
+- **D57 — Align the browser-test transport version (6 Nov 2026), before
+  changing the lock.** T038's first TypeScript build found incompatible Page
+  types: axe 4.14.0 resolved playwright-core 1.65.0 while @playwright/test 1.64.1
+  resolved 1.64.1. Pin the transitive playwright-core to 1.64.1 via npm overrides
+  so both tools use the plan's tested Playwright version. Keep all requested
+  top-level pins unchanged; rerun type checking and actual browser/axe checks.
+
+- **D56 — T038 browser projection and local toolchain (6 Nov 2026), before
+  implementation.** Use the plan's exact web package pins, verified against
+  official npm metadata; add matching React types 19.3.0 and Node types 22.16.0.
+  Install the official portable Node 22.16.0/npm 10.9.2 on D after checking the
+  official SHA256. npm and Playwright caches/temp files stay on D. Use native
+  Vite TSX support and defer MapLibre 6, CSS and its worker in a lazy module.
+  The public browser JSON is a small typed projection of an immutable release,
+  not a Parquet reader: retain release/state/revision/as-of/publication metadata
+  and canonical point records with source, provenance and original timestamps.
+  A same-origin pointer binds its SHA256 and explicit approved status. The loader
+  checks both before use; this is content integrity, not a cryptographic owner
+  signature. The pipeline must obtain actual release approval before publishing
+  that pointer. No approved pointer or observation data is generated by T038.
+  Missing release data has an honest empty state; a failed refresh retains only
+  the dated, in-memory last-good snapshot for the same state. No localStorage,
+  account, query history, tracking, or synthetic production snapshot is added.
+  Browser regression fixtures may project the already committed public-domain
+  S09 CAP sample. Preserve its canonical provenance and times; an alert polygon
+  is represented only by a labelled point-on-surface, never incident coordinates.
+  Keep fixture source hashes and the derivation, and never serve it as live data.
+
+- **D55 — M06 blocked status is not a model release (6 Nov 2026).** T037's
+  `models/registry/m06.json` records the failed data gate and its actual evidence
+  hashes, with null dataset/split/model hashes and null achieved scores. Do not
+  construct a T034 `Release` by inventing a dataset, training timestamp, baseline
+  or evaluation. No `M06/v*.json` release or approval is generated, so the serving
+  registry cannot select this status record as a champion. Completing the blocked
+  branch is not fitting M06 or satisfying the final MVP's model requirements.
+
+- **D54 — Continue independent P1 work while source/owner gates remain pending
+  (6 Nov 2026).** The owner explicitly requested continuous execution of the
+  plan. Complete T024/T026's prescribed disabled adapters, then T035-T037's
+  prescribed blocked-model state and evidence report. Neither unavailable prices
+  nor unreviewed OCR may become training rows, invented scores or predictions.
+  Continue dependency-ready T038-T040 and local hosting/Ask preparation in A8
+  order while their unrelated gates are pending. This is scheduling independent
+  work, not declaring the C1 review or any source dependency satisfied. Keep
+  T118/T130-T132, unavailable-data analyses, account-dependent deployment and
+  final phase gates explicitly pending until their own requirements pass.
+
+- **D53 — Browser metadata evidence for the T025 retry (6 Nov 2026), before
+  capture.** D52's public resource and GODL pages render without authentication.
+  Permit a narrow exception to D27 for this discovery retry: retain labelled
+  browser DOM projections of the resource's licence notice/catalogue description
+  and the public licence tabs, plus selected public resource-metadata fields.
+  Each projection records its source URL, capture time, observed response status,
+  selectors/field paths and transformation; JSON projections also retain the
+  original response SHA256. The manifest hashes the projection, never calls it an
+  unmodified HTTP response, and keeps its bytes in ignored `data/raw/S23`.
+  Projections do not enter the Fetcher's HTTP-cache ledger: a conditional fetch
+  must never reuse a filtered projection as the original server response.
+  Exclude contacts, user identifiers, cookies, credentials and authentication
+  redirects' query strings. This does not permit observation ingestion outside
+  the shared Fetcher or bypass a sign-in/challenge. A catalogue navigation reached
+  a sign-in page; do not proceed there. GODL verification alone cannot establish
+  the price denominator; S23 stays disabled unless that unit is verified too.
+
+- **D52 — Bounded public-catalogue retry while OCR review is pending (6 Nov
+  2026).** T025 already lists a browser render as a retry for S23 licence/unit
+  verification. Retry that public metadata check now, after T115/T116, without
+  accounts, passwords, API keys in forms, terms acceptance or challenge bypass.
+  This is independent P1 source discovery; it does not approve S34 OCR or change
+  model gates. Only a publisher statement tied to the actual resource can verify
+  licence and units. If the browser or page remains unavailable, preserve the
+  blocked record and distinguish a local tool failure from publisher evidence.
+
+- **D51 — Verify the remaining M07 source while OCR review is pending (6 Nov
+  2026), before implementation.** Pull T115 (S33 monthly-statistics discovery)
+  and its T116 adapter into P1 for the D17 core C1 fallback. Replace T115's full
+  Karnataka-v1 gate dependency T110 with T113/T226 for this bounded source check;
+  T116 keeps T115/T006 and gains T226. This resolves the scheduling prerequisite
+  identified in D44 without starting the general Kerala phase. Monthly data may
+  support EDA only, never interpolated daily labels or seven-day evaluation.
+  The latest instruction to continue is not OCR approval: T118 and S34 values
+  remain pending the owner review in D49/D50. If S33 cannot be verified, record
+  the blocked outcome and retry condition and keep it disabled; do not invent data.
+
+- **D50 — OCR disagreements stay unresolved (6 Nov 2026), before changing the
+  review contract.** Three attempts at one preprocessing recipe failed across the
+  mixed layouts. The doubtful assumption was that one recipe could preserve every
+  digit. Keep two reproducible OCR candidates per numeric sample: contrast/Lanczos
+  and binary/tight-crop/nearest. Record their original crop, settings, word boxes
+  and raw text; mark agreement/disagreement and leave selection null. Do not select
+  the candidate matching an expected number, edit OCR digits or claim extraction
+  accuracy from these development samples. The owner reviews the actual source
+  crop and supplies the verified value, as already required by T117/T118. Machine
+  acceptance checks provenance and unresolved disagreements, not perfect OCR.
+  S34 and the full T118 adapter remain disabled/pending. A later adapter needs
+  separately validated layout rules; approving this sample does not approve bulk OCR.
+
+- **D49 — T118 OCR prerequisite split (6 Nov 2026).** Add child **T228** for a
+  reproducible, local-only OCR review packet before implementing/using S34 parsed
+  values. This separates the required owner review from the multi-layout adapter.
+  Pin pypdf 6.21.4, tesserocr 2.12.0 and Pillow 13.0.0 in an optional hash-locked
+  OCR group, constrained to core. PyPI provides the Python 3.12 Windows tesserocr
+  wheel with bundled Tesseract/Leptonica; use it without an admin installer. Record
+  its actual embedded engine version after installation. Use only a commit-pinned
+  official tessdata_fast English model with a recorded SHA256 and Apache-2.0
+  licence. Dependencies/models/caches and all outputs stay on D. Extract existing
+  PDF images through pypdf and preserve source PDF hashes, page numbers, image
+  hashes, OCR text/word boxes and engine/settings metadata. OCR output remains an
+  unreviewed draft, not observation rows or labels; source S34 stays disabled.
+  Restricted source pages, images and OCR text remain under git-ignored data/raw.
+  Prepare an offline HTML review packet for the owner, then stop for the manual
+  review required by T117/T118. Full T118 remains pending and gains T228 as a
+  dependency. T228's machine checks may finish while owner review remains pending;
+  neither completion certifies datum, daily coverage or M07 readiness.
+
+- **D48 — T227 daily census (6 Nov 2026), before implementation.** Use the
+  shared Fetcher and S32 parser for all 700 dates, 2024-08-15 through 2026-07-15.
+  Reuse hash-checked captures; rate-limit every live HTTP attempt to at least
+  3 seconds, including redirects/retries. Check current robots.txt first. Cap a
+  run at 1000 HTTP attempts, 1 MiB per response and 256 MiB of fetched artifacts.
+  Save an atomic checkpoint after each date. Each date records data/empty/parse
+  or fetch failure, with raw hashes where available. Three consecutive failures
+  stop further requests and explicitly mark remaining dates unattempted; a failed
+  request is never evidence of an empty day. Do not override TLS or sign-in gates.
+  The committed census contains provenance/counts only, not raw pages. Its
+  acceptance permits explicitly reported failures and must distinguish a complete
+  availability census from an incomplete audit. This does not waive M07's datum gate.
+  Correction to T114 verification wording: the untouched HTML excerpts retain
+  upstream trailing whitespace. Whitespace checks pass for code/docs; the fixture
+  warnings are expected and are not removed, preserving their exact excerpt hashes.
+
+- **D46 — T114 S32 adapter policy (6 Nov 2026), recorded before implementation.** Parse the
+  captured KSEB report with stdlib HTMLParser; no new dependency. Require the exact
+  17-column header and the report's dated 07:00 IST title. Use operator + published
+  district code + normalized dam name as an internal ID, preserving the original
+  name; do not assert an official ID, alias, geometry or vertical datum. Normalize
+  today's level, live storage and live capacity only. Explicit ft suffixes convert
+  to metres; unlabelled contradictions are quarantined, not guessed. Reject a row
+  if level exceeds its stated MWL (converted units), capacity is not positive, or
+  the reported storage percentage differs from 100 * storage/capacity by more than
+  0.1 percentage points (rounding tolerance). Missing or rejected core measures
+  null the whole core measure group, following D23; retain raw hash and quality
+  details. Inflow m3/s and datum remain null with per-field reasons. Previous-year
+  columns stay in the raw evidence and are not emitted as backdated observations.
+  Date-matched header-only reports return a typed empty table; blank/malformed or
+  changed-layout responses fail. Small unchanged title/table excerpts from the
+  already captured CC BY-SA KSEB reports are committed as attributed test fixtures,
+  with original and excerpt hashes; the discovery raw archive remains local.
+  The existing twice-monthly sample is not a daily coverage census. Split that
+  follow-up into **T227** (child of T114), recorded in both amendment task lists,
+  required before T130: audit every date in the sampled gap at a respectful cadence.
+  T114 finishes the adapter contract, not the full backfill or M07 readiness.
+- **D47 — Empty typed tables (6 Nov 2026).** T114's real header-only report exposed
+  a shared validator bug: its empty missing-flag array inferred Arrow null rather
+  than boolean, so the boolean OR failed. Give that array an explicit boolean type;
+  keep validation and all other rules intact. A direct T005 regression and the S32
+  empty-report test cover it. No rows or zero-valued observations are invented.
+
+- **D44 — T129 bootstrap split, before implementation.** The handoff puts T129 before
+  T114/T118, but the plan makes the full T129 depend on those adapters, T046, T116,
+  T120, T122 and T124. D29 also returned the full label audit to P3. Add **T226**, a
+  child of T129, in P1: isolated, disabled Kerala configuration plus an audit of the
+  already captured S32/S34/S35/S36 evidence. Dependencies: T003, T113, T117, T119,
+  T121 (all recorded complete). T114 and T118 may follow T226 for the approved D17
+  dam fallback. Full T129 remains pending with its original dependencies plus T226;
+  no Kerala source, model, dam datum, shelter or label is certified by this bootstrap.
+  This resolves the dependency cycle without declaring unfinished P3 work complete.
+  The task list and YAML are updated together in the amendments. T130's dependency
+  on full T129 and the T115/T116 schedule must be resolved explicitly before T130;
+  this bootstrap does not waive either dependency or the datum gate.
+- **D45 — Local model artifacts remain outside git.** Continuation review found
+  `data/models/` unignored despite T102 and the handoff calling it local-only. Add
+  that exact directory to `.gitignore`. Preserve every existing file; do not add
+  weights or the MLflow SQLite database to git. Tracked release manifests under
+  `models/registry/` remain versioned. This is a one-line review correction, not a
+  new model release or retraining run.
+
 Plan decisions D01 to D16 come from `docs/plan.pdf` section 3. Decisions from D17 on are made while building. Each deviation from the plan is recorded here before it is made.
 
 ## From the plan (4 Nov 2026)

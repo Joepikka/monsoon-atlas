@@ -13,7 +13,7 @@ spec = importlib.util.spec_from_file_location("audit", ROOT / "scripts" / "audit
 audit = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(audit)
 
-# Exact pins from docs/plan.pdf section 5 (4 Nov 2026).
+# Exact pins from plan section 5, plus the optional OCR toolchain (D49).
 SECTION5 = {
     "core": {"duckdb": "1.5.6", "pandas": "3.1.1", "numpy": "2.5.4", "pyarrow": "26.0.1",
              "httpx": "0.28.1", "pydantic": "2.14.2", "typer": "0.27.3", "pyyaml": "6.0.3"},
@@ -27,6 +27,7 @@ SECTION5 = {
            "plotly": "7.1.0"},
     "dl": {"torch": "2.15.0", "transformers": "5.22.1", "sentence-transformers": "6.2.0",
            "safetensors": "0.8.0", "onnx": "1.23.2", "onnxruntime": "1.31.1"},
+    "ocr": {"pypdf": "6.21.4", "tesserocr": "2.12.0", "pillow": "13.0.0"},
 }  # fmt: skip
 
 
@@ -41,6 +42,11 @@ def test_direct_pins_match_section5_and_are_locked(group):
 
 def test_repository_passes_policy():
     assert audit.policy(ROOT) == []
+
+
+def test_ocr_toolchain_is_included_in_dependency_policy():
+    assert "ocr" in audit.GROUPS
+    assert "ocr" in audit.NO_TORCH_GROUPS
 
 
 def test_torch_only_in_dl_lock():

@@ -22,8 +22,8 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-GROUPS = ("core", "dev", "geo", "ml", "dl")
-NO_TORCH_GROUPS = ("core", "dev", "geo", "ml")
+GROUPS = ("core", "dev", "geo", "ml", "dl", "ocr")
+NO_TORCH_GROUPS = ("core", "dev", "geo", "ml", "ocr")
 PIN_RE = re.compile(r"^([A-Za-z0-9][A-Za-z0-9._-]*)==([^\s;\\]+)")
 PAID_HOSTS = (
     "api.anthropic.com",
