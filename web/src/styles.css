@@ -231,6 +231,15 @@ h1,h2,h3,p{
   margin-top:10px;
   color:#3f574a
 }
+.current-status ul{
+  list-style:none;
+  padding:0;
+  margin:0
+}
+.current-status li{
+  margin-top:10px;
+  font-size:11px
+}
 .records{
   scroll-margin-top:16px;
   padding:0 24px 24px

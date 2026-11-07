@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { hasCoordinates, loadSnapshot, stateNames, type LayerKind, type Snapshot, type StateId, type ViewState } from './data';
+import { currentSources, currentView, pollCurrentSources, type SourceUpdates } from './live-data';
 import Layers, { layerConfigs, visibleRecords, type Coordinates } from './map/Layers';
 import SourceBadge from './components/SourceBadge';
 import EventTicker from './components/EventTicker';
@@ -10,6 +11,25 @@ import './styles.css';
 
 const MapView = lazy(() => import('./MapView').catch(() => ({ default: () =>
   <p className="map-message">The map could not load. The record list remains available.</p> })));
+
+function CurrentStatus({ sources }: { sources: SourceUpdates }) {
+  return <section className="data-status current-status" aria-labelledby="current-heading">
+    <div><h3 id="current-heading">Active source updates</h3>
+      <div role="status" aria-live="polite" aria-atomic="false"><ul>{currentSources.map(id => {
+        const update = sources[id];
+        return <li key={id} data-testid={`current-${id}`}>
+          <strong>{id} · {sourceNames[id]}</strong>
+          {update ? <>
+            <p>Cutoff <time dateTime={update.asOf}>{localTime(update.asOf)}</time></p>
+            <p>Last successful check <time dateTime={update.health.last_success_at}>{localTime(update.health.last_success_at)}</time></p>
+            <p>Coverage · {update.health.status}. {update.health.detail}</p>
+          </> : <p>{update === null ? 'Active update unavailable. Showing dated daily data where available.' : 'Awaiting first active check.'}</p>}
+        </li>;
+      })}</ul></div>
+      <p>A limited warning feed cannot establish absence of hazards. Weather coverage is limited to the reported model grid points.</p>
+    </div>
+  </section>;
+}
 
 export default function App() {
   const [share] = useState(() => {
@@ -29,6 +49,7 @@ export default function App() {
   const [center, setCenter] = useState<Coordinates | null>(null);
   const [clock, setClock] = useState(Date.now);
   const [view, setView] = useState<ViewState>({ status: 'loading', snapshot: null, message: '' });
+  const [updates, setUpdates] = useState<SourceUpdates>({});
   const cache = useRef<Partial<Record<StateId, Snapshot>>>({});
   useEffect(() => {
     const timer = setInterval(() => setClock(Date.now()), 60000);
@@ -47,7 +68,14 @@ export default function App() {
     return () => controller.abort();
   }, [state, attempt, share]);
   const snapshot = view.snapshot;
-  const records = useMemo(() => visibleRecords(snapshot?.records ?? [], active, center, Number(radius)), [snapshot, active, center, radius]);
+  const pollingEnabled = state === 'ka' && snapshot?.state === state && !!snapshot.release_hash && !share.identity && !share.error;
+  useEffect(() => {
+    if (!pollingEnabled) { setUpdates({}); return; }
+    return pollCurrentSources((source, update) => setUpdates(previous => ({ ...previous, [source]: update })));
+  }, [pollingEnabled]);
+  const display = useMemo(() => currentView(snapshot, pollingEnabled ? updates : {}), [snapshot, pollingEnabled, updates]);
+  const records = useMemo(() => visibleRecords(display.records, active, center, Number(radius)), [display.records, active, center, radius]);
+  const hasCurrent = currentSources.some(id => display.current[id]);
   const toggle = (kind: LayerKind) => setActive(previous => {
     const next = new Set(previous);
     if (next.has(kind)) next.delete(kind); else next.add(kind);
@@ -102,20 +130,21 @@ export default function App() {
               {snapshot && <p className="asof">As of <time data-testid="snapshot-time" dateTime={snapshot.as_of}>{localTime(snapshot.as_of)}</time></p>}
             </div>
           </div>
-          <Layers snapshot={snapshot} active={active} onToggle={toggle} center={center} onClear={() => setCenter(null)} />
+          {pollingEnabled && <CurrentStatus sources={display.current} />}
+          <Layers sourceData={display} active={active} onToggle={toggle} center={center} onClear={() => setCenter(null)} />
           <section id="records" className="records" tabIndex={-1} aria-labelledby="records-heading">
             <div className="section-title"><h3 id="records-heading">In this view</h3><span>{records.length} records</span></div>
             {records.some(record => !hasCoordinates(record)) && <p className="location-note">Area-only warnings remain in this list. Their map geometry is unavailable.</p>}
             {records.length === 0 ? <div className="empty-records">
               <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><path d="M6 32V12l10-4 12 4 10-4v24l-10 4-12-4-10 4zm10-24v24m12-20v24" fill="none" stroke="currentColor" strokeWidth="1.5" /></svg>
-              <p>{snapshot ? 'No mapped records in this snapshot.' : 'Dated records will appear with their sources when a reviewed snapshot is released.'}</p>
+              <p>{snapshot ? hasCurrent ? 'No records match this view.' : 'No mapped records in this snapshot.' : 'Dated records will appear with their sources when a reviewed snapshot is released.'}</p>
               <p className="muted">An unavailable feed does not mean there are no hazards.</p>
             </div> : <ol className="record-list" data-testid="record-list">{records.map(record => <li key={record.id}>
               <button className="record-title" aria-pressed={selected === record.id} onClick={() => setSelected(record.id)}>{record.title}</button>
               {record.warning_text && <p className="location-note">{record.warning_text}</p>}
               {record.instruction && <p className="location-note">{record.instruction}</p>}
               {record.area_text && <p className="location-note">{record.area_text}</p>}
-              <SourceBadge record={record} health={snapshot?.sources.find(source => source.source_id === record.source_id)} now={clock} />
+              <SourceBadge record={record} health={display.sources.find(source => source.source_id === record.source_id)} now={clock} />
               {record.location_note && <p className="location-note">{record.location_note}</p>}
               <a href={record.source_url} target="_blank" rel="noopener noreferrer">{record.source_id} · {sourceNames[record.source_id] ?? 'Original source'} ↗</a>
             </li>)}</ol>}
@@ -129,7 +158,7 @@ export default function App() {
           <Suspense fallback={<p className="map-message">Loading map…</p>}>
             <MapView records={records} selected={selected} onSelect={setSelected} center={center} onCenter={setCenter} />
           </Suspense>
-          <div className="map-note">{snapshot ? 'Records belong to the dated snapshot' : 'Basemap only · no released observations'}</div>
+          <div className="map-note">{snapshot ? hasCurrent ? 'Active source updates and dated daily records' : 'Records belong to the dated snapshot' : 'Basemap only · no released observations'}</div>
         </section>
       </div>
     </main>

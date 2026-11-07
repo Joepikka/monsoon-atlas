@@ -21,9 +21,9 @@ export function visibleRecords(records: MapRecord[], kinds: Set<string>, center:
     (hasCoordinates(record) && distanceKm(center, [record.longitude, record.latitude]) <= radius)));
 }
 
-export function layerHealth(kind: LayerKind, snapshot: Snapshot | null): Health {
+export function layerHealth(kind: LayerKind, sourceData: Pick<Snapshot, 'sources'> | null): Health {
   const config = layerConfigs.find(layer => layer.kind === kind)!;
-  const statuses = snapshot?.sources.filter(source => config.sources.includes(source.source_id)).map(source => source.status) ?? [];
+  const statuses = sourceData?.sources.filter(source => config.sources.includes(source.source_id)).map(source => source.status) ?? [];
   if (!statuses.length) return 'unknown';
   if (statuses.every(status => status === 'unavailable')) return 'unavailable';
   if (statuses.some(status => status === 'unavailable' || status === 'partial')) return 'partial';
@@ -32,11 +32,11 @@ export function layerHealth(kind: LayerKind, snapshot: Snapshot | null): Health 
   return 'available';
 }
 
-export default function Layers({ snapshot, active, onToggle, center, onClear }: {
-  snapshot: Snapshot | null; active: Set<LayerKind>; onToggle: (kind: LayerKind) => void; center: Coordinates | null; onClear: () => void;
+export default function Layers({ sourceData, active, onToggle, center, onClear }: {
+  sourceData: Pick<Snapshot, 'sources'>; active: Set<LayerKind>; onToggle: (kind: LayerKind) => void; center: Coordinates | null; onClear: () => void;
 }) {
   return <fieldset className="layer-controls"><legend>Layers</legend>{layerConfigs.map(layer => {
-    const health = layerHealth(layer.kind, snapshot);
+    const health = layerHealth(layer.kind, sourceData);
     return <div className="layer-control" key={layer.kind} data-testid={`layer-${layer.kind}`}>
       <label><input type="checkbox" checked={active.has(layer.kind)} onChange={() => onToggle(layer.kind)} />{layer.label}</label>
       <span className={`health ${health}`}>{health === 'unknown' ? 'Unavailable · no status' : health}</span>

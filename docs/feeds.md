@@ -84,8 +84,8 @@ The Worker validator can carry partial health with its actual validation clock;
 it does not relabel that source available. Python-produced bytes are checked
 against the actual Worker validator in the optional local integration test.
 Preparation performs no upload or public release. Full T043 still needs the
-bounded scheduling/upload integration and active-page refresh, with H05/H11
-before cloud/public activation.
+bounded scheduling/upload integration, with H05/H11 before cloud/public
+activation.
 
 ## One bounded local refresh (T236)
 
@@ -110,9 +110,9 @@ Recoverable capture I/O failures are retained in `collection` diagnostics while
 usable dated evidence is still prepared. Explicit source-disable and invalid
 input errors stop the command before preparation.
 
-This runner is local S09 preparation. Authenticated cloud
-admission/upload, durable cloud restoration, scheduling and active-page polling
-remain in T043. No credential, account, recurring job or public release is used.
+This runner is local S09 preparation. Authenticated cloud admission/upload,
+durable cloud restoration and scheduling remain in T043. No credential,
+account, recurring job or public release is used.
 
 ## Paired local weather capture (T237)
 
@@ -198,5 +198,29 @@ Success reports the Worker's normalized `snapshot_id` separately from the local
 `prepared_sha256`. A repeat sends identical bytes for Worker idempotency.
 Failures preserve preparation and report bounded diagnostics without response
 bodies. This local acknowledgement grants no static publication approval.
-Remote destinations, durable cloud restoration, scheduled admission and active
-page polling remain T043 work behind the existing activation gates.
+Remote destinations, durable cloud restoration and scheduled admission remain
+T043 work behind the existing activation gates.
+
+## Active Karnataka view (T240)
+
+The normal Karnataka view starts checking `/api/v1/current` after it verifies
+an approved daily release. It checks S09 every 15 minutes and S01 every six
+hours, with S09 first when both are due. One request runs at a time with a
+five-second deadline and a one-MiB response limit. A started check uses its
+cadence slot even if it fails or the tab becomes hidden. Returning to the tab
+checks due sources. Refreshing the daily release keeps the source cadence.
+
+The map, list and ticker use the verified active source data where available.
+Each source shows its cutoff, last successful check and coverage separately.
+A partial S09 result can contain zero records while coverage remains limited.
+S01 coverage is confined to the reported model grid points. On failure or
+when the active source predates the daily cutoff or last successful daily
+check, the view uses that source's dated daily data where available. The
+fallback label also appears when the daily release contains no rows for the
+source. Previously accepted source clocks guard against older or conflicting
+responses across failures.
+
+The daily release still provides the cutoff and verified hash for Place Lens,
+frozen links and print. Frozen, invalid shared and unreleased views skip the
+active checks. Cloud routing, remote upload, durable restoration, archiving
+and public activation stay behind their existing gates.
