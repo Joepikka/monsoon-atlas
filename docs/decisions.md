@@ -2,6 +2,17 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D73 — Preserve older Worker snapshot identities (7 Nov 2026), before fix.**
+  T240 review reproduced a contract mismatch for an older supported stored
+  snapshot whose parser fills in an optional field. The Worker checks the
+  exact stored bytes and keeps their `sha256` identity. Current GET replies
+  also expose `wire_sha256`, the digest of the exact normalized source envelope
+  returned to the browser. The browser verifies that projection and uses
+  `sha256` as the stored identity for monotonic checks. Replies that omit the
+  additive field use the existing digest when it matches their wire bytes.
+  Extend T240's scope to the GET response, its compatibility tests and contract
+  documentation. Stored bytes, identifiers, SQL and upload protocol stay intact.
+
 - **D72 — Active-page source polling (7 Nov 2026), before implementation.**
   Split T240 from T043 after T040/T229/T239. Read the existing same-origin
   Worker current endpoint only from the normal Karnataka view with an approved

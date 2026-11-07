@@ -244,6 +244,12 @@ separate source cutoffs in the map and list. Frozen reports retain their
 approved daily release. Estimate 3 hours. Acceptance is
 `powershell -NoProfile -File scripts/web.ps1 run test:e2e -- tests/live-data.spec.ts`.
 
+D73 adds the GET `wire_sha256` field to cover supported older stored snapshots
+whose current normalization changes optional fields. The original `sha256`
+continues to identify the verified stored bytes. The browser verifies the wire
+projection with the new digest and supports the earlier response shape when its
+digest matches the wire bytes.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -270,9 +276,9 @@ new_tasks:
     phase: P1
     state: KA
     depends_on: [T040, T229, T239]
-    files: [web/src/live-data.ts, web/src/live-data.test.ts, web/src/App.tsx, web/src/map/Layers.tsx, web/src/styles.css, web/tests/live-data.spec.ts, docs/feeds.md]
+    files: [web/src/live-data.ts, web/src/live-data.test.ts, web/src/App.tsx, web/src/map/Layers.tsx, web/src/styles.css, web/tests/live-data.spec.ts, docs/feeds.md, worker/src/index.ts, worker/tests/core.test.mjs, docs/worker.md]
     steps:
-      - "Validate bounded same-origin Worker replies, normalized identity and actual source clocks"
+      - "Validate bounded same-origin Worker replies, wire_sha256 and actual source clocks while preserving stored identity"
       - "Poll alerts at fifteen minutes and weather at six hours with visibility, deadlines and monotonic source checks"
       - "Apply the dated source overlay in the map and list while keeping approved reports immutable"
     acceptance:

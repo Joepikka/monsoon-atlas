@@ -7,9 +7,9 @@ new_tasks:
     phase: P1
     state: KA
     depends_on: [T040, T229, T239]
-    files: [web/src/live-data.ts, web/src/live-data.test.ts, web/src/App.tsx, web/src/map/Layers.tsx, web/src/styles.css, web/tests/live-data.spec.ts, docs/feeds.md]
+    files: [web/src/live-data.ts, web/src/live-data.test.ts, web/src/App.tsx, web/src/map/Layers.tsx, web/src/styles.css, web/tests/live-data.spec.ts, docs/feeds.md, worker/src/index.ts, worker/tests/core.test.mjs, docs/worker.md]
     steps:
-      - "Validate bounded same-origin Worker replies, normalized identity and actual source clocks"
+      - "Validate bounded same-origin Worker replies, wire_sha256 and actual source clocks while preserving stored identity"
       - "Poll alerts at fifteen minutes and weather at six hours with visibility, deadlines and monotonic source checks"
       - "Apply the dated source overlay in the map and list while keeping approved reports immutable"
     acceptance:
