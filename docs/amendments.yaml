@@ -1,6 +1,21 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T240
+    parent: T043
+    title: "Poll validated hot sources while active and retain dated daily reports"
+    phase: P1
+    state: KA
+    depends_on: [T040, T229, T239]
+    files: [web/src/live-data.ts, web/src/live-data.test.ts, web/src/App.tsx, web/src/map/Layers.tsx, web/src/styles.css, web/tests/live-data.spec.ts, docs/feeds.md]
+    steps:
+      - "Validate bounded same-origin Worker replies, normalized identity and actual source clocks"
+      - "Poll alerts at fifteen minutes and weather at six hours with visibility, deadlines and monotonic source checks"
+      - "Apply the dated source overlay in the map and list while keeping approved reports immutable"
+    acceptance:
+      command: 'powershell -NoProfile -File scripts/web.ps1 run test:e2e -- tests/live-data.spec.ts'
+      expected: "Mounted browser proves cadence, visibility and dated fallback while frozen reports retain exact identity"
+    hours: 3
   - id: T239
     parent: T043
     title: "Verify and sign prepared snapshots for a bounded local Worker upload"

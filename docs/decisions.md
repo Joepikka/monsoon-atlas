@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D72 — Active-page source polling (7 Nov 2026), before implementation.**
+  Split T240 from T043 after T040/T229/T239. Read the existing same-origin
+  Worker current endpoint only from the normal Karnataka view with an approved
+  daily snapshot. Verify the bounded per-source response, normalized Worker
+  digest and source clocks. Poll S09 every 15 minutes and S01 every six hours
+  while visible, with one request in flight and a five-second request deadline.
+  Hidden or ended views cancel pending work. A started attempt consumes its
+  cadence slot. Keep per-source high-water clocks across failures. Show hot
+  results as a separate map and list overlay with their own dates and coverage.
+  Failures use the dated daily source. Place Lens, print and frozen links keep
+  the approved immutable daily snapshot. Cloud routing and publication still
+  require their existing gates.
+
 - **D71 — Local signed snapshot upload (7 Nov 2026), before implementation.**
   Split T239 from T043 after T229/T235/T238 to exercise the prepared-snapshot
   sender through an explicit loopback Worker origin. Verify retained payload

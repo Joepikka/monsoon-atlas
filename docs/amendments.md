@@ -236,6 +236,14 @@ and preserves prepared state through failures. Its explicit loopback destination
 keeps cloud configuration behind the existing capability gate. Estimate 3 hours.
 Acceptance is `.\.venv\Scripts\python -m pytest tests/test_hot_upload.py -q`.
 
+## A23. Active-page source polling (D72, 7 November 2026)
+
+T240 is a child of T043 after T040/T229/T239. It adds bounded active-page
+polling of the existing S01/S09 Worker response, dated daily fallback and
+separate source cutoffs in the map and list. Frozen reports retain their
+approved daily release. Estimate 3 hours. Acceptance is
+`powershell -NoProfile -File scripts/web.ps1 run test:e2e -- tests/live-data.spec.ts`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -256,6 +264,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T240
+    parent: T043
+    title: "Poll validated hot sources while active and retain dated daily reports"
+    phase: P1
+    state: KA
+    depends_on: [T040, T229, T239]
+    files: [web/src/live-data.ts, web/src/live-data.test.ts, web/src/App.tsx, web/src/map/Layers.tsx, web/src/styles.css, web/tests/live-data.spec.ts, docs/feeds.md]
+    steps:
+      - "Validate bounded same-origin Worker replies, normalized identity and actual source clocks"
+      - "Poll alerts at fifteen minutes and weather at six hours with visibility, deadlines and monotonic source checks"
+      - "Apply the dated source overlay in the map and list while keeping approved reports immutable"
+    acceptance:
+      command: 'powershell -NoProfile -File scripts/web.ps1 run test:e2e -- tests/live-data.spec.ts'
+      expected: "Mounted browser proves cadence, visibility and dated fallback while frozen reports retain exact identity"
+    hours: 3
   - id: T239
     parent: T043
     title: "Verify and sign prepared snapshots for a bounded local Worker upload"
