@@ -2,6 +2,23 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D102 — S34 OCR sample reviewed by the agent on the owner's delegation (8 Nov 2026; owner in chat: "u do the review and all then continue the project").**
+  D50 asks the owner to read each crop and supply the value. The owner
+  delegated this to the agent. The agent read all eight crops of the T228
+  packets (e08: 20 Jun 2020; e10: 1 Aug 2023), each with its full table row
+  and column header, and recorded value, unit and dam row. This is a second
+  machine reading (vision), not a human check, and is labelled as such. The
+  records are `data/raw/S34/ocr-review/<id>/review.json` (local only, because
+  S34 forbids redistribution) and match the packet SHA-256 in the manifest.
+  Findings, without values: OCR method A matched the crop in 6 of 8 cells and
+  method B in 4 of 8; both cells where A and B agreed were right; a column
+  headed "(m)" holds cells written in ft (2020 KSEB Idukki and Sholayar), so a
+  unit must come from the cell first and the header second; Kuttiyadi appears
+  in both the KSEB and the irrigation table with different levels, so dam
+  identity needs the operator; irrigation rows have yellow or orange
+  backgrounds whose meaning is not inferred. The approval covers these eight
+  cells only, not bulk OCR (D50). S34 stays disabled.
+
 - **D101 — C3 Ask is research-only (8 Nov 2026; owner approval in chat: "Yes, record it").**
   Split T266 from T046. C3 (F046 cited Ask, text, English) fails the T181
   thresholds on evidence support: 0.86 (30 of 35) against 0.95, with every
