@@ -106,3 +106,22 @@ def test_embedder_refuses_unpinned_files(tmp_path):
     (tmp_path / "model.safetensors").write_bytes(b"not the pinned weights")
     with pytest.raises(FileNotFoundError, match="does not match revision"):
         Embedder(tmp_path)
+
+
+def test_committed_selection_follows_d99():
+    import re
+    from pathlib import Path
+
+    from atlas.rag.corpus import load_config
+    from atlas.rag.evaluate import METHOD_NAMES
+
+    root = Path(__file__).resolve().parents[2]
+    text = (root / "reports/rag-rerank.md").read_text("utf-8")
+    rows = re.findall(r"^\| (R\d) \| [^|]+ \| ([\d.]+) \| ([\d.]+) \|$", text, re.M)
+    assert sorted(m for m, _, _ in rows) == ["R0", "R1", "R2", "R3"]
+    key = [(-float(s), -float(r), m) for m, s, r in rows]
+    assert key == sorted(key)  # support, then recall, then the simpler method
+    method = load_config()["rerank_method"]
+    assert method == rows[0][0] and f"**Chosen: {method}.**" in text
+    assert "Holdout cases (Q41-Q50) are not run here." in text
+    assert METHOD_NAMES[method] in (root / "reports/rag.md").read_text("utf-8")

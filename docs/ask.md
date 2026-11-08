@@ -39,8 +39,8 @@ duplicates and stays within 3000 tokens.
 On the 20 development questions in `eval/rag/retrieval_dev.jsonl`, a gold
 document appears in the top five for 18 (90%). The two misses (Q02 "charge
 for access", Q28 "what must a model beat") use words that the documents do
-not contain. The planned e5 embedding rerank addresses paraphrase; it needs
-the deep-learning lock and a model download. Plan questions Q41-Q50 stay
+not contain. T264 tried an e5 embedding rerank for this; it did not help
+(see below). Plan questions Q41-Q50 stay
 untouched for the held-out evaluation (T181).
 
 ## Answer contract (T253)
@@ -68,8 +68,7 @@ Any invalid citation or wrong or unsupported number fails the gate, whatever
 the averages. Since T255, recognised numeric templates are computed by
 DuckDB from the frozen snapshots listed in `configs/rag.yaml` and cite the
 queried file; all 10 numeric cases pass. The gate still fails on evidence
-support (0.83 against 0.95): six questions use words the gold passage lacks,
-which needs the e5 rerank. Translations are not
+support (0.83 against 0.95 at T255, 0.86 at T264). Translations are not
 reviewed, so only English is evaluated.
 
 ## Ask route (T260)
@@ -112,3 +111,27 @@ and citations match the request; otherwise it shows the same local results
 with a notice. Citation cards give the heading, file path, commit time and
 evidence age. No corpus is published in `web/public` yet: the deploy step
 writes it (H05), so the live page says Ask has not been published.
+
+## e5 rerank (T264)
+
+With the owner's approval, the full deep-learning lock and
+`intfloat/multilingual-e5-small` (revision 614241f6, MIT, hash-checked) are
+installed on drive D, in the ignored `data/models/e5/614241f6/`.
+`atlas.rag.embed` embeds `passage: <heading>. <text>` and `query: <question>`
+on the CPU; vectors are cached beside the index. D99 fixed four methods and
+the selection rule before any run: R0 BM25, R1 e5 order of the BM25 top 50,
+R2 rank fusion within the BM25 top 50, R3 rank fusion over the BM25 and e5
+top-50 lists. On the 27 dev cases all four reach the same evidence support
+(0.852); on the 20 retrieval dev questions R0 finds a gold document for
+0.85 and the others for 0.80 ([selection](../reports/rag-rerank.md)). So
+R0 stays (`rerank_method: R0` in `configs/rag.yaml`), and the web page and
+Worker need no model.
+
+The C3 report run once afterwards gives evidence support 0.86 (30 of 35),
+below 0.95, so the gate still fails. Of the five failing cases, three find
+the right document but not the section with the gold phrase (Q23 in the
+amendments, Q33 in the M05 report, Q43 in the methods page), and two
+(Q02 "charge for access", Q26 "the old PR-AUC") share no useful words with
+the gold passage. Fixing these is new work with its own pre-registered rule;
+the holdout cases have been reported several times, so they are no longer a
+blind test.
