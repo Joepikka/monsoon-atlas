@@ -302,6 +302,13 @@ Actual source changes and time-dependent projection changes still advance
 the head. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/sources/test_s09_prepare.py tests/sources/test_s01_prepare.py -q`.
 
+## A30. Verified hosted checkpoint handoff (D82, 8 November 2026)
+
+T247 is a child of T043 after T243/T246. Verify an artifact candidate against
+the configured budget, then import its verified generation into a fresh local
+store at the same original path. Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/test_runner_handoff.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -322,6 +329,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T247
+    parent: T043
+    title: "Verify and import a hosted checkpoint handoff locally"
+    phase: P1
+    state: KA
+    depends_on: [T243, T246]
+    files: [src/atlas/ingest/runner_checkpoint.py, src/atlas/ingest/checkpoint_bundle.py, tests/test_runner_handoff.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Offer only the verified current generation and check configured artifact capacity"
+      - "Install a downloaded bundle with its separate trusted digest into a fresh store"
+      - "Exercise restart, exact bytes, aggregate capacity and damaged transfer refusal locally"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_runner_handoff.py -q'
+      expected: "Verified transfers preserve original paths and clocks; invalid or over-budget transfers leave the destination absent"
+    hours: 3
   - id: T246
     parent: T043
     title: "Reuse equivalent verified runner projections across cutoffs"

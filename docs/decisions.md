@@ -2,6 +2,15 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D82 — Verify a hosted checkpoint handoff locally (8 Nov 2026).**
+  Split T247 from T043 after T243/T246. Offer only the committed immutable
+  bundle directory for artifact transport. Apply the existing 400 MB and
+  seven-day project limits and require a retained-byte total for preflight.
+  Import the downloaded directory into a fresh store using a separately
+  supplied manifest digest and the same absent canonical feed root. Check
+  staged bytes and evidence before creating the local head. Keep workflow
+  selection, provider accounting and recurring activation as later work.
+
 - **D81 — Reuse the verified runner projection when only its clock changes (8 Nov 2026).**
   Split T246 from T043 after T245. The runner can reuse a prepared head at a
   later cutoff when verified source inputs and the normalized projection are
