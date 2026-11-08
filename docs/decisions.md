@@ -2,6 +2,12 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D93 — M05 model card states its deviations (8 Nov 2026).** Split T258
+  from T046. The card follows the plan's M05 fields and records where the
+  release differs: district units instead of taluks (no taluk polygons), no
+  temperature feature, no reported rolling-origin results, and a hindcast
+  instead of operational timing. Numbers come only from cited sources.
+
 - **D92 — Prepare T046 locally; the release stays blocked (8 Nov 2026).**
   Split T257 from T046. T046 itself depends on T045 (H05/H06) and T041
   (S18), and needs H11. This child builds the accuracy rows for C1, C2 and

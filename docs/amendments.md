@@ -386,6 +386,12 @@ evidence. It is preparation only: the web page, browser checks and
 deployment stay in T046. Estimate 2 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/test_ka_release.py -q`.
 
+## A41. M05 model card (D93, 8 November 2026)
+
+T258 is a child of T046 after T257. Write the C2 model card in the plan's M05
+card fields, using only numbers from its cited sources. Estimate 1 hour.
+Acceptance is `.\.venv\Scripts\python -m pytest tests/test_ka_release.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -406,6 +412,20 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T258
+    parent: T046
+    title: "M05 model card"
+    phase: P1
+    state: KA
+    depends_on: [T257]
+    files: [reports/models/m05-card.md, tests/test_ka_release.py, docs/releases/ka.md]
+    steps:
+      - "Fill the plan's M05 card fields with release results and stated deviations"
+      - "Check every number against cited sources and regenerate the release checklist"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_ka_release.py -q'
+      expected: "The C2 card check passes with source-backed numbers; the release stays not releasable"
+    hours: 1
   - id: T257
     parent: T046
     title: "Accuracy rows and Karnataka release checklist"

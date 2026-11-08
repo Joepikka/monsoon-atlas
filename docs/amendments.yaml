@@ -1,6 +1,20 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T258
+    parent: T046
+    title: "M05 model card"
+    phase: P1
+    state: KA
+    depends_on: [T257]
+    files: [reports/models/m05-card.md, tests/test_ka_release.py, docs/releases/ka.md]
+    steps:
+      - "Fill the plan's M05 card fields with release results and stated deviations"
+      - "Check every number against cited sources and regenerate the release checklist"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_ka_release.py -q'
+      expected: "The C2 card check passes with source-backed numbers; the release stays not releasable"
+    hours: 1
   - id: T257
     parent: T046
     title: "Accuracy rows and Karnataka release checklist"
