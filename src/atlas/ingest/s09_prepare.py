@@ -44,7 +44,7 @@ def retained_artifacts(raw_root: Path) -> list[RawArtifact]:
     return artifacts
 
 
-def verify_retained_inputs(previous: dict, output_root: Path, inputs: list[dict]) -> None:
+def verify_retained_inputs(previous: dict, output_root: Path, inputs: list[dict]) -> dict:
     """Known evidence cannot vanish or be retimed between append-only preparations."""
     try:
         revision = previous["inputs_sha256"]
@@ -53,9 +53,9 @@ def verify_retained_inputs(previous: dict, output_root: Path, inputs: list[dict]
         encoded = (output_root / f"{revision}.inputs.json").read_bytes()
         if hashlib.sha256(encoded).hexdigest() != revision:
             raise ValueError("Input hash mismatch")
-        prior = json.loads(encoded)["inputs"]
+        manifest = json.loads(encoded)
         current = {(item["source_url"], item["sha256"]): item for item in inputs}
-        for item in prior:
+        for item in manifest["inputs"]:
             retained = current[(item["source_url"], item["sha256"])]
             if retained["content_fetched_at"] != item[
                 "content_fetched_at"
@@ -63,6 +63,7 @@ def verify_retained_inputs(previous: dict, output_root: Path, inputs: list[dict]
                 item["checked_at"]
             ):
                 raise ValueError("Retained evidence clocks changed")
+        return manifest
     except (OSError, KeyError, TypeError, ValueError):
         raise IngestError("Previously retained CAP input evidence is missing or changed") from None
 
@@ -103,7 +104,12 @@ def warning(row: dict, warning_text: str) -> dict:
 
 
 def prepare(
-    raw_root: Path, output_root: Path, *, as_of: datetime, max_bytes: int = MAX_BYTES
+    raw_root: Path,
+    output_root: Path,
+    *,
+    as_of: datetime,
+    max_bytes: int = MAX_BYTES,
+    reuse_equivalent: bool = False,
 ) -> dict:
     config = load_state(ROOT / "configs/states/ka.yaml").source("S09")
     if not config.enabled:
@@ -239,6 +245,7 @@ def prepare(
         envelope=envelope,
         inputs=inputs,
         verify_inputs=verify_retained_inputs,
+        reuse_equivalent=reuse_equivalent,
     )
 
 

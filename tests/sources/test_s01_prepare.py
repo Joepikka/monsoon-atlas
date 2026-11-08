@@ -79,6 +79,29 @@ def snapshot(result):
     return value
 
 
+def test_runner_reuses_weather_until_forecast_selection_changes(tmp_path):
+    capture(tmp_path)
+    start = NOW + timedelta(seconds=1)
+    first = prepare_weather(tmp_path, as_of=start)
+    first_snapshot = snapshot(first)
+    output = tmp_path / "weather/prepared"
+    before = {p.name: p.read_bytes() for p in output.iterdir()}
+    later = start + timedelta(seconds=1)
+    assert prepare_weather(tmp_path, as_of=later, reuse_equivalent=True) == first
+    assert {p.name: p.read_bytes() for p in output.iterdir()} == before
+    with pytest.raises(IngestError, match="byte cap"):
+        prepare_weather(tmp_path, as_of=later, max_bytes=50, reuse_equivalent=True)
+
+    standalone = prepare_weather(tmp_path, as_of=later)
+    assert standalone["sha256"] != first["sha256"]
+    validity = datetime.fromisoformat(first_snapshot["records"][0]["valid_at"])
+    next_hour = prepare_weather(
+        tmp_path, as_of=validity + timedelta(seconds=1), reuse_equivalent=True
+    )
+    assert next_hour["sha256"] != standalone["sha256"]
+    assert snapshot(next_hour)["records"][0]["valid_at"] != first_snapshot["records"][0]["valid_at"]
+
+
 def test_real_pair_matches_adapter_and_actual_browser_fixture_point(tmp_path):
     _, pair = capture(tmp_path)
     result = prepare_weather(tmp_path, as_of=NOW)

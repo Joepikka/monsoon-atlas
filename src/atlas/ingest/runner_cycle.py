@@ -56,9 +56,11 @@ def run_cycle(
             try:
                 cutoff = datetime.now(UTC)
                 preparation = (
-                    prepare_weather(root, as_of=cutoff)
+                    prepare_weather(root, as_of=cutoff, reuse_equivalent=True)
                     if source_id == "S01"
-                    else prepare(root / "raw", root / OUTPUT[source_id], as_of=cutoff)
+                    else prepare(
+                        root / "raw", root / OUTPUT[source_id], as_of=cutoff, reuse_equivalent=True
+                    )
                 )
             except STATE_ERRORS as error:
                 preparation = {"status": "failed", "error_type": type(error).__name__}

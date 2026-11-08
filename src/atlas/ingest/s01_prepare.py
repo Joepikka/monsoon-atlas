@@ -30,7 +30,7 @@ def receipt_time(value: str) -> datetime:
     return value
 
 
-def verify_retained_inputs(previous: dict, output_root: Path, inputs: list[dict]) -> None:
+def verify_retained_inputs(previous: dict, output_root: Path, inputs: list[dict]) -> dict:
     """Every previously used immutable receipt (and thus its raw identities) survives."""
     try:
         revision = previous["inputs_sha256"]
@@ -40,9 +40,11 @@ def verify_retained_inputs(previous: dict, output_root: Path, inputs: list[dict]
         if hashlib.sha256(encoded).hexdigest() != revision:
             raise ValueError("Invalid prior input manifest")
         current = {item["receipt_sha256"]: item for item in inputs}
-        for item in json.loads(encoded)["inputs"]:
+        manifest = json.loads(encoded)
+        for item in manifest["inputs"]:
             if current[item["receipt_sha256"]] != item:
                 raise ValueError("Changed retained receipt")
+        return manifest
     except (OSError, KeyError, TypeError, ValueError):
         raise IngestError(
             "Previously retained weather input evidence is missing or changed"
@@ -170,7 +172,9 @@ def usable(row: dict, cutoff: datetime) -> bool:
     )
 
 
-def prepare_weather(root: Path, *, as_of: datetime, max_bytes: int = MAX_BYTES) -> dict:
+def prepare_weather(
+    root: Path, *, as_of: datetime, max_bytes: int = MAX_BYTES, reuse_equivalent: bool = False
+) -> dict:
     if as_of.utcoffset() != timedelta(0) or as_of > datetime.now(UTC):
         raise ValueError("Preparation cutoff must be aware UTC and cannot be in the future")
     if not 1 <= max_bytes <= MAX_BYTES:
@@ -271,6 +275,7 @@ def prepare_weather(root: Path, *, as_of: datetime, max_bytes: int = MAX_BYTES) 
         envelope=envelope,
         inputs=inputs,
         verify_inputs=verify_retained_inputs,
+        reuse_equivalent=reuse_equivalent,
     )
 
 

@@ -287,6 +287,13 @@ restore, signed local admission, capture and expected-head save under one
 on interruption. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/test_runner_cycle.py -q`.
 
+## A28. Bounded local preparation and upload (D80, 8 November 2026)
+
+T245 is a child of T043 after T235/T238/T239/T244. An explicit local runner
+option prepares successful capture, saves it, then sends the immutable saved
+bytes. Retry the retained snapshot on `not_due`. Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/test_runner_cycle.py -q`.
+
 ## A29. Reuse equivalent runner projections (D81, 8 November 2026)
 
 T246 is a child of T043 after T245. The runner reuses verified prepared bytes
@@ -294,13 +301,6 @@ when source inputs and projected data match despite a later preparation clock.
 Actual source changes and time-dependent projection changes still advance
 the head. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/sources/test_s09_prepare.py tests/sources/test_s01_prepare.py -q`.
-
-## A28. Bounded local preparation and upload (D80, 8 November 2026)
-
-T245 is a child of T043 after T235/T238/T239/T244. An explicit local runner
-option prepares successful capture, saves it, then sends the immutable saved
-bytes. Retry the retained snapshot on `not_due`. Estimate 3 hours. Acceptance is
-`.\.venv\Scripts\python -m pytest tests/test_runner_cycle.py -q`.
 
 ## Appendix Y: new and changed tasks (YAML)
 

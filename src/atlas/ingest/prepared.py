@@ -19,6 +19,7 @@ from atlas.ingest.base import IngestError
 
 ROOT = Path(__file__).resolve().parents[3]
 MAX_BYTES = 1024**2
+DERIVED_FIELDS = {"as_of", "published_at", "release_id", "data_revision"}
 
 
 def canonical(value) -> str:
@@ -48,7 +49,8 @@ def materialize(
     manifest: str,
     envelope: dict,
     inputs: list[dict],
-    verify_inputs: Callable,
+    verify_inputs: Callable[[dict, Path, list[dict]], dict],
+    reuse_equivalent: bool = False,
 ) -> dict:
     revision = hashlib.sha256(manifest.encode("utf-8")).hexdigest()
     source_id = envelope["source_id"]
@@ -63,21 +65,65 @@ def materialize(
         prepared_at, previous_same = utc(datetime.now(UTC)), None
         if head.exists():
             previous = json.loads(head.read_text("utf-8"))
-            if datetime.fromisoformat(previous["as_of"]) > as_of:
+            previous_cutoff = datetime.fromisoformat(previous["as_of"])
+            if previous_cutoff > as_of:
                 raise IngestError("An older preparation cannot roll the local head back")
-            verify_inputs(previous, output_root, inputs)
-            if datetime.fromisoformat(previous["as_of"]) == as_of:
-                if previous["inputs_sha256"] != revision:
-                    raise IngestError(
-                        "Different prepared inputs conflict at the same source cutoff"
-                    )
+            retained = verify_inputs(previous, output_root, inputs)
+            same_cutoff = previous_cutoff == as_of
+            if same_cutoff and previous["inputs_sha256"] != revision:
+                raise IngestError("Different prepared inputs conflict at the same source cutoff")
+            same_evidence = (
+                reuse_equivalent
+                and not same_cutoff
+                and retained.get("as_of") == previous["as_of"]
+                and canonical(retained | {"as_of": utc(as_of)}) == manifest
+            )
+            if same_cutoff or same_evidence:
                 if not re.fullmatch(r"[0-9a-f]{64}", previous["sha256"]):
                     raise IngestError("Prepared head has no valid content identity")
-                prior_bytes = (output_root / f"{previous['sha256']}.json").read_bytes()
-                if hashlib.sha256(prior_bytes).hexdigest() != previous["sha256"]:
+                prior_path = output_root / f"{previous['sha256']}.json"
+                with prior_path.open("rb") as stream:
+                    prior_bytes = stream.read(MAX_BYTES + 1)
+                if (
+                    len(prior_bytes) > MAX_BYTES
+                    or hashlib.sha256(prior_bytes).hexdigest() != previous["sha256"]
+                ):
                     raise IngestError("Prepared head payload failed hash verification")
-                prepared_at = json.loads(prior_bytes)["snapshot"]["published_at"]
-                previous_same = previous["sha256"]
+                prior_envelope = json.loads(prior_bytes)
+                prior_snapshot = prior_envelope["snapshot"]
+                if same_cutoff:
+                    prepared_at = prior_snapshot["published_at"]
+                    previous_same = previous["sha256"]
+                else:
+                    prior_inputs = output_root / f"{previous['inputs_sha256']}.inputs.json"
+                    if (
+                        previous.get("schema_version") != 1
+                        or previous.get("status") != "prepared_only"
+                        or previous.get("source_id") != source_id
+                        or previous.get("state") != "ka"
+                        or previous.get("payload") != prior_path.name
+                        or previous.get("inputs") != prior_inputs.name
+                        or prior_envelope["source_id"] != source_id
+                        or prior_snapshot["as_of"] != previous["as_of"]
+                        or prior_snapshot["data_revision"] != previous["inputs_sha256"]
+                    ):
+                        raise IngestError("Prepared payload disagrees with its pointer")
+                    old = {k: v for k, v in prior_snapshot.items() if k not in DERIVED_FIELDS}
+                    new = {k: v for k, v in envelope["snapshot"].items() if k not in DERIVED_FIELDS}
+                    if old == new:
+                        if (
+                            max(len(prior_bytes), len(gzip.compress(prior_bytes, mtime=0)))
+                            > max_bytes
+                        ):
+                            raise IngestError("Prepared snapshot exceeds the transport byte cap")
+                        return {
+                            "status": "prepared",
+                            "coverage": "partial",
+                            "sha256": previous["sha256"],
+                            "payload_path": str(prior_path),
+                            "inputs_path": str(prior_inputs),
+                            "records": len(prior_snapshot["records"]),
+                        }
         envelope["snapshot"]["published_at"] = prepared_at
         text = canonical(envelope)
         encoded = text.encode("utf-8")

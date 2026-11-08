@@ -376,3 +376,9 @@ restore the committed snapshot. When the next capture is `not_due`, the option
 resends a retained prepared head if present, with its original cutoff and exact
 bytes. The Worker reports `stored` or `unchanged` at the upload stage. Recurring
 scheduling and hosted persistence remain separate steps.
+
+The runner reuses the existing prepared bytes when the verified source inputs
+and normalized output are equivalent at the later cutoff. This keeps the
+original cutoff, revision and publication clock. A new validation, alert
+expiry or changed forecast selection can still produce a new snapshot.
+An exact retry uses the Worker's existing duplicate handling.

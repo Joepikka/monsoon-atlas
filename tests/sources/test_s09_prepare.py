@@ -152,6 +152,43 @@ def test_304_advances_exact_document_check_clock_without_changing_content_clock(
     assert snapshot["records"][0]["fetched_at"] == raw.fetched_at.isoformat().replace("+00:00", "Z")
 
 
+def test_runner_reuses_cap_until_new_check_or_expiry(tmp_path):
+    store = RawStore(tmp_path / "raw")
+    raw = captured(store)
+    output = tmp_path / "prepared"
+    first = prepare(store.root, output, as_of=CUTOFF)
+    original_head = (output / "prepared.json").read_bytes()
+    before = {p.name for p in output.iterdir()}
+    later = CUTOFF + timedelta(seconds=1)
+    assert prepare(store.root, output, as_of=later, reuse_equivalent=True) == first
+    assert (output / "prepared.json").read_bytes() == original_head
+    assert {p.name for p in output.iterdir()} == before
+
+    store.record(
+        raw.model_copy(update={"fetched_at": later, "response_status": 304}), {"status": 304}
+    )
+    checked = prepare(store.root, output, as_of=later, reuse_equivalent=True)
+    assert checked["sha256"] != first["sha256"]
+    snapshot = payload(checked)["snapshot"]
+    assert datetime.fromisoformat(snapshot["sources"][0]["last_success_at"]) == later
+    expiry = datetime.fromisoformat(snapshot["records"][0]["expires_at"])
+    expired = prepare(store.root, output, as_of=expiry, reuse_equivalent=True)
+    assert expired["sha256"] != checked["sha256"]
+    assert payload(expired)["snapshot"]["records"] == []
+
+
+def test_runner_rejects_corrupt_equivalent_cap_head(tmp_path):
+    store = RawStore(tmp_path / "raw")
+    captured(store)
+    output = tmp_path / "prepared"
+    first = prepare(store.root, output, as_of=CUTOFF)
+    head = (output / "prepared.json").read_bytes()
+    Path(first["payload_path"]).write_bytes(b"damaged")
+    with pytest.raises(IngestError, match="hash verification"):
+        prepare(store.root, output, as_of=CUTOFF + timedelta(seconds=1), reuse_equivalent=True)
+    assert (output / "prepared.json").read_bytes() == head
+
+
 @pytest.mark.parametrize("message_type", ["Cancel", "Update"])
 def test_header_only_control_applies_exact_reference_without_fake_warning_row(
     tmp_path, message_type
