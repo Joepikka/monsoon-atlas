@@ -382,3 +382,31 @@ and normalized output are equivalent at the later cutoff. This keeps the
 original cutoff, revision and publication clock. A new validation, alert
 expiry or changed forecast selection can still produce a new snapshot.
 An exact retry uses the Worker's existing duplicate handling.
+
+## Checkpoint artifact handoff (T247)
+
+Offer the current committed bundle from a quiescent store. Supply the measured
+bytes of artifacts already retained. The result includes `bundle_path`,
+`manifest_sha256`, uncompressed `payload_bytes` and `retention_days`.
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 runner-offer --store .cache/runner-checkpoints --retained-artifact-bytes $retainedArtifactBytes
+```
+
+The preflight uses the project's 400 MB aggregate budget and seven-day limit.
+Future hosted transport must check actual artifact usage and select the trusted
+run and artifact before download. GitHub supports cross-run download with a
+token and run identifier. Offer the returned bundle directory alone. [GitHub artifact guide](https://docs.github.com/en/actions/tutorials/store-and-share-data)
+
+Import the downloaded `manifest.json` and `files/` directory with the expected
+manifest digest from a separate trusted source. Use the same canonical original
+feed path. The store and feed root must both be absent.
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 runner-import --bundle .cache/downloaded-bundle --store .cache/next-run-checkpoints --expected-sha256 $savedManifestSha256
+```
+
+Import verifies staged evidence and creates a fresh local catalogue. The feed
+root stays absent for the next `runner-cycle` or `runner-restore`. Both handoff
+commands run locally. Hosted accounting, workflow activation and release review
+remain separate steps. Retained weather data credits Open-Meteo and ECMWF.

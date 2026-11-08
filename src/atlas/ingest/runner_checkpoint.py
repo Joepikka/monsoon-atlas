@@ -12,6 +12,7 @@ from collections.abc import Iterator
 from contextlib import closing, contextmanager
 from pathlib import Path
 
+from atlas.config import load_budgets
 from atlas.data.budget import ArchiveOnly
 from atlas.ingest import checkpoint_bundle as bundles
 from atlas.ingest.base import IngestError
@@ -82,6 +83,20 @@ def _head(db: sqlite3.Connection, root: Path) -> str | None:
     return digest
 
 
+def _set_head(db: sqlite3.Connection, root: Path, digest: str) -> None:
+    db.execute(
+        "INSERT INTO current_checkpoint(singleton, root, digest) VALUES(1, ?, ?) "
+        "ON CONFLICT(singleton) DO UPDATE SET digest=excluded.digest",
+        (str(root), digest),
+    )
+
+
+def _pending_catalogue_bytes(db: sqlite3.Connection, store: Path) -> int:
+    pages = db.execute("PRAGMA page_count").fetchone()[0]
+    page_size = db.execute("PRAGMA page_size").fetchone()[0]
+    return max(0, pages * page_size - (store / "catalog.sqlite").stat().st_size)
+
+
 def commit_checkpoint(root: Path, store: Path, *, expected_head: str | None) -> str:
     """Seal quiescent state and advance a matching head. None explicitly bootstraps."""
     if expected_head is not None and not re.fullmatch(bundles.HASH, expected_head):
@@ -111,16 +126,9 @@ def commit_checkpoint(root: Path, store: Path, *, expected_head: str | None) -> 
                 files = target / "files"
                 bundles._verify_files(files, bundles._inventory(files, strict=True), entries)
             if digest != expected_head:
-                db.execute(
-                    "INSERT INTO current_checkpoint(singleton, root, digest) VALUES(1, ?, ?) "
-                    "ON CONFLICT(singleton) DO UPDATE SET digest=excluded.digest",
-                    (str(root), digest),
-                )
+                _set_head(db, root, digest)
                 # Pending SQLite pages may only reach the file after the copy check.
-                pages = db.execute("PRAGMA page_count").fetchone()[0]
-                page_size = db.execute("PRAGMA page_size").fetchone()[0]
-                pending = max(0, pages * page_size - (store / "catalog.sqlite").stat().st_size)
-                bundles._reserve(root, target, pending, (store,))
+                bundles._reserve(root, target, _pending_catalogue_bytes(db, store), (store,))
             if install:
                 staged.rename(target)
         # SQLite exposes the new head only after the immutable object is installed.
@@ -141,24 +149,111 @@ def resume_checkpoint(root: Path, store: Path) -> str:
     return digest
 
 
+def _artifact_budget(payload_bytes: int, retained_bytes: int) -> int:
+    if type(retained_bytes) is not int or retained_bytes < 0:
+        raise IngestError("Retained artifact bytes must be a nonnegative integer")
+    budget = load_budgets(bundles.ROOT / "configs/budgets.yaml").github_actions
+    if payload_bytes + retained_bytes > budget.artifacts_mb * 1_000_000:
+        raise ArchiveOnly("Checkpoint would exceed the configured artifact budget")
+    return budget.artifact_retention_days
+
+
+def offer_checkpoint(root: Path, store: Path, *, retained_artifact_bytes: int) -> dict:
+    """Verify the current generation and report its exact local artifact candidate."""
+    try:
+        root = bundles._path(root)
+    except FileNotFoundError:
+        root = bundles._path(root, destination=True)
+    store = _store_path(root, store, create=False)
+    with _locked_catalogue(store, create=False) as db:
+        digest = _head(db, root)
+        if digest is None:
+            raise IngestError("Runner catalogue has no committed head")
+        bundle = bundles._path(store / "objects" / digest)
+        entries = bundles._manifest(bundle, root, digest)
+        size = bundles._stat(bundle / "manifest.json").st_size + sum(
+            entry["bytes"] for entry in entries.values()
+        )
+        retention = _artifact_budget(size, retained_artifact_bytes)
+        files = bundle / "files"
+        bundles._verify_files(files, bundles._listed_inventory(files, entries), entries)
+        bundles._check_references(files, entries, root)
+    return {
+        "status": "ready",
+        "bundle_path": str(bundle),
+        "manifest_sha256": digest,
+        "payload_bytes": size,
+        "retention_days": retention,
+    }
+
+
+def import_checkpoint(root: Path, bundle: Path, store: Path, expected_sha256: str) -> str:
+    """Install a verified downloaded generation in an absent local store."""
+    root = bundles._path(root, destination=True)
+    bundle = bundles._path(bundle)
+    store = bundles._path(store, destination=True)
+    bundles._disjoint(root, store)
+    bundles._disjoint(bundle, store)
+    bundles._disjoint(bundle, root)
+    entries = bundles._manifest(bundle, root, expected_sha256)
+    manifest_size = bundles._stat(bundle / "manifest.json").st_size
+    size = manifest_size + sum(entry["bytes"] for entry in entries.values())
+    _artifact_budget(size, 0)
+    before = bundles._listed_inventory(bundle / "files", entries)
+    bundles._reserve(bundle, store, size, ())
+    with tempfile.TemporaryDirectory(prefix=".runner-import-", dir=store.parent) as temporary:
+        stage = Path(temporary)
+        with _locked_catalogue(stage, create=True) as db:
+            target = stage / "objects" / expected_sha256
+            bundles._stage_members(bundle, target / "files", root, expected_sha256, entries, before)
+            copied = bundles._copy_file(
+                bundle / "manifest.json", target / "manifest.json", manifest_size
+            )
+            if copied != expected_sha256:
+                raise IngestError("Checkpoint manifest changed during import")
+            _set_head(db, root, expected_sha256)
+            bundles._reserve(bundle, store, _pending_catalogue_bytes(db, stage), (stage,))
+        bundles._absent(root)
+        bundles._absent(store)
+        stage.rename(store)
+    return expected_sha256
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
-    for command in ("runner-save", "runner-restore"):
+    for command in ("runner-save", "runner-restore", "runner-offer", "runner-import"):
         action = commands.add_parser(command)
         action.add_argument("--root", type=Path, default=bundles.ROOT / ".cache/feeds")
         action.add_argument("--store", type=Path, required=True)
         if command == "runner-save":
             action.add_argument("--expected-head", required=True)
+        elif command == "runner-offer":
+            action.add_argument("--retained-artifact-bytes", type=int, required=True)
+        elif command == "runner-import":
+            action.add_argument("--bundle", type=Path, required=True)
+            action.add_argument("--expected-sha256", required=True)
     args = parser.parse_args()
     try:
         if args.command == "runner-save":
             expected = None if args.expected_head == "empty" else args.expected_head
             digest = commit_checkpoint(args.root, args.store, expected_head=expected)
             status = "saved"
-        else:
+        elif args.command == "runner-restore":
             digest = resume_checkpoint(args.root, args.store)
             status = "restored"
+        elif args.command == "runner-import":
+            digest = import_checkpoint(args.root, args.bundle, args.store, args.expected_sha256)
+            status = "imported"
+        else:
+            print(
+                json.dumps(
+                    offer_checkpoint(
+                        args.root, args.store, retained_artifact_bytes=args.retained_artifact_bytes
+                    )
+                )
+            )
+            return
     except (ArchiveOnly, IngestError, OSError, sqlite3.Error) as error:
         reason = (
             str(error) if isinstance(error, (ArchiveOnly, IngestError)) else type(error).__name__

@@ -34,7 +34,7 @@ elseif ($args.Count -gt 0 -and $args[0] -eq 'capture-admitted') {
 elseif ($args.Count -gt 0 -and $args[0] -in @('checkpoint-save', 'checkpoint-restore')) {
     $atlasModule = 'atlas.ingest.checkpoint_bundle'
 }
-elseif ($args.Count -gt 0 -and $args[0] -in @('runner-save', 'runner-restore')) {
+elseif ($args.Count -gt 0 -and $args[0] -in @('runner-save', 'runner-restore', 'runner-offer', 'runner-import')) {
     $atlasModule = 'atlas.ingest.runner_checkpoint'
 }
 elseif ($args.Count -gt 0 -and $args[0] -eq 'runner-cycle') {

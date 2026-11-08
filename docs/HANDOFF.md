@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 8 Nov 2026, T246 equivalent runner projection reuse,
+Last updated: 8 Nov 2026, T247 verified checkpoint artifact handoff,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T246. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D81. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T247. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D82. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -224,6 +224,7 @@ and a YAML block `- id: T057`.
 | T244 (child of T043) | D79/A27 | `runner-cycle` composes verified restore, one signed capture and expected-head save in a 150-second child. It keeps the working root on refusal or timeout and saves valid local control after handled capture failure. Acceptance 11 passed in 17.78s. |
 | T245 (child of T043) | D80/A28 | `runner-cycle --upload-local` prepares successful capture, saves a verified generation and signs its immutable bytes. A lost acknowledgement can retry the same prepared head on `not_due`. Acceptance 14 passed in 20.18s. |
 | T246 (child of T043) | D81/A29 | The runner reuses an intact prepared head across cutoffs when inputs and projection match. Actual source checks, expiration and forecast selection can change the output. |
+| T247 (child of T043) | D82/A30 | Offer the verified current bundle for artifact transport and import it with an independent digest into a fresh store. The offer checks the configured retained-byte budget. Acceptance 10 passed in 5.57s. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -396,6 +397,18 @@ CAP expiry, changed weather validity, a corrupt prior payload, and the
 existing standalone cutoff and transport byte limits. The source acceptance
 passed 77 tests in 35.07s, and the cycle and checkpoint regressions passed 41
 tests in 51.68s. Ruff, formatting, amendment parity and whitespace passed.
+Combined T245/T246 `44bc5b8` passed core Windows/Ubuntu run 42453474105,
+Worker/D1 42453474158 and browser Windows/Ubuntu 42453474023.
+
+T247 keeps the v1 original-path bundle and transfers only its verified
+current object. A local import stages and verifies that bundle before
+installing a fresh catalogue. The weather fixture test preserved bytes and
+provider cooldown across a copied directory. The PowerShell smoke verified
+offer, import and restore. The 54 bundle, catalogue and cycle regressions
+passed in 64.16s. Ruff, formatting, dependency policy, parity and whitespace
+checks passed. The 400 MB preflight uses uncompressed candidate
+bytes and caller-supplied retained usage. Hosted artifact selection,
+actual usage accounting and activation remain separate.
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
@@ -581,7 +594,8 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    one restored and admitted capture with a checkpoint save. T245 prepares
    and sends from the saved generation when `--upload-local` is selected.
    T246 avoids new prepared snapshots when only generated clocks differ.
-   Continue with hosted persistence and recurring-run preparation.
+   T247 verifies the local artifact handoff and fresh-store import. Continue
+   with trusted hosted artifact selection and recurring-run preparation.
    Remote upload and activation retain the capability and release gates. Research in
    `.cache/t043-research/findings.md` verifies that a full cold CAP+polygon sweep
    already needs 200 seconds of spacing alone; use bounded CAP-only admission,

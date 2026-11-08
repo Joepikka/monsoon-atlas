@@ -513,6 +513,29 @@ def save_checkpoint(
     return hashlib.sha256(encoded).hexdigest()
 
 
+def _listed_inventory(files: Path, entries: dict) -> dict:
+    before = _inventory(files, strict=True)
+    if {name: info[0] for name, info in before.items()} != {
+        name: entry["bytes"] for name, entry in entries.items()
+    }:
+        raise IngestError("Checkpoint bundle inventory or size differs from the manifest")
+    return before
+
+
+def _stage_members(
+    bundle: Path, stage: Path, root: Path, expected_sha256: str, entries: dict, before: dict
+) -> None:
+    files = bundle / "files"
+    for name, entry in entries.items():
+        if _copy_file(files / name, stage / name, entry["bytes"]) != entry["sha256"]:
+            raise IngestError("Checkpoint bundle bytes differ from the manifest")
+    _verify_files(stage, _inventory(stage, strict=True), entries)
+    _check_references(stage, entries, root)
+    if _inventory(files, strict=True) != before:
+        raise IngestError("Checkpoint bundle changed during restore")
+    _manifest(bundle, root, expected_sha256)
+
+
 def restore_checkpoint(
     root: Path,
     bundle: Path,
@@ -524,25 +547,13 @@ def restore_checkpoint(
     root, bundle = _path(root, destination=True), _path(bundle)
     _disjoint(bundle, root)
     entries = _manifest(bundle, root, expected_sha256)
-    files = bundle / "files"
-    before = _inventory(files, strict=True)
-    if {name: info[0] for name, info in before.items()} != {
-        name: entry["bytes"] for name, entry in entries.items()
-    }:
-        raise IngestError("Checkpoint bundle inventory or size differs from the manifest")
+    before = _listed_inventory(bundle / "files", entries)
     _reserve(
         bundle, root, sum(entry["bytes"] for entry in entries.values()), additional_quota_roots
     )
     with tempfile.TemporaryDirectory(prefix=".checkpoint-", dir=root.parent) as temporary:
         stage = Path(temporary)
-        for name, entry in entries.items():
-            if _copy_file(files / name, stage / name, entry["bytes"]) != entry["sha256"]:
-                raise IngestError("Checkpoint bundle bytes differ from the manifest")
-        _verify_files(stage, _inventory(stage, strict=True), entries)
-        _check_references(stage, entries, root)
-        if _inventory(files, strict=True) != before:
-            raise IngestError("Checkpoint bundle changed during restore")
-        _manifest(bundle, root, expected_sha256)
+        _stage_members(bundle, stage, root, expected_sha256, entries, before)
         _absent(root)
         stage.rename(root)
 
