@@ -1,6 +1,19 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T267
+    parent: T130
+    title: "Vertical datum evidence for KSEB dams"
+    phase: P1
+    state: KL
+    depends_on: [T226, T228]
+    files: [scripts/kl_datum.py, tests/fixtures/s32/manifest.json, configs/sources/s32.yaml, docs/labels/kerala.md, tests/test_kl_datum.py]
+    steps:
+      - "Fetch the 18 KSEB dam manuals through the project fetcher as S32 evidence e81-e98"
+      - "Find each manual's own statement of the levelling reference, with its page"
+      - "Record a per-dam datum table; a silent manual leaves that dam unknown"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_kl_datum.py -q'
   - id: T266
     parent: T046
     title: "C3 Ask recorded as research-only"

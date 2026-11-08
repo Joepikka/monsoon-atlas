@@ -462,6 +462,14 @@ the Ask case study say so, and H11 decides whether it meets T046 extra
 check (2). Estimate 1 hour. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/test_ka_release.py tests/test_web_ask.py tests/test_case_studies.py -q`.
 
+## A50. Vertical datum evidence for KSEB dams (D103, 8 November 2026)
+
+T267 is a child of T130 after T226/T228. Fetch KSEB's 18 dam operation and
+maintenance manuals as S32 evidence, read each manual's own statement of
+the levelling reference, and record a per-dam datum table. Only a quoted
+statement with its page counts. Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/test_kl_datum.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -482,6 +490,19 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T267
+    parent: T130
+    title: "Vertical datum evidence for KSEB dams"
+    phase: P1
+    state: KL
+    depends_on: [T226, T228]
+    files: [scripts/kl_datum.py, tests/fixtures/s32/manifest.json, configs/sources/s32.yaml, docs/labels/kerala.md, tests/test_kl_datum.py]
+    steps:
+      - "Fetch the 18 KSEB dam manuals through the project fetcher as S32 evidence e81-e98"
+      - "Find each manual's own statement of the levelling reference, with its page"
+      - "Record a per-dam datum table; a silent manual leaves that dam unknown"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_kl_datum.py -q'
   - id: T266
     parent: T046
     title: "C3 Ask recorded as research-only"

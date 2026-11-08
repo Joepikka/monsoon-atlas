@@ -2,6 +2,21 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D103 — Vertical datum evidence for KSEB dams (8 Nov 2026; owner approved the downloads in chat: "Yes, download them").**
+  Split T267 from T130, whose data gate needs a known vertical datum and
+  whose sources (S32, S34) state none. KSEB's Dam Safety section on kseb.in
+  publishes operation and maintenance manuals per dam; the Idukki manual
+  (O&M-09) says its levelling references come from Survey of India
+  benchmarks above mean sea level. kseb.in's robots.txt disallows nothing.
+  The 18 manuals (about 101 MB) are fetched through the project fetcher into
+  ignored `data/raw/S32/` as S32 evidence e81-e98, because KSEB publishes
+  S32. Each dam counts as datum-known only when its own manual states the
+  reference (mean sea level or a named datum) in text that can be quoted with
+  its page; a dam whose manual is silent, or only gives "EL" numbers, stays
+  unknown. The datum table goes in `docs/labels/kerala.md`. This settles the
+  datum part of the T130 gate only; daily coverage, OCR validation and splits
+  stay mandatory. Irrigation-department dams need a separate source.
+
 - **D102 — S34 OCR sample reviewed by the agent on the owner's delegation (8 Nov 2026; owner in chat: "u do the review and all then continue the project").**
   D50 asks the owner to read each crop and supply the value. The owner
   delegated this to the agent. The agent read all eight crops of the T228
