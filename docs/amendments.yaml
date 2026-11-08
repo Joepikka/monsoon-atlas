@@ -1,6 +1,21 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T259
+    parent: T046
+    title: "Web accuracy page"
+    phase: P1
+    state: KA
+    depends_on: [T038, T257, T258]
+    files: [src/atlas/models/accuracy.py, web/src/accuracy.ts, web/src/accuracy.test.ts, web/src/pages/Accuracy.tsx, web/src/main.tsx, web/src/App.tsx, web/tests/accuracy.spec.ts, web/tests/fixtures/accuracy-ka.json, tests/test_web_accuracy.py]
+    steps:
+      - "Export accuracy rows as release bytes; bind the browser fixture to the committed records"
+      - "Load only an approved pointer with a matching SHA-256; keep null values unavailable, never zero"
+      - "Check empty, error and populated states at three viewports with keyboard and axe checks"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_web_accuracy.py -q'
+      expected: "The page shows C1, C2 and M06 from a verified release; missing or unapproved releases show an honest state"
+    hours: 3
   - id: T258
     parent: T046
     title: "M05 model card"

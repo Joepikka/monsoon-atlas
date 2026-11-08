@@ -392,6 +392,15 @@ T258 is a child of T046 after T257. Write the C2 model card in the plan's M05
 card fields, using only numbers from its cited sources. Estimate 1 hour.
 Acceptance is `.\.venv\Scripts\python -m pytest tests/test_ka_release.py -q`.
 
+## A42. Web accuracy page (D94, 8 November 2026)
+
+T259 is a child of T046 after T038/T257/T258. Add the F036 accuracy page: it
+loads only an approved, hash-checked accuracy release, shows unavailable
+values as unavailable, and explains when no release exists. Browser checks
+use a fixture generated from the committed records. No production data is
+seeded. Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/test_web_accuracy.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -412,6 +421,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T259
+    parent: T046
+    title: "Web accuracy page"
+    phase: P1
+    state: KA
+    depends_on: [T038, T257, T258]
+    files: [src/atlas/models/accuracy.py, web/src/accuracy.ts, web/src/accuracy.test.ts, web/src/pages/Accuracy.tsx, web/src/main.tsx, web/src/App.tsx, web/tests/accuracy.spec.ts, web/tests/fixtures/accuracy-ka.json, tests/test_web_accuracy.py]
+    steps:
+      - "Export accuracy rows as release bytes; bind the browser fixture to the committed records"
+      - "Load only an approved pointer with a matching SHA-256; keep null values unavailable, never zero"
+      - "Check empty, error and populated states at three viewports with keyboard and axe checks"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_web_accuracy.py -q'
+      expected: "The page shows C1, C2 and M06 from a verified release; missing or unapproved releases show an honest state"
+    hours: 3
   - id: T258
     parent: T046
     title: "M05 model card"

@@ -2,6 +2,16 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D94 — Accuracy page uses the approved-release contract (8 Nov 2026).**
+  Split T259 from T046. The page reads `/data/ka/accuracy/latest.json`, a
+  pointer that must say `approved` and name `/data/ka/accuracy/<sha256>.json`;
+  the bytes must match that digest. Without a release it says none exists.
+  Null values render as "Unavailable", never 0. The page opens at
+  `?page=accuracy` instead of adding a router dependency. The browser fixture
+  is generated from the committed records by `atlas.models.accuracy`, and a
+  test keeps them identical. No production accuracy release is seeded; H11
+  approves publication.
+
 - **D93 — M05 model card states its deviations (8 Nov 2026).** Split T258
   from T046. The card follows the plan's M05 fields and records where the
   release differs: district units instead of taluks (no taluk polygons), no
