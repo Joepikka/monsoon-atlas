@@ -2,6 +2,17 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D105 — P2 starts while T046 stays open (9 Nov 2026; owner: "continue with the project", C1 deferred in D104).**
+  A8 puts P2 after the T046 gate and H11. T046 cannot close now: C1 is
+  deferred (D104), and the H11 sheet (`docs/releases/h11-ka.md`) and the
+  H05/H06 tokens are open. The owner asked to continue, so P2 work proceeds
+  locally; nothing is deployed and no restricted-licence values are
+  published until H11. T223 (Power BI) and T224 (SQL insights) are deferred
+  to the end of P2: their example pages need reservoir, flood-label and price
+  data that are blocked (KWRIS, S43, S23), and IMD-derived values wait for
+  H11 item 3. P2 continues in the plan's order with the open-data source
+  tasks, starting with T047 (S03 Open-Meteo GloFAS river discharge).
+
 - **D104 — C1 deferred to the owner at the end of the project (9 Nov 2026; owner in chat: "do not bother with emails to kseb i do not think there is going to be a reply and continue with the project" and "mark it i will think when the whole project is done").**
   C1 stays blocked at its data gate: M02 has no daily history (KWRIS, T008),
   and M07 has a stated datum for 4 of the 8 dams T130 needs (D103). No email
