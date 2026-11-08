@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D87 — Build the MVP Ask corpus and lexical retrieval first (8 Nov 2026).**
+  Split T252 from T179. A3/A8 move English Ask (C3) into P1; the plan's T179
+  dependency on T166 (Delhi gate) belongs to its full multi-state scope, so
+  this child indexes only committed project documents listed in
+  `configs/rag.yaml`. A document's `available_at` is the commit time of the
+  indexed content, so an as-of query never sees a later edit. Words and
+  punctuation stand in for e5 tokens until the pinned tokenizer is installed.
+  BM25 over SQLite FTS5 runs first; the e5 embedding rerank needs the
+  deep-learning lock and a model download, which wait for owner approval.
+  At most two chunks come from one document, so long logs cannot crowd out
+  a specific report. Plan questions Q41-Q50 are not used for development.
+
 - **D86 — Relay hosted checkpoints by manual dispatch only (8 Nov 2026).**
   Split T251 from T043 after T249/T250. Add `.github/workflows/feeds.yml`
   with `workflow_dispatch` only, one serial concurrency group, a three-minute

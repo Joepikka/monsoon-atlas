@@ -337,6 +337,14 @@ requested empty chain, within the job's three-minute bound. Recurrence and
 hosted capture stay disabled. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/test_feeds_workflow.py -q`.
 
+## A35. English Ask corpus and lexical retrieval (D87, 8 November 2026)
+
+T252 is a child of T179 after T037/T103/T222. Index only committed project
+documents listed in `configs/rag.yaml`, with commit-time availability, and
+retrieve with as-of, state and language filters before BM25 ranking. The e5
+embedding rerank is a later child. Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/rag/test_retrieval.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -357,6 +365,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T252
+    parent: T179
+    title: "Index the English Karnataka Ask corpus with lexical retrieval"
+    phase: P1
+    state: KA
+    depends_on: [T037, T103, T222]
+    files: [configs/rag.yaml, src/atlas/rag/corpus.py, src/atlas/rag/index.py, src/atlas/rag/retrieve.py, eval/rag/retrieval_dev.jsonl, tests/rag/test_retrieval.py, docs/ask.md]
+    steps:
+      - "Index only committed project documents listed in configs/rag.yaml, with commit-time availability, licence and hashes"
+      - "Chunk by heading into 300-token windows with 50-token overlap; keep each table row whole"
+      - "Filter by as-of, state and language before BM25; quote every query term; cap per-document results and context"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/rag/test_retrieval.py -q'
+      expected: "As-of, expiry, state, language and licence filters hold; a gold document is in the top five for at least 85% of development questions"
+    hours: 3
   - id: T251
     parent: T043
     title: "Wire the manual hosted checkpoint relay workflow"
