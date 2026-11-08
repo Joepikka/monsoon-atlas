@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D86 — Relay hosted checkpoints by manual dispatch only (8 Nov 2026).**
+  Split T251 from T043 after T249/T250. Add `.github/workflows/feeds.yml`
+  with `workflow_dispatch` only, one serial concurrency group, a three-minute
+  job limit and read-only `contents`/`actions` scopes. A run continues its
+  immediate verified predecessor through the pinned download action (by
+  artifact ID, extraction off) and the T250 importer, then uploads the
+  committed bundle for its successor. A new chain needs the explicit manual
+  `bootstrap` input; a scheduled run can never bootstrap. Capture stays out
+  of the hosted job until the Worker capability gate (H05) passes. The
+  schedule stays off: GitHub cancels a pending run in a busy concurrency
+  group, and that cancelled run would break the T249 chain. The 20 GB
+  free-space reserve is unchanged and fails closed on the hosted runner.
+
 - **D85 — Verify the downloaded checkpoint archive before import (8 Nov 2026).**
   Split T250 from T043 after T247/T249. Use GitHub's existing artifact download
   action for transport by pinned artifact ID, with extraction disabled. A

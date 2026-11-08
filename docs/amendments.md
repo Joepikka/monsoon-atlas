@@ -329,6 +329,14 @@ T250 is a child of T043 after T247/T249. Verify and stage the raw downloaded
 ZIP before importing it into an absent store. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/test_hosted_archive.py -q`.
 
+## A34. Manual hosted checkpoint relay (D86, 8 November 2026)
+
+T251 is a child of T043 after T249/T250. Add a manual-only workflow that
+continues the immediate verified checkpoint, or starts an explicitly
+requested empty chain, within the job's three-minute bound. Recurrence and
+hosted capture stay disabled. Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/test_feeds_workflow.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -349,6 +357,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T251
+    parent: T043
+    title: "Wire the manual hosted checkpoint relay workflow"
+    phase: P1
+    state: KA
+    depends_on: [T249, T250]
+    files: [.github/workflows/feeds.yml, src/atlas/ingest/hosted_checkpoint.py, src/atlas/ingest/hosted_archive.py, src/atlas/ingest/runner_checkpoint.py, tests/test_feeds_workflow.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Add a manual-only, serial, three-minute workflow with pinned actions and read-only scopes"
+      - "Select the immediate predecessor or verify an explicit manual bootstrap; download by artifact ID without extraction"
+      - "Import from an isolated single-file download directory, then offer and upload the committed bundle"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_feeds_workflow.py -q'
+      expected: "Workflow uses only real selector and offer fields; bootstrap never replaces state; relayed bundles import byte-identically"
+    hours: 3
   - id: T250
     parent: T043
     title: "Verify and import a downloaded checkpoint ZIP"
