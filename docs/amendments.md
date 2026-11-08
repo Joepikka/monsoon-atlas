@@ -345,6 +345,14 @@ retrieve with as-of, state and language filters before BM25 ranking. The e5
 embedding rerank is a later child. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/rag/test_retrieval.py -q`.
 
+## A36. Ask answer contract with extractive fallback (D88, 8 November 2026)
+
+T253 is a child of T180 after T229/T252. Add the Worker's pure answer
+contract: fixed system rules, evidence passed as JSON data, plan quotas,
+validation of generated citations and numbers, and a cited extractive
+fallback. No AI binding, route or account is created. Estimate 3 hours.
+Acceptance is `.\.venv\Scripts\python -m pytest tests/test_ask_config.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -365,6 +373,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T253
+    parent: T180
+    title: "Ask answer contract with cited extractive fallback"
+    phase: P1
+    state: KA
+    depends_on: [T229, T252]
+    files: [worker/src/ask.ts, worker/tests/ask.test.mjs, worker/package.json, tests/test_ask_config.py]
+    steps:
+      - "Keep system rules fixed and pass retrieved chunks only as JSON evidence within the 3000-token input cap"
+      - "Apply 100 answers/day, 6 requests/minute and 8000 neurons/day before any generation call"
+      - "Accept generated JSON only when every citation is retrieved and every number appears in cited evidence; otherwise return cited excerpts"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_ask_config.py -q'
+      expected: "Quota exhaustion returns a cited extractive answer; hostile evidence cannot change rules or citations; no AI binding or secret is configured"
+    hours: 3
   - id: T252
     parent: T179
     title: "Index the English Karnataka Ask corpus with lexical retrieval"

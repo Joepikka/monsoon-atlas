@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D88 — Build the Ask answer contract before any AI binding (8 Nov 2026).**
+  Split T253 from T180 after T229/T252. Workers AI needs H05 and the
+  free/no-card probe, so this child adds only pure Worker logic: the plan's
+  fixed system prompt, evidence serialized as JSON data, the 100/day,
+  6/minute and 8000-neuron quotas, and checks that accept generated JSON only
+  when every citation names a retrieved chunk and every number appears in
+  cited text. Any other case returns quoted excerpts with citations. No
+  route, AI binding or account is added; the trusted chunk manifest and the
+  `/api/v1/ask` route are a later child. The owner delegated reversible
+  choices on 8 Nov; the e5 model download stays deferred because lexical
+  recall already passes and drive space is limited.
+
 - **D87 — Build the MVP Ask corpus and lexical retrieval first (8 Nov 2026).**
   Split T252 from T179. A3/A8 move English Ask (C3) into P1; the plan's T179
   dependency on T166 (Delhi gate) belongs to its full multi-state scope, so
