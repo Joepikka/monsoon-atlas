@@ -47,8 +47,25 @@ def manifest(index: Path = INDEX) -> dict:
     for item in chunks:
         if hashlib.sha256(item["text"].encode("utf-8")).hexdigest() != item["sha256"]:
             raise ManifestError(f"{item['chunk_id']} text does not match its SHA-256")
-    body = json.dumps({"schema_version": 1, "chunks": chunks}, sort_keys=True, ensure_ascii=False)
-    return {"release": hashlib.sha256(body.encode("utf-8")).hexdigest(), "chunks": chunks}
+    return {"release": hashlib.sha256(public_bytes(chunks)).hexdigest(), "chunks": chunks}
+
+
+def public_bytes(chunks: list[dict]) -> bytes:
+    """Canonical chunk list; the web corpus file is exactly these bytes (D96)."""
+    body = {"schema_version": 1, "chunks": chunks}
+    return json.dumps(body, sort_keys=True, ensure_ascii=False).encode("utf-8")
+
+
+def write_atomic(path: Path, data: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    handle, temporary = tempfile.mkstemp(prefix=".ask-", dir=path.parent)
+    try:
+        with os.fdopen(handle, "wb") as stream:
+            stream.write(data)
+        os.replace(temporary, path)
+    except BaseException:
+        Path(temporary).unlink(missing_ok=True)
+        raise
 
 
 def literal(value: str | None) -> str:
@@ -82,22 +99,18 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--index", type=Path, default=INDEX)
     parser.add_argument("--output", type=Path, default=OUTPUT)
+    parser.add_argument("--public", type=Path, help="write <release>.json and latest.json here")
     args = parser.parse_args()
     release = manifest(args.index)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    handle, temporary = tempfile.mkstemp(prefix=".ask-", suffix=".sql", dir=args.output.parent)
-    with os.fdopen(handle, "w", encoding="utf-8", newline="\n") as stream:
-        stream.write(load_sql(release))
-    os.replace(temporary, args.output)
-    print(
-        json.dumps(
-            {
-                "release": release["release"],
-                "chunks": len(release["chunks"]),
-                "output": str(args.output),
-            }
-        )
-    )
+    name = release["release"]
+    write_atomic(args.output, load_sql(release).encode("utf-8"))
+    if args.public:
+        # Corpus first, pointer last: a reader never sees a pointer to a missing file.
+        write_atomic(args.public / f"{name}.json", public_bytes(release["chunks"]))
+        pointer = {"schema_version": 1, "release": name, "url": f"/data/ask/{name}.json"}
+        write_atomic(args.public / "latest.json", json.dumps(pointer).encode("utf-8"))
+    summary = {"release": name, "chunks": len(release["chunks"]), "output": str(args.output)}
+    print(json.dumps(summary))
 
 
 if __name__ == "__main__":

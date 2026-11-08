@@ -94,3 +94,21 @@ the pointer, then deletes old rows, one statement per line, so a partial
 load never changes what is served. Loading it into the remote D1 database
 (`wrangler d1 execute --remote --file`) is a deploy step that waits for H05.
 The 8 Nov 2026 index exports 333 chunks from 31 documents.
+
+## Ask page (T261)
+
+`?page=ask` (header link "Ask") is the English text Ask page. It loads
+`/data/ask/latest.json`, which must name `/data/ask/<release>.json`; that
+file is the canonical chunk list from `python -m atlas.rag.manifest
+--public <dir>`, and its SHA-256 must equal the release ID, so the browser
+and the Worker work from the same chunks. The browser searches it with BM25
+in `web/src/ask-search.ts` (heading weight 2, the same as-of, state, expiry,
+two-per-document and near-duplicate rules as retrieval; a suffix trim stands
+in for the Porter stemmer). On the 20 dev questions it finds a gold document
+in the top five for 90%, the same as the Python path. The top five chunk IDs
+go to `POST /api/v1/ask` with `place_id` `in:ka` and the current UTC second
+as `as_of`. The page shows the Worker's answer only if its release, as-of
+and citations match the request; otherwise it shows the same local results
+with a notice. Citation cards give the heading, file path, commit time and
+evidence age. No corpus is published in `web/public` yet: the deploy step
+writes it (H05), so the live page says Ask has not been published.

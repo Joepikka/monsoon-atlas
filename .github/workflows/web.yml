@@ -1,9 +1,9 @@
 name: Web shell
 on:
   push:
-    paths: ['web/**', 'scripts/web.ps1', '.github/workflows/web.yml']
+    paths: ['web/**', 'worker/src/ask.ts', 'scripts/web.ps1', '.github/workflows/web.yml']
   pull_request:
-    paths: ['web/**', 'scripts/web.ps1', '.github/workflows/web.yml']
+    paths: ['web/**', 'worker/src/ask.ts', 'scripts/web.ps1', '.github/workflows/web.yml']
 permissions:
   contents: read
 jobs:

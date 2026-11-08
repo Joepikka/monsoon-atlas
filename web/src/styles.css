@@ -133,6 +133,72 @@ h1,h2,h3,p{
   outline:3px solid var(--teal);
   outline-offset:2px
 }
+.ask{
+  max-width:860px;
+  margin:0 auto;
+  padding:24px 16px
+}
+.ask h1{
+  font-size:24px;
+  margin:12px 0 8px
+}
+.ask-status.error,.ask-notice{
+  color:#8a2b17
+}
+.ask-form{
+  display:grid;
+  gap:8px;
+  margin:16px 0
+}
+.ask-form textarea{
+  width:100%;
+  font:inherit;
+  padding:8px;
+  border:1px solid var(--muted);
+  border-radius:4px;
+  background:var(--paper)
+}
+.ask-form button{
+  justify-self:start;
+  font:inherit;
+  padding:8px 20px;
+  border:0;
+  border-radius:4px;
+  color:#fff;
+  background:var(--teal)
+}
+.ask-form button:disabled{
+  background:var(--muted)
+}
+.ask-text{
+  white-space:pre-wrap;
+  overflow-wrap:anywhere
+}
+.ask-citations{
+  padding-left:20px
+}
+.ask-citations article{
+  margin:0 0 12px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  background:var(--paper);
+  overflow-wrap:anywhere
+}
+.ask-citations h3{
+  font-size:16px;
+  margin:0 0 4px
+}
+.ask-citations p{
+  margin:4px 0
+}
+.ask-age{
+  color:var(--muted)
+}
+.ask-citations blockquote{
+  margin:8px 0 0;
+  padding-left:10px;
+  border-left:3px solid var(--line)
+}
 .atlas{
   max-width:1800px;
   margin:auto
