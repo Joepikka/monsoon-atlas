@@ -14,6 +14,7 @@ D39-D43.
 | Baselines | SPI-3 persistence and month climatology; persistence is stronger on the test rows. |
 | Candidates | Ridge (chosen) and LightGBM; LightGBM's tune gain over ridge was not significant (lower bound -0.013, D41). |
 | Achieved metrics (test) | MAE 0.732 vs 0.808 (ratio 0.906); improvement 0.076, 95% CI 0.003 to 0.150; drought PR-AUC 0.217 vs prevalence 0.057; Brier skill 0.116; CRPS 0.530 vs 0.586. All release gates pass. |
+| Monitoring (2025, provisional) | MAE 0.625 vs 0.744 for persistence (ratio 0.841): flag holds (T263, D98, `reports/models/m05-2025.md`). 80% intervals covered 0.869 that year; they stay hidden. |
 | Calibration | Probabilities run high: monsoon observed 0.045 vs mean 0.071; rest of year 0.062 vs 0.090. |
 | Uncertainty | 80% intervals cover 0.652 of test outcomes (v1) and 0.728 after recalibration on pre-test years (T262, D97, `reports/models/m05-intervals.md`); below the 75-85% gate, so they are not published. |
 | Data licence | IMD rain may not be reproduced; only derived SPI and model outputs may be published. |
