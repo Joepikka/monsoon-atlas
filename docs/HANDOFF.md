@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 8 Nov 2026, T261 English text Ask page,
+Last updated: 8 Nov 2026, T262 M05 interval recalibration,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T261. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D96. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T262. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D97. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -241,6 +241,7 @@ and a YAML block `- id: T057`.
 | T259 (child of T046) | D94/A42 | `?page=accuracy` web page (F036) loads only an approved, hash-checked accuracy release; blocked models show "Unavailable", never 0; header links to it. Fixture generated from committed records. Acceptance 3 passed; vitest 45 and all 69 browser checks pass (12 new). No release served. |
 | T260 (child of T180) | D95/A43 | `POST /api/v1/ask` reads client-chosen chunk IDs (max 5) only from the current trusted D1 release (`ask_chunks`, `ask_current`), rechecks SHA-256, as-of, state and expiry, refuses unknown IDs and client evidence, and returns the cited extractive answer. `python -m atlas.rag.manifest` exports 333 chunks as release `9957c42d…` with a pointer-swap load file. Acceptance 8 passed; Worker node tests 22 passed; real workerd/D1 runtime check passed locally. Generation, quota counters and the remote D1 load wait for H05. |
 | T261 (child of T182) | D96/A44 | `?page=ask` English text Ask page: loads the hash-checked public corpus (`/data/ask/latest.json` names `<release>.json`, bytes hash to the release ID), BM25 search in the browser (`web/src/ask-search.ts`, dev recall 90%), sends the top five chunk IDs to `/api/v1/ask`, shows the matching Worker answer or labelled local results, with citation cards (path, commit time, evidence age). Header link "Ask". Acceptance 5 passed; 12 new browser checks. No corpus published (H05). Voice and other languages stay outside the MVP. |
+| T262 (child of T103) | D97/A45 | M05 80% interval recalibration with the rule fixed before any run: out-of-sample ridge residuals from rolling origins 2000/2005/2010/2015, six rules ranked on 2010-2019 only; "last 5 years, by season" (80.3% there). One check on 2020-2024: coverage 0.728 (monsoon 0.643), below the 75-85% gate, so intervals stay hidden. Point forecasts unchanged. Record `models/registry/M05/v1.intervals.json`, report `reports/models/m05-intervals.md`. Acceptance 4 passed. The test years are now used twice for intervals; any further interval rule needs untouched data (IMD 2025 or later). |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -673,7 +674,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    model download. Workers AI waits for H05.
    T256 adds the T225 core case studies (H14 owner review pending). Next:
    T257 writes the accuracy rows and docs/releases/ka.md checklist (not
-   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. Next local work: recalibrate the M05 80% intervals (D42: 65% coverage) so the champion can show them; C3 still fails on evidence support until the e5 rerank (owner download approval);
+   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. Next local work is thin: most P1 items wait on owner steps; C3 still fails on evidence support until the e5 rerank (owner download approval);
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
    unresolved human/data gates must remain pending rather than blocking independent work.
 
