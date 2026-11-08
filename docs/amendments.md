@@ -287,6 +287,14 @@ restore, signed local admission, capture and expected-head save under one
 on interruption. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/test_runner_cycle.py -q`.
 
+## A29. Reuse equivalent runner projections (D81, 8 November 2026)
+
+T246 is a child of T043 after T245. The runner reuses verified prepared bytes
+when source inputs and projected data match despite a later preparation clock.
+Actual source changes and time-dependent projection changes still advance
+the head. Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/sources/test_s09_prepare.py tests/sources/test_s01_prepare.py -q`.
+
 ## A28. Bounded local preparation and upload (D80, 8 November 2026)
 
 T245 is a child of T043 after T235/T238/T239/T244. An explicit local runner
@@ -314,6 +322,20 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T246
+    parent: T043
+    title: "Reuse equivalent verified runner projections across cutoffs"
+    phase: P1
+    state: KA
+    depends_on: [T245]
+    files: [src/atlas/ingest/prepared.py, src/atlas/ingest/s09_prepare.py, src/atlas/ingest/s01_prepare.py, src/atlas/ingest/runner_cycle.py, tests/sources/test_s09_prepare.py, tests/sources/test_s01_prepare.py, docs/feeds.md]
+    steps:
+      - "Compare verified provenance and normalized output before reusing the exact prior head"
+      - "Keep actual validation and time-dependent changes visible and preserve explicit standalone cutoff behavior"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s09_prepare.py tests/sources/test_s01_prepare.py -q'
+      expected: "Unchanged projections reuse exact bytes; expired warnings, changed forecasts, new validations and corrupt heads are distinguished"
+    hours: 3
   - id: T245
     parent: T043
     title: "Prepare and upload a verified checkpoint snapshot in the bounded cycle"

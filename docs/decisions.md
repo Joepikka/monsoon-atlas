@@ -2,6 +2,14 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D81 — Reuse the verified runner projection when only its clock changes (8 Nov 2026).**
+  Split T246 from T043 after T245. The runner can reuse a prepared head at a
+  later cutoff when verified source inputs and the normalized projection are
+  identical apart from generated cutoff, publication and revision metadata.
+  Preserve the exact prior bytes and clocks. New input validation, an expired
+  alert or a changed forecast selection still prepares a new snapshot. Use
+  the existing signed retry and Worker idempotency for retained bytes.
+
 - **D80 — Prepare and send the saved local snapshot (8 Nov 2026).**
   Split T245 from T043 after T235/T238/T239/T244. The explicit runner
   `--upload-local` option prepares successful capture at the actual UTC cutoff
