@@ -2,6 +2,21 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D100 — Limit the two append-only logs in Ask results (8 Nov 2026).**
+  Split T265 from T179. `docs/decisions.md` (project/decisions) and
+  `docs/amendments.md` (project/amendments) grow with every task and mention
+  nearly every topic; they are 154 of the 333 chunks and crowd specific
+  documents out of the top five (practice recall fell from 0.90 at T252 to
+  0.85 at T264). Three rules are compared, all keeping the other retrieval
+  rules: L0 as now (any document at most two of the top five); L1 each log
+  at most one of the top five; L2 as L1, with the logs' BM25 scores halved
+  before ranking. The rule is chosen on the 27 dev cases by evidence
+  support, then by recall on the 20 retrieval dev questions, then the
+  simpler rule (L0, L1, L2). The C3 report is then run once. Expected
+  ceiling: even if Q23, Q33 and Q43 are fixed, evidence support is 33 of
+  35 (0.943), below 0.95, so the gate cannot pass through this change.
+  The browser search mirrors the chosen rule.
+
 - **D99 — e5 rerank for Ask retrieval, chosen on dev cases only (8 Nov 2026).**
   Split T264 from T179 (step 2 and 3, deferred in D88). The owner approved
   the full dl lock (torch 2.15.0 CPU, transformers 5.22.1,

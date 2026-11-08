@@ -446,6 +446,14 @@ only, as fixed in D99, then run the C3 report once with the chosen method.
 Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/rag/test_rerank.py -q`.
 
+## A48. Limit append-only logs in Ask results (D100, 8 November 2026)
+
+T265 is a child of T179 after T264. Compare three log rules fixed in D100
+on dev cases only, apply the chosen one to Python and browser retrieval,
+then run the C3 report once. It cannot pass the C3 gate alone (ceiling
+0.943). Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/rag/test_log_cap.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -466,6 +474,19 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T265
+    parent: T179
+    title: "Limit append-only logs in Ask results"
+    phase: P1
+    state: KA
+    depends_on: [T264]
+    files: [configs/rag.yaml, src/atlas/rag/retrieve.py, src/atlas/rag/evaluate.py, web/src/ask-search.ts, reports/rag.md, reports/rag-logs.md, tests/rag/test_log_cap.py, docs/ask.md]
+    steps:
+      - "Compare L0, L1 and L2 on dev cases only (D100)"
+      - "Apply the chosen rule to Python and browser retrieval"
+      - "Run the C3 report once and record the result"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/rag/test_log_cap.py -q'
   - id: T264
     parent: T179
     title: "e5 rerank for Ask retrieval"
