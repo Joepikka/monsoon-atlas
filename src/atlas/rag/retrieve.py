@@ -35,6 +35,7 @@ def _shingles(text: str) -> set[str]:
 
 
 METHODS = ("R0", "R1", "R2", "R3")
+LOG_RULES = ("L0", "L1", "L2")
 RRF_K = 60
 
 
@@ -65,15 +66,18 @@ def retrieve(
     method: str = "R0",
     embedder=None,
     vectors: dict | None = None,
+    logs: tuple[str, ...] = (),
+    log_rule: str = "L0",
 ) -> list[dict]:
     """Return at most `limit` distinct chunks known at `as_of`; question text is never SQL.
 
     At most `per_document` chunks come from one document, so long logs cannot crowd out
     the specific source or model report. `method` R1-R3 reorder candidates with e5 (D99):
-    `embedder` embeds the question and `vectors` holds the passage vectors.
+    `embedder` embeds the question and `vectors` holds the passage vectors. `log_rule` L1
+    keeps each document in `logs` to one of the results; L2 also halves their BM25 (D100).
     """
-    if method not in METHODS:
-        raise ValueError(f"Unknown retrieval method {method}")
+    if method not in METHODS or log_rule not in LOG_RULES:
+        raise ValueError(f"Unknown retrieval method {method} or log rule {log_rule}")
     if not isinstance(question, str) or not 0 < len(question) <= MAX_QUESTION:
         raise ValueError(f"Questions must contain 1 to {MAX_QUESTION} characters")
     cutoff = utc_text(as_of)
@@ -111,12 +115,17 @@ def retrieve(
             pool[key] for key in _order(method, [r["chunk_id"] for r in rows], cosine, candidates)
         ]
 
+    if log_rule == "L2" and method == "R0":
+        # bm25() is negative (lower is better), so halving a log's score ranks it lower.
+        weight = {True: 0.5, False: 1.0}
+        rows = sorted(rows, key=lambda r: (r["score"] * weight[r["doc_id"] in logs], r["chunk_id"]))
     selected, shingles, budget = [], [], max_context_tokens
     for row in rows:
         current = _shingles(row["text"])
+        cap = 1 if log_rule != "L0" and row["doc_id"] in logs else per_document
         if (
             row["tokens"] > budget
-            or sum(item["doc_id"] == row["doc_id"] for item in selected) >= per_document
+            or sum(item["doc_id"] == row["doc_id"] for item in selected) >= cap
             or any(len(current & other) / max(1, len(current | other)) > 0.5 for other in shingles)
         ):
             continue
