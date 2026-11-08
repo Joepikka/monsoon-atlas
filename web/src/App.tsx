@@ -96,9 +96,12 @@ export default function App() {
         </svg>
         <div><h1>Monsoon Atlas</h1><p>Weather, place &amp; evidence</p></div>
       </div>
-      <a className="official-link" href="https://sachet.ndma.gov.in/" target="_blank" rel="noopener noreferrer">
-        Official warnings <span aria-hidden="true">↗</span>
-      </a>
+      <nav className="masthead-links" aria-label="Site">
+        <a className="official-link" href="?page=accuracy">Model accuracy</a>
+        <a className="official-link" href="https://sachet.ndma.gov.in/" target="_blank" rel="noopener noreferrer">
+          Official warnings <span aria-hidden="true">↗</span>
+        </a>
+      </nav>
     </header>
 
     <main className="atlas" aria-label="Atlas workspace">

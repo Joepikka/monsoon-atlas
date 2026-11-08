@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 OUTPUT = ROOT / "docs/releases/ka.md"
+WEB_FIXTURE = ROOT / "web/tests/fixtures/accuracy-ka.json"
 
 
 def _json(path: str) -> dict:
@@ -154,10 +155,18 @@ def render() -> str:
     return "\n".join(lines)
 
 
+def release_json() -> str:
+    """Accuracy release bytes for the web page (T259); approval and serving are H11 steps."""
+    payload = {"schema_version": 1, "state": "ka", "rows": accuracy_rows()}
+    return json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
+
+
 def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(render(), "utf-8", newline="\n")
-    print(json.dumps({"written": str(OUTPUT.relative_to(ROOT))}))
+    # The browser fixture mirrors the committed records; it is test data, not a publication.
+    WEB_FIXTURE.write_text(release_json(), "utf-8", newline="\n")
+    print(json.dumps({"written": [str(p.relative_to(ROOT)) for p in (OUTPUT, WEB_FIXTURE)]}))
 
 
 if __name__ == "__main__":

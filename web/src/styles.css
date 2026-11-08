@@ -89,6 +89,50 @@ h1,h2,h3,p{
 .official-link span{
   margin-left:12px
 }
+.masthead-links{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:4px 18px
+}
+.accuracy{
+  max-width:1200px;
+  margin:0 auto;
+  padding:24px 16px
+}
+.accuracy h1{
+  font-size:24px;
+  margin:12px 0 8px
+}
+.accuracy-status.error{
+  color:#8a2b17
+}
+.accuracy-table{
+  max-width:100%;
+  overflow-x:auto;
+  border:1px solid var(--line);
+  background:var(--paper)
+}
+.accuracy-table table{
+  border-collapse:collapse;
+  min-width:960px;
+  font-size:14px
+}
+.accuracy-table caption{
+  text-align:left;
+  padding:10px 12px;
+  color:var(--muted)
+}
+.accuracy-table th,.accuracy-table td{
+  text-align:left;
+  vertical-align:top;
+  padding:8px 12px;
+  border-top:1px solid var(--line)
+}
+.accuracy-table:focus-visible{
+  outline:3px solid var(--teal);
+  outline-offset:2px
+}
 .atlas{
   max-width:1800px;
   margin:auto

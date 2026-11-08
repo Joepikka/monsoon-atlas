@@ -44,3 +44,13 @@ the browser suite now compares the container/canvas dimensions to the map panel.
 A real-server test also protects JSON requests from Vite's HTML fallback. Local
 captures at 360/768/1280px have no horizontal overflow. These first captures are
 an inspected reference, not a comparison against an earlier visual baseline.
+
+## Accuracy page (T259)
+
+`?page=accuracy` shows the model accuracy table (F036). It loads only
+`/data/ka/accuracy/latest.json` pointing, with `approved`, to
+`/data/ka/accuracy/<sha256>.json` whose bytes match that digest. Without a
+release it says none exists; an unapproved or tampered release is refused.
+Unavailable values show as "Unavailable", never 0. The browser fixture is
+written by `python -m atlas.models.accuracy` from committed records. No
+accuracy release is served until H11 approves publication.
