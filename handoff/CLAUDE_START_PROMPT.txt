@@ -1,0 +1,17 @@
+Continue Monsoon Atlas in D:\monsoon-atlas using this handoff and the current
+p1/gate-core checkout. Read docs/CLAUDE_HANDOFF.md and docs/HANDOFF.md first,
+then AGENTS.md, amendments.md/yaml, decisions.md and the original plan as needed.
+Review the existing implementation before editing. The latest implementation
+milestone is T250 at 75f7f67, with draft PR #5 open. Start with the next eligible
+T043 child for hosted download wiring and recurring-run preparation.
+
+Carry the remaining project forward through P1, P2, P3, P4 and P5 in dependency
+order. Make reasonable reversible decisions, record deviations, reuse existing
+code and keep work bounded. After each task, run acceptance checks, commit and
+push to the appropriate branch, update the repository handoff and D-drive
+Obsidian notes, then continue. Preserve blocked tasks and their retry conditions.
+Ask only for genuine human-only steps or destructive/irreversible decisions.
+H05/H06 tokens remain deferred, so continue independent local work. Keep the
+Rs 0, genuine-data, licence, privacy and honest-model constraints. Report what
+actually passes and what still prevents the next gate. The original plan remains
+unfinished; never infer completion from the highest task number.

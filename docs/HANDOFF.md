@@ -674,8 +674,8 @@ Amendments A8 order, with the D17 and D29 fallbacks:
 
 ## 11. Obsidian vault (owner's second brain)
 
-Historical vault location: `C:\Users\joepi\Documents\Obsidian Vault`. D26 keeps current
-project writes on D; this continuation updates the repository handoff only.
+Active vault location: `D:\Obsidian Vault` (migrated and verified on 8 Nov 2026).
+The original C-drive copy is a backup. Update the active D-drive vault.
 Project note: `Projects/kerala-live-map.md`
 (current state and next action). Session log: `Claude/Work log.md` (newest first). Facts:
 `Claude/Memory.md`. Never write credentials or raw datasets there.
