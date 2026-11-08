@@ -55,3 +55,16 @@ every number in it appears in the cited text. Every other case returns up to
 three quoted excerpts labelled as search results, with citations, or
 `insufficient_evidence` when nothing was retrieved. No route, AI binding or
 account exists yet: Workers AI waits for H05 and the free/no-card probe.
+
+## Evaluation (T254)
+
+`eval/rag/questions.jsonl` keeps the plan's 50 fixed questions (Q41-Q50 held
+out and hash-frozen) and `eval/rag/snapshot_gold.jsonl` the 10 numeric cases:
+60 English gold cases. 35 fixed questions resolve to a support phrase in an
+indexed document; 15 are deferred with reasons. Numeric gold is recomputed
+from committed files. `python -m atlas.rag.evaluate` rebuilds the index,
+scores the current extractive path and writes [the report](../reports/rag.md).
+Any invalid citation or wrong or unsupported number fails the gate, whatever
+the averages. The current result does not pass: retrieval misses some gold
+chunks and there is no structured numeric answer yet. Translations are not
+reviewed, so only English is evaluated.
