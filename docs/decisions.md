@@ -2,6 +2,26 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D97 — M05 interval recalibration rule, fixed before any test use (8 Nov 2026).**
+  Split T262 from T103. The approved v1 ridge point forecasts do not change.
+  Calibration residuals come from expanding-window rolling origins every five
+  years (plan M05 card): origins 2000, 2005, 2010 and 2015 each refit ridge
+  with the v1 alpha and features on rows whose target month ends at least 92
+  days before the origin (the v1 purge), then predict the next five years,
+  stopping at December 2019. Six rules are compared: residuals from the last
+  1, 5 or 10 years before the predicted year, pooled or split by season
+  (June to September and the rest); the interval is the forecast plus the
+  10th and 90th residual percentiles (`conformal_interval`). The rule is
+  chosen on 2010-2019 only: each year is covered with residuals from the
+  years before it, and the rule whose mean coverage is closest to 80% wins
+  (ties: narrower). The chosen rule, fed residuals up to 2019, is then
+  applied once to the 2020-2024 test. Intervals may be shown only if test
+  coverage is within 75-85% (the plan's interval gate); otherwise they stay
+  hidden. The test years were already seen once for v1 intervals (65%), so
+  this is a second look for intervals only and is reported as such. The
+  release file stays unchanged; results go to
+  `models/registry/M05/v1.intervals.json`.
+
 - **D96 — English text Ask page searches in the browser (8 Nov 2026).**
   Split T261 from T182 and pull only its English text part into P1, because
   C3 (F046 cited Ask, text, English) needs a page people can use. Voice, the

@@ -421,6 +421,15 @@ search results when the Worker is unavailable. Voice and the other three
 languages stay outside the MVP. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/test_web_ask.py -q`.
 
+## A45. M05 interval recalibration (D97, 8 November 2026)
+
+T262 is a child of T103. Recalibrate the M05 80% intervals with the rule
+fixed in D97: out-of-sample rolling-origin residuals, six candidate rules
+chosen on 2010-2019 only, then one check on 2020-2024 against the 75-85%
+coverage gate. Point forecasts and the v1 release file stay unchanged.
+Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/models/test_m05_intervals.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -441,6 +450,19 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T262
+    parent: T103
+    title: "M05 interval recalibration"
+    phase: P1
+    state: KA
+    depends_on: [T103, T034]
+    files: [src/atlas/models/m05.py, scripts/m05_intervals.py, models/registry/M05/v1.intervals.json, reports/models/m05-intervals.md, tests/models/test_m05_intervals.py]
+    steps:
+      - "Compute out-of-sample residuals from rolling origins every five years up to 2019"
+      - "Choose one of six interval rules by mean 2010-2019 coverage closest to 80%"
+      - "Apply it once to 2020-2024; show intervals only if coverage is within 75-85%"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_m05_intervals.py -q'
   - id: T261
     parent: T182
     title: "English text Ask page"
