@@ -1,6 +1,19 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T263
+    parent: T103
+    title: "M05 2025 monitoring check"
+    phase: P1
+    state: KA
+    depends_on: [T103, T262]
+    files: [scripts/m05_monitor.py, models/registry/M05/v1.monitor-2025.json, reports/models/m05-2025.md, tests/models/test_m05_monitor.py]
+    steps:
+      - "Rebuild 1981-2025 features; the 1981-2024 rows must hash to the v1 dataset"
+      - "Score the v1 ridge and persistence once on 2025 with the D98 measures"
+      - "Flag holds or degraded; keep intervals hidden; label provisional and hindcast"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_m05_monitor.py -q'
   - id: T262
     parent: T103
     title: "M05 interval recalibration"

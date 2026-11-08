@@ -2,6 +2,25 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D98 — M05 2025 monitoring check, fixed before scoring (8 Nov 2026).**
+  Split T263 from T103. The IMD 2025 file (SHA-256 b4fa5ffb..., identical
+  when fetched on 5 and 8 Nov 2026) has never been used by M05. IMD does not
+  say it is final, so every 2025 result is provisional and a hindcast (D39).
+  Rebuild the features for 1981-2025 with the v1 pipeline; the rows with
+  target months up to December 2024 must hash to the v1 dataset, or the
+  check stops. Score the approved v1 ridge (saved weights) and the v1
+  baseline (persistence) once on the 360 rows of 2025: MAE of each, their
+  ratio, the mean improvement with a paired block bootstrap by month (12
+  months, below the 24-month release minimum, so reported only), the number
+  of drought rows (SPI-3 < -1), and 80% interval coverage with the D97 rule
+  (last five years, by season) built from the champion's own 2020-2024
+  test residuals. Flags: the forecast "holds" if ridge MAE is at most the
+  persistence MAE, otherwise "degraded", which goes to the owner; nothing is
+  demoted automatically. Intervals stay hidden whatever 2025 shows, because
+  one year cannot meet the 24-month minimum. Results go to
+  `models/registry/M05/v1.monitor-2025.json` and
+  `reports/models/m05-2025.md`.
+
 - **D97 — M05 interval recalibration rule, fixed before any test use (8 Nov 2026).**
   Split T262 from T103. The approved v1 ridge point forecasts do not change.
   Calibration residuals come from expanding-window rolling origins every five

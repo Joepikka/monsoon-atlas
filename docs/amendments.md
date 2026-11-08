@@ -430,6 +430,14 @@ coverage gate. Point forecasts and the v1 release file stay unchanged.
 Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/models/test_m05_intervals.py -q`.
 
+## A46. M05 2025 monitoring check (D98, 8 November 2026)
+
+T263 is a child of T103 after T262. Score the approved M05 forecast and the
+persistence baseline once on the unused, provisional IMD 2025 year, with
+the measures and flags fixed in D98. It is a monitoring check, not a new
+release. Estimate 2 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/models/test_m05_monitor.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -450,6 +458,19 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T263
+    parent: T103
+    title: "M05 2025 monitoring check"
+    phase: P1
+    state: KA
+    depends_on: [T103, T262]
+    files: [scripts/m05_monitor.py, models/registry/M05/v1.monitor-2025.json, reports/models/m05-2025.md, tests/models/test_m05_monitor.py]
+    steps:
+      - "Rebuild 1981-2025 features; the 1981-2024 rows must hash to the v1 dataset"
+      - "Score the v1 ridge and persistence once on 2025 with the D98 measures"
+      - "Flag holds or degraded; keep intervals hidden; label provisional and hindcast"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_m05_monitor.py -q'
   - id: T262
     parent: T103
     title: "M05 interval recalibration"
