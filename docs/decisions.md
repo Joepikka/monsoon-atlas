@@ -2,6 +2,21 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D101 — C3 Ask is research-only (8 Nov 2026; owner approval in chat: "Yes, record it").**
+  Split T266 from T046. C3 (F046 cited Ask, text, English) fails the T181
+  thresholds on evidence support: 0.86 (30 of 35) against 0.95, with every
+  other measure passing. The e5 rerank (T264, D99) and the log limit (T265,
+  D100), both chosen on dev cases only, gave no gain, and fixing every
+  wrong-section miss would reach at most 0.943. Under A3 an honest failing
+  result counts as a finished core model, so C3 is recorded as
+  research-only rather than tuned further on 27 dev cases. Ask stays
+  extractive (quoted sections with citations, no generated answer) and the
+  page says it is research-only. The release checklist shows the C3 check
+  as "research-only", not "pass": whether a research-only C3 meets T046
+  extra check (2) is the owner's call at H11, and the release stays not
+  releasable until then. Revisit only with a fresh held-out question set
+  written before any tuning, or with reviewed generated answers after H05.
+
 - **D100 — Limit the two append-only logs in Ask results (8 Nov 2026).**
   Split T265 from T179. `docs/decisions.md` (project/decisions) and
   `docs/amendments.md` (project/amendments) grow with every task and mention

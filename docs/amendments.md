@@ -454,6 +454,14 @@ then run the C3 report once. It cannot pass the C3 gate alone (ceiling
 0.943). Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/rag/test_log_cap.py -q`.
 
+## A49. C3 Ask recorded as research-only (D101, 8 November 2026)
+
+T266 is a child of T046 after T265. Record C3 as research-only under A3:
+the release checklist shows its check as research-only, the Ask page and
+the Ask case study say so, and H11 decides whether it meets T046 extra
+check (2). Estimate 1 hour. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/test_ka_release.py tests/test_web_ask.py tests/test_case_studies.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -474,6 +482,19 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T266
+    parent: T046
+    title: "C3 Ask recorded as research-only"
+    phase: P1
+    state: KA
+    depends_on: [T265]
+    files: [src/atlas/models/accuracy.py, docs/releases/ka.md, web/src/pages/Ask.tsx, web/tests/ask.spec.ts, reports/models/ask-case-study.md, tests/test_ka_release.py, docs/ask.md]
+    steps:
+      - "Show the C3 check as research-only (not pass) in the release checklist"
+      - "Label the Ask page and the Ask case study research-only"
+      - "Leave the T046 extra check (2) decision to the owner at H11"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_ka_release.py tests/test_web_ask.py tests/test_case_studies.py -q'
   - id: T265
     parent: T179
     title: "Limit append-only logs in Ask results"
