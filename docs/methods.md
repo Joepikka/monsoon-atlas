@@ -86,7 +86,8 @@ the false-alert burden.
 
 An 80% prediction interval is a range meant to contain about 80% of
 comparable outcomes. Actual coverage must be checked on held-out data; the
-M05 intervals covered 65%, so they are not published.
+M05 intervals covered 65%; a rule chosen on pre-test years only (T262)
+reached 72.8%, still below the 75-85% gate, so they are not published.
 
 ## Explanations
 

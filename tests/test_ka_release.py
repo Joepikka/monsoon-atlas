@@ -40,6 +40,7 @@ def test_m05_card_uses_only_numbers_from_its_sources():
     number = re.compile(r"(?<![\w.])\d+(?:[.,]\d+)*(?![\w])")
     card = (ROOT / "reports/models/m05-card.md").read_text("utf-8")
     sources = ["reports/models/m05.md", "models/registry/M05/v1.json", "docs/decisions.md"]
+    sources.append("reports/models/m05-intervals.md")  # T262
     known = {n for path in sources for n in number.findall((ROOT / path).read_text("utf-8"))}
     assert set(number.findall(card)) - known == set()
     checks = {c["check"]: c["status"] for c in release_checks()}

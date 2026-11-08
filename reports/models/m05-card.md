@@ -15,7 +15,7 @@ D39-D43.
 | Candidates | Ridge (chosen) and LightGBM; LightGBM's tune gain over ridge was not significant (lower bound -0.013, D41). |
 | Achieved metrics (test) | MAE 0.732 vs 0.808 (ratio 0.906); improvement 0.076, 95% CI 0.003 to 0.150; drought PR-AUC 0.217 vs prevalence 0.057; Brier skill 0.116; CRPS 0.530 vs 0.586. All release gates pass. |
 | Calibration | Probabilities run high: monsoon observed 0.045 vs mean 0.071; rest of year 0.062 vs 0.090. |
-| Uncertainty | 80% intervals cover 0.652 of outcomes; they are not published until recalibrated (D42). |
+| Uncertainty | 80% intervals cover 0.652 of test outcomes (v1) and 0.728 after recalibration on pre-test years (T262, D97, `reports/models/m05-intervals.md`); below the 75-85% gate, so they are not published. |
 | Data licence | IMD rain may not be reproduced; only derived SPI and model outputs may be published. |
 | Limits | Meteorological drought only: not groundwater, crop yield or household water. Ballari includes Vijayanagara. |
 | Status | Champion by owner approval (D43); served outputs say hindcast. |

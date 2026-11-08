@@ -102,7 +102,7 @@ def test_committed_record_follows_d97():
     assert record["dataset_sha256"] == release["dataset_sha256"]
     report = (ROOT / "reports/models/m05-intervals.md").read_text("utf-8")
     assert f"Test coverage {coverage:.3f}" in report and "second use of the test years" in report
-    for number in re.findall(r"\d+\.\d{3}", report):
+    for number in re.findall(r"-?\d+\.\d{3}", report):
         assert any(f"{v:.3f}" == number for v in _numbers(record)), number
 
 
