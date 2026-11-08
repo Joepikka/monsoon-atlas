@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 8 Nov 2026, T251 manual hosted checkpoint relay workflow,
+Last updated: 8 Nov 2026, T252 English Ask corpus and lexical retrieval,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T251. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D86. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T252. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D87. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -113,6 +113,8 @@ and a YAML block `- id: T057`.
 | `web/src/components/PlaceLens.tsx`, `web/src/report.ts` | T040 six-tab reports, versioned place selection, immutable share identity and browser print/PDF from the same report; no production places or approvals seeded |
 | `worker/`, `scripts/worker.ps1` | T229 child of T042: signed bounded hot-data uploads, canonical source validation and atomic SQLite caps; cloud capability/deployment disabled; actual Miniflare/D1 checks on Ubuntu CI |
 | `configs/budgets.yaml` | Request, storage and DuckDB budgets |
+| `src/atlas/rag/`, `configs/rag.yaml`, `docs/ask.md` | T252 Ask corpus (committed project documents only), chunking, local FTS5 index in ignored `data/rag/` and as-of filtered BM25 retrieval |
+| `.github/workflows/feeds.yml` | T251 manual-only hosted checkpoint relay (no schedule, no hosted capture) |
 | `tests/` | Contracts, fetcher, storage, as-of, discovery/adapters, geography, model gates and state isolation; final continuation results below |
 
 ## 6. How one task is done (the process every task followed)
@@ -229,6 +231,7 @@ and a YAML block `- id: T057`.
 | T249 (child of T043) | D84/A32 | `runner-select --discover` verifies the active run and immediate predecessor by run number. It checks commit ancestry and one checkpoint, and stops on gaps or failures. Acceptance 54 passed in 0.97s. |
 | T250 (child of T043) | D85/A33 | `runner-import-zip` binds the raw ZIP to selected size and digest, then extracts only verified manifest members before installing the local catalogue. Acceptance 16 passed in 5.49s. |
 | T251 (child of T043) | D86/A34 | Manual-only `.github/workflows/feeds.yml` relays the checkpoint: immediate predecessor or explicit manual bootstrap, pinned raw download by artifact ID, single-file download-directory import, offer and upload. Acceptance 20 passed in 2.00s; 127 related tests passed. No schedule, hosted capture or live dispatch yet. |
+| T252 (child of T179) | D87/A35 | English Ask corpus: 30 committed project documents from `configs/rag.yaml`, 292 heading-scoped chunks (300 tokens, 50 overlap, whole table rows) with commit-time `available_at`, licence and hashes; SQLite FTS5 BM25 with as-of/state/language/expiry filters, quoted terms and two chunks per document. Acceptance 9 passed in 7.22s; dev recall 18/20 (misses Q02, Q28 are paraphrases). No embeddings or generation yet. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -650,9 +653,12 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    the scope; `docs/reviews/2026-11-06-t235.md` records the latest review fixes.
    `scripts/feeds.ps1 refresh --max-documents 30` combines local S09 capture and
    preparation under one child deadline. It remains partial and local.
-   Continue
-   independent local hosting preparation and then C3 Ask preparation,
-   T225 case studies and T046;
+   C3 Ask: T252 indexes the committed English corpus with lexical retrieval
+   (`docs/ask.md`). Next, in order: the e5 embedding rerank (needs the dl
+   lock and a model download the owner approves), the T180 extractive
+   fallback answer contract (local; Workers AI waits for H05), and the T181
+   English evaluation set, whose gold keys must resolve to corpus documents.
+   Then T225 case studies and T046;
    unresolved human/data gates must remain pending rather than blocking independent work.
 
 ## 10. Lessons and pitfalls

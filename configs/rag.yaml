@@ -1,0 +1,40 @@
+# T252 (child of plan T179): English Karnataka MVP Ask corpus (D87).
+# Only committed, project-owned documents are indexed. Raw source data, news, reviews,
+# research about other products and credentials are never part of the corpus.
+chunk_tokens: 300
+overlap_tokens: 50
+candidates: 50
+top_k: 5
+max_context_tokens: 3000
+licences: ["project-mit"]
+documents:
+  - {doc_id: project/readme, path: README.md, kind: project, states: [all]}
+  - {doc_id: project/rules, path: AGENTS.md, kind: project, states: [all]}
+  - {doc_id: project/decisions, path: docs/decisions.md, kind: project, states: [all]}
+  - {doc_id: project/amendments, path: docs/amendments.md, kind: project, states: [all]}
+  - {doc_id: project/core-gate, path: docs/gates/core_data_gate.md, kind: project, states: [ka]}
+  - {doc_id: project/feeds, path: docs/feeds.md, kind: project, states: [ka]}
+  - {doc_id: project/worker, path: docs/worker.md, kind: project, states: [ka]}
+  - {doc_id: project/web-layers, path: docs/web-layers.md, kind: project, states: [ka]}
+  - {doc_id: project/web-lens, path: docs/web-lens.md, kind: project, states: [ka]}
+  - {doc_id: labels/kerala, path: docs/labels/kerala.md, kind: project, states: [kl]}
+  - {doc_id: M05, path: reports/models/m05.md, kind: model, states: [ka]}
+  - {doc_id: M06, path: reports/models/m06.md, kind: model, states: [ka]}
+  - {doc_id: S01, path: docs/sources/s01.md, kind: source, states: [ka]}
+  - {doc_id: S02, path: docs/sources/s02.md, kind: source, states: [ka]}
+  - {doc_id: S08, path: docs/sources/s08.md, kind: source, states: [ka]}
+  - {doc_id: S09, path: docs/sources/s09.md, kind: source, states: [ka]}
+  - {doc_id: S15, path: docs/sources/s15.md, kind: source, states: [ka]}
+  - {doc_id: S16, path: docs/sources/s16.md, kind: source, states: [ka]}
+  - {doc_id: S17, path: docs/sources/s17.md, kind: source, states: [ka]}
+  - {doc_id: S18, path: docs/sources/s18.md, kind: source, states: [ka]}
+  - {doc_id: S22, path: docs/sources/s22.md, kind: source, states: [ka]}
+  - {doc_id: S23, path: docs/sources/s23.md, kind: source, states: [ka]}
+  - {doc_id: S28, path: docs/sources/s28.md, kind: source, states: [ka]}
+  - {doc_id: S32, path: docs/sources/s32.md, kind: source, states: [kl]}
+  - {doc_id: S33, path: docs/sources/s33.md, kind: source, states: [kl]}
+  - {doc_id: S34, path: docs/sources/s34.md, kind: source, states: [kl]}
+  - {doc_id: S35, path: docs/sources/s35.md, kind: source, states: [kl]}
+  - {doc_id: S36, path: docs/sources/s36.md, kind: source, states: [kl]}
+  - {doc_id: S40, path: docs/sources/s40.md, kind: source, states: [ka]}
+  - {doc_id: S43, path: docs/sources/s43.md, kind: source, states: [ka]}
