@@ -438,6 +438,14 @@ the measures and flags fixed in D98. It is a monitoring check, not a new
 release. Estimate 2 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/models/test_m05_monitor.py -q`.
 
+## A47. e5 rerank for Ask retrieval (D99, 8 November 2026)
+
+T264 is a child of T179 after T252/T254/T255. Embed the committed chunks
+with the pinned e5 model and compare four retrieval methods on dev cases
+only, as fixed in D99, then run the C3 report once with the chosen method.
+Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/rag/test_rerank.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -458,6 +466,19 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T264
+    parent: T179
+    title: "e5 rerank for Ask retrieval"
+    phase: P1
+    state: KA
+    depends_on: [T252, T254, T255]
+    files: [src/atlas/rag/embed.py, src/atlas/rag/retrieve.py, src/atlas/rag/evaluate.py, configs/rag.yaml, reports/rag.md, reports/rag-rerank.md, tests/rag/test_rerank.py, docs/ask.md]
+    steps:
+      - "Embed committed chunks with the pinned, hash-checked e5 model on drive D"
+      - "Choose one of four retrieval methods on dev cases only (D99)"
+      - "Run the C3 report once with the chosen method; record whether the gate passes"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/rag/test_rerank.py -q'
   - id: T263
     parent: T103
     title: "M05 2025 monitoring check"

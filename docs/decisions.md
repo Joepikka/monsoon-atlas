@@ -2,6 +2,28 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D99 — e5 rerank for Ask retrieval, chosen on dev cases only (8 Nov 2026).**
+  Split T264 from T179 (step 2 and 3, deferred in D88). The owner approved
+  the full dl lock (torch 2.15.0 CPU, transformers 5.22.1,
+  sentence-transformers 6.2.0) and `intfloat/multilingual-e5-small` at
+  revision 614241f6 (MIT, not gated; `model.safetensors` and
+  `tokenizer.json` match their published SHA-256), stored in the ignored
+  `data/models/e5/614241f6/`. Passages are embedded as
+  `passage: <heading>. <text>` and questions as `query: <question>`,
+  normalized 384-dimensional vectors, cosine similarity. Four retrieval
+  methods are compared, all keeping the as-of, state, language and expiry
+  filters, the two-per-document cap, the near-duplicate rule and the top
+  five: R0 BM25 (current); R1 e5 order of the BM25 top 50 (the plan's
+  rerank); R2 reciprocal rank fusion (k = 60) of BM25 and e5 ranks within
+  the BM25 top 50; R3 the same fusion over the union of the BM25 top 50
+  and the e5 top 50 of all filtered chunks. The method is chosen on the
+  27 dev cases of `eval/rag/questions.jsonl` by evidence support, then by
+  recall on `eval/rag/retrieval_dev.jsonl`, then the simpler method
+  (R0, R1, R2, R3 in that order). The full report, holdout included, is
+  then run once with the chosen method and the gate is read as it falls.
+  The pass applies to the Python Ask path; the web page stays lexical
+  until a separate decision on an in-browser model.
+
 - **D98 — M05 2025 monitoring check, fixed before scoring (8 Nov 2026).**
   Split T263 from T103. The IMD 2025 file (SHA-256 b4fa5ffb..., identical
   when fetched on 5 and 8 Nov 2026) has never been used by M05. IMD does not
