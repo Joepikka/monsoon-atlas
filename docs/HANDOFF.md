@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 8 Nov 2026, T255 computed numeric Ask answers,
+Last updated: 8 Nov 2026, T256 core case studies,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T255. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D90. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T256. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D91. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -235,6 +235,7 @@ and a YAML block `- id: T057`.
 | T253 (child of T180) | D88/A36 | Pure Worker answer contract `worker/src/ask.ts`: fixed system prompt, JSON-quoted evidence under 3000 tokens, 100/day, 6/min and 8000-neuron caps, generated JSON kept only with retrieved citations and supported numbers, otherwise cited extractive excerpts. Acceptance 4 passed (Node 5/5, `tsc` clean). No route, AI binding or account. |
 | T254 (child of T181) | D89/A37 | 60 English gold cases: plan Q01-Q50 (Q41-Q50 hash-frozen holdout; 35 resolve to support phrases in indexed documents, 15 deferred with reasons) and N01-N10 (S02, S09 and M05 gold recomputed from committed files; 7 require refusal). New `docs/methods.md` corpus page. Scorer fails any invalid citation or wrong/unsupported number. Acceptance 13 passed. Current extractive Ask: correctness 0.80, evidence 0.83, citations 1.00, refusal 1.00; gate not passed (`reports/rag.md`). Translations unreviewed. |
 | T255 (child of T180) | D90/A38 | Recognised numeric templates (latest rain, active alerts, model improvement) answered by DuckDB over frozen committed snapshots in `configs/rag.yaml`, independent of the gold code, citing the queried file; fallback shows all five retrieved chunks. Acceptance 30 passed (15 numeric, 13 eval + retrieval). Numeric 10/10; overall correctness 0.87, evidence support 0.83: C3 gate still not passed (paraphrase misses need e5). |
+| T256 (child of T225) | D91/A39 | Core case studies in plan section 17 order: `reports/models/m05-case-study.md` (approved hindcast champion), `m07-case-study.md` (blocked at data gate; no model) and `ask-case-study.md` (gate not passed). A test checks the outline order and that every number appears in a cited committed source. Acceptance 6 passed. H14 owner review pending. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -665,7 +666,9 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    approves its download. Do not tune on Q41-Q50. The e5 embedding rerank
    is deferred (D88): lexical recall passes and it needs the dl lock and a
    model download. Workers AI waits for H05.
-   Then T225 case studies and T046;
+   T256 adds the T225 core case studies (H14 owner review pending). Next:
+   local T046 preparation (accuracy table and release checklist); the gate
+   itself waits for T045 (H05/H06), T041 (S18) and H11;
    unresolved human/data gates must remain pending rather than blocking independent work.
 
 ## 10. Lessons and pitfalls
