@@ -287,6 +287,13 @@ restore, signed local admission, capture and expected-head save under one
 on interruption. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/test_runner_cycle.py -q`.
 
+## A28. Bounded local preparation and upload (D80, 8 November 2026)
+
+T245 is a child of T043 after T235/T238/T239/T244. An explicit local runner
+option prepares successful capture, saves it, then sends the immutable saved
+bytes. Retry the retained snapshot on `not_due`. Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/test_runner_cycle.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -307,6 +314,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T245
+    parent: T043
+    title: "Prepare and upload a verified checkpoint snapshot in the bounded cycle"
+    phase: P1
+    state: KA
+    depends_on: [T235, T238, T239, T244]
+    files: [src/atlas/ingest/runner_cycle.py, tests/test_runner_cycle.py, docs/feeds.md]
+    steps:
+      - "Prepare successful capture and commit verified state before a signed loopback upload"
+      - "Retry exact retained prepared bytes on not-due and retain capture state after handled failure"
+      - "Prove checkpoint ordering, immutable retry, refusal and the existing bounded entry point"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_runner_cycle.py -q'
+      expected: "Only a verified committed snapshot can be sent; failed preparation or upload preserves evidence and exact retry identity"
+    hours: 3
   - id: T244
     parent: T043
     title: "Run one bounded local restore, capture and checkpoint cycle"

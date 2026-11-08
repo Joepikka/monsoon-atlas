@@ -2,6 +2,15 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D80 — Prepare and send the saved local snapshot (8 Nov 2026).**
+  Split T245 from T043 after T235/T238/T239/T244. The explicit runner
+  `--upload-local` option prepares successful capture at the actual UTC cutoff
+  and saves the verified checkpoint before the signed loopback send. Send from
+  the installed immutable generation. A preparation failure still allows
+  valid capture state to be saved. A `not_due` result can retry an exact
+  retained prepared snapshot using the existing Worker idempotency contract.
+  Keep the same child deadline and leave the working root after failure.
+
 - **D79 — Bound one restored local capture cycle (8 Nov 2026).**
   Split T244 from T043 after T242/T243. One parent deadline covers verified
   restore to an absent root, one signed loopback admission and capture, and
