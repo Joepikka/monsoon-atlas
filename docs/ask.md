@@ -42,3 +42,16 @@ for access", Q28 "what must a model beat") use words that the documents do
 not contain. The planned e5 embedding rerank addresses paraphrase; it needs
 the deep-learning lock and a model download. Plan questions Q41-Q50 stay
 untouched for the held-out evaluation (T181).
+
+## Answer contract (T253)
+
+`worker/src/ask.ts` holds the answer rules the Worker will use. The system
+prompt is fixed; retrieved chunks enter only as a JSON evidence string within
+the 3000-token input cap, so retrieved text cannot add rules. Generation runs
+only when a model function is supplied and the 100 answers/day, 6
+requests/minute and 8000 neurons/day caps allow it. A generated reply is kept
+only if it is valid JSON, cites retrieved chunks, stays within 350 tokens and
+every number in it appears in the cited text. Every other case returns up to
+three quoted excerpts labelled as search results, with citations, or
+`insufficient_evidence` when nothing was retrieved. No route, AI binding or
+account exists yet: Workers AI waits for H05 and the free/no-card probe.
