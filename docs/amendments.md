@@ -370,6 +370,13 @@ cite the queried file, and show all retrieved chunks (at most five) in the
 extractive fallback. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/rag/test_numeric.py tests/rag/test_eval.py -q`.
 
+## A39. Core case studies for the actual cores (D91, 8 November 2026)
+
+T256 is a child of T225 after T103/T228/T255. Write one plan section 17 case
+study per actual core: M05 (C2), the blocked M07 (C1 fallback) and Ask (C3),
+using only numbers found in their cited committed sources. Estimate 3 hours.
+Acceptance is `.\.venv\Scripts\python -m pytest tests/test_case_studies.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -390,6 +397,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T256
+    parent: T225
+    title: "Core case studies for M05, M07 and Ask"
+    phase: P1
+    state: KA
+    depends_on: [T103, T228, T255]
+    files: [reports/models/m05-case-study.md, reports/models/m07-case-study.md, reports/models/ask-case-study.md, tests/test_case_studies.py]
+    steps:
+      - "Follow the plan section 17 outline in order, with one positive result and one negative lesson"
+      - "Use only numbers that appear in each study's cited committed sources; state unrecorded costs as unrecorded"
+      - "Report the blocked M07 data gate and the failed Ask gate honestly; leave H14 review to the owner"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_case_studies.py -q'
+      expected: "Each study follows the outline and every number appears in a cited source"
+    hours: 3
   - id: T255
     parent: T180
     title: "Computed numeric Ask answers and full top-five fallback"

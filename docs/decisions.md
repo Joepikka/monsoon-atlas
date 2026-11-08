@@ -2,6 +2,15 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D91 — Case studies cover the actual cores, including blocked ones (8 Nov 2026).**
+  Split T256 from T225. Amended T225 names M02, M01 and Ask, but D17/D29 made
+  the cores M07 (C1 fallback), M05 (C2) and Ask (C3). Write those three
+  studies. M07 has no model, so its study reports the data gate and why it
+  stops; Ask's reports the failed English gate. A test requires the plan
+  outline order and that every standalone number appears in a cited
+  committed source; runtimes that were never recorded are stated as such.
+  H14 (owner rewrites the summary) stays pending.
+
 - **D90 — Compute numeric answers from frozen snapshots; show all five results (8 Nov 2026).**
   Split T255 from T180 after T254. The plan's fallback shows exact computed
   table values with citations, so recognised numeric templates (latest rain,
