@@ -410,3 +410,29 @@ Import verifies staged evidence and creates a fresh local catalogue. The feed
 root stays absent for the next `runner-cycle` or `runner-restore`. Both handoff
 commands run locally. Hosted accounting, workflow activation and release review
 remain separate steps. Retained weather data credits Open-Meteo and ECMWF.
+
+## Hosted checkpoint metadata preflight (T248)
+
+`runner-select` checks an explicitly trusted predecessor before downloading.
+Pass the repository and workflow IDs, run ID, branch, commit SHA and separately
+recorded manifest SHA-256. The artifact name is
+`ka-feed-checkpoint-<manifest_sha256>`. Use a read-only `GITHUB_TOKEN` in the
+environment when required. Public metadata may be read without a token.
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 runner-select --repository $repo --repository-id $repoId --workflow-id $workflowId --run-id $runId --branch main --head-sha $commitSha --manifest-sha256 $savedManifestSha256
+```
+
+The pinned run must be a completed successful first attempt from a schedule or
+manual dispatch in the same repository. The artifact must match that run and
+commit, carry its GitHub archive digest, and be unexpired within the project's
+seven-day limit. An ineligible or missing predecessor stops selection.
+The archive and manifest digests are separate checks. [GitHub run API](https://docs.github.com/en/rest/actions/workflow-runs) · [GitHub artifact API](https://docs.github.com/en/rest/actions/artifacts)
+
+The 30-second child reads up to ten inventory pages. It checks the reported
+count, page completeness and unique artifact IDs. It sums `size_in_bytes`
+for all listed repository artifacts, including expired entries still listed.
+The result reports remaining bytes under the project's 400 MB limit. This is
+repository inventory at check time. Hosted upload still needs current usage
+verification and budget approval. The selector leaves predecessor choice and
+artifact download to the workflow that calls it.
