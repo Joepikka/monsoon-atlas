@@ -2,6 +2,15 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D84 — Discover the immediate trusted workflow predecessor (8 Nov 2026).**
+  Split T249 from T043 after T248. Pin the active run and examine its
+  workflow's recent run metadata without a success filter. Require the
+  preceding run number, matching branch and workflow, a successful first
+  attempt and a commit in the active run's history. Use its one checkpoint
+  name to recover the manifest digest independently of the download. Stop
+  on a missing, failed, expired or ambiguous predecessor. Bootstrap and
+  hosted download remain separate steps.
+
 - **D83 — Pin hosted artifact selection to a trusted run (8 Nov 2026).**
   Split T248 from T043 after T247. A bounded, read-only GitHub metadata check
   uses explicit repository, workflow, run, branch, commit and manifest

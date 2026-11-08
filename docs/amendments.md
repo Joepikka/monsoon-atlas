@@ -316,6 +316,13 @@ checkpoint artifact against the bounded repository inventory. Report actual
 listed bytes and both digests without downloading. Estimate 3 hours. Acceptance
 is `.\.venv\Scripts\python -m pytest tests/test_hosted_checkpoint.py -q`.
 
+## A32. Immediate hosted predecessor discovery (D84, 8 November 2026)
+
+T249 is a child of T043 after T248. Discover the immediately preceding trusted
+workflow run and its checkpoint without skipping gaps. Estimate 3 hours.
+Acceptance is
+`.\.venv\Scripts\python -m pytest tests/test_hosted_checkpoint.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -336,6 +343,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T249
+    parent: T043
+    title: "Discover the immediate trusted hosted checkpoint predecessor"
+    phase: P1
+    state: KA
+    depends_on: [T248]
+    files: [src/atlas/ingest/hosted_checkpoint.py, tests/test_hosted_checkpoint.py, docs/feeds.md]
+    steps:
+      - "Pin the active run and verify the immediate predecessor without a success filter"
+      - "Verify commit ancestry and exactly one checkpoint using the existing bounded inventory"
+      - "Prove gaps, failed predecessors, branch rewrites and ambiguous artifacts fail closed"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_hosted_checkpoint.py -q'
+      expected: "Discovery selects the immediate verified checkpoint and never falls back to an older run"
+    hours: 3
   - id: T248
     parent: T043
     title: "Verify trusted hosted artifact metadata and retained storage"
