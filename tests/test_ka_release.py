@@ -4,6 +4,7 @@ Full T046 adds the web accuracy page, browser checks and deployment evidence.
 """
 
 import json
+import re
 from pathlib import Path
 
 from atlas.models.accuracy import OUTPUT, accuracy_rows, release_checks, render
@@ -32,6 +33,17 @@ def test_release_is_not_ready_while_any_check_is_not_pass():
     assert checks["C3 passes T181 English thresholds"] == "fail"  # reports/rag.md gate
     assert checks["C1 evaluation report and model card"] == "blocked"
     assert "**Release status: not releasable.**" in render()
+
+
+def test_m05_card_uses_only_numbers_from_its_sources():
+    # T258: the C2 model card; a standalone number must appear in a cited source.
+    number = re.compile(r"(?<![\w.])\d+(?:[.,]\d+)*(?![\w])")
+    card = (ROOT / "reports/models/m05-card.md").read_text("utf-8")
+    sources = ["reports/models/m05.md", "models/registry/M05/v1.json", "docs/decisions.md"]
+    known = {n for path in sources for n in number.findall((ROOT / path).read_text("utf-8"))}
+    assert set(number.findall(card)) - known == set()
+    checks = {c["check"]: c["status"] for c in release_checks()}
+    assert checks["C2 evaluation report and model card"] == "pass"
 
 
 def test_committed_checklist_matches_current_evidence():
