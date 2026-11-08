@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 8 Nov 2026, T266 C3 Ask research-only,
+Last updated: 8 Nov 2026, T267 KSEB dam datum evidence,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T266. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D101. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T267. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D103. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -246,6 +246,7 @@ and a YAML block `- id: T057`.
 | T264 (child of T179) | D99/A47 | Owner approved the full dl lock (torch 2.15.0 CPU, transformers 5.22.1, sentence-transformers 6.2.0; installed in `.venv`) and `intfloat/multilingual-e5-small` rev 614241f6 (MIT; `model.safetensors`, `tokenizer.json` hash-checked) in ignored `data/models/e5/614241f6/`. `atlas.rag.embed` + R0-R3 methods in `retrieve.py`; `evaluate --select` ranks them on dev only. All reach 0.852 dev evidence support; R0 BM25 has best dev recall (0.85 vs 0.80), so R0 stays (`rerank_method: R0`). C3 report once: evidence support 0.86 (30/35), gate fails on Q02, Q23, Q26, Q33, Q43. Three of those retrieve the right document but the wrong section. Acceptance 4 passed. |
 | T265 (child of T179) | D100/A48 | Limit the two append-only logs (`project/decisions`, `project/amendments`, 154 of 333 chunks) in Ask results. Rules fixed first: L0 as before, L1 one result per log, L2 also halves their BM25. Dev only: L0 and L1 tie (0.852 support, 0.85 recall), L2 0.80 recall, so L0 stays (`log_rule: L0`, `log_documents` in `configs/rag.yaml`). C3 report once: same as T264 (0.86; Q02, Q23, Q26, Q33, Q43). Known ceiling: section fixes alone max 33/35 = 0.943 < 0.95. Acceptance 4 passed. |
 | T266 (child of T046) | D101/A49 | Owner approved ("Yes, record it"): C3 Ask is research-only under A3 (evidence support 0.86 < 0.95; T264 and T265 gave no gain). Checklist shows the C3 check as `research-only` (never `pass`); the Ask page shows a research-only note; the Ask case study's deployment decision says so. Owner decides at H11 whether research-only C3 meets T046 extra check (2). Review fix 848c3d5: L2 halves log scores in SQL before the top-50 cut. Acceptance 18 passed. |
+| T267 (child of T130) | D103/A50 | Owner approved downloading KSEB's 18 dam O&M manuals (about 101 MB, kseb.in, robots allows all) as S32 evidence e81-e98 in ignored `data/raw/S32/`. Stated datum (above MSL) only for the Idukki reservoir (e81 p223, Survey of India benchmarks), Sengulam (e83), Kakki-Anathode (e96), Pamba (e97); 13 manuals give elevations with no named datum. 4 < 8 dams, so T130's datum gate is not met. Table in `docs/labels/kerala.md`; S32 units claim updated. Also D102: owner-delegated agent review of the S34 OCR sample. Acceptance 3 passed. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -605,12 +606,13 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    `candidate_eligible`, **approved by the owner (D43)**: ridge is the champion.
    Before publishing intervals, recalibrate them (they cover 65%, not 80%).
 6. **C1 = M07 (Kerala): T226/T114/T227 and T228 machine preparation are done.**
-   The S34 sample review is done (D102). Before full T118, resolve the vertical
-   datum: T130 needs a known datum and S34/S32 state none. A search snippet of
-   the KSEB dam-safety site (dams.kseb.in) shows levels as "EL2403.00ft.
-   (732.62 m)" for Idukki, but scripted fetches get a "wrong address" page and no
-   explicit datum was read; confirm it in a browser and record it as evidence
-   first. Then continue full T118: validate per-layout cell extraction, dates, units and dam
+   The S34 sample review is done (D102). T267 (D103) read KSEB's 18 dam O&M
+   manuals (S32 evidence e81-e98 from kseb.in; dams.kseb.in is gone): only the
+   Idukki reservoir, Sengulam, Kakki-Anathode and Pamba state levels above MSL;
+   13 give elevations with no named datum. Four is below T130's eight, so the
+   datum part of the gate is not met (`docs/labels/kerala.md`). Next for C1: an
+   official datum statement for the other dams (KSEB Dam Safety Organisation or
+   CWC); never assume it from elevation numbers. Only then continue full T118: validate per-layout cell extraction, dates, units and dam
    identity; retain quarantine and never infer alert colours from English OCR.
    T228 sample approval does not approve bulk extraction; S34 remains disabled.
    Before T130, explicitly resolve its full-T129 dependency for the M07-only fallback.
