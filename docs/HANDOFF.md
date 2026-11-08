@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 8 Nov 2026, T263 M05 2025 monitoring check,
+Last updated: 8 Nov 2026, T264 e5 rerank for Ask,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T263. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D98. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T264. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D99. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -243,6 +243,7 @@ and a YAML block `- id: T057`.
 | T261 (child of T182) | D96/A44 | `?page=ask` English text Ask page: loads the hash-checked public corpus (`/data/ask/latest.json` names `<release>.json`, bytes hash to the release ID), BM25 search in the browser (`web/src/ask-search.ts`, dev recall 90%), sends the top five chunk IDs to `/api/v1/ask`, shows the matching Worker answer or labelled local results, with citation cards (path, commit time, evidence age). Header link "Ask". Acceptance 5 passed; 12 new browser checks. No corpus published (H05). Voice and other languages stay outside the MVP. |
 | T262 (child of T103) | D97/A45 | M05 80% interval recalibration with the rule fixed before any run: out-of-sample ridge residuals from rolling origins 2000/2005/2010/2015, six rules ranked on 2010-2019 only; "last 5 years, by season" (80.3% there). One check on 2020-2024: coverage 0.728 (monsoon 0.643), below the 75-85% gate, so intervals stay hidden. Point forecasts unchanged. Record `models/registry/M05/v1.intervals.json`, report `reports/models/m05-intervals.md`. Acceptance 4 passed. The test years are now used twice for intervals; any further interval rule needs untouched data (IMD 2025 or later). |
 | T263 (child of T103) | D98/A46 | M05 2025 monitoring check, rules fixed before scoring. IMD 2025 file re-fetched 8 Nov: identical to 5 Nov (b4fa5ffb...), never used by M05, finality not stated (provisional). 1981-2024 rows still hash to the v1 dataset. On 360 district-months: ridge MAE 0.625 vs persistence 0.744 (ratio 0.841), improvement 0.119 [0.019, 0.226] over 12 months: flag **holds**. 80% intervals (D97 rule, champion 2020-2024 residuals) covered 0.869: too wide that year; still hidden. Record `models/registry/M05/v1.monitor-2025.json`, report `reports/models/m05-2025.md`, card row added. Acceptance 3 passed. |
+| T264 (child of T179) | D99/A47 | Owner approved the full dl lock (torch 2.15.0 CPU, transformers 5.22.1, sentence-transformers 6.2.0; installed in `.venv`) and `intfloat/multilingual-e5-small` rev 614241f6 (MIT; `model.safetensors`, `tokenizer.json` hash-checked) in ignored `data/models/e5/614241f6/`. `atlas.rag.embed` + R0-R3 methods in `retrieve.py`; `evaluate --select` ranks them on dev only. All reach 0.852 dev evidence support; R0 BM25 has best dev recall (0.85 vs 0.80), so R0 stays (`rerank_method: R0`). C3 report once: evidence support 0.86 (30/35), gate fails on Q02, Q23, Q26, Q33, Q43. Three of those retrieve the right document but the wrong section. Acceptance 4 passed. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -668,14 +669,11 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    (`docs/ask.md`); T253 adds the Worker answer contract with cited
    extractive fallback; T254 adds the 60-case English gold set and scorer
    (`reports/rag.md`); T255 computes numeric answers (10/10). Gate still
-   fails on evidence support 0.83 (paraphrase misses). Next: the e5
-   rerank when the owner
-   approves its download. Do not tune on Q41-Q50. The e5 embedding rerank
-   is deferred (D88): lexical recall passes and it needs the dl lock and a
-   model download. Workers AI waits for H05.
+   fails on evidence support (0.86 at T264). T264 tested the e5
+   rerank with the owner's approval; it did not help, so BM25 stays. Do not tune on Q41-Q50. Workers AI waits for H05.
    T256 adds the T225 core case studies (H14 owner review pending). Next:
    T257 writes the accuracy rows and docs/releases/ka.md checklist (not
-   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. Next local work is thin: most P1 items wait on owner steps; C3 still fails on evidence support until the e5 rerank (owner download approval);
+   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. Next local work is thin: most P1 items wait on owner steps; C3 still fails on evidence support (0.86): a section-level ranking fix for the three right-document misses needs its own pre-registered rule;
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
    unresolved human/data gates must remain pending rather than blocking independent work.
 

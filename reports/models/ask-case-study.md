@@ -38,8 +38,9 @@ language model is connected (Workers AI waits for H05).
 ## Hypothesis and candidate
 
 Computed answers for recognised numeric templates should make numeric
-questions exact without a model. A multilingual e5 rerank should fix
-paraphrase misses; it is deferred until its model download is approved.
+questions exact without a model. A multilingual e5 rerank was expected to
+fix paraphrase misses; T264 tested it on development questions (D99) and it
+did not improve evidence support, so lexical BM25 stays.
 
 ## Leakage audit
 
@@ -51,8 +52,8 @@ is not an independent test of document coverage.
 
 | Measure | Result | Threshold |
 |---|---|---|
-| Correctness | 0.87 | 0.85 |
-| Evidence support | 0.83 | 0.95 |
+| Correctness | 0.89 | 0.85 |
+| Evidence support | 0.86 | 0.95 |
 | Valid citations | 1.00 | 1.00 |
 | Faithfulness | 1.00 | 0.95 |
 | Refusal accuracy | 1.00 | 0.95 |
@@ -63,9 +64,10 @@ a gold document in the top five.
 
 ## Failure slices
 
-Six fixed questions fail because the gold passage is not retrieved: their
-wording shares too few words with the documents (for example Q02 "charge for
-access" against "Rs 0"). Fifteen fixed questions are deferred because their
+Five fixed questions fail because the gold passage is not retrieved. Three
+find the right document but not the section with the gold phrase; two share
+too few words with the documents (for example Q02 "charge for access"
+against "Rs 0"). Fifteen fixed questions are deferred because their
 sources or model cards are outside the Karnataka MVP corpus. No translation
 is reviewed, so Kannada, Malayalam and Hindi stay disabled.
 
@@ -102,5 +104,5 @@ answers (D90).
 
 - Positive: all 10 numeric cases are exact or correctly refused, with the
   queried file cited, and no answer cites a chunk that was not retrieved.
-- Negative: lexical search cannot bridge paraphrase; evidence support is
-  0.83 against 0.95, so Ask is not ready to publish.
+- Negative: neither lexical search nor the e5 rerank bridges these misses;
+  evidence support is 0.86 against 0.95, so Ask is not ready to publish.
