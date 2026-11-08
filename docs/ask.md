@@ -53,7 +53,7 @@ requests/minute and 8000 neurons/day caps allow it. A generated reply is kept
 only if it is valid JSON, cites retrieved chunks, stays within 350 tokens and
 every number in it appears in the cited text. Every other case returns up to
 five quoted excerpts (all retrieved chunks, D90) labelled as search results, with citations, or
-`insufficient_evidence` when nothing was retrieved. No route, AI binding or
+`insufficient_evidence` when nothing was retrieved. No AI binding or
 account exists yet: Workers AI waits for H05 and the free/no-card probe.
 
 ## Evaluation (T254)
@@ -71,3 +71,26 @@ queried file; all 10 numeric cases pass. The gate still fails on evidence
 support (0.83 against 0.95): six questions use words the gold passage lacks,
 which needs the e5 rerank. Translations are not
 reviewed, so only English is evaluated.
+
+## Ask route (T260)
+
+`POST /api/v1/ask` takes JSON `query`, `language` (en, kn, ml or hi),
+`place_id` (`in:<ka|kl|dl>...`), `as_of` (UTC to the second, not in the
+future) and one to five distinct `chunk_ids`, which the browser picks from
+its own search. Any other field, including client-supplied evidence, is
+refused. The Worker reads those IDs from the current trusted release in D1
+(`ask_chunks`, `ask_current`), rechecks each chunk's SHA-256 and drops
+chunks committed after `as_of`, expired, or not for the place's state (the
+same rules as retrieval). An unknown ID is a 400; a hash mismatch or a
+missing release is a 503 fallback with no quote. The reply carries
+`release`, `as_of`, `answer`, `citations`, `status` and `mode`. Generation
+is off, so every answer is the extractive one above; other languages get
+the same quoted English excerpts.
+
+`python -m atlas.rag.manifest` turns the committed index into a release:
+its ID is the SHA-256 of the canonical chunk list, and
+`data/rag/ask-release.sql` (git-ignored) inserts the new rows, then moves
+the pointer, then deletes old rows, one statement per line, so a partial
+load never changes what is served. Loading it into the remote D1 database
+(`wrangler d1 execute --remote --file`) is a deploy step that waits for H05.
+The 8 Nov 2026 index exports 333 chunks from 31 documents.

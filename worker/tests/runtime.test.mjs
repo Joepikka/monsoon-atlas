@@ -92,6 +92,28 @@ try {
   await db.prepare('UPDATE capacity SET allocated_bytes=399999999').run();
   assert.equal((await claim('S01')).status,507);
   assert.equal(await db.prepare('SELECT COUNT(*) n FROM feed_checks').first('n'),1);
+  // T260: statements shaped like atlas.rag.manifest load_sql (one line per chunk, char(10) for newlines).
+  const text='SPI is meteorological drought only.\nTest MAE 0.732.';
+  const digest=Buffer.from(await webcrypto.subtle.digest('SHA-256',new TextEncoder().encode(text))).toString('hex');
+  const release='a'.repeat(64);
+  const ask=chunk_ids=>mf.dispatchFetch('https://atlas.invalid/api/v1/ask',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({query:'What does SPI-3 measure?',language:'en',place_id:'in:ka',as_of:'2026-11-08T12:00:00Z',chunk_ids})});
+  assert.equal((await ask(['m05#limits:0'])).status,503);
+  for (const statement of [
+    `INSERT OR IGNORE INTO ask_chunks VALUES ('${'b'.repeat(64)}','m05#limits:0','m05','reports/models/m05.md','Old','Old text.','2026-11-01T00:00:00Z',NULL,',ka,','${'c'.repeat(64)}');`,
+    `INSERT OR IGNORE INTO ask_chunks VALUES ('${release}','m05#limits:0','m05','reports/models/m05.md','M05 limits','${text.replace('\n',"' || char(10) || '")}','2026-11-05T17:48:40Z',NULL,',ka,','${digest}');`,
+    `INSERT INTO ask_current VALUES (1,'${release}') ON CONFLICT(id) DO UPDATE SET release=excluded.release;`,
+    `DELETE FROM ask_chunks WHERE release<>'${release}';`,
+  ]) await db.prepare(statement).run();
+  const asked=await ask(['m05#limits:0']); assert.equal(asked.status,200,await asked.clone().text());
+  const answered=await asked.json();
+  assert.deepEqual([answered.release,answered.mode,answered.citations],[release,'extractive',[{chunk_id:'m05#limits:0',claim_index:0}]]);
+  assert.match(answered.answer,/Test MAE 0\.732/);
+  assert.equal((await ask(['m05#other:0'])).status,400);
+  assert.equal(await db.prepare('SELECT COUNT(*) n FROM ask_chunks').first('n'),1);
+  await db.prepare('UPDATE ask_chunks SET text=? WHERE chunk_id=?').bind('Test MAE 0.5.','m05#limits:0').run();
+  assert.equal((await ask(['m05#limits:0'])).status,503);
+  console.log('PASS: actual D1 Ask release load, trusted chunk lookup and integrity fallback');
   console.log('PASS: actual Miniflare/D1 auth, clocks/hash, duplicate concurrency, conflicting cutoff, storage/write rollback and last-good checks');
   console.log('PASS: actual D1 source-check concurrency and atomic admission/cap guards');
 } finally { await mf.dispose(); }

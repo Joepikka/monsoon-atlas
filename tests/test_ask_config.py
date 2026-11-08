@@ -34,7 +34,8 @@ def test_generation_is_not_bound_and_no_secret_is_bundled():
     assert not re.search(r"(?m)^\s*(\[+ai\]+|binding\s*=)", config)  # no Workers AI binding
     assert "env." not in ASK and "fetch(" not in ASK  # pure contract: no secrets or network
     assert not re.search(r"(?i)(api[_-]?key|token|secret)\s*[:=]\s*['\"]", ASK)
-    assert "/api/v1/ask" not in (ROOT / "worker/src/index.ts").read_text("utf-8")
+    route = (ROOT / "worker/src/index.ts").read_text("utf-8")
+    assert "env.AI" not in route and "generate:" not in route  # T260 route stays extractive
 
 
 def test_token_rule_matches_corpus_chunking():

@@ -7,7 +7,7 @@ new_tasks:
     phase: P1
     state: KA
     depends_on: [T252, T253]
-    files: [src/atlas/rag/manifest.py, worker/schema.sql, worker/src/index.ts, worker/tests/ask-route.test.mjs, worker/tests/runtime.test.mjs, worker/package.json, tests/rag/test_manifest.py, tests/test_ask_config.py, docs/ask.md]
+    files: [src/atlas/rag/manifest.py, worker/schema.sql, worker/src/index.ts, worker/src/ingest.ts, worker/tests/ask-route.test.mjs, worker/tests/runtime.test.mjs, worker/package.json, tests/rag/test_manifest.py, tests/test_ask_config.py, docs/ask.md]
     steps:
       - "Export the committed index as a hashed release and an atomic D1 load file"
       - "Serve POST /api/v1/ask from trusted chunk IDs only, rechecking hashes, as-of, state and expiry"

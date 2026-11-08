@@ -2,6 +2,7 @@ import { authenticate, boundedBytes, decodeUpload, HOT_SOURCES, restoreUpload, U
 import { sha256 } from '../../web/src/data.ts';
 import { claimFeedCheck } from './feed-check.ts';
 import { reply, fallback } from './responses.ts';
+import { answer, LIMITS, type Evidence } from './ask.ts';
 
 interface Result<T> { results: T[]; meta: { size_after?: number; rows_written?: number } }
 interface Statement {
@@ -61,15 +62,58 @@ async function current(url: URL, db: Database, now: number): Promise<Response> {
   return new Response(resultBody, { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public,max-age=60', 'X-Content-Type-Options': 'nosniff' } });
 }
 
+const ASK_LANGUAGES = ['en', 'kn', 'ml', 'hi'];
+const PLACE = /^in:(ka|kl|dl)(?::[a-z0-9._-]+)*$/;
+const UTC_SECOND = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
+// Generation, its quota counters and the AI binding wait for H05 and the probe (D95).
+const NO_GENERATION = { day_answers: 0, minute_requests: 0, day_neurons: 0 };
+type ChunkRow = Evidence & { expires_at: string | null; states: string };
+
+async function ask(request: Request, db: Database, now: number): Promise<Response> {
+  if (request.headers.get('Content-Type') !== 'application/json') return reply({ error: 'Use application/json.' }, 415);
+  let body: Record<string, unknown>;
+  try { body = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(await boundedBytes(request.body, 8192))); }
+  catch (error) { if (error instanceof UploadError) throw error; return reply({ error: 'Invalid JSON.' }, 400); }
+  const { query, language, place_id, as_of, chunk_ids } = body ?? {};
+  const ids = Array.isArray(chunk_ids) ? chunk_ids : [];
+  const state = typeof place_id === 'string' && place_id.length <= 200 ? PLACE.exec(place_id)?.[1] : undefined;
+  if (!body || typeof body !== 'object' || Object.keys(body).some(key => !['query', 'language', 'place_id', 'as_of', 'chunk_ids'].includes(key)) ||
+      typeof query !== 'string' || !query.trim() || query.length > LIMITS.questionChars || !ASK_LANGUAGES.includes(language as string) || !state ||
+      typeof as_of !== 'string' || !UTC_SECOND.test(as_of) || !(Date.parse(as_of) <= now + 60_000) ||
+      ids.length < 1 || ids.length > 5 || new Set(ids).size !== ids.length || ids.some(id => typeof id !== 'string' || !id || id.length > 200)) {
+    return reply({ error: 'Send query, language, place_id, as_of (UTC, not future) and 1 to 5 distinct chunk_ids.' }, 400);
+  }
+  const current = await db.prepare('SELECT release FROM ask_current WHERE id=1').first<{ release: string }>();
+  if (!current) return fallback('No trusted Ask release is loaded.');
+  // Evidence text comes only from the trusted release, never from the client (plan T179 step 3).
+  const rows = await db.prepare(`SELECT chunk_id,doc_id,path,heading,text,available_at,expires_at,states,sha256 FROM ask_chunks WHERE release=? AND chunk_id IN (${ids.map(() => '?').join(',')})`)
+    .bind(current.release, ...ids).all<ChunkRow>();
+  if (rows.results.length !== ids.length) return reply({ error: 'Unknown chunk ID for the current Ask release.' }, 400);
+  const byId = new Map(rows.results.map(row => [row.chunk_id, row]));
+  const evidence: Evidence[] = [];
+  for (const id of ids as string[]) {
+    const row = byId.get(id)!;
+    if (await sha256(new TextEncoder().encode(row.text)) !== row.sha256) return fallback('A trusted Ask chunk failed its integrity check.');
+    // Same as-of, expiry and state rules as src/atlas/rag/retrieve.py.
+    if (row.available_at > as_of || (row.expires_at !== null && row.expires_at <= as_of) ||
+        !(row.states.includes(`,${state},`) || row.states.includes(',all,'))) continue;
+    const { chunk_id, doc_id, path, heading, text, available_at, sha256: digest } = row;
+    evidence.push({ chunk_id, doc_id, path, heading, text, available_at, sha256: digest });
+  }
+  const result = await answer(query, evidence, { asOf: as_of, usage: NO_GENERATION });
+  return reply({ schema_version: 1, release: current.release, as_of, ...result });
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
-    if (!['/internal/ingest', '/internal/feed-check', '/api/v1/current'].includes(url.pathname)) return reply({ error: 'Not found.' }, 404);
+    if (!['/internal/ingest', '/internal/feed-check', '/api/v1/current', '/api/v1/ask'].includes(url.pathname)) return reply({ error: 'Not found.' }, 404);
     if (env.CAPABILITY_GATE !== 'verified_free_no_card' || !env.DB) return fallback('Free/no-card capability or database binding has not been verified.');
     try {
       if (url.pathname === '/internal/ingest' && request.method === 'POST' && !url.search) return await ingest(request, env, Date.now());
       if (url.pathname === '/internal/feed-check' && request.method === 'POST' && !url.search) return await claimFeedCheck(request, env, Date.now());
       if (url.pathname === '/api/v1/current' && request.method === 'GET') return await current(url, env.DB, Date.now());
+      if (url.pathname === '/api/v1/ask' && request.method === 'POST' && !url.search) return await ask(request, env.DB, Date.now());
       return reply({ error: 'Unsupported method or query.' }, 405);
     } catch (error) {
       if (error instanceof UploadError) return reply({ error: error.message }, error.status);

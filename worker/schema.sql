@@ -71,3 +71,24 @@ CREATE TRIGGER hot_account AFTER INSERT ON hot_snapshots BEGIN
   ON CONFLICT(state,source_id) DO UPDATE SET snapshot_id=excluded.snapshot_id,as_of_ms=excluded.as_of_ms
     WHERE excluded.as_of_ms>hot_current.as_of_ms;
 END;
+
+-- T260 (D95): trusted Ask chunks, loaded only by the deploy step from
+-- atlas.rag.manifest. The Worker never writes them and serves only the
+-- release named in ask_current.
+CREATE TABLE ask_chunks (
+  release TEXT NOT NULL CHECK(length(release)=64),
+  chunk_id TEXT NOT NULL,
+  doc_id TEXT NOT NULL,
+  path TEXT NOT NULL,
+  heading TEXT NOT NULL,
+  text TEXT NOT NULL,
+  available_at TEXT NOT NULL,
+  expires_at TEXT,
+  states TEXT NOT NULL,
+  sha256 TEXT NOT NULL CHECK(length(sha256)=64),
+  PRIMARY KEY(release,chunk_id)
+);
+CREATE TABLE ask_current (
+  id INTEGER PRIMARY KEY CHECK(id=1),
+  release TEXT NOT NULL CHECK(length(release)=64)
+);

@@ -14,7 +14,7 @@ export async function boundedBytes(stream: ReadableStream<Uint8Array> | null, li
     while (true) {
       const item = await reader.read(); if (item.done) break;
       length += item.value.byteLength;
-      if (length > limit) { await reader.cancel(); throw new UploadError('Snapshot exceeds the byte limit.', 413); }
+      if (length > limit) { await reader.cancel(); throw new UploadError('Request body exceeds the byte limit.', 413); }
       chunks.push(item.value);
     }
   } finally { reader.releaseLock(); }
