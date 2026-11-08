@@ -45,5 +45,9 @@ elseif ($args.Count -gt 0 -and $args[0] -eq 'runner-select') {
     $atlasModule = 'atlas.ingest.hosted_checkpoint'
     $atlasArguments = @($args | Select-Object -Skip 1)
 }
+elseif ($args.Count -gt 0 -and $args[0] -eq 'runner-import-zip') {
+    $atlasModule = 'atlas.ingest.hosted_archive'
+    $atlasArguments = @($args | Select-Object -Skip 1)
+}
 & (Join-Path $atlasRoot '.venv/Scripts/python.exe') -m $atlasModule @atlasArguments
 exit $LASTEXITCODE

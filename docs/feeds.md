@@ -456,3 +456,24 @@ One checkpoint name from that verified run supplies the manifest digest. Its
 archive digest, retained bytes and expiry use the same checks as pinned mode.
 The first run needs a separate verified bootstrap. Download and recurring
 activation are separate steps.
+
+## Import the downloaded checkpoint ZIP (T250)
+
+For hosted transport, use the pinned GitHub download action with the selected
+`artifact-ids`, `run-id` and repository. Supply a read-only token for the
+cross-run fetch. Set `skip-decompress: true` and `digest-mismatch: error`.
+Keep the raw ZIP in an isolated download directory. [GitHub download action](https://github.com/actions/download-artifact)
+
+Pass the selected `archive_sha256` and `artifact_bytes` together with the
+separate manifest digest. The feed path and destination store must be absent.
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 runner-import-zip --archive $downloadedZip --store .cache/next-run-checkpoints --archive-sha256 $archiveSha256 --archive-bytes $artifactBytes --expected-sha256 $savedManifestSha256
+```
+
+The 60-second child checks the raw archive size and digest before parsing.
+It bounds ZIP metadata and expanded bytes, then streams only exact listed
+members into staging. The existing importer checks their evidence and creates
+the catalogue. The downloaded ZIP stays available for inspection, and the
+original feed root stays absent for the next cycle. Keep the ZIP quiescent
+during import. Hosted workflow wiring and activation remain separate.
