@@ -1,8 +1,10 @@
 """T244 composes verified runner recovery with real fixture capture."""
 
+import gzip
 import importlib
 import json
 import shutil
+import sqlite3
 import sys
 from contextlib import closing
 from datetime import UTC, datetime, timedelta
@@ -13,8 +15,10 @@ import pytest
 
 from atlas.data.budget import GB, ArchiveOnly
 from atlas.ingest.admission import capture_admitted
+from atlas.ingest.base import SourceUnavailable
 from atlas.ingest.runner_checkpoint import commit_checkpoint, resume_checkpoint
 from atlas.ingest.schedule import open_control, run_bounded
+from atlas.ingest.upload import upload_local
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
 ORIGIN = "http://127.0.0.1:8787"
@@ -143,16 +147,20 @@ def test_preflight_or_restore_failure_never_calls_capture(state, monkeypatch, da
         assert (root / "keep.txt").read_text(encoding="utf-8") == "retain"
 
 
-def test_commit_refusal_preserves_working_state_and_prior_head(state, monkeypatch):
+@pytest.mark.parametrize("with_upload", [False, True])
+def test_commit_refusal_preserves_working_state_and_prior_head(state, monkeypatch, with_upload):
     cycle, root, store, prior = state
     connect_capture(monkeypatch, cycle, root, weather)
+    fixed_cutoff(monkeypatch, cycle)
+    if with_upload:
+        monkeypatch.setattr(cycle, "upload_local", unexpected, raising=False)
 
     def refuse(path, target, *, expected_head):
         assert (path, target, expected_head) == (root, store, prior)
         raise ArchiveOnly("simulated storage stop")
 
     monkeypatch.setattr(cycle, "commit_checkpoint", refuse)
-    result = run(state)
+    result = run(state, upload=with_upload) if with_upload else run(state)
     assert result["status"] == "failed" and result["stage"] == "checkpoint"
     assert result["restored_sha256"] == prior
     assert result["capture"]["status"] == "captured"
@@ -160,6 +168,76 @@ def test_commit_refusal_preserves_working_state_and_prior_head(state, monkeypatc
     assert (root / "weather/latest-pair.json").is_file()
     root.rename(root.parent / "recoverable-working-state")
     assert resume_checkpoint(root, store) == prior
+
+
+def fixed_cutoff(monkeypatch, cycle):
+    class Clock:
+        @staticmethod
+        def now(timezone):
+            assert timezone == UTC
+            return NOW
+
+    monkeypatch.setattr(cycle, "datetime", Clock, raising=False)
+
+
+def test_upload_starts_after_checkpoint_and_not_due_retries_exact_bytes(state, monkeypatch):
+    cycle, root, store, prior = state
+    connect_capture(monkeypatch, cycle, root, weather)
+    fixed_cutoff(monkeypatch, cycle)
+    sent = []
+
+    def sender(frozen, **options):
+        with closing(sqlite3.connect(store / "catalog.sqlite")) as db:
+            (digest,) = db.execute("SELECT digest FROM current_checkpoint").fetchone()
+        assert digest != prior and frozen == store / "objects" / digest / "files"
+
+        def worker_upload(request):
+            assert request.url.path == "/internal/ingest"
+            sent.append(request.content)
+            envelope = json.loads(gzip.decompress(request.content))
+            assert envelope["source_id"] == "S01"
+            assert envelope["snapshot"]["as_of"] == "2026-11-05T14:00:00Z"
+            assert envelope["snapshot"]["records"][0]["provenance"] == "model"
+            if len(sent) == 1:
+                raise httpx.ReadTimeout("lost acknowledgement", request=request)
+            return httpx.Response(200, json={"status": "unchanged", "snapshot_id": "a" * 64})
+
+        return upload_local(frozen, **options, transport=httpx.MockTransport(worker_upload))
+
+    monkeypatch.setattr(cycle, "upload_local", sender, raising=False)
+    failed = run(state, upload=True)
+    assert (failed["status"], failed["stage"]) == ("failed", "upload")
+    assert failed["prepare"]["status"] == "prepared"
+    assert failed["manifest_sha256"] != prior
+    root.rename(root.parent / "held-upload-result")
+
+    connect_capture(monkeypatch, cycle, root, unexpected, admitted=False)
+    monkeypatch.setattr(cycle, "prepare_weather", unexpected, raising=False)
+    retried = run(state, upload=True)
+    assert (retried["status"], retried["stage"]) == ("unchanged", "upload")
+    assert retried["manifest_sha256"] == failed["manifest_sha256"]
+    assert len(sent) == 2 and sent[0] == sent[1]
+
+
+def test_preparation_failure_saves_capture_without_upload(state, monkeypatch):
+    cycle, root, store, prior = state
+    connect_capture(monkeypatch, cycle, root, weather)
+
+    def unavailable(*args, **kwargs):
+        raise SourceUnavailable("simulated unusable projection")
+
+    monkeypatch.setattr(cycle, "prepare_weather", unavailable, raising=False)
+    monkeypatch.setattr(cycle, "upload_local", unexpected, raising=False)
+    failed = run(state, upload=True)
+    assert (failed["status"], failed["stage"]) == ("failed", "prepare")
+    assert failed["capture"]["status"] == "captured"
+    assert failed["manifest_sha256"] != prior
+    root.rename(root.parent / "held-unprepared")
+    connect_capture(monkeypatch, cycle, root, unexpected, admitted=False)
+    following = run(state, upload=True)
+    assert following["status"] == "not_due"
+    assert following["manifest_sha256"] == failed["manifest_sha256"]
+    assert (root / "weather/latest-pair.json").is_file()
 
 
 def test_timeout_reaps_child_and_keeps_in_progress_root(state, tmp_path, monkeypatch):
@@ -219,10 +297,12 @@ def test_cli_runs_one_bounded_child_and_keeps_key_out_of_arguments(state, monkey
             ORIGIN,
             "--source",
             "S01",
+            "--upload-local",
         ],
     )
     with pytest.raises(SystemExit, match="1"):
         cycle.main()
     assert command[:4] == [sys.executable, "-m", "atlas.ingest.runner_cycle", "--child"]
+    assert command.count("--upload-local") == 1
     assert KEY not in repr(command)
     assert json.loads(capsys.readouterr().out)["status"] == "deadline"

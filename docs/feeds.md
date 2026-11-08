@@ -358,4 +358,21 @@ After a timeout, keep the root in place and inspect the catalogue and working
 tree before resuming. SQLite may have committed just before the child was
 stopped. Retain any newer capture evidence and cooldown by sealing the
 validated working tree against the current head before another capture.
-Preparation, upload and recurring scheduling are separate steps.
+
+## Prepare and upload from a runner cycle (T245)
+
+Add `--upload-local` to prepare a successful capture at the current UTC cutoff.
+The cycle commits the checkpoint before sending the prepared snapshot from its
+immutable generation to the same loopback Worker.
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 runner-cycle --store .cache/runner-checkpoints --source S09 --origin http://127.0.0.1:8787 --upload-local
+```
+
+The 150-second deadline covers preparation and upload too. A preparation failure
+can still save valid capture evidence and cadence. A failed checkpoint stops
+before upload. An upload failure reports the saved digest, so the next cycle can
+restore the committed snapshot. When the next capture is `not_due`, the option
+resends a retained prepared head if present, with its original cutoff and exact
+bytes. The Worker reports `stored` or `unchanged` at the upload stage. Recurring
+scheduling and hosted persistence remain separate steps.
