@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 8 Nov 2026, T259 web accuracy page,
+Last updated: 8 Nov 2026, T260 Ask route over trusted chunks,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T259. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D94. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T260. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D95. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -113,7 +113,7 @@ and a YAML block `- id: T057`.
 | `web/src/components/PlaceLens.tsx`, `web/src/report.ts` | T040 six-tab reports, versioned place selection, immutable share identity and browser print/PDF from the same report; no production places or approvals seeded |
 | `worker/`, `scripts/worker.ps1` | T229 child of T042: signed bounded hot-data uploads, canonical source validation and atomic SQLite caps; cloud capability/deployment disabled; actual Miniflare/D1 checks on Ubuntu CI |
 | `configs/budgets.yaml` | Request, storage and DuckDB budgets |
-| `src/atlas/rag/`, `configs/rag.yaml`, `docs/ask.md` | T252 Ask corpus (committed project documents only), chunking, local FTS5 index in ignored `data/rag/` and as-of filtered BM25 retrieval |
+| `src/atlas/rag/`, `configs/rag.yaml`, `docs/ask.md` | T252 Ask corpus (committed project documents only), chunking, local FTS5 index in ignored `data/rag/` and as-of filtered BM25 retrieval; T260 `manifest.py` exports the trusted D1 Ask release (`data/rag/ask-release.sql`) |
 | `.github/workflows/feeds.yml` | T251 manual-only hosted checkpoint relay (no schedule, no hosted capture) |
 | `tests/` | Contracts, fetcher, storage, as-of, discovery/adapters, geography, model gates and state isolation; final continuation results below |
 
@@ -239,6 +239,7 @@ and a YAML block `- id: T057`.
 | T257 (child of T046) | D92/A40 | `python -m atlas.models.accuracy` builds C1 (M07), C2 (M05) and M06 accuracy rows from committed records (unavailable, never zero) and writes `docs/releases/ka.md`, the T046/A3 checklist with evidence. Status: not releasable (C1 blocked, C2 model card missing, C3 gate failed, T045/T041/H05/H11 pending). Acceptance 3 passed. |
 | T258 (child of T046) | D93/A41 | `reports/models/m05-card.md` fills the plan's M05 card fields with release results and deviations (district units, no temperature feature, hindcast); every number is checked against sources. C2 check now passes; release still not releasable. Acceptance 4 passed. Full suite at T255: 896 passed, 1 load-sensitive failure (`test_killed_child_keeps_completed_checkpoint_and_raw_evidence`, 5 s child deadline) that passes alone. |
 | T259 (child of T046) | D94/A42 | `?page=accuracy` web page (F036) loads only an approved, hash-checked accuracy release; blocked models show "Unavailable", never 0; header links to it. Fixture generated from committed records. Acceptance 3 passed; vitest 45 and all 69 browser checks pass (12 new). No release served. |
+| T260 (child of T180) | D95/A43 | `POST /api/v1/ask` reads client-chosen chunk IDs (max 5) only from the current trusted D1 release (`ask_chunks`, `ask_current`), rechecks SHA-256, as-of, state and expiry, refuses unknown IDs and client evidence, and returns the cited extractive answer. `python -m atlas.rag.manifest` exports 333 chunks as release `9957c42d…` with a pointer-swap load file. Acceptance 8 passed; Worker node tests 22 passed; real workerd/D1 runtime check passed locally. Generation, quota counters and the remote D1 load wait for H05. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -664,14 +665,14 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    (`docs/ask.md`); T253 adds the Worker answer contract with cited
    extractive fallback; T254 adds the 60-case English gold set and scorer
    (`reports/rag.md`); T255 computes numeric answers (10/10). Gate still
-   fails on evidence support 0.83 (paraphrase misses). Next: the trusted
-   chunk manifest and `/api/v1/ask` route; e5 rerank when the owner
+   fails on evidence support 0.83 (paraphrase misses). Next: the e5
+   rerank when the owner
    approves its download. Do not tune on Q41-Q50. The e5 embedding rerank
    is deferred (D88): lexical recall passes and it needs the dl lock and a
    model download. Workers AI waits for H05.
    T256 adds the T225 core case studies (H14 owner review pending). Next:
    T257 writes the accuracy rows and docs/releases/ka.md checklist (not
-   releasable); T258 adds the M05 model card and T259 the web accuracy page. Next local work: the Ask route and trusted chunk manifest;
+   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only). Next local work: an English text Ask panel in the web app with local lexical search and citation cards (F046 slice; T182 voice and other languages stay outside the MVP, A3);
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
    unresolved human/data gates must remain pending rather than blocking independent work.
 
