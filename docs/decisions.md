@@ -2,6 +2,14 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D104 — C1 deferred to the owner at the end of the project (9 Nov 2026; owner in chat: "do not bother with emails to kseb i do not think there is going to be a reply and continue with the project" and "mark it i will think when the whole project is done").**
+  C1 stays blocked at its data gate: M02 has no daily history (KWRIS, T008),
+  and M07 has a stated datum for 4 of the 8 dams T130 needs (D103). No email
+  is sent to KSEB. Other routes (for example India-WRIS or CWC reservoir data,
+  the plan's optional D16 discovery) are listed for that end-of-project
+  decision, not pursued now. The release checklist keeps C1 "blocked", never
+  "pass". Work continues with the next tasks that do not need C1.
+
 - **D103 — Vertical datum evidence for KSEB dams (8 Nov 2026; owner approved the downloads in chat: "Yes, download them").**
   Split T267 from T130, whose data gate needs a known vertical datum and
   whose sources (S32, S34) state none. KSEB's Dam Safety section on kseb.in

@@ -79,7 +79,11 @@ def release_checks() -> list[dict]:
     ask_passed = re.search(r"\*\*Gate: passed\.\*\*", rag) is not None
     studies = ["m05-case-study.md", "m07-case-study.md", "ask-case-study.md"]
     checks = [
-        ("C1 evaluation report and model card", "blocked", "M07 has no model (data gate, T130)"),
+        (
+            "C1 evaluation report and model card",
+            "blocked",
+            "M07 has no model (data gate, T130: datum for 4 of 8 dams, D103); owner decides at the end (D104)",
+        ),
         (
             "C2 evaluation report and model card",
             "pass"
