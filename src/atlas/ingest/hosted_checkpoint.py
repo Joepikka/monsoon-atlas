@@ -1,4 +1,4 @@
-"""T248: verify one pinned GitHub checkpoint using read-only metadata."""
+"""Verify a pinned GitHub checkpoint or discover its immediate predecessor."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ import json
 import os
 import re
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import UTC, datetime, timedelta
 
 import httpx
@@ -24,6 +24,8 @@ PAGE_SIZE = 100
 MAX_PAGES = 10
 MAX_REPLY = 1024**2
 DEADLINE_S = 30
+RECENT_RUNS = 30
+ARTIFACT_PREFIX = "ka-feed-checkpoint-"
 
 
 @dataclass(frozen=True)
@@ -59,7 +61,8 @@ def _metadata(client: httpx.Client, path: str, params: dict | None = None) -> di
     return value
 
 
-def _verify_run(value: dict, trust: TrustedRun) -> None:
+def _verify_run(value: dict, trust: TrustedRun, *, active: bool = False) -> None:
+    outcome = ("in_progress", None) if active else ("completed", "success")
     if (
         _integer(value["id"], minimum=1) != trust.run_id
         or _integer(value["workflow_id"], minimum=1) != trust.workflow_id
@@ -69,15 +72,61 @@ def _verify_run(value: dict, trust: TrustedRun) -> None:
         or value["head_branch"] != trust.branch
         or value["head_sha"] != trust.head_sha
         or value["event"] not in {"schedule", "workflow_dispatch"}
-        or value["status"] != "completed"
-        or value["conclusion"] != "success"
+        or (value["status"], value["conclusion"]) != outcome
         or type(value["run_attempt"]) is not int
         or value["run_attempt"] != 1
     ):
-        raise IngestError("GitHub run does not match the trusted completed run")
+        kind = "active" if active else "completed"
+        raise IngestError(f"GitHub run does not match the trusted {kind} run")
 
 
-def _inventory(client: httpx.Client, path: str, trust: TrustedRun, name: str) -> tuple[dict, int]:
+def _predecessor(client: httpx.Client, path: str, active: TrustedRun, value: dict) -> TrustedRun:
+    number = _integer(value["run_number"], minimum=1)
+    if number == 1:
+        raise IngestError("First GitHub run has no predecessor checkpoint")
+    recent = _metadata(
+        client, f"{path}/workflows/{active.workflow_id}/runs", {"per_page": RECENT_RUNS, "page": 1}
+    )
+    rows = recent["workflow_runs"]
+    count = _integer(recent["total_count"])
+    if not isinstance(rows, list) or len(rows) != min(RECENT_RUNS, count):
+        raise IngestError("Recent GitHub workflow run listing is incomplete")
+    by_number, seen = {}, set()
+    for row in rows:
+        run_id = _integer(row["id"], minimum=1)
+        run_number = _integer(row["run_number"], minimum=1)
+        if run_id in seen or run_number in by_number:
+            raise IngestError("Recent GitHub workflow run listing repeats an identity")
+        seen.add(run_id)
+        by_number[run_number] = row
+    listed_active = by_number.get(number, {})
+    if (listed_active.get("id"), listed_active.get("head_sha")) != (
+        active.run_id,
+        active.head_sha,
+    ) or number - 1 not in by_number:
+        raise IngestError("Immediate GitHub predecessor is missing from the recent listing")
+
+    candidate = by_number[number - 1]
+    sha = candidate["head_sha"]
+    if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+        raise IngestError("GitHub predecessor commit is invalid")
+    prior = replace(active, run_id=candidate["id"], head_sha=sha)
+    detail = _metadata(client, f"{path}/runs/{prior.run_id}")
+    _verify_run(detail, prior)
+    if _integer(detail["run_number"], minimum=1) != number - 1:
+        raise IngestError("GitHub predecessor sequence changed")
+    if sha != active.head_sha:
+        comparison = _metadata(
+            client, f"/repos/{active.repository}/compare/{sha}...{active.head_sha}", {"per_page": 1}
+        )
+        if comparison["status"] != "ahead" or comparison["merge_base_commit"]["sha"] != sha:
+            raise IngestError("GitHub predecessor commit is outside the active run's history")
+    return prior
+
+
+def _inventory(
+    client: httpx.Client, path: str, trust: TrustedRun, name: str | None
+) -> tuple[dict, int]:
     seen = set()
     expected = selected = None
     retained = 0
@@ -102,7 +151,10 @@ def _inventory(client: httpx.Client, path: str, trust: TrustedRun, name: str) ->
                 raise IngestError("GitHub artifact inventory repeats an ID")
             seen.add(identifier)
             retained += _integer(item["size_in_bytes"])
-            if item.get("name") != name:
+            label = item.get("name")
+            if not isinstance(label, str):
+                continue
+            if not (label.startswith(ARTIFACT_PREFIX) if name is None else label == name):
                 continue
             run = item.get("workflow_run")
             if not isinstance(run, dict) or run.get("id") != trust.run_id:
@@ -119,18 +171,19 @@ def _inventory(client: httpx.Client, path: str, trust: TrustedRun, name: str) ->
 
 def select_checkpoint(
     trust: TrustedRun,
-    manifest_sha256: str,
+    manifest_sha256: str | None,
     *,
     now: datetime | None = None,
     transport: httpx.BaseTransport | None = None,
 ) -> dict:
-    """Return pinned identity and complete listed repository usage, without downloading."""
+    """Verify a pinned checkpoint. None discovers the active run's immediate predecessor."""
+    discover = manifest_sha256 is None
     now = datetime.now(UTC) if now is None else now
     if (
         not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,38}/[A-Za-z0-9_.-]{1,100}", trust.repository)
         or trust.repository.split("/")[-1] in {".", ".."}
         or not re.fullmatch(r"[0-9a-f]{40}", trust.head_sha)
-        or not re.fullmatch(HASH, manifest_sha256)
+        or (manifest_sha256 is not None and not re.fullmatch(HASH, manifest_sha256))
         or not 1 <= len(trust.branch) <= 255
         or now.utcoffset() != timedelta(0)
     ):
@@ -156,10 +209,16 @@ def select_checkpoint(
             follow_redirects=False,
             timeout=httpx.Timeout(5, connect=2),
         ) as client:
-            _verify_run(_metadata(client, f"{path}/runs/{trust.run_id}"), trust)
-            artifact, retained = _inventory(
-                client, f"{path}/artifacts", trust, f"ka-feed-checkpoint-{manifest_sha256}"
-            )
+            run_info = _metadata(client, f"{path}/runs/{trust.run_id}")
+            _verify_run(run_info, trust, active=discover)
+            if discover:
+                trust = _predecessor(client, path, trust, run_info)
+            name = None if manifest_sha256 is None else ARTIFACT_PREFIX + manifest_sha256
+            artifact, retained = _inventory(client, f"{path}/artifacts", trust, name)
+        if discover:
+            manifest_sha256 = artifact["name"].removeprefix(ARTIFACT_PREFIX)
+            if not re.fullmatch(HASH, manifest_sha256):
+                raise IngestError("GitHub predecessor artifact has an invalid manifest name")
         run = artifact["workflow_run"]
         digest = artifact["digest"]
         created = datetime.fromisoformat(artifact["created_at"])
@@ -186,7 +245,7 @@ def select_checkpoint(
         raise IngestError("Malformed GitHub checkpoint metadata") from None
     if retained > cap:
         raise ArchiveOnly("Listed GitHub artifacts exceed the configured storage budget")
-    return {
+    result = {
         "status": "selected",
         "repository": trust.repository,
         "run_id": trust.run_id,
@@ -198,6 +257,9 @@ def select_checkpoint(
         "available_artifact_bytes": cap - retained,
         "retention_days": budget.artifact_retention_days,
     }
+    if discover:
+        result["head_sha"] = trust.head_sha
+    return result
 
 
 def main() -> None:
@@ -208,7 +270,9 @@ def main() -> None:
     parser.add_argument("--run-id", required=True, type=int)
     parser.add_argument("--head-sha", required=True)
     parser.add_argument("--branch", default="main")
-    parser.add_argument("--manifest-sha256", required=True)
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--manifest-sha256")
+    mode.add_argument("--discover", action="store_true", help="Check the active run's predecessor")
     parser.add_argument("--child", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
     try:

@@ -436,3 +436,23 @@ The result reports remaining bytes under the project's 400 MB limit. This is
 repository inventory at check time. Hosted upload still needs current usage
 verification and budget approval. The selector leaves predecessor choice and
 artifact download to the workflow that calls it.
+
+## Discover the immediate predecessor (T249)
+
+For discovery, use `--discover` in place of `--manifest-sha256`. Supply the
+active run's ID and commit, with its trusted repository, workflow and branch.
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 runner-select --repository $repo --repository-id $repoId --workflow-id $workflowId --run-id $activeRunId --branch main --head-sha $activeCommitSha --discover
+```
+
+The selector verifies the active first attempt and looks for exactly the prior
+workflow run number on the recent listing. A gap, failure or different branch
+stops recovery. The predecessor must have the same commit or be an ancestor.
+Use `Actions: read` for metadata and `Contents: read` for commit comparison.
+[GitHub run variables](https://docs.github.com/en/actions/reference/workflows-and-actions/variables) · [GitHub commit comparison API](https://docs.github.com/en/rest/commits/commits#compare-two-commits)
+
+One checkpoint name from that verified run supplies the manifest digest. Its
+archive digest, retained bytes and expiry use the same checks as pinned mode.
+The first run needs a separate verified bootstrap. Download and recurring
+activation are separate steps.

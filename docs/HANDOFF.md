@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 8 Nov 2026, T248 pinned hosted checkpoint metadata,
+Last updated: 8 Nov 2026, T249 immediate hosted predecessor discovery,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T248. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D83. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T249. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D84. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -226,6 +226,7 @@ and a YAML block `- id: T057`.
 | T246 (child of T043) | D81/A29 | The runner reuses an intact prepared head across cutoffs when inputs and projection match. Actual source checks, expiration and forecast selection can change the output. |
 | T247 (child of T043) | D82/A30 | Offer the verified current bundle for artifact transport and import it with an independent digest into a fresh store. The offer checks the configured retained-byte budget. Acceptance 10 passed in 5.57s. |
 | T248 (child of T043) | D83/A31 | Read-only `runner-select` verifies explicitly pinned run and artifact metadata and counts the complete bounded repository inventory. Acceptance 34 passed in 0.93s. |
+| T249 (child of T043) | D84/A32 | `runner-select --discover` verifies the active run and immediate predecessor by run number. It checks commit ancestry and one checkpoint, and stops on gaps or failures. Acceptance 54 passed in 0.97s. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -420,6 +421,15 @@ The public smoke returned zero listed artifacts and rejected an actual PR run.
 The positive and refusal cases use documented metadata fixtures. The 23
 handoff and checkpoint regressions passed in 9.58s. Ruff, format, dependency
 policy, parity and whitespace checks passed.
+Final T248 `33287e1` passed core Windows/Ubuntu run 42459509865, Worker/D1
+42459509866 and browser Windows/Ubuntu 42459509869.
+
+T249 verifies the immediate predecessor without filtering out failures.
+The documented metadata fixtures cover missing sequence numbers, failed or
+repeated attempts, branch rewrites and ambiguous or expired checkpoints.
+The public smoke confirmed run numbers and commit ancestry and refused an
+actual PR run. The 10 handoff tests passed in 4.70s. Ruff, formatting, policy,
+amendment parity and whitespace passed.
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
@@ -606,8 +616,9 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    and sends from the saved generation when `--upload-local` is selected.
    T246 avoids new prepared snapshots when only generated clocks differ.
    T247 verifies the local artifact handoff and fresh-store import. T248
-   checks a pinned predecessor and repository artifact bytes. Continue with
-   trusted predecessor discovery and recurring-run preparation.
+   checks a pinned predecessor and repository artifact bytes. T249 discovers
+   the immediate verified predecessor without skipping failed runs. Continue
+   with verified archive download and recurring-run preparation.
    Remote upload and activation retain the capability and release gates. Research in
    `.cache/t043-research/findings.md` verifies that a full cold CAP+polygon sweep
    already needs 200 seconds of spacing alone; use bounded CAP-only admission,
