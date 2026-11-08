@@ -309,6 +309,13 @@ the configured budget, then import its verified generation into a fresh local
 store at the same original path. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/test_runner_handoff.py -q`.
 
+## A31. Pinned artifact metadata and storage preflight (D83, 8 November 2026)
+
+T248 is a child of T043 after T247. Check one explicitly trusted run and its
+checkpoint artifact against the bounded repository inventory. Report actual
+listed bytes and both digests without downloading. Estimate 3 hours. Acceptance
+is `.\.venv\Scripts\python -m pytest tests/test_hosted_checkpoint.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -329,6 +336,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T248
+    parent: T043
+    title: "Verify trusted hosted artifact metadata and retained storage"
+    phase: P1
+    state: KA
+    depends_on: [T247]
+    files: [src/atlas/ingest/hosted_checkpoint.py, tests/test_hosted_checkpoint.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Check an explicitly pinned workflow run and match its checkpoint artifact by manifest identity"
+      - "Account for the bounded repository inventory and reject untrusted, expired or over-budget metadata"
+      - "Exercise read-only API and CLI behavior with documented metadata fixtures"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_hosted_checkpoint.py -q'
+      expected: "Only the pinned eligible artifact is selected, with complete conservative storage accounting and no fallback"
+    hours: 3
   - id: T247
     parent: T043
     title: "Verify and import a hosted checkpoint handoff locally"

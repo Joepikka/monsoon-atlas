@@ -2,6 +2,15 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D83 — Pin hosted artifact selection to a trusted run (8 Nov 2026).**
+  Split T248 from T043 after T247. A bounded, read-only GitHub metadata check
+  uses explicit repository, workflow, run, branch, commit and manifest
+  identities. Require an eligible completed first attempt and a matching
+  unexpired checkpoint artifact. Count every listed repository artifact
+  against the 400 MB project budget, including expired entries still listed.
+  Return separate archive and manifest digests. Missing, malformed or changing
+  metadata fails closed. Run selection and activation remain later work.
+
 - **D82 — Verify a hosted checkpoint handoff locally (8 Nov 2026).**
   Split T247 from T043 after T243/T246. Offer only the committed immutable
   bundle directory for artifact transport. Apply the existing 400 MB and
