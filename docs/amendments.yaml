@@ -1,6 +1,21 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T244
+    parent: T043
+    title: "Run one bounded local restore, capture and checkpoint cycle"
+    phase: P1
+    state: KA
+    depends_on: [T242, T243]
+    files: [src/atlas/ingest/runner_cycle.py, tests/test_runner_cycle.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Restore a verified generation before one signed local source capture"
+      - "Commit verified capture-stage state against the restored head and retain evidence on refusal"
+      - "Exercise the entry point, denial, cooldown persistence and a reaped child timeout"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_runner_cycle.py -q'
+      expected: "One bounded local cycle preserves source evidence and cadence; unsafe restores, denied claims and interruptions fail closed"
+    hours: 3
   - id: T243
     parent: T043
     title: "Persist verified local runner checkpoint generations"

@@ -279,6 +279,14 @@ whole store. Estimate 3 hours. Acceptance is
 D78 also requires an empty store for a missing catalogue and includes pending
 SQLite pages in the final quota check before installing a generation.
 
+## A27. Bounded local runner cycle (D79, 8 November 2026)
+
+T244 is a child of T043 after T242/T243. Run one source through verified
+restore, signed local admission, capture and expected-head save under one
+150-second parent deadline. Preserve the working root and stored generations
+on interruption. Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/test_runner_cycle.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -299,6 +307,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T244
+    parent: T043
+    title: "Run one bounded local restore, capture and checkpoint cycle"
+    phase: P1
+    state: KA
+    depends_on: [T242, T243]
+    files: [src/atlas/ingest/runner_cycle.py, tests/test_runner_cycle.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Restore a verified generation before one signed local source capture"
+      - "Commit verified capture-stage state against the restored head and retain evidence on refusal"
+      - "Exercise the entry point, denial, cooldown persistence and a reaped child timeout"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_runner_cycle.py -q'
+      expected: "One bounded local cycle preserves source evidence and cadence; unsafe restores, denied claims and interruptions fail closed"
+    hours: 3
   - id: T243
     parent: T043
     title: "Persist verified local runner checkpoint generations"

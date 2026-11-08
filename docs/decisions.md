@@ -2,6 +2,16 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D79 — Bound one restored local capture cycle (8 Nov 2026).**
+  Split T244 from T043 after T242/T243. One parent deadline covers verified
+  restore to an absent root, one signed loopback admission and capture, and
+  an expected-head save. Persist verified capture-stage state even after a
+  handled failure so cadence and cooldown survive. An admission denial or
+  failure uses the restored digest without sealing another copy. Keep the
+  working directory after success or interruption so evidence can be reviewed
+  before another run. A timeout never starts a second child. Preparation,
+  upload, hosted persistence and recurring activation are later work.
+
 - **D78 — Protect catalogue recovery and count pending SQLite pages (7 Nov 2026).**
   T243 review found two gaps. An explicit bootstrap could recreate a missing
   catalogue beside retained generations, and buffered SQLite pages could
