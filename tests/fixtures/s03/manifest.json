@@ -110,6 +110,17 @@
       "bytes": 297115,
       "raw_path": "S03/2026-11-08/4eeb348907e96543af5e961ab0c5108e2dc6578e2d385f52c083ad3b9cc946ec.json",
       "shows": "GloFAS river discharge near the Cauvery at Srirangapatna, 1984 to 7 Nov 2026"
+    },
+    {
+      "id": "e11",
+      "url": "https://flood-api.open-meteo.com/v1/flood?latitude=12.42&longitude=76.69&daily=river_discharge&models=seamless_v4&start_date=2024-07-01&end_date=2024-07-31&timezone=Asia%2FKolkata",
+      "fetched_at": "2026-11-08T18:45:54.630967Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "76c4401790ad0e1ea1e71132bc1529e8fa930550ff4c46a62028c18efcc75ba4",
+      "bytes": 899,
+      "raw_path": "S03/2026-11-08/76c4401790ad0e1ea1e71132bc1529e8fa930550ff4c46a62028c18efcc75ba4.json",
+      "shows": "GloFAS river discharge with models=seamless_v4 named, July 2024, Cauvery at Srirangapatna"
     }
   ]
 }

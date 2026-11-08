@@ -1,0 +1,17 @@
+{
+  "$comment": "S03 Open-Meteo GloFAS river discharge (T048). Measure columns added to the common envelope (common.json). Field map: configs/sources/s03.yaml.",
+  "source_id": "S03",
+  "schema_version": 1,
+  "mapping_version": "s03-v1",
+  "fields": [
+    {"name": "river_cell_id", "type": "string", "nullable": false, "meaning": "glofas_seamless_v4_<lat>N_<lon>E, the 0.05 degree GloFAS cell the API snapped to"},
+    {"name": "valid_date", "type": "date32", "nullable": false, "meaning": "IST calendar day (timezone=Asia/Kolkata)"},
+    {"name": "discharge_m3s", "type": "float64", "nullable": true, "meaning": "river_discharge in m³/s; null where there is no river cell or no value"},
+    {"name": "member", "type": "int64", "nullable": true, "meaning": "Ensemble member; null for the deterministic series"},
+    {"name": "product", "type": "string", "nullable": false, "meaning": "Always seamless_v4 (GloFAS v4 Seamless)"}
+  ],
+  "valid_at": "Local midnight at the end of valid_date, in UTC",
+  "available_at": "Fetch time; past values are a hindcast unless stored at issue time",
+  "provenance": "model (simulated discharge, not a gauge)",
+  "missing": "A null value stays null: not_yet_available after the newest value of the cell, otherwise out_of_coverage"
+}

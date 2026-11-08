@@ -88,8 +88,8 @@ field_map:
   - canonical: product
     upstream: "the models request parameter (not echoed in the response)"
     unit_status: not_applicable
-    detail: "GloFAS v4 Seamless by default; T048 must request and record one named model."
-    evidence: [e04]
+    detail: "seamless_v4 (GloFAS v4 Seamless): named explicitly it returns the same values as the default (e07, e11); an unknown name gets HTTP 400 (failed_fetches)."
+    evidence: [e04, e07, e11]
 
 dependents: [T048]
 retry_condition: null
@@ -97,3 +97,6 @@ failed_fetches:
   - url: "https://object-store.os-api.cci2.ecmwf.int/cci2-prod-catalogue/licenses/cems-floods/cems-floods_428a6e1019ec50b3dad9c37a90d630fab139059933a939dd5df620bfcb420cc3.pdf"
     attempted_at: "2026-11-08T18:45:00Z"
     error: "HTTP 404 NoSuchKey: the GloFAS licence link on the Open-Meteo licence page is dead"
+  - url: "https://flood-api.open-meteo.com/v1/flood?daily=river_discharge&end_date=2024-07-02&latitude=12.42&longitude=76.69&models=not_a_model&start_date=2024-07-01&timezone=Asia%2FKolkata"
+    attempted_at: "2026-11-08T19:05:00Z"
+    error: "HTTP 400 for an unknown model name (a deliberate check that names are validated)"

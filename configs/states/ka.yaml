@@ -31,7 +31,9 @@ sources:
     verify_task: T047
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "daily; hindcast unless stored at issue time"
+    verified_by: configs/sources/s03.yaml
+    enabled: true
   - source_id: S04
     name: "Open-Meteo CAMS air-quality estimates"
     verify_task: T049
