@@ -59,6 +59,12 @@ def test_l2_ranks_the_log_below_an_equal_specific_match(index):
     first = retrieve(question, as_of=NOW, index=index, logs=("log",), log_rule="L1")[0]
     halved = retrieve(question, as_of=NOW, index=index, logs=("log",), log_rule="L2")
     assert first["doc_id"] == "log" and halved[0]["doc_id"] != "log"
+    # Halving happens before the candidate cut, so a non-log just past it can still win.
+    for rule, expected in (("L1", True), ("L2", False)):
+        top = retrieve(question, as_of=NOW, index=index, logs=("log",), log_rule=rule, candidates=1)
+        assert (top[0]["doc_id"] == "log") is expected
+    with pytest.raises(ValueError, match="only with method R0"):
+        retrieve(question, as_of=NOW, index=index, logs=("log",), log_rule="L2", method="R1")
 
 
 def test_unknown_rule_and_config_logs():

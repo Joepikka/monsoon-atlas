@@ -78,6 +78,8 @@ def retrieve(
     """
     if method not in METHODS or log_rule not in LOG_RULES:
         raise ValueError(f"Unknown retrieval method {method} or log rule {log_rule}")
+    if log_rule == "L2" and method != "R0":
+        raise ValueError("Log rule L2 halves BM25 scores, so it works only with method R0")
     if not isinstance(question, str) or not 0 < len(question) <= MAX_QUESTION:
         raise ValueError(f"Questions must contain 1 to {MAX_QUESTION} characters")
     cutoff = utc_text(as_of)
@@ -91,17 +93,22 @@ def retrieve(
     filters = """d.available_at <= ? AND (d.expires_at IS NULL OR d.expires_at > ?)
           AND d.language = ?
           AND (instr(d.states, ',' || ? || ',') > 0 OR instr(d.states, ',all,') > 0)"""
+    # L2 (D100): halve the logs' bm25() before the candidate cut. bm25() is negative (lower
+    # is better), so halving ranks a log lower.
+    halve = log_rule == "L2" and bool(logs)
+    weight = f"CASE WHEN c.doc_id IN ({','.join('?' * len(logs))}) THEN 0.5 ELSE 1.0 END"
     query = f"""
         SELECT {columns}, bm25(chunk_text, 0.0, 2.0, 1.0) AS score
         FROM chunk_text JOIN chunks c ON c.chunk_id = chunk_text.chunk_id
         JOIN documents d ON d.doc_id = c.doc_id
         WHERE chunk_text MATCH ? AND {filters}
-        ORDER BY score, c.chunk_id LIMIT ?
+        ORDER BY {f"score * {weight}" if halve else "score"}, c.chunk_id LIMIT ?
     """
     uri = f"{Path(index).absolute().as_uri()}?mode=ro"
     with closing(sqlite3.connect(uri, uri=True)) as db:
         db.row_factory = sqlite3.Row
-        rows = db.execute(query, (match, cutoff, cutoff, language, state, candidates)).fetchall()
+        values = (match, cutoff, cutoff, language, state, *(logs if halve else ()), candidates)
+        rows = db.execute(query, values).fetchall()
         if method != "R0":
             known = f"SELECT {columns}, 0.0 AS score FROM chunks c JOIN documents d"
             known += f" ON d.doc_id = c.doc_id WHERE {filters}"
@@ -115,10 +122,6 @@ def retrieve(
             pool[key] for key in _order(method, [r["chunk_id"] for r in rows], cosine, candidates)
         ]
 
-    if log_rule == "L2" and method == "R0":
-        # bm25() is negative (lower is better), so halving a log's score ranks it lower.
-        weight = {True: 0.5, False: 1.0}
-        rows = sorted(rows, key=lambda r: (r["score"] * weight[r["doc_id"] in logs], r["chunk_id"]))
     selected, shingles, budget = [], [], max_context_tokens
     for row in rows:
         current = _shingles(row["text"])
