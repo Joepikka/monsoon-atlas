@@ -377,6 +377,15 @@ study per actual core: M05 (C2), the blocked M07 (C1 fallback) and Ask (C3),
 using only numbers found in their cited committed sources. Estimate 3 hours.
 Acceptance is `.\.venv\Scripts\python -m pytest tests/test_case_studies.py -q`.
 
+## A40. Accuracy rows and release checklist (D92, 8 November 2026)
+
+T257 is a child of T046 after T037/T103/T256. Build the accuracy rows for
+C1, C2 and M06 from committed release records, with unavailable values kept
+null, and generate a release checklist of every T046/A3 check with its
+evidence. It is preparation only: the web page, browser checks and
+deployment stay in T046. Estimate 2 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/test_ka_release.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -397,6 +406,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T257
+    parent: T046
+    title: "Accuracy rows and Karnataka release checklist"
+    phase: P1
+    state: KA
+    depends_on: [T037, T103, T256]
+    files: [src/atlas/models/accuracy.py, docs/releases/ka.md, tests/test_ka_release.py]
+    steps:
+      - "Build C1, C2 and M06 rows from release and status records; keep unavailable values null"
+      - "List each T046 and A3 check with its current evidence; release only when all pass"
+      - "Keep the generated checklist identical to the committed file"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_ka_release.py -q'
+      expected: "Blocked models show unavailable, never zero; the checklist reports not releasable while any check fails"
+    hours: 2
   - id: T256
     parent: T225
     title: "Core case studies for M05, M07 and Ask"

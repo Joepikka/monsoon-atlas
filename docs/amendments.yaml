@@ -1,6 +1,21 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T257
+    parent: T046
+    title: "Accuracy rows and Karnataka release checklist"
+    phase: P1
+    state: KA
+    depends_on: [T037, T103, T256]
+    files: [src/atlas/models/accuracy.py, docs/releases/ka.md, tests/test_ka_release.py]
+    steps:
+      - "Build C1, C2 and M06 rows from release and status records; keep unavailable values null"
+      - "List each T046 and A3 check with its current evidence; release only when all pass"
+      - "Keep the generated checklist identical to the committed file"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_ka_release.py -q'
+      expected: "Blocked models show unavailable, never zero; the checklist reports not releasable while any check fails"
+    hours: 2
   - id: T256
     parent: T225
     title: "Core case studies for M05, M07 and Ask"

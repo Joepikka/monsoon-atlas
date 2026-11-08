@@ -2,6 +2,14 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D92 — Prepare T046 locally; the release stays blocked (8 Nov 2026).**
+  Split T257 from T046. T046 itself depends on T045 (H05/H06) and T041
+  (S18), and needs H11. This child builds the accuracy rows for C1, C2 and
+  M06 from committed records and a generated checklist of every T046 and A3
+  check. A check passes only with evidence: the C2 model card is reported
+  missing because only the evaluation report exists, and C3 fails while
+  `reports/rag.md` reports a failed gate. Unavailable values stay null.
+
 - **D91 — Case studies cover the actual cores, including blocked ones (8 Nov 2026).**
   Split T256 from T225. Amended T225 names M02, M01 and Ask, but D17/D29 made
   the cores M07 (C1 fallback), M05 (C2) and Ask (C3). Write those three
