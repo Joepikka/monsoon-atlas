@@ -43,11 +43,31 @@ affected villages in the PDNA remains unresolved, as recorded in T121.
 
 ## Dam identity, units, datum and precedence
 
-The source names are documented; canonical dam IDs and a verified vertical datum
-are **not registered yet**. T114/T118 must produce the registry from parsed real
+The source names are documented; canonical dam IDs are **not registered yet**.
+A vertical datum is verified for four KSEB reservoirs only (T267, below). T114/T118 must produce the registry from parsed real
 evidence, retaining the original name, operator, units and cited mapping. In S34,
 KSEB Kuttiyadi and irrigation Kuttiyadi are different dams: a name-only join is
 invalid. Do not assume a latitude, elevation datum or alias match from the name.
+
+### Vertical datum (T267, D103)
+
+The daily reports name no datum. KSEB's operation and maintenance manuals
+(S32 evidence e81-e98, fetched 8 Nov 2026) were read for each dam's own
+statement. A dam counts as datum-known only when its manual names the
+reference; a bare elevation such as "+707.75 m" or "(El.) +811.68 m" does not.
+
+| Reservoir (manual) | Evidence | Statement | Datum |
+|---|---|---|---|
+| Idukki, Cheruthoni, Kulamavu (O&M-09, O&M-24) | e81 p223; e82 p35 | levelling from Survey of India benchmarks above mean sea level | known: MSL |
+| Sengulam (O&M-20) | e83 p30 | FRL +847.65 m above MSL | known: MSL |
+| Kakki and Anathode (O&M-02) | e96 p33 | FRL + 981.46 m above MSL | known: MSL |
+| Pamba (O&M-03) | e97 p29 | FRL +981.46 m above MSL | known: MSL |
+| Ponmudi, Lower Periyar, Kundala, Madupetty, Poringalkuthu, Kallarkutty, Kuttiyadi, Anayirankal, Erattayar, Kallar, Moozhiyar, Sholayar, Idamalayar | e84-e95, e98 | elevations with no named datum | unknown |
+
+Four reservoirs with a known datum are below the T130 gate of eight dams, so
+the datum part of the gate is **not met**. A datum for the other dams needs an
+official statement (for example a KSEB or CWC document, or a reply from KSEB's
+Dam Safety Organisation); it is never assumed from the elevation numbers.
 
 The following is the adapter policy to implement, not a claim of completed joins:
 

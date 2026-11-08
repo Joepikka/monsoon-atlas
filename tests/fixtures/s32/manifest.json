@@ -880,6 +880,204 @@
       "bytes": 154163,
       "raw_path": "S32/2026-11-05/64423310e4ba514611bb829f07478de2a886bf581c29372d6b208f0a011ef321.html",
       "shows": "Coverage sample: report page for 2026-11-01 (1st and 15th of each month, Nov 2023 to Nov 2026)"
+    },
+    {
+      "id": "e81",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/o_m_manual_idukki_cheruthoni_kulamavu-17166131361466455665.pdf",
+      "fetched_at": "2026-11-08T18:18:41.675559Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "8d9d1f2b3037de9d1b39960a8cd510ddf30b26bc6119a5101ba0da15c9498e37",
+      "bytes": 7511282,
+      "raw_path": "S32/2026-11-08/8d9d1f2b3037de9d1b39960a8cd510ddf30b26bc6119a5101ba0da15c9498e37.pdf",
+      "shows": "KSEB O&M-09 manual, Idukki, Cheruthoni and Kulamavu dams: p223 says levelling references come from Survey of India benchmarks 'above the mean sea level'"
+    },
+    {
+      "id": "e82",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Kulamavu_Saddle_Dams_KSEB-171696373158946266.pdf",
+      "fetched_at": "2026-11-08T18:18:50.109443Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "6946b5216ce481bedc9ec35ccec7f47172da0c77ac1f852b303fe4496c4fd966",
+      "bytes": 14771533,
+      "raw_path": "S32/2026-11-08/6946b5216ce481bedc9ec35ccec7f47172da0c77ac1f852b303fe4496c4fd966.pdf",
+      "shows": "KSEB O&M-24 manual, Kulamavu saddle dams: p35 gives an elevation of 703.57 m '(above msl)'; part of the Idukki reservoir"
+    },
+    {
+      "id": "e83",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Sengulam_Dam_KSEB-17169631791336096338.pdf",
+      "fetched_at": "2026-11-08T18:18:52.892351Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "e1f7d4f9689cb7114ff08fa79627aeb6f7d4bd827a4df3c2f7c84066d31fc5ac",
+      "bytes": 2096639,
+      "raw_path": "S32/2026-11-08/e1f7d4f9689cb7114ff08fa79627aeb6f7d4bd827a4df3c2f7c84066d31fc5ac.pdf",
+      "shows": "KSEB O&M-20 manual, Sengulam dam: p30 'Full Reservoir Level (FRL) +847.65 m above MSL'"
+    },
+    {
+      "id": "e84",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Ponmudi_Dam-17169594641734735654.pdf",
+      "fetched_at": "2026-11-08T18:18:55.821584Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "9e733a37c0ec68b88fa280f74a524619bfea29f5eb9e15d120c1521de90b7dd1",
+      "bytes": 2907392,
+      "raw_path": "S32/2026-11-08/9e733a37c0ec68b88fa280f74a524619bfea29f5eb9e15d120c1521de90b7dd1.pdf",
+      "shows": "KSEB O&M-21 manual, Ponmudi dam: p23 gives FRL as '+707.75 m' with no named datum"
+    },
+    {
+      "id": "e85",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Lower_Periyar_KSEB-17166190931929587582.pdf",
+      "fetched_at": "2026-11-08T18:19:00.984601Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "642fd9634efb6e6ee8aa80eda8331fd037d4c9b62c48c955f6d855c271474c6b",
+      "bytes": 7478668,
+      "raw_path": "S32/2026-11-08/642fd9634efb6e6ee8aa80eda8331fd037d4c9b62c48c955f6d855c271474c6b.pdf",
+      "shows": "KSEB O&M-16 manual, Lower Periyar dam: p23 gives FRL as '+253.00 m' with no named datum"
+    },
+    {
+      "id": "e86",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Kundala_Dam_KSEB-1716617408514848068.pdf",
+      "fetched_at": "2026-11-08T18:19:03.778157Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "cbfddd57a3ef4bbcfd4ae7674844c96ea613017fe3cde2e73157b4ecda2b3499",
+      "bytes": 2664314,
+      "raw_path": "S32/2026-11-08/cbfddd57a3ef4bbcfd4ae7674844c96ea613017fe3cde2e73157b4ecda2b3499.pdf",
+      "shows": "KSEB O&M-10 manual, Kundala dam: p21 gives FRL '(El.) +1758.69 m' with no named datum"
+    },
+    {
+      "id": "e87",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Madupetty_KSEB-17166183861461299945.pdf",
+      "fetched_at": "2026-11-08T18:19:06.811229Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "526182147180c1a3778b418eecbe1663e191b4dc2ec3dd6b8b94bca412e6be66",
+      "bytes": 2862042,
+      "raw_path": "S32/2026-11-08/526182147180c1a3778b418eecbe1663e191b4dc2ec3dd6b8b94bca412e6be66.pdf",
+      "shows": "KSEB O&M-15 manual, Madupetty dam: p22 gives FRL as '+1599.59 m' with no named datum"
+    },
+    {
+      "id": "e88",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Poringalkuthu_Dam_KSEB-1716960153514908244.pdf",
+      "fetched_at": "2026-11-08T18:19:11.830767Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "bac44f688cc141eb86753f9091a34071fab081544beb8d75791c07a4c243bb00",
+      "bytes": 8256069,
+      "raw_path": "S32/2026-11-08/bac44f688cc141eb86753f9091a34071fab081544beb8d75791c07a4c243bb00.pdf",
+      "shows": "KSEB O&M-06 manual, Poringalkuthu dam: no levelling reference or datum found in the text layer"
+    },
+    {
+      "id": "e89",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Kallarkutty_KSEB-17166144811970114423.pdf",
+      "fetched_at": "2026-11-08T18:19:14.659817Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "91ec1fdd6ae278700fd2c80c4598beb6c0443aed3d721aa1a9c13e7725219103",
+      "bytes": 3410497,
+      "raw_path": "S32/2026-11-08/91ec1fdd6ae278700fd2c80c4598beb6c0443aed3d721aa1a9c13e7725219103.pdf",
+      "shows": "KSEB O&M-08 manual, Kallarkutty dam: p26 gives FRL '+456.60 m'; MSL appears only for river elevations (p25, p57)"
+    },
+    {
+      "id": "e90",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Kuttiyadi_KSEB-17166179952115261197.pdf",
+      "fetched_at": "2026-11-08T18:19:17.533906Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "1d27c07309a86a4ed56fcc0d54d15bdc673fca34b467d8f94f9195dde6edd3d3",
+      "bytes": 3312124,
+      "raw_path": "S32/2026-11-08/1d27c07309a86a4ed56fcc0d54d15bdc673fca34b467d8f94f9195dde6edd3d3.pdf",
+      "shows": "KSEB O&M-07 manual, Kuttiyadi dam (Kakkayam): p24 gives FRL as '+758.04 m' with no named datum"
+    },
+    {
+      "id": "e91",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Anayirankal_KSEB-1716613456585367477.pdf",
+      "fetched_at": "2026-11-08T18:19:26.052991Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "48530fcb8391ff6ec195f4707d7f879b1d4710d4362afd65e6d530ac956ab63f",
+      "bytes": 6116702,
+      "raw_path": "S32/2026-11-08/48530fcb8391ff6ec195f4707d7f879b1d4710d4362afd65e6d530ac956ab63f.pdf",
+      "shows": "KSEB O&M-18 manual, Anayirankal dam: p27-28 give FRL in m with no named datum"
+    },
+    {
+      "id": "e92",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Erattayar_KSEB-17166137001481325810.pdf",
+      "fetched_at": "2026-11-08T18:19:30.216257Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "c9cd740bbea7a6aaab592f695a844d2e97f78e0490ff31ba2ca525a53013a860",
+      "bytes": 3730326,
+      "raw_path": "S32/2026-11-08/c9cd740bbea7a6aaab592f695a844d2e97f78e0490ff31ba2ca525a53013a860.pdf",
+      "shows": "KSEB O&M-14 manual, Erattayar dam: p24 gives FRL as +2403 ft (732.62 m) with no named datum"
+    },
+    {
+      "id": "e93",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Kallar_KSEB-17166143321439416105.pdf",
+      "fetched_at": "2026-11-08T18:19:35.241340Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "8566ceaad3f229f6124f2eaf0d489fc94c05b66f718d6a775bcd0e5725e1d563",
+      "bytes": 5932097,
+      "raw_path": "S32/2026-11-08/8566ceaad3f229f6124f2eaf0d489fc94c05b66f718d6a775bcd0e5725e1d563.pdf",
+      "shows": "KSEB O&M-13 manual, Kallar dam: p25 gives FRL as +2403 ft (732.62 m) with no named datum"
+    },
+    {
+      "id": "e94",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Moozhiyar_KSEB-1716618782589753332.pdf",
+      "fetched_at": "2026-11-08T18:19:42.385795Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "8a6f9301f08074cbb8cd5077a03961fa7a4ce0b900ea532d38bc369956e1f546",
+      "bytes": 7213933,
+      "raw_path": "S32/2026-11-08/8a6f9301f08074cbb8cd5077a03961fa7a4ce0b900ea532d38bc369956e1f546.pdf",
+      "shows": "KSEB O&M-11 manual, Moozhiyar dam: p26 gives FRL as 192.63 m with no named datum"
+    },
+    {
+      "id": "e95",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Sholayar_Dams_KSEB-1716963388589982523.pdf",
+      "fetched_at": "2026-11-08T18:19:48.109146Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "36ee7c2f10db1c6f75629e2f9220cf8b357113a1db9a2c813e90fdf01ed3552d",
+      "bytes": 6238050,
+      "raw_path": "S32/2026-11-08/36ee7c2f10db1c6f75629e2f9220cf8b357113a1db9a2c813e90fdf01ed3552d.pdf",
+      "shows": "KSEB O&M-04 manual, Sholayar dams: p26 gives FRL '(El.) +811.68 m' with no named datum"
+    },
+    {
+      "id": "e96",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Kakki_Anathode_KSEB-1716614201391646806.pdf",
+      "fetched_at": "2026-11-08T18:19:54.376661Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "e4ccddcb683f3b62ab125c068c69e6f0ac4dd7751bb5e68a30c446110c675e03",
+      "bytes": 7830491,
+      "raw_path": "S32/2026-11-08/e4ccddcb683f3b62ab125c068c69e6f0ac4dd7751bb5e68a30c446110c675e03.pdf",
+      "shows": "KSEB O&M-02 manual, Kakki and Anathode dams: p33 'Full Reservoir Level (FRL) + 981.46 m above MSL'"
+    },
+    {
+      "id": "e97",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Pamba_KSEB-1716619202387866381.pdf",
+      "fetched_at": "2026-11-08T18:19:57.590487Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "7c79d31264509e3e7c02bf0fb3fa3cab4855c40380847ba258de8c3d48f566e7",
+      "bytes": 3465662,
+      "raw_path": "S32/2026-11-08/7c79d31264509e3e7c02bf0fb3fa3cab4855c40380847ba258de8c3d48f566e7.pdf",
+      "shows": "KSEB O&M-03 manual, Pamba dam: p29 'Full Reservoir Level (FRL) +981.46 m above MSL'"
+    },
+    {
+      "id": "e98",
+      "url": "https://kseb.in/uploads/Downloadtemsuppy/O_M_Idamalayar_KSEB-17166138702118609236.pdf",
+      "fetched_at": "2026-11-08T18:20:04.625661Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "e7103bf9d21d6683bd2b2ba388f70469b9c621da11aaf1c060b2c65ed861ca1a",
+      "bytes": 4833815,
+      "raw_path": "S32/2026-11-08/e7103bf9d21d6683bd2b2ba388f70469b9c621da11aaf1c060b2c65ed861ca1a.pdf",
+      "shows": "KSEB O&M-01 manual, Idamalayar dam: p21 gives FRL as 169.0 m with no named datum"
     }
   ]
 }
