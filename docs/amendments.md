@@ -323,6 +323,12 @@ workflow run and its checkpoint without skipping gaps. Estimate 3 hours.
 Acceptance is
 `.\.venv\Scripts\python -m pytest tests/test_hosted_checkpoint.py -q`.
 
+## A33. Verified downloaded checkpoint archive (D85, 8 November 2026)
+
+T250 is a child of T043 after T247/T249. Verify and stage the raw downloaded
+ZIP before importing it into an absent store. Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/test_hosted_archive.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -343,6 +349,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T250
+    parent: T043
+    title: "Verify and import a downloaded checkpoint ZIP"
+    phase: P1
+    state: KA
+    depends_on: [T247, T249]
+    files: [src/atlas/ingest/hosted_archive.py, tests/test_hosted_archive.py, scripts/feeds.ps1, docs/feeds.md]
+    steps:
+      - "Bind the archive to selected size and SHA-256 before opening it"
+      - "Bound ZIP metadata and extract only safe manifest-listed files into owned staging"
+      - "Reuse the verified bundle importer and document pinned GitHub download inputs"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_hosted_archive.py -q'
+      expected: "Verified archives recover exact feed state; invalid archive or manifest data cannot create a store"
+    hours: 3
   - id: T249
     parent: T043
     title: "Discover the immediate trusted hosted checkpoint predecessor"

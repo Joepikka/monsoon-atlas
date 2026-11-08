@@ -2,6 +2,14 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D85 — Verify the downloaded checkpoint archive before import (8 Nov 2026).**
+  Split T250 from T043 after T247/T249. Use GitHub's existing artifact download
+  action for transport by pinned artifact ID, with extraction disabled. A
+  local importer checks the selected archive size and digest before parsing,
+  bounds ZIP metadata and expansion, and extracts only manifest-listed files.
+  Keep the separately trusted manifest digest and original-path store checks.
+  Hosted workflow wiring and activation are later work.
+
 - **D84 — Discover the immediate trusted workflow predecessor (8 Nov 2026).**
   Split T249 from T043 after T248. Pin the active run and examine its
   workflow's recent run metadata without a success filter. Require the
