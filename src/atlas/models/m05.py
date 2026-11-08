@@ -332,3 +332,84 @@ def evaluate(result: Fit, calibrate: pa.Table, test: pa.Table) -> dict:
         if status != "candidate_eligible"
         else "all gates pass; needs owner approval",
     }
+
+
+# T262 (D97): interval recalibration. Point forecasts stay the approved v1 ridge.
+ORIGINS = tuple(date(year, 1, 1) for year in (2000, 2005, 2010, 2015))
+RULES = tuple((years, seasonal) for years in (1, 5, 10) for seasonal in (False, True))
+PURGE_DAYS = 92  # v1: tune starts 2017-01-01, train ends 2016-09-30
+
+
+def rolling_residuals(rows: pa.Table, alpha: float, *, end: date = date(2019, 12, 31)) -> dict:
+    """Out-of-sample ridge and persistence residuals (y - forecast) from 5-year rolling origins."""
+    from datetime import timedelta
+
+    from sklearn.linear_model import Ridge
+
+    first = min(rows["target_month"].to_pylist())
+    parts = []
+    for origin in ORIGINS:
+        train = rows_in(rows, first, origin - timedelta(days=PURGE_DAYS + 1))
+        stop = min(date(origin.year + 5, 1, 1) - timedelta(days=1), end)
+        window = rows_in(rows, origin, stop)
+        x, mean, std = _design(train)
+        model = Ridge(alpha=alpha).fit(x, np.asarray(train[TARGET].to_pylist(), dtype=float))
+        y = np.asarray(window[TARGET].to_pylist(), dtype=float)
+        parts.append(
+            (
+                np.asarray([m.year for m in window["target_month"].to_pylist()]),
+                np.asarray(window["month_of_year"].to_pylist()),
+                y - model.predict(_design(window, mean, std)[0]),
+                y - np.asarray(window["spi3_lag1"].to_pylist(), dtype=float),
+            )
+        )
+    year, month, ridge, persistence = (np.concatenate(p) for p in zip(*parts, strict=True))
+    return {"year": year, "month": month, "ridge": ridge, "persistence": persistence}
+
+
+def _offsets(cal_resid, cal_month, month, seasonal: bool) -> tuple[np.ndarray, np.ndarray]:
+    """Per-row [q10, q90] residual offsets; seasonal rules calibrate Jun-Sep and the rest apart."""
+    from atlas.models.uncertainty import conformal_interval
+
+    lower, upper = np.empty(len(month)), np.empty(len(month))
+    if seasonal:
+        wet, cal_wet = np.isin(month, list(MONSOON)), np.isin(cal_month, list(MONSOON))
+        pairs = ((wet, cal_wet), (~wet, ~cal_wet))
+    else:
+        pairs = ((np.ones(len(month), bool), np.ones(len(cal_month), bool)),)
+    for target, cal in pairs:
+        lower[target], upper[target] = conformal_interval(cal_resid[cal], 0.8)
+    return lower, upper
+
+
+def interval_score(cal_resid, cal_month, y, forecast, month, seasonal: bool) -> dict:
+    lower, upper = _offsets(cal_resid, cal_month, month, seasonal)
+    inside = (y >= forecast + lower) & (y <= forecast + upper)
+    return {"coverage": float(inside.mean()), "width": float((upper - lower).mean())}
+
+
+def choose_rule(res: dict, years: range = range(2010, 2020), key: str = "ridge") -> list[dict]:
+    """Mean yearly coverage and width of each D97 rule on pre-test years, best rule first."""
+    table = []
+    for window, seasonal in RULES:
+        scores = []
+        for year in years:
+            cal = (res["year"] >= year - window) & (res["year"] < year)
+            now = res["year"] == year
+            y = res[key][now]  # residual as outcome with a zero forecast: same coverage
+            scores.append(
+                interval_score(
+                    res[key][cal],
+                    res["month"][cal],
+                    y,
+                    np.zeros(len(y)),
+                    res["month"][now],
+                    seasonal,
+                )
+            )
+        coverage = float(np.mean([s["coverage"] for s in scores]))
+        width = float(np.mean([s["width"] for s in scores]))
+        table.append(
+            {"window_years": window, "seasonal": seasonal, "coverage": coverage, "width": width}
+        )
+    return sorted(table, key=lambda r: (abs(r["coverage"] - 0.8), r["width"]))
