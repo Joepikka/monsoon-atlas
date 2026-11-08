@@ -30,7 +30,7 @@ def test_accuracy_rows_show_c1_c2_and_m06_with_unavailable_not_zero():
 
 def test_release_is_not_ready_while_any_check_is_not_pass():
     checks = {c["check"]: c["status"] for c in release_checks()}
-    assert checks["C3 passes T181 English thresholds"] == "fail"  # reports/rag.md gate
+    assert checks["C3 passes T181 English thresholds"] == "research-only"  # D101
     assert checks["C1 evaluation report and model card"] == "blocked"
     assert "**Release status: not releasable.**" in render()
 

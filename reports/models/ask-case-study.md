@@ -78,8 +78,11 @@ calls.
 
 ## Deployment decision
 
-Not deployed. The gate fails on evidence support, and the Worker route and
-AI binding wait for H05 and H11.
+Research-only (D101, owner approval). The gate fails on evidence support,
+and two retrieval changes chosen on development questions (T264, T265) did
+not help, so Ask is not tuned further on this question set. It stays
+extractive and labelled research-only; the owner decides at H11 whether it
+is published. The AI binding waits for H05.
 
 ## Monitoring and retraining
 

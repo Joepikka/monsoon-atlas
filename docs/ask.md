@@ -148,3 +148,14 @@ browser search is unchanged. The C3 report run once afterwards is the same
 as at T264: evidence support 0.86, failing Q02, Q23, Q26, Q33 and Q43. In
 Q33 the gold section ranks twelfth, behind non-log sections too, so limiting
 the logs does not reach it.
+
+## Status: research-only (T266)
+
+With the owner's approval (D101), C3 is research-only under A3: the gate
+fails on evidence support (0.86 against 0.95) and the two dev-only retrieval
+changes gave no gain. The Ask page carries a research-only note, the release
+checklist shows the C3 check as research-only rather than pass, and the
+owner decides at H11 whether a research-only C3 meets T046 extra check (2).
+Revisit only with a fresh held-out question set written before tuning, or
+with reviewed generated answers after H05.
+

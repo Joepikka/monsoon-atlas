@@ -90,8 +90,11 @@ def release_checks() -> list[dict]:
         ),
         (
             "C3 passes T181 English thresholds",
-            "pass" if ask_passed else "fail",
-            "reports/rag.md gate " + ("passed" if ask_passed else "not passed"),
+            # D101: a failing C3 is research-only (A3), never shown as pass; H11 decides.
+            "pass" if ask_passed else "research-only",
+            "reports/rag.md gate passed"
+            if ask_passed
+            else "reports/rag.md gate not passed; research-only (D101), owner decides at H11",
         ),
         (
             "Case study per core model (H14 review)",

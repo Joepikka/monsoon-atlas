@@ -29,6 +29,7 @@ test('without a published corpus the page says so and keeps Ask disabled', async
   await expect(page.getByText('Ask has not been published yet.')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Ask' })).toBeDisabled();
   await expect(page.getByRole('link', { name: /official warnings/ })).toHaveAttribute('href', 'https://sachet.ndma.gov.in/');
+  await expect(page.getByText(/Research-only:/)).toBeVisible(); // D101
 });
 
 test('the Worker answer shows citation cards with path and evidence age', async ({ page }) => {

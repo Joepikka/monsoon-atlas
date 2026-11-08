@@ -31,6 +31,8 @@ export default function Ask({ fetcher }: { fetcher?: typeof fetch }) {
     <p>Answers quote Monsoon Atlas documents only, in English, with the file and commit time of each source.
       This is not an emergency service: for warnings, use the <a href="https://sachet.ndma.gov.in/" target="_blank"
         rel="noopener noreferrer">official warnings <span aria-hidden="true">↗</span></a>.</p>
+    <p className="ask-research"><strong>Research-only:</strong> this search has not passed its quality check, so a
+      result can miss the most relevant section. Read the cited files.</p>
     <p role="status" className={`ask-status ${corpus.status}`}>{busy ? 'Searching…' : corpus.message}</p>
     <form className="ask-form" onSubmit={submit}>
       <label htmlFor="ask-question">Question</label>
