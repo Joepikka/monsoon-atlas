@@ -411,6 +411,16 @@ file. Generation and its quota counters wait for H05 and the free/no-card
 probe. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/rag/test_manifest.py -q`.
 
+## A44. English text Ask page (D96, 8 November 2026)
+
+T261 is a child of T182 after T260, pulled into P1 for C3 (F046, text,
+English). The web page `?page=ask` loads the hash-checked public corpus,
+searches it in the browser, sends the top five chunk IDs to the Worker and
+shows the cited answer with citation cards and evidence age, or the local
+search results when the Worker is unavailable. Voice and the other three
+languages stay outside the MVP. Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/test_web_ask.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -431,6 +441,19 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T261
+    parent: T182
+    title: "English text Ask page"
+    phase: P1
+    state: KA
+    depends_on: [T260, T038]
+    files: [src/atlas/rag/manifest.py, web/src/ask-search.ts, web/src/ask.ts, web/src/ask.test.ts, web/src/pages/Ask.tsx, web/src/main.tsx, web/src/App.tsx, web/src/styles.css, web/tests/ask.spec.ts, web/tests/fixtures/ask-corpus.json, tests/test_web_ask.py, docs/ask.md]
+    steps:
+      - "Publish the canonical chunk list whose SHA-256 is the release ID; load it only when the bytes match"
+      - "Search in the browser with the retrieval rules; send the top five chunk IDs to the Worker"
+      - "Show the cited answer, citation cards and evidence age, or labelled local results when the Worker fails"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_web_ask.py -q'
   - id: T260
     parent: T180
     title: "Ask route over trusted chunks"

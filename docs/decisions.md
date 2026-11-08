@@ -2,6 +2,22 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D96 — English text Ask page searches in the browser (8 Nov 2026).**
+  Split T261 from T182 and pull only its English text part into P1, because
+  C3 (F046 cited Ask, text, English) needs a page people can use. Voice, the
+  Kannada, Malayalam and Hindi interfaces and the rest of T182 stay outside
+  the MVP (A3). The page opens at `?page=ask`. It loads the public corpus
+  from `/data/ask/latest.json`, which names `/data/ask/<release>.json`; the
+  file is the canonical chunk list whose SHA-256 is the release ID served by
+  the Worker (D95), so the browser rejects altered bytes. Search is BM25 in
+  TypeScript with the same as-of, state, expiry, per-document and
+  near-duplicate rules as `retrieve.py` (plan T179 step 3: browser lexical
+  search first). The top five chunk IDs go to `POST /api/v1/ask`; when the
+  Worker is unavailable or its reply does not match, the page shows the
+  same local search results, labelled as such. Answers and citation cards
+  show the document path, heading, commit time and evidence age. No corpus
+  is seeded in `web/public`; the deploy step publishes it (H05).
+
 - **D95 — Ask route reads chunks from a trusted D1 release (8 Nov 2026).**
   Split T260 from T180. `POST /api/v1/ask` takes `query`, `language`,
   `place_id`, `as_of` and up to five `chunk_ids` (plan section 4). The
