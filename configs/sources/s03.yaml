@@ -1,0 +1,99 @@
+# Discovery record for S03 (plan task T047). Evidence IDs refer to tests/fixtures/s03/manifest.json;
+# the files stay in data/raw/S03. See docs/sources/s03.md.
+source_id: S03
+state: ka
+name: "Open-Meteo GloFAS river discharge"
+verify_task: T047
+discovered_at: "2026-11-08T18:39:22Z"
+outcome: available
+landing_url: "https://open-meteo.com/en/docs/flood-api"
+publisher: "Open-Meteo, serving Global Flood Awareness System (GloFAS) model output (Copernicus Emergency Management Service)"
+no_card: true
+account_required: false
+
+access:
+  status: public_api_no_key
+  detail: >-
+    GET https://flood-api.open-meteo.com/v1/flood works without a key or account (e05-e10). The
+    API host robots.txt disallows all paths (e01); as in D31, API calls follow the published API
+    terms and limits (e02). Requests were spaced 2 seconds apart.
+  evidence: [e01, e02, e05, e06, e07, e08, e09, e10]
+
+licence:
+  status: open
+  detail: >-
+    "API data are offered under Attribution 4.0 International (CC BY 4.0)"; the same page credits
+    "Flood forecasts from Global Flood Awareness System GloFAS" (e03). The free API is for
+    non-commercial use only (e02). The GloFAS licence link on that page returns 404 (see
+    failed_fetches), so the upstream terms were not read; credit Open-Meteo and GloFAS/Copernicus.
+  evidence: [e02, e03]
+
+provider_quota:
+  status: published
+  detail: "Free non-commercial API: fewer than 10,000 calls per day, 5,000 per hour and 600 per minute (e02)."
+  evidence: [e02]
+
+history:
+  status: available
+  detail: >-
+    The docs say "Simulated river discharge at 5 km resolution from 1984 up to 7 months forecast",
+    with GloFAS v4 Seamless as the default (e04). At the sampled Cauvery cell every day of 1984
+    is null (e06, e09); the first value is 2 Jan 1997 and every later day to 7 Nov 2026 has one
+    (e10). On 8 Nov 2026 the recent request returned past days and a forecast to 14 Nov (e05).
+    The earliest date is therefore cell-specific; T048 records it per cell.
+  evidence: [e04, e05, e06, e09, e10]
+earliest_date: "1997-01-02"
+latest_date: "2026-11-07"
+
+units:
+  status: labelled
+  detail: >-
+    daily_units gives river_discharge in "m³/s" and time as iso8601; timezone=Asia/Kolkata is
+    requested and echoed with utc_offset_seconds 19800 (e05, e07, e10).
+  evidence: [e04, e05, e07, e10]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: missing river cells remain null; discharge >= 0; this is model output, not a gauge.
+    An Arabian Sea point (13.0, 73.5) returns only nulls (e08), and the 1984 nulls stay null
+    (e06, e09); none is filled with 0. Every value in the 1997-2026 sample is >= 0 (minimum
+    0.03 m³/s) (e10). The docs call the data "Simulated river discharge" and warn that, at 5 km,
+    "the closest river might not be selected correctly" (e04): rows get provenance "model", and a
+    river cell is chosen per site and checked, never assumed from coordinates. July 2024 rises
+    from 37 to 1,032 m³/s at the sampled cell (e07).
+  evidence: [e04, e06, e07, e08, e09, e10]
+
+field_map:
+  - canonical: river_cell_id
+    upstream: "latitude, longitude in the response"
+    unit_status: not_applicable
+    detail: "Snapped to the 0.05 degree GloFAS grid: 12.42, 76.69 returns 12.425003, 76.67502."
+    evidence: [e05, e10]
+  - canonical: valid_date
+    upstream: "daily.time"
+    unit_status: labelled
+    detail: "ISO date of the IST day, because timezone=Asia/Kolkata is requested."
+    evidence: [e04, e05]
+  - canonical: discharge_m3s
+    upstream: "river_discharge"
+    unit_status: labelled
+    detail: "m³/s daily river discharge; null where there is no river cell or no data."
+    evidence: [e04, e05, e08]
+  - canonical: member
+    upstream: "ensemble member (only with ensemble=true; not requested here)"
+    unit_status: not_applicable
+    detail: "Null for the deterministic river_discharge series; members exist only for forecasts."
+    evidence: [e04]
+  - canonical: product
+    upstream: "the models request parameter (not echoed in the response)"
+    unit_status: not_applicable
+    detail: "GloFAS v4 Seamless by default; T048 must request and record one named model."
+    evidence: [e04]
+
+dependents: [T048]
+retry_condition: null
+failed_fetches:
+  - url: "https://object-store.os-api.cci2.ecmwf.int/cci2-prod-catalogue/licenses/cems-floods/cems-floods_428a6e1019ec50b3dad9c37a90d630fab139059933a939dd5df620bfcb420cc3.pdf"
+    attempted_at: "2026-11-08T18:45:00Z"
+    error: "HTTP 404 NoSuchKey: the GloFAS licence link on the Open-Meteo licence page is dead"
