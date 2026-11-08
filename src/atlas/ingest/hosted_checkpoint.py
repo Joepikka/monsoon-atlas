@@ -1,4 +1,4 @@
-"""Verify a pinned GitHub checkpoint or discover its immediate predecessor."""
+"""Verify a pinned GitHub checkpoint, discover its predecessor or admit a manual bootstrap."""
 
 from __future__ import annotations
 
@@ -61,8 +61,11 @@ def _metadata(client: httpx.Client, path: str, params: dict | None = None) -> di
     return value
 
 
-def _verify_run(value: dict, trust: TrustedRun, *, active: bool = False) -> None:
+def _verify_run(
+    value: dict, trust: TrustedRun, *, active: bool = False, manual: bool = False
+) -> None:
     outcome = ("in_progress", None) if active else ("completed", "success")
+    events = {"workflow_dispatch"} if manual else {"schedule", "workflow_dispatch"}
     if (
         _integer(value["id"], minimum=1) != trust.run_id
         or _integer(value["workflow_id"], minimum=1) != trust.workflow_id
@@ -71,7 +74,7 @@ def _verify_run(value: dict, trust: TrustedRun, *, active: bool = False) -> None
         or value["repository"]["full_name"].lower() != trust.repository.lower()
         or value["head_branch"] != trust.branch
         or value["head_sha"] != trust.head_sha
-        or value["event"] not in {"schedule", "workflow_dispatch"}
+        or value["event"] not in events
         or (value["status"], value["conclusion"]) != outcome
         or type(value["run_attempt"]) is not int
         or value["run_attempt"] != 1
@@ -126,7 +129,7 @@ def _predecessor(client: httpx.Client, path: str, active: TrustedRun, value: dic
 
 def _inventory(
     client: httpx.Client, path: str, trust: TrustedRun, name: str | None
-) -> tuple[dict, int]:
+) -> tuple[dict | None, int]:
     seen = set()
     expected = selected = None
     retained = 0
@@ -163,8 +166,6 @@ def _inventory(
                 raise IngestError("GitHub run has ambiguous checkpoint artifacts")
             selected = item
         if len(seen) == count:
-            if selected is None:
-                raise IngestError("Pinned GitHub run has no matching checkpoint artifact")
             return selected, retained
     raise IngestError("GitHub artifact inventory exceeds its page bound")
 
@@ -173,16 +174,22 @@ def select_checkpoint(
     trust: TrustedRun,
     manifest_sha256: str | None,
     *,
+    bootstrap: bool = False,
     now: datetime | None = None,
     transport: httpx.BaseTransport | None = None,
 ) -> dict:
-    """Verify a pinned checkpoint. None discovers the active run's immediate predecessor."""
-    discover = manifest_sha256 is None
+    """Verify a pinned checkpoint. None discovers the active run's immediate predecessor.
+
+    ``bootstrap`` instead admits an active manual run with no predecessor and only measures
+    the retained repository inventory.
+    """
+    discover = manifest_sha256 is None and not bootstrap
     now = datetime.now(UTC) if now is None else now
     if (
         not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,38}/[A-Za-z0-9_.-]{1,100}", trust.repository)
         or trust.repository.split("/")[-1] in {".", ".."}
         or not re.fullmatch(r"[0-9a-f]{40}", trust.head_sha)
+        or (bootstrap and manifest_sha256 is not None)
         or (manifest_sha256 is not None and not re.fullmatch(HASH, manifest_sha256))
         or not 1 <= len(trust.branch) <= 255
         or now.utcoffset() != timedelta(0)
@@ -210,11 +217,26 @@ def select_checkpoint(
             timeout=httpx.Timeout(5, connect=2),
         ) as client:
             run_info = _metadata(client, f"{path}/runs/{trust.run_id}")
-            _verify_run(run_info, trust, active=discover)
+            _verify_run(run_info, trust, active=discover or bootstrap, manual=bootstrap)
             if discover:
                 trust = _predecessor(client, path, trust, run_info)
             name = None if manifest_sha256 is None else ARTIFACT_PREFIX + manifest_sha256
             artifact, retained = _inventory(client, f"{path}/artifacts", trust, name)
+        if bootstrap:
+            if artifact is not None:
+                raise IngestError("Bootstrap run already has a checkpoint artifact")
+            if retained > cap:
+                raise ArchiveOnly("Listed GitHub artifacts exceed the configured storage budget")
+            return {
+                "status": "bootstrap",
+                "repository": trust.repository,
+                "run_id": trust.run_id,
+                "retained_artifact_bytes": retained,
+                "available_artifact_bytes": cap - retained,
+                "retention_days": budget.artifact_retention_days,
+            }
+        if artifact is None:
+            raise IngestError("Pinned GitHub run has no matching checkpoint artifact")
         if discover:
             manifest_sha256 = artifact["name"].removeprefix(ARTIFACT_PREFIX)
             if not re.fullmatch(HASH, manifest_sha256):
@@ -273,6 +295,7 @@ def main() -> None:
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--manifest-sha256")
     mode.add_argument("--discover", action="store_true", help="Check the active run's predecessor")
+    mode.add_argument("--bootstrap", action="store_true", help="Admit a manual run's new chain")
     parser.add_argument("--child", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
     try:
@@ -285,7 +308,7 @@ def main() -> None:
                 args.head_sha,
                 args.branch,
             )
-            result = select_checkpoint(trust, args.manifest_sha256)
+            result = select_checkpoint(trust, args.manifest_sha256, bootstrap=args.bootstrap)
         else:
             result = run_bounded(
                 [sys.executable, "-m", "atlas.ingest.hosted_checkpoint", "--child", *sys.argv[1:]],
@@ -297,7 +320,7 @@ def main() -> None:
         )
         result = {"status": "failed", "reason": reason}
     print(json.dumps(result))
-    if not args.child and result["status"] != "selected":
+    if not args.child and result["status"] not in {"selected", "bootstrap"}:
         raise SystemExit(1)
 
 

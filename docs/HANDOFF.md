@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 8 Nov 2026, T250 downloaded checkpoint ZIP verification,
+Last updated: 8 Nov 2026, T251 manual hosted checkpoint relay workflow,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T250. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D85. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T251. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D86. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -228,6 +228,7 @@ and a YAML block `- id: T057`.
 | T248 (child of T043) | D83/A31 | Read-only `runner-select` verifies explicitly pinned run and artifact metadata and counts the complete bounded repository inventory. Acceptance 34 passed in 0.93s. |
 | T249 (child of T043) | D84/A32 | `runner-select --discover` verifies the active run and immediate predecessor by run number. It checks commit ancestry and one checkpoint, and stops on gaps or failures. Acceptance 54 passed in 0.97s. |
 | T250 (child of T043) | D85/A33 | `runner-import-zip` binds the raw ZIP to selected size and digest, then extracts only verified manifest members before installing the local catalogue. Acceptance 16 passed in 5.49s. |
+| T251 (child of T043) | D86/A34 | Manual-only `.github/workflows/feeds.yml` relays the checkpoint: immediate predecessor or explicit manual bootstrap, pinned raw download by artifact ID, single-file download-directory import, offer and upload. Acceptance 20 passed in 2.00s; 127 related tests passed. No schedule, hosted capture or live dispatch yet. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -629,8 +630,13 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    T247 verifies the local artifact handoff and fresh-store import. T248
    checks a pinned predecessor and repository artifact bytes. T249 discovers
    the immediate verified predecessor without skipping failed runs. T250
-   verifies the raw ZIP and imports its checkpoint. Continue with hosted
-   download wiring and recurring-run preparation.
+   verifies the raw ZIP and imports its checkpoint. T251 adds the manual-only
+   `feeds.yml` relay (bootstrap or immediate predecessor, raw download,
+   import, offer, upload). It has not been dispatched: `workflow_dispatch`
+   needs the file on `main`, and the first run is an owner decision. Before
+   any schedule, test GitHub's `queue: max` concurrency option against the
+   T249 chain, measure setup time and runner free space in the three-minute
+   job, and wire hosted capture only after H05.
    Remote upload and activation retain the capability and release gates. Research in
    `.cache/t043-research/findings.md` verifies that a full cold CAP+polygon sweep
    already needs 200 seconds of spacing alone; use bounded CAP-only admission,

@@ -147,6 +147,15 @@ def _unpack(
         raise IngestError("Checkpoint ZIP is malformed or unsupported") from None
 
 
+def downloaded_archive(directory: Path) -> Path:
+    """Return the only file the download action wrote; its name comes from the server."""
+    directory = bundles._path(directory)
+    entries = list(directory.iterdir())
+    if len(entries) != 1 or not stat.S_ISREG(bundles._stat(entries[0]).st_mode):
+        raise IngestError("Download directory must hold exactly one regular archive file")
+    return entries[0]
+
+
 def import_archive(
     root: Path,
     archive: Path,
@@ -194,7 +203,9 @@ def import_archive(
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=bundles.ROOT / ".cache/feeds")
-    parser.add_argument("--archive", type=Path, required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--archive", type=Path)
+    source.add_argument("--download-dir", type=Path, help="Isolated single-file download")
     parser.add_argument("--store", type=Path, required=True)
     parser.add_argument("--expected-sha256", required=True)
     parser.add_argument("--archive-sha256", required=True)
@@ -205,7 +216,7 @@ def main() -> None:
         if args.child:
             digest = import_archive(
                 args.root,
-                args.archive,
+                args.archive or downloaded_archive(args.download_dir),
                 args.store,
                 expected_sha256=args.expected_sha256,
                 archive_sha256=args.archive_sha256,

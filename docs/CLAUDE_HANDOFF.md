@@ -18,6 +18,9 @@ Read this guide, `docs/HANDOFF.md`, `AGENTS.md`, `docs/amendments.md`,
 `docs/amendments.yaml`, and `docs/decisions.md`. Then use `docs/plan.pdf` for the
 original task specifications and acceptance commands. Amendments override the
 original plan. Decisions run through D85 and amendments through A33 at T250.
+Claude continued on 8 Nov 2026: T251 (D86/A34) adds the manual-only hosted
+checkpoint relay workflow. See `docs/HANDOFF.md` sections 7 and 9 for the
+current task and next step.
 
 The owner-supplied `Monsoon-Atlas-Complete-Planning-Handover.pdf` is byte-identical
 to `docs/plan.pdf`. It contains 263 pages. It is the original specification;

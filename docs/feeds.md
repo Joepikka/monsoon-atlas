@@ -477,3 +477,39 @@ members into staging. The existing importer checks their evidence and creates
 the catalogue. The downloaded ZIP stays available for inspection, and the
 original feed root stays absent for the next cycle. Keep the ZIP quiescent
 during import. Hosted workflow wiring and activation remain separate.
+
+## Manual hosted checkpoint relay (T251)
+
+`.github/workflows/feeds.yml` carries the checkpoint from one hosted run to
+the next. It runs only by manual dispatch, one run at a time, with a
+three-minute job limit and read-only `contents`/`actions` token scopes.
+
+A normal dispatch verifies the active run and its immediate predecessor
+(T249). The pinned download action fetches that artifact by ID with
+extraction off and digest mismatch as an error. The importer finds the single
+file in its isolated download directory, because the action names that file
+from the server response. T250 then verifies the ZIP and installs a fresh
+store. The run offers that committed bundle and uploads it as
+`ka-feed-checkpoint-<manifest_sha256>` for its successor. A gap, failure,
+expired artifact or ambiguity stops the run before download.
+
+A new chain needs the `bootstrap` input on a manual dispatch. The selector
+admits only an active first attempt of a manual run, measures the listed
+artifact bytes and refuses a run that already has a checkpoint. The
+bootstrap command creates empty control state only when the feed root and
+store are both absent. Bootstrap discards continuity, so use it only when no
+retained predecessor exists.
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 runner-bootstrap --store .cache/new-chain
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 runner-import-zip --download-dir $downloadDir --store .cache/next-run-checkpoints --archive-sha256 $archiveSha256 --archive-bytes $artifactBytes --expected-sha256 $savedManifestSha256
+```
+
+The hosted job does not capture or upload to the Worker; that waits for the
+H05 capability gate. It has no schedule. GitHub cancels a pending run in a
+busy concurrency group, and a cancelled predecessor stops the next discovery.
+The documented `queue: max` option keeps up to 100 pending runs; test it
+before any schedule is added.
+The job keeps the 20 GB free-space reserve and prints runner free space, so a
+small runner disk stops before writing. The first dispatch measures the setup
+time inside the three-minute limit. [GitHub concurrency](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency) · [GitHub upload action](https://github.com/actions/upload-artifact)

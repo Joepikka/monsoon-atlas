@@ -16,6 +16,7 @@ from atlas.config import load_budgets
 from atlas.data.budget import ArchiveOnly
 from atlas.ingest import checkpoint_bundle as bundles
 from atlas.ingest.base import IngestError
+from atlas.ingest.schedule import open_control
 
 
 def _store_path(root: Path, store: Path, *, create: bool) -> Path:
@@ -135,6 +136,17 @@ def commit_checkpoint(root: Path, store: Path, *, expected_head: str | None) -> 
     return digest
 
 
+def bootstrap_checkpoint(root: Path, store: Path) -> str:
+    """Start an explicit new chain with empty control state; never replaces a root or store."""
+    root = bundles._path(root, destination=True)
+    store = bundles._path(store, destination=True)
+    bundles._disjoint(root, store)
+    root.mkdir()
+    with closing(open_control(root / bundles.CONTROL)):
+        pass
+    return commit_checkpoint(root, store, expected_head=None)
+
+
 def resume_checkpoint(root: Path, store: Path) -> str:
     """Restore the catalogue's current generation to the original absent root."""
     root = bundles._path(root, destination=True)
@@ -222,7 +234,13 @@ def import_checkpoint(root: Path, bundle: Path, store: Path, expected_sha256: st
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
-    for command in ("runner-save", "runner-restore", "runner-offer", "runner-import"):
+    for command in (
+        "runner-save",
+        "runner-restore",
+        "runner-offer",
+        "runner-import",
+        "runner-bootstrap",
+    ):
         action = commands.add_parser(command)
         action.add_argument("--root", type=Path, default=bundles.ROOT / ".cache/feeds")
         action.add_argument("--store", type=Path, required=True)
@@ -242,6 +260,9 @@ def main() -> None:
         elif args.command == "runner-restore":
             digest = resume_checkpoint(args.root, args.store)
             status = "restored"
+        elif args.command == "runner-bootstrap":
+            digest = bootstrap_checkpoint(args.root, args.store)
+            status = "bootstrapped"
         elif args.command == "runner-import":
             digest = import_checkpoint(args.root, args.bundle, args.store, args.expected_sha256)
             status = "imported"

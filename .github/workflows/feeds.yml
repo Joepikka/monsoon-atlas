@@ -1,0 +1,110 @@
+# T251 (child of plan T043): relay the Karnataka feed checkpoint between hosted runs.
+# Manual dispatch only. There is no schedule: GitHub cancels a pending run in a busy
+# concurrency group, and that cancelled run would break the immediate-predecessor chain
+# (D86). Capture and upload to the Worker stay out of this job until gate H05 passes.
+# Actions are pinned to audited commit SHAs; the token can only read.
+name: feeds
+
+on:
+  workflow_dispatch:
+    inputs:
+      bootstrap:
+        description: Start a new empty checkpoint chain (only when no predecessor checkpoint exists)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ka-feeds
+  cancel-in-progress: false
+
+jobs:
+  relay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONUTF8: "1"
+      MODE: ${{ inputs.bootstrap && '--bootstrap' || '--discover' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Keep temporary files beside the feed root
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/.cache/tmp"
+          for name in TMPDIR TEMP TMP; do echo "$name=$GITHUB_WORKSPACE/.cache/tmp" >> "$GITHUB_ENV"; done
+          echo "STORE=$RUNNER_TEMP/runner-checkpoints" >> "$GITHUB_ENV"
+          echo "DOWNLOAD=$RUNNER_TEMP/checkpoint-download" >> "$GITHUB_ENV"
+          df -B1 --output=target,avail "$GITHUB_WORKSPACE" "$RUNNER_TEMP"
+      - name: Install hash-locked core requirements
+        run: |
+          python -m pip install --require-hashes -r requirements/core.txt
+          python -m pip install --no-deps -e .
+      - name: Verify this run and its immediate predecessor or manual bootstrap
+        id: select
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          workflow_id=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" --jq .workflow_id)
+          status=0
+          result=$(python -m atlas.ingest.hosted_checkpoint --repository "$GITHUB_REPOSITORY" \
+            --repository-id "$GITHUB_REPOSITORY_ID" --workflow-id "$workflow_id" \
+            --run-id "$GITHUB_RUN_ID" --head-sha "$GITHUB_SHA" --branch "$GITHUB_REF_NAME" "$MODE") \
+            || status=$?
+          echo "$result"
+          [ "$status" -eq 0 ]
+          echo "json=$result" >> "$GITHUB_OUTPUT"
+      - name: Download the selected checkpoint ZIP without extracting it
+        if: ${{ !inputs.bootstrap }}
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ fromJSON(steps.select.outputs.json).artifact_id }}
+          run-id: ${{ fromJSON(steps.select.outputs.json).run_id }}
+          repository: ${{ github.repository }}
+          github-token: ${{ github.token }}
+          path: ${{ env.DOWNLOAD }}
+          skip-decompress: true
+          digest-mismatch: error
+      - name: Verify and import the downloaded checkpoint
+        if: ${{ !inputs.bootstrap }}
+        env:
+          ARCHIVE_SHA256: ${{ fromJSON(steps.select.outputs.json).archive_sha256 }}
+          ARTIFACT_BYTES: ${{ fromJSON(steps.select.outputs.json).artifact_bytes }}
+          MANIFEST_SHA256: ${{ fromJSON(steps.select.outputs.json).manifest_sha256 }}
+        run: |
+          python -m atlas.ingest.hosted_archive --download-dir "$DOWNLOAD" --store "$STORE" \
+            --archive-sha256 "$ARCHIVE_SHA256" --archive-bytes "$ARTIFACT_BYTES" \
+            --expected-sha256 "$MANIFEST_SHA256"
+      - name: Start the explicitly requested empty chain
+        if: ${{ inputs.bootstrap }}
+        run: python -m atlas.ingest.runner_checkpoint runner-bootstrap --store "$STORE"
+      - name: Offer the committed checkpoint
+        id: offer
+        env:
+          RETAINED: ${{ fromJSON(steps.select.outputs.json).retained_artifact_bytes }}
+        run: |
+          status=0
+          result=$(python -m atlas.ingest.runner_checkpoint runner-offer --store "$STORE" \
+            --retained-artifact-bytes "$RETAINED") || status=$?
+          echo "$result"
+          [ "$status" -eq 0 ]
+          echo "json=$result" >> "$GITHUB_OUTPUT"
+      - name: Upload the checkpoint for the next run
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ka-feed-checkpoint-${{ fromJSON(steps.offer.outputs.json).manifest_sha256 }}
+          path: ${{ fromJSON(steps.offer.outputs.json).bundle_path }}
+          retention-days: ${{ fromJSON(steps.offer.outputs.json).retention_days }}
+          if-no-files-found: error
+          overwrite: false
+          include-hidden-files: false
