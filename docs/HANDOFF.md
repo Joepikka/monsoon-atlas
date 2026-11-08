@@ -562,11 +562,12 @@ M08 is a non-core descriptive 2018 replay (P3).
   local work." Do not repeat the token question; proceed with independent local
   preparation. The concrete owner guide is `docs/account-setup.md`.
 
-- **Current next action: review the S34 OCR sample** at
-  `D:\monsoon-atlas\data\raw\S34\ocr-review\index.html`. Compare the eight original
-  cell crops with both OCR readings and confirm/correct values and units. Six cells
-  disagree. No candidate is selected, including the two that agree. T117/T118
-  requires this owner review before values are used; it does not approve bulk OCR.
+- **S34 OCR sample reviewed (D102, 8 Nov 2026):** the owner delegated the review;
+  the agent read all eight crops with their full rows and headers. Records are
+  local only in `data/raw/S34/ocr-review/<id>/review.json` (S34 forbids
+  redistribution). OCR method A matched 6 of 8 cells, method B 4 of 8; agreeing
+  cells were right; units must come from the cell before the header; dam identity
+  needs the operator (Kuttiyadi is in both tables). This does not approve bulk OCR.
 
 - Send the drafted KWRIS helpdesk request to ACIWRM (daily reservoir history). If data arrives
   with units, datum and licence, re-run T008.
@@ -604,8 +605,12 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    `candidate_eligible`, **approved by the owner (D43)**: ridge is the champion.
    Before publishing intervals, recalibrate them (they cover 65%, not 80%).
 6. **C1 = M07 (Kerala): T226/T114/T227 and T228 machine preparation are done.**
-   First obtain the required owner review of the S34 packet (section 8). Then
-   continue full T118: validate per-layout cell extraction, dates, units and dam
+   The S34 sample review is done (D102). Before full T118, resolve the vertical
+   datum: T130 needs a known datum and S34/S32 state none. A search snippet of
+   the KSEB dam-safety site (dams.kseb.in) shows levels as "EL2403.00ft.
+   (732.62 m)" for Idukki, but scripted fetches get a "wrong address" page and no
+   explicit datum was read; confirm it in a browser and record it as evidence
+   first. Then continue full T118: validate per-layout cell extraction, dates, units and dam
    identity; retain quarantine and never infer alert colours from English OCR.
    T228 sample approval does not approve bulk extraction; S34 remains disabled.
    Before T130, explicitly resolve its full-T129 dependency for the M07-only fallback.
