@@ -334,3 +334,28 @@ The store is a local trust boundary. Keep its catalogue and objects together
 on a local filesystem, with access restricted to the operator or runner.
 Recovery depends on the catalogue and manifest agreeing. Hosted runner
 persistence, cross-path recovery and recurring activation remain later work.
+
+## Bounded runner cycle (T244)
+
+With a committed runner checkpoint, an absent original feed root and a trusted
+loopback Worker, run one source through restore, admission, capture and save.
+Use the Worker's existing local signing key in the command environment.
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/feeds.ps1 runner-cycle --store .cache/runner-checkpoints --source S09 --origin http://127.0.0.1:8787
+```
+
+One child has a 150-second deadline for all three phases. `restored_sha256`
+identifies the starting generation. `manifest_sha256` identifies the verified
+generation returned after save, or the restored generation if admission
+stopped capture. Handled capture failures can still save valid evidence and
+provider cooldown. A failed checkpoint reports the starting digest and the
+capture result so the working tree can be inspected.
+
+The command leaves the working root in place. After a successful save, hold
+it aside before the next cycle so restore can use the original absent path.
+After a timeout, keep the root in place and inspect the catalogue and working
+tree before resuming. SQLite may have committed just before the child was
+stopped. Retain any newer capture evidence and cooldown by sealing the
+validated working tree against the current head before another capture.
+Preparation, upload and recurring scheduling are separate steps.

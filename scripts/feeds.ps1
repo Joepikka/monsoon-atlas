@@ -37,5 +37,9 @@ elseif ($args.Count -gt 0 -and $args[0] -in @('checkpoint-save', 'checkpoint-res
 elseif ($args.Count -gt 0 -and $args[0] -in @('runner-save', 'runner-restore')) {
     $atlasModule = 'atlas.ingest.runner_checkpoint'
 }
+elseif ($args.Count -gt 0 -and $args[0] -eq 'runner-cycle') {
+    $atlasModule = 'atlas.ingest.runner_cycle'
+    $atlasArguments = @($args | Select-Object -Skip 1)
+}
 & (Join-Path $atlasRoot '.venv/Scripts/python.exe') -m $atlasModule @atlasArguments
 exit $LASTEXITCODE

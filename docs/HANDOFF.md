@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 8 Nov 2026, T243 durable local runner checkpoints,
+Last updated: 8 Nov 2026, T244 bounded local runner cycle,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T243. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D78. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T244. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D79. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -221,6 +221,7 @@ and a YAML block `- id: T057`.
 | T241 (child of T043) | `2f44faf`, `cdefdb8` | Seal quiescent S09/S01 state and restore verified bytes to the original absent path. The bundle retains raw evidence, prepared history, SQLite admission and cooldown. D75 binds CAP capture clocks to ledger events and preserves valid cross-day revalidation. Acceptance 27 passed in 24.45s, plus 53 S09 regression checks. The real local export matched 27 files by path, size and SHA-256. |
 | T242 (child of T043) | `0f1775a` | A signed claim to the explicit loopback Worker precedes one S01 or S09 capture. Wrong or unavailable acknowledgements fail closed. The collector retains its own cadence and cooldown. Acceptance 22 passed in 2.89s, with 139 combined transport, cadence and collector tests. |
 | T243 (child of T043) | `9032843`, `7a51610` | A dedicated local store retains immutable checkpoint generations and a SQLite head. Expected-head comparison rejects stale saves. Recovery verifies the current bundle and the original absent root. D78 preserves retained objects after catalogue loss and includes pending SQLite pages in quota checks. Acceptance 13 passed in 5.72s and 79 combined regressions passed. |
+| T244 (child of T043) | D79/A27 | `runner-cycle` composes verified restore, one signed capture and expected-head save in a 150-second child. It keeps the working root on refusal or timeout and saves valid local control after handled capture failure. Acceptance 11 passed in 17.78s. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -365,6 +366,19 @@ head. A retry verified and reused the installed object. The quota probe refused
 the same 45,056-byte boundary that admitted 49,367 bytes before D78. The store
 remains path-bound and keeps its catalogue and objects together.
 See `docs/reviews/2026-11-08-t243.md` for the review and fix evidence.
+Final T243 `f2a7fc8` passed core Windows/Ubuntu run 42450944388, Worker/D1
+42450944457 and browser Windows/Ubuntu 42450944467.
+
+T244 retains the original path and stops on a missing or damaged catalogue,
+an existing root or a failed save. The fixture tests prove persisted capture
+and cooldown, including a handled provider failure. A real child timeout
+left the interrupted working root and the previous catalogue head available.
+PowerShell restored exact control bytes, honored one loopback denial and
+reused the same generation. The 73 combined cycle, store, admission and
+bundle regressions passed in 47.80s. Ruff, formatting, policy, amendment
+parity and whitespace checks passed. The scoped review checked the exact
+restore-before-capture ordering, expected-head save and preserved root.
+See `docs/feeds.md` for interruption recovery.
 
 T116 final validation: `430 passed, 1 skipped, 1 warning in 115.83s`; lint passes,
 128 files pass formatting, dependency policy reports 0 problems and whitespace
@@ -546,9 +560,10 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    frozen report identity. T241 proves offline recovery of an absent original
    feed directory using a separately saved digest. T242 verifies the signed
    Worker admission before one enabled collector runs. T243 adds a local
-   generation catalogue and recovery after process interruption. Continue with
-   bounded runner integration and hosted persistence preparation. Remote upload
-   and activation retain the capability and release gates. Research in
+   generation catalogue and recovery after process interruption. T244 composes
+   one restored and admitted capture with a checkpoint save. Continue with
+   bounded preparation/upload integration and hosted persistence preparation.
+   Remote upload and activation retain the capability and release gates. Research in
    `.cache/t043-research/findings.md` verifies that a full cold CAP+polygon sweep
    already needs 200 seconds of spacing alone; use bounded CAP-only admission,
    persisted ETag/checkpoints and a hard subprocess deadline, with partial/dating
