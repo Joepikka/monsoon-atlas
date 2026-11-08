@@ -401,6 +401,16 @@ use a fixture generated from the committed records. No production data is
 seeded. Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/test_web_accuracy.py -q`.
 
+## A43. Ask route over trusted chunks (D95, 8 November 2026)
+
+T260 is a child of T180 after T252/T253. Add `POST /api/v1/ask`: the Worker
+reads the requested chunk IDs from the current trusted D1 release, rechecks
+hashes and the as-of, state and expiry rules, and returns the cited
+extractive answer. `atlas.rag.manifest` exports the release and its SQL load
+file. Generation and its quota counters wait for H05 and the free/no-card
+probe. Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/rag/test_manifest.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -421,6 +431,19 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T260
+    parent: T180
+    title: "Ask route over trusted chunks"
+    phase: P1
+    state: KA
+    depends_on: [T252, T253]
+    files: [src/atlas/rag/manifest.py, worker/schema.sql, worker/src/index.ts, worker/tests/ask-route.test.mjs, worker/tests/runtime.test.mjs, worker/package.json, tests/rag/test_manifest.py, tests/test_ask_config.py, docs/ask.md]
+    steps:
+      - "Export the committed index as a hashed release and an atomic D1 load file"
+      - "Serve POST /api/v1/ask from trusted chunk IDs only, rechecking hashes, as-of, state and expiry"
+      - "Keep generation off and answers extractive until H05 and the free/no-card probe pass"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/rag/test_manifest.py -q'
   - id: T259
     parent: T046
     title: "Web accuracy page"

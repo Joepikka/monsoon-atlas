@@ -2,6 +2,23 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D95 — Ask route reads chunks from a trusted D1 release (8 Nov 2026).**
+  Split T260 from T180. `POST /api/v1/ask` takes `query`, `language`,
+  `place_id`, `as_of` and up to five `chunk_ids` (plan section 4). The
+  Worker never accepts evidence text from the client: it reads the chosen IDs
+  from the current release in D1 tables `ask_chunks` and `ask_current`,
+  rechecks each chunk's SHA-256, and drops chunks not yet committed at
+  `as_of`, expired, or outside the place's state. Unknown IDs are refused.
+  `python -m atlas.rag.manifest` exports the committed index as a release
+  (ID = SHA-256 of the manifest) and a SQL load file that inserts the new
+  rows, then moves the pointer, then deletes old rows, so a half-loaded
+  release is never served. A committed manifest file was rejected: chunk
+  times are commit times, so it would go stale with every documentation
+  commit, and CI's shallow checkout cannot rebuild an older pinned commit.
+  Generation, its quota counters and the D1 load stay off until H05 and the
+  free/no-card probe pass; until then every answer is extractive. Other
+  languages get the same quoted English excerpts (T180 step 3).
+
 - **D94 — Accuracy page uses the approved-release contract (8 Nov 2026).**
   Split T259 from T046. The page reads `/data/ka/accuracy/latest.json`, a
   pointer that must say `approved` and name `/data/ka/accuracy/<sha256>.json`;
