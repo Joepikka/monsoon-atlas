@@ -1,6 +1,21 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T254
+    parent: T181
+    title: "English Ask gold cases and deterministic scoring"
+    phase: P1
+    state: KA
+    depends_on: [T252, T253]
+    files: [eval/rag/questions.jsonl, eval/rag/snapshot_gold.jsonl, docs/methods.md, configs/rag.yaml, src/atlas/rag/evaluate.py, reports/rag.md, tests/rag/test_eval.py]
+    steps:
+      - "Record plan Q01-Q50 and N01-N10 in English; resolve each in-scope gold key to a verifiable phrase in an indexed document"
+      - "Freeze Q41-Q50 as holdout; recompute numeric gold from committed files; keep translations unreviewed"
+      - "Score faithfulness, correctness, citations, evidence and refusals; perturb citations, stale facts, places and injections"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/rag/test_eval.py -q'
+      expected: "At least 60 English gold cases with explicit language coverage; an invalid numeric answer or citation fails evaluation"
+    hours: 3
   - id: T253
     parent: T180
     title: "Ask answer contract with cited extractive fallback"

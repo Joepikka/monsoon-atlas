@@ -2,6 +2,20 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D89 — English Ask gold set with deferred out-of-phase cases (8 Nov 2026).**
+  Split T254 from T181 after T252/T253. Keep all 50 plan questions and the
+  10 numeric templates (60 English cases). A question is in the MVP English
+  subset only when a committed indexed document contains a verifiable support
+  phrase; 15 questions about sources or model cards outside the Karnataka MVP
+  stay deferred with reasons. Add `docs/methods.md`, a plan-derived methods
+  page, to the corpus; it was written with the question list known, so the
+  report states that holdout retrieval is not independent. Numeric gold is
+  recomputed from committed real files (S02 ERA5 sample, S09 CAP sample,
+  approved M05 release); seven numeric cases require refusal because their
+  data is blocked or unpublished. Extractive correctness means the cited
+  chunk contains the gold fact. No translation is reviewed, so non-English
+  generation stays disabled.
+
 - **D88 — Build the Ask answer contract before any AI binding (8 Nov 2026).**
   Split T253 from T180 after T229/T252. Workers AI needs H05 and the
   free/no-card probe, so this child adds only pure Worker logic: the plan's

@@ -353,6 +353,15 @@ validation of generated citations and numbers, and a cited extractive
 fallback. No AI binding, route or account is created. Estimate 3 hours.
 Acceptance is `.\.venv\Scripts\python -m pytest tests/test_ask_config.py -q`.
 
+## A37. English Ask evaluation set (D89, 8 November 2026)
+
+T254 is a child of T181 after T252/T253. Record the 50 fixed plan questions
+and 10 numeric snapshot cases in English, resolve gold keys to indexed
+documents, freeze Q41-Q50, and score citations, evidence, numbers and
+refusals deterministically. Translations stay unreviewed and disabled.
+Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/rag/test_eval.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -373,6 +382,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T254
+    parent: T181
+    title: "English Ask gold cases and deterministic scoring"
+    phase: P1
+    state: KA
+    depends_on: [T252, T253]
+    files: [eval/rag/questions.jsonl, eval/rag/snapshot_gold.jsonl, docs/methods.md, configs/rag.yaml, src/atlas/rag/evaluate.py, reports/rag.md, tests/rag/test_eval.py]
+    steps:
+      - "Record plan Q01-Q50 and N01-N10 in English; resolve each in-scope gold key to a verifiable phrase in an indexed document"
+      - "Freeze Q41-Q50 as holdout; recompute numeric gold from committed files; keep translations unreviewed"
+      - "Score faithfulness, correctness, citations, evidence and refusals; perturb citations, stale facts, places and injections"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/rag/test_eval.py -q'
+      expected: "At least 60 English gold cases with explicit language coverage; an invalid numeric answer or citation fails evaluation"
+    hours: 3
   - id: T253
     parent: T180
     title: "Ask answer contract with cited extractive fallback"

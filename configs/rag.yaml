@@ -10,6 +10,7 @@ licences: ["project-mit"]
 documents:
   - {doc_id: project/readme, path: README.md, kind: project, states: [all]}
   - {doc_id: project/rules, path: AGENTS.md, kind: project, states: [all]}
+  - {doc_id: project/methods, path: docs/methods.md, kind: project, states: [all]}
   - {doc_id: project/decisions, path: docs/decisions.md, kind: project, states: [all]}
   - {doc_id: project/amendments, path: docs/amendments.md, kind: project, states: [all]}
   - {doc_id: project/core-gate, path: docs/gates/core_data_gate.md, kind: project, states: [ka]}
