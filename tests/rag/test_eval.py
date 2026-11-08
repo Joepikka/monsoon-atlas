@@ -173,5 +173,5 @@ def test_current_extractive_system_is_scored_honestly(index, chunks):
     result = score(FIXED, NUMERIC, answers, chunks)
     assert result["overall"]["valid_citations"] == 1.0
     assert result["overall"]["refusal_accuracy"] == 1.0  # search results never assert a value
-    assert {"N01", "N02", "N07"} <= set(result["failures"])  # no structured numeric answers yet
-    assert not result["passed"]
+    assert not {f"N{n:02d}" for n in range(1, 11)} & set(result["failures"])  # T255 computes
+    assert result["slices"]["numeric"]["correctness"] == 1.0

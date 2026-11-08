@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 8 Nov 2026, T254 English Ask evaluation set,
+Last updated: 8 Nov 2026, T255 computed numeric Ask answers,
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -25,8 +25,8 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 | File | What it is |
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
-| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T254. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D89. Every deviation from the plan is recorded here before it is made |
+| `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T255. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
+| `docs/decisions.md` | Decisions D01 to D90. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -234,6 +234,7 @@ and a YAML block `- id: T057`.
 | T252 (child of T179) | D87/A35 | English Ask corpus: 30 committed project documents from `configs/rag.yaml`, 292 heading-scoped chunks (300 tokens, 50 overlap, whole table rows) with commit-time `available_at`, licence and hashes; SQLite FTS5 BM25 with as-of/state/language/expiry filters, quoted terms and two chunks per document. Acceptance 9 passed in 7.22s; dev recall 18/20 (misses Q02, Q28 are paraphrases). No embeddings or generation yet. |
 | T253 (child of T180) | D88/A36 | Pure Worker answer contract `worker/src/ask.ts`: fixed system prompt, JSON-quoted evidence under 3000 tokens, 100/day, 6/min and 8000-neuron caps, generated JSON kept only with retrieved citations and supported numbers, otherwise cited extractive excerpts. Acceptance 4 passed (Node 5/5, `tsc` clean). No route, AI binding or account. |
 | T254 (child of T181) | D89/A37 | 60 English gold cases: plan Q01-Q50 (Q41-Q50 hash-frozen holdout; 35 resolve to support phrases in indexed documents, 15 deferred with reasons) and N01-N10 (S02, S09 and M05 gold recomputed from committed files; 7 require refusal). New `docs/methods.md` corpus page. Scorer fails any invalid citation or wrong/unsupported number. Acceptance 13 passed. Current extractive Ask: correctness 0.80, evidence 0.83, citations 1.00, refusal 1.00; gate not passed (`reports/rag.md`). Translations unreviewed. |
+| T255 (child of T180) | D90/A38 | Recognised numeric templates (latest rain, active alerts, model improvement) answered by DuckDB over frozen committed snapshots in `configs/rag.yaml`, independent of the gold code, citing the queried file; fallback shows all five retrieved chunks. Acceptance 30 passed (15 numeric, 13 eval + retrieval). Numeric 10/10; overall correctness 0.87, evidence support 0.83: C3 gate still not passed (paraphrase misses need e5). |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -658,10 +659,10 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    C3 Ask: T252 indexes the committed English corpus with lexical retrieval
    (`docs/ask.md`); T253 adds the Worker answer contract with cited
    extractive fallback; T254 adds the 60-case English gold set and scorer
-   (`reports/rag.md`: gate not passed). Next, in order: a structured numeric
-   answer path for N01/N02/N07 and better gold-chunk ranking (dev questions
-   only; do not tune on Q41-Q50), then the trusted chunk manifest and
-   `/api/v1/ask` route. The e5 embedding rerank
+   (`reports/rag.md`); T255 computes numeric answers (10/10). Gate still
+   fails on evidence support 0.83 (paraphrase misses). Next: the trusted
+   chunk manifest and `/api/v1/ask` route; e5 rerank when the owner
+   approves its download. Do not tune on Q41-Q50. The e5 embedding rerank
    is deferred (D88): lexical recall passes and it needs the dl lock and a
    model download. Workers AI waits for H05.
    Then T225 case studies and T046;

@@ -52,7 +52,7 @@ only when a model function is supplied and the 100 answers/day, 6
 requests/minute and 8000 neurons/day caps allow it. A generated reply is kept
 only if it is valid JSON, cites retrieved chunks, stays within 350 tokens and
 every number in it appears in the cited text. Every other case returns up to
-three quoted excerpts labelled as search results, with citations, or
+five quoted excerpts (all retrieved chunks, D90) labelled as search results, with citations, or
 `insufficient_evidence` when nothing was retrieved. No route, AI binding or
 account exists yet: Workers AI waits for H05 and the free/no-card probe.
 
@@ -65,6 +65,9 @@ indexed document; 15 are deferred with reasons. Numeric gold is recomputed
 from committed files. `python -m atlas.rag.evaluate` rebuilds the index,
 scores the current extractive path and writes [the report](../reports/rag.md).
 Any invalid citation or wrong or unsupported number fails the gate, whatever
-the averages. The current result does not pass: retrieval misses some gold
-chunks and there is no structured numeric answer yet. Translations are not
+the averages. Since T255, recognised numeric templates are computed by
+DuckDB from the frozen snapshots listed in `configs/rag.yaml` and cite the
+queried file; all 10 numeric cases pass. The gate still fails on evidence
+support (0.83 against 0.95): six questions use words the gold passage lacks,
+which needs the e5 rerank. Translations are not
 reviewed, so only English is evaluated.

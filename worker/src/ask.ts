@@ -76,7 +76,7 @@ export function extractive(evidence: Evidence[], status: Status = 'quota_fallbac
     return { answer: 'No indexed project document supports an answer. Check the linked official sources.',
       citations: [], status: 'insufficient_evidence', mode: 'extractive' };
   }
-  const shown = evidence.slice(0, 3);
+  const shown = evidence.slice(0, 5); // the plan's top five retrieved chunks (D90)
   return {
     answer: ['Search results (not a generated answer):', ...shown.map((item, index) =>
       `[${index + 1}] "${excerpt(item.text)}" (${item.path}, ${item.heading}, committed ${item.available_at})`)].join('\n'),

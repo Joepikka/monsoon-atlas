@@ -10,6 +10,7 @@ from contextlib import closing
 from datetime import UTC, date, datetime
 from pathlib import Path
 
+from atlas.rag import numeric
 from atlas.rag.corpus import ROOT, committed_documents, load_config
 from atlas.rag.index import INDEX, build_index
 from atlas.rag.retrieve import retrieve
@@ -157,7 +158,11 @@ def run_current(cases: list[dict], *, index: Path, as_of: datetime) -> dict:
     for case in cases:
         if case.get("scope", "mvp_en") != "mvp_en":
             continue
-        shown = retrieve(case["question"], as_of=as_of, index=index)[:3]
+        computed = numeric.answer(case["question"])
+        if computed is not None:
+            answers[case["id"]] = computed
+            continue
+        shown = retrieve(case["question"], as_of=as_of, index=index)
         answers[case["id"]] = {
             "mode": "extractive",
             "status": "quota_fallback" if shown else "insufficient_evidence",

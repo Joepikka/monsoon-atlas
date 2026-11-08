@@ -7,6 +7,12 @@ candidates: 50
 top_k: 5
 max_context_tokens: 3000
 licences: ["project-mit"]
+# T255 (D90): frozen structured files the numeric path may query. These are committed real
+# samples standing in until a published snapshot exists (S02 and S09 credit their providers).
+snapshots:
+  - {kind: daily_rain, source_id: S02, places: [bengaluru], path: tests/fixtures/s02_openmeteo_era5_bengaluru_2026-10-20_11-04.json}
+  - {kind: alerts, source_id: S09, path: web/tests/fixtures/sachet-ka-point.json, unit: alert_id}
+  - {kind: model_release, source_id: M05, path: models/registry/M05/v1.json, unit: SPI-3 MAE improvement}
 documents:
   - {doc_id: project/readme, path: README.md, kind: project, states: [all]}
   - {doc_id: project/rules, path: AGENTS.md, kind: project, states: [all]}
