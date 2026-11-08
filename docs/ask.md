@@ -135,3 +135,16 @@ amendments, Q33 in the M05 report, Q43 in the methods page), and two
 the gold passage. Fixing these is new work with its own pre-registered rule;
 the holdout cases have been reported several times, so they are no longer a
 blind test.
+
+## Log limit (T265)
+
+`docs/decisions.md` and `docs/amendments.md` grow with every task and were
+154 of 333 chunks at T264. D100 fixed three rules before any run: L0 as
+before (any document at most two of the top five), L1 each log at most one,
+L2 as L1 with the logs' BM25 scores halved. On the dev cases L0 and L1 tie
+(evidence support 0.852, recall 0.85) and L2 recalls less (0.80)
+([selection](../reports/rag-logs.md)), so L0 stays (`log_rule: L0`) and the
+browser search is unchanged. The C3 report run once afterwards is the same
+as at T264: evidence support 0.86, failing Q02, Q23, Q26, Q33 and Q43. In
+Q33 the gold section ranks twelfth, behind non-log sections too, so limiting
+the logs does not reach it.

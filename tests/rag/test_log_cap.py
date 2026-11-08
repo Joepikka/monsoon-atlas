@@ -68,3 +68,21 @@ def test_unknown_rule_and_config_logs():
     ids = {entry["doc_id"] for entry in config["documents"]}
     assert set(config["log_documents"]) == {"project/decisions", "project/amendments"} <= ids
     assert config["log_rule"] in ("L0", "L1", "L2")
+
+
+def test_committed_log_selection_follows_d100():
+    import re
+    from pathlib import Path
+
+    from atlas.rag.evaluate import LOG_NAMES
+
+    root = Path(__file__).resolve().parents[2]
+    text = (root / "reports/rag-logs.md").read_text("utf-8")
+    rows = re.findall(r"^\| (L\d) \| [^|]+ \| ([\d.]+) \| ([\d.]+) \|$", text, re.M)
+    assert sorted(rule for rule, _, _ in rows) == ["L0", "L1", "L2"]
+    key = [(-float(s), -float(r), rule) for rule, s, r in rows]
+    assert key == sorted(key)  # support, then recall, then the simpler rule
+    rule = load_config()["log_rule"]
+    assert rule == rows[0][0] and f"**Chosen: {rule}.**" in text
+    assert "Holdout cases (Q41-Q50) are not run here." in text
+    assert LOG_NAMES[rule] in (root / "reports/rag.md").read_text("utf-8")

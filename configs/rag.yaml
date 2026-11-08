@@ -8,7 +8,7 @@ top_k: 5
 rerank_method: R0  # D99: chosen on dev cases only (reports/rag-rerank.md)
 # D100: append-only logs that grow with every task
 log_documents: [project/decisions, project/amendments]
-log_rule: L0  # set from reports/rag-logs.md after the dev-only selection
+log_rule: L0  # D100: chosen on dev cases only (reports/rag-logs.md)
 max_context_tokens: 3000
 licences: ["project-mit"]
 # T255 (D90): frozen structured files the numeric path may query. These are committed real
