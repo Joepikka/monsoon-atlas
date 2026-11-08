@@ -100,8 +100,8 @@ def release_checks() -> list[dict]:
         ),
         (
             "Accuracy page shows C1, C2 and M06",
-            "partial",
-            "rows built here; web page not yet built",
+            "local" if _exists("web/src/pages/Accuracy.tsx") else "missing",
+            "T259 page shows the rows locally; no approved release published (H11)",
         ),
         ("Working real-data map, sources and Place Lens", "local", "T038-T040 pass locally"),
         ("Priced data and reproducible price baseline", "blocked", "S23 denominator; M06 blocked"),

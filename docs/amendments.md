@@ -447,7 +447,7 @@ new_tasks:
     phase: P1
     state: KA
     depends_on: [T260, T038]
-    files: [src/atlas/rag/manifest.py, web/src/ask-search.ts, web/src/ask.ts, web/src/ask.test.ts, web/src/pages/Ask.tsx, web/src/main.tsx, web/src/App.tsx, web/src/styles.css, web/tests/ask.spec.ts, web/tests/fixtures/ask-corpus.json, tests/test_web_ask.py, docs/ask.md]
+    files: [src/atlas/rag/manifest.py, web/src/ask-search.ts, web/src/ask.ts, web/src/ask.test.ts, web/src/pages/Ask.tsx, web/src/main.tsx, web/src/App.tsx, web/src/styles.css, web/tests/ask.spec.ts, web/tests/fixtures/ask-corpus.json, tests/test_web_ask.py, docs/ask.md, .github/workflows/web.yml]
     steps:
       - "Publish the canonical chunk list whose SHA-256 is the release ID; load it only when the bytes match"
       - "Search in the browser with the retrieval rules; send the top five chunk IDs to the Worker"
