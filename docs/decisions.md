@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D90 — Compute numeric answers from frozen snapshots; show all five results (8 Nov 2026).**
+  Split T255 from T180 after T254. The plan's fallback shows exact computed
+  table values with citations, so recognised numeric templates (latest rain,
+  active alerts, model improvement) are answered by DuckDB queries over the
+  committed real samples listed in `configs/rag.yaml`. The gold code reads
+  the same files with plain Python, so the two paths are independent. No
+  published snapshot exists yet; these samples stand in and are labelled.
+  The extractive fallback shows every retrieved chunk (the plan's top five)
+  instead of three. Ranking changes are judged on development questions
+  only. Paraphrase misses (Q02, Q23, Q26) remain until the e5 rerank; the
+  owner's delegation is not treated as approval for its model download.
+
 - **D89 — English Ask gold set with deferred out-of-phase cases (8 Nov 2026).**
   Split T254 from T181 after T252/T253. Keep all 50 plan questions and the
   10 numeric templates (60 English cases). A question is in the MVP English

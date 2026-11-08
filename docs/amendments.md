@@ -362,6 +362,14 @@ refusals deterministically. Translations stay unreviewed and disabled.
 Estimate 3 hours. Acceptance is
 `.\.venv\Scripts\python -m pytest tests/rag/test_eval.py -q`.
 
+## A38. Computed numeric answers and full top-five fallback (D90, 8 November 2026)
+
+T255 is a child of T180 after T254. Answer recognised numeric templates with
+DuckDB queries over frozen committed snapshots listed in `configs/rag.yaml`,
+cite the queried file, and show all retrieved chunks (at most five) in the
+extractive fallback. Estimate 3 hours. Acceptance is
+`.\.venv\Scripts\python -m pytest tests/rag/test_numeric.py tests/rag/test_eval.py -q`.
+
 ## Appendix Y: new and changed tasks (YAML)
 
 D51 (6 November 2026): T115/T116 move to P1 for the approved M07 fallback while
@@ -382,6 +390,21 @@ are in the synchronized YAML below.
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T255
+    parent: T180
+    title: "Computed numeric Ask answers and full top-five fallback"
+    phase: P1
+    state: KA
+    depends_on: [T254]
+    files: [src/atlas/rag/numeric.py, configs/rag.yaml, src/atlas/rag/evaluate.py, worker/src/ask.ts, tests/rag/test_numeric.py, reports/rag.md, docs/ask.md]
+    steps:
+      - "Match only explicit numeric templates; query frozen snapshots with DuckDB, independently of the gold code"
+      - "Return value, unit and the queried file as citation; unknown places, sources or times stay unanswered"
+      - "Show every retrieved chunk (at most five) in the extractive fallback; tune on development questions only"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/rag/test_numeric.py tests/rag/test_eval.py -q'
+      expected: "N01, N02 and N07 are computed exactly with citations; unmatched or out-of-snapshot questions are not answered"
+    hours: 3
   - id: T254
     parent: T181
     title: "English Ask gold cases and deterministic scoring"
