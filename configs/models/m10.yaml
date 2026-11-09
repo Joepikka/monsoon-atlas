@@ -1,0 +1,23 @@
+# Planned M10 definition, not a fitted model or a claim that labels exist. T139.
+model_id: M10
+state: kl
+enabled: false
+task: inference
+unit: "market x commodity x week"
+sources: [S22, S23]
+target:
+  estimand: "weekly log modal price response over weeks 0..4 after local rain exceeds the training calendar-week 95th percentile; a conditional association unless identification assumptions hold"
+data_gate:
+  min_markets: 30
+  min_independent_heavy_rain_events: 50
+  requires: [verified price unit, pre-trend audit, overlap audit, spillover audit]
+planned_splits:
+  train: ["2021-01-01", "2023-12-31"]
+  tune: ["2024-01-01", "2024-06-30"]
+  calibrate: ["2024-07-01", "2024-12-31"]
+  locked_test: ["2025-01-01", "2026-05-31"]
+purge_days: 28
+split_manifest: null
+status: blocked
+reason: "S22 exposes no price row and S23 is a one-day snapshot (5 Nov 2026) with an unverified price unit, so there is no weekly market-commodity panel, no 30-market sample and no 50 heavy-rain events; no effect can be estimated."
+fallback: "none: seasonal-naive changes and placebo dates also need the missing weekly price panel"
