@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D128 — Exposure and route comparison run without roads, shelters or hazard polygons (9 Nov 2026, T143).**
+  `atlas.spatial.exposure` splits S16 cell people by the area share inside the union of any
+  supplied hazard polygons (EPSG:6933; overlaps count once; inside + outside = total; coverage
+  = share of hazard area with population cells). It assumes people are spread evenly in a 1 km
+  cell. No verified Kerala flood or landslide polygon exists (S37 blocked; S36 has district
+  area numbers only), so the real-data test uses an H3 analysis cell over Karnataka S16 cells
+  (Kerala S16 is disabled in `kl.yaml`). `atlas.spatial.routes` has a heapq Dijkstra tested on
+  small hand-built graphs; with no road network (S18 blocked, D34) real use returns
+  "unavailable". Shelter routing is disabled with no official shelter record (S43 blocked, D124)
+  and with a record older than 2 days. Every result carries the "not a safe route" label and
+  the KSDMA link from S36. `RouteComparison.tsx` is built and tested but not mounted.
+
 - **D127 — Kerala event study, 2018 replay and climate run on what exists (9 Nov 2026, T142).**
   The rain-to-price event study is not computable: S22/S23 hold zero price rows (D120, D126),
   so `notebooks/06_rain_price.ipynb` reports n = 0, "not computable" and no chart. The method is
