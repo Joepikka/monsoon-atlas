@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D108 — S10 adsb.lol rows (9 Nov 2026, T060).**
+  Aircraft positions are community receiver reports, some computed by
+  multilateration, not an official air-traffic feed and not a model, so rows
+  get provenance `inferred` and keep the upstream `type` as `position_type`.
+  Under the project's privacy rule the adapter drops aircraft whose `dbFlags`
+  mark LADD or PIA (T059 e09), and it never stores callsign, registration or
+  type designator, so nothing links a row to an owner. Positions already
+  older than 300 seconds at fetch time are dropped; `valid_at` is the position
+  time so the map can hide later ones after 5 minutes. `on_ground` replaces an
+  altitude for aircraft reporting "ground", and a null `altitude_m` or
+  `speed_ms` means not reported (both optional in the plan). The committed
+  test fixture is the real T059 response with `flight`, `r` and `t` removed.
+
 - **D107 — Extra source columns for S06 and S07 (9 Nov 2026, T054 and T056).**
   As D33 did for S09, the adapters add columns to the plan's section 7 fields
   where the discovery found they are needed to read a row honestly. S06 adds

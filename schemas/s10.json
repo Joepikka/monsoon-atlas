@@ -1,0 +1,21 @@
+{
+  "$comment": "S10 adsb.lol live aircraft (T060). Measure columns added to the common envelope (common.json). Field map: configs/sources/s10.yaml; rules: decision D108.",
+  "source_id": "S10",
+  "schema_version": 1,
+  "mapping_version": "s10-v1",
+  "fields": [
+    {"name": "aircraft_id", "type": "string", "nullable": false, "meaning": "hex, the transponder address as given (non-ICAO addresses keep their prefix)"},
+    {"name": "position_at", "type": "timestamp", "nullable": false, "meaning": "now (milliseconds) minus seen_pos (seconds); lastPosition is used when lat/lon are absent"},
+    {"name": "lat", "type": "float64", "nullable": true, "meaning": "degrees; rows without a supplied position are not written"},
+    {"name": "lon", "type": "float64", "nullable": true, "meaning": "degrees"},
+    {"name": "altitude_m", "type": "float64", "nullable": true, "meaning": "alt_baro feet x 0.3048; null when not reported or on the ground (see on_ground)"},
+    {"name": "speed_ms", "type": "float64", "nullable": true, "meaning": "gs knots x 1852/3600; null when not reported"},
+    {"name": "on_ground", "type": "bool", "nullable": false, "meaning": "true when alt_baro is the string ground"},
+    {"name": "position_type", "type": "string", "nullable": false, "meaning": "upstream type, for example adsb_icao or mlat (how the position was obtained)"}
+  ],
+  "valid_at": "position_at; the map hides a position 300 s after it",
+  "issued_at": "null",
+  "published_at": "the API's now",
+  "available_at": "the fetch time",
+  "dropped": "Positions older than 300 s at fetch, aircraft without a position, and aircraft flagged LADD or PIA in dbFlags. Callsign, registration and type designator are never stored"
+}

@@ -86,7 +86,9 @@ sources:
     verify_task: T059
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "every 5 minutes while a view is active (at least 300 s per region)"
+    verified_by: configs/sources/s10.yaml
+    enabled: true
   - source_id: S11
     name: "OpenSky flight fallback"
     verify_task: T061
