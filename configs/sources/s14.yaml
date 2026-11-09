@@ -1,0 +1,105 @@
+# Discovery record for S14 (plan task T067). Evidence IDs refer to tests/fixtures/s14/manifest.json;
+# the files stay in data/raw/S14. See docs/sources/s14.md.
+source_id: S14
+state: ka
+name: "AWS Terrarium terrain"
+verify_task: T067
+discovered_at: "2026-11-09T07:46:07Z"
+outcome: available
+landing_url: "https://registry.opendata.aws/terrain-tiles/"
+publisher: "Mapzen Terrain Tiles (a Linux Foundation project), on the AWS Open Data registry"
+no_card: true
+account_required: false
+
+access:
+  status: public_bucket_no_key
+  detail: >-
+    The registry entry describes "A global dataset providing bare-earth terrain heights, tiled for
+    easy usage and provided on S3" and links the bucket index and documentation (e01, e04). Tiles
+    are plain HTTPS GETs of
+    https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png without a key (e05, e06).
+  evidence: [e01, e04, e05, e06]
+
+licence:
+  status: open
+  detail: >-
+    The registry names the attribution page as the licence (e01). It says "Attribution is required
+    for many terrain tile data providers" and lists them; for India the global sources are SRTM and
+    GMTED2010 ("courtesy of the U.S. Geological Survey") and ETOPO1 (NOAA), which are US Government
+    public-domain data with requested credit (e02). Credit Mapzen, USGS (SRTM, GMTED2010) and NOAA
+    (ETOPO1).
+  evidence: [e01, e02]
+
+provider_quota:
+  status: not_published
+  detail: "The registry entry and docs publish no request limit (e01, e03); tiles are fetched only for the map view."
+  evidence: [e01, e03]
+
+history:
+  status: available
+  detail: >-
+    A static global tile set: "New data is added based on community feedback" (e01). There is no
+    time dimension, so no earliest or latest date applies.
+  evidence: [e01]
+earliest_date: null
+latest_date: null
+
+units:
+  status: labelled
+  detail: >-
+    "Terrarium format PNG tiles contain raw elevation data in meters, in Web Mercator projection
+    (EPSG:3857)"; decode as (red * 256 + green + blue / 256) - 32768; the data range is -11000 to
+    8900 metres (e03). Tiles are 256 x 256 RGB PNGs (e05, e06).
+  evidence: [e03, e05, e06]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: decode Terrarium as R*256+G+B/256-32768 metres; validate sea-level samples. With
+    that formula the Bengaluru tile (z10) decodes to 767 to 960 m and its centre to 879 m, in line
+    with the city's plateau (e05); the Arabian Sea tile (z8) is negative down to -2,488 m, which is
+    sea-floor depth, not missing data, with its few positive pixels at the coast (e06). Elevation
+    below 0 over the sea is bathymetry and must not be read as land below sea level.
+  evidence: [e03, e05, e06]
+
+field_map:
+  - canonical: tile_key
+    upstream: "terrarium/{z}/{x}/{y}.png object key in the elevation-tiles-prod bucket"
+    unit_status: not_applicable
+    detail: "S3 object key of one tile, for example terrarium/10/732/474.png."
+    evidence: [e05]
+  - canonical: z
+    upstream: "zoom in the tile key"
+    unit_status: not_applicable
+    detail: "Web Mercator zoom level of the tile key."
+    evidence: [e03, e05]
+  - canonical: x
+    upstream: "column in the tile key"
+    unit_status: not_applicable
+    detail: "Web Mercator tile column (XYZ scheme)."
+    evidence: [e05]
+  - canonical: y
+    upstream: "row in the tile key"
+    unit_status: not_applicable
+    detail: "Web Mercator tile row from the north (XYZ scheme)."
+    evidence: [e05]
+  - canonical: elevation_encoding
+    upstream: "Terrarium (documented formula)"
+    unit_status: labelled
+    detail: "terrarium: metres = R*256 + G + B/256 - 32768."
+    evidence: [e03]
+  - canonical: crs
+    upstream: "documented projection"
+    unit_status: not_applicable
+    detail: "EPSG:3857 Web Mercator."
+    evidence: [e03]
+
+dependents: [T068]
+retry_condition: null
+failed_fetches:
+  - url: "https://github.com/tilezen/joerd/blob/master/docs/formats.md"
+    attempted_at: "2026-11-09T07:47:07Z"
+    error: "HTTP 504 from GitHub on the first try; the retry succeeded (e03)"
+  - url: "https://github.com/awslabs/open-data-registry/blob/main/datasets/terrain-tiles.yaml"
+    attempted_at: "2026-11-09T07:48:04Z"
+    error: "HTTP 504 from GitHub; not retried, the registry page (e01) gives the same facts"
