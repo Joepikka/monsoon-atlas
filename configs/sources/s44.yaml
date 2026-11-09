@@ -36,7 +36,7 @@ provider_quota:
 history:
   status: available
   detail: >-
-    Annual totals: 2024 by offence head for 47 police units plus a state total (e04); 2023 IPC,
+    Annual totals: 2024 by offence head for 40 police units plus a state total, under range headings (e04); 2023 IPC,
     SLL and total cases for 38 units plus a total (e05); 2022 and 2025 datasets list district and
     city-wise totals and, for 2025, "IPC and BNS Crimes" (e06, e07).
   evidence: [e04, e05, e06, e07]
@@ -58,9 +58,9 @@ source_check:
     under-reporting caveat. The tables hold counts per police unit only, with no names or case
     locations (e04, e05). Units are police jurisdictions, not revenue districts: six city
     commissionerates (Bengaluru, Mysuru, Hubballi Dharwad, Mangaluru, Belagavi, Kalaburagi) are
-    split from their districts, range rows are subtotals, and Karnataka Railways, Coastal Security
-    Police and CID have no area (e04); 2023 spells names differently (Shimoga, Kalaburgi, KRailways,
-    e05). T088 keeps the published unit, marks subtotals and non-area units, and maps to districts
+    split from their districts, range rows are empty section headings, and Karnataka Railways,
+    Coastal Security Police and CID have no area (e04); 2023 spells names differently (Shimoga, Kalaburgi, KRailways,
+    e05). T088 keeps the published unit, skips the headings, marks non-area units, and maps to districts
     only where one unit equals one district. Registered cases are not incidence: every display
     carries an under-reporting caveat. Offence heads change between years, and from July 2024 the
     BNS replaced the IPC (e07), so heads are not compared across that break.
