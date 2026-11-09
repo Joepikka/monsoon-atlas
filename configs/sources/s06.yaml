@@ -1,0 +1,113 @@
+# Discovery record for S06 (plan task T053). Evidence IDs refer to tests/fixtures/s06/manifest.json;
+# the files stay in data/raw/S06. See docs/sources/s06.md.
+source_id: S06
+state: ka
+name: "Open-Meteo climate projections"
+verify_task: T053
+discovered_at: "2026-11-09T06:22:08Z"
+outcome: available
+landing_url: "https://open-meteo.com/en/docs/climate-api"
+publisher: "Open-Meteo, serving CMIP6 HighResMIP climate model output downscaled to ERA5-Land"
+no_card: true
+account_required: false
+
+access:
+  status: public_api_no_key
+  detail: >-
+    GET https://climate-api.open-meteo.com/v1/climate works without a key or account (e06-e08,
+    e11); start_date, end_date, models and daily are required (e04). The API host robots.txt
+    disallows all paths (e01); as in D31, API calls follow the published API terms and limits
+    (e02). Requests were spaced 2 seconds apart.
+  evidence: [e01, e02, e04, e06, e07, e08, e11]
+
+licence:
+  status: open
+  detail: >-
+    Open-Meteo: "API data are offered under Attribution 4.0 International (CC BY 4.0)" (e03), free
+    API for non-commercial use only (e02). The docs say "CMIP6 model data is licenced under a
+    Creative Commons Attribution 4.0 International Licence" and ask users to attribute the CMIP6
+    programme and Open-Meteo (e04). The CMIP6 terms (e05 redirects to e09) say all contributing
+    groups relaxed their licence to CC BY 4.0 as of October 2022 and require citation.
+  evidence: [e02, e03, e04, e05, e09]
+
+provider_quota:
+  status: published
+  detail: >-
+    Free non-commercial API: fewer than 10,000 calls per day, 5,000 per hour and 600 per minute
+    (e02). Long ranges count as many calls: the docs' own example "is equivalent to 1844.5 calls
+    because of factors like long time intervals, the number of locations, variables, or models"
+    (e04), so a 1950-2050 pull must be split and budgeted.
+  evidence: [e02, e04]
+
+history:
+  status: available
+  detail: >-
+    Daily data; the docs say "Data is available from 1950-01-01 until 2050-01-01" (e04). At
+    Bengaluru six models have every day from 1 Jan 1950 to 31 Dec 2050 with no gaps (e06, e08,
+    e11); EC_Earth3P_HR ends on 31 Dec 2049 (e06) and is null in 2050 (e08, e11). January 2051
+    gets HTTP 400 "Invalid date" (failed_fetches). Projections, not observations: the docs say past
+    years "should not be mistaken for actual measurements" (e04).
+  evidence: [e04, e06, e08, e11]
+earliest_date: "1950-01-01"
+latest_date: "2050-12-31"
+
+units:
+  status: labelled
+  detail: >-
+    daily_units gives precipitation_sum_<model> in "mm" and temperature_2m_max_<model> in "°C",
+    time as iso8601 dates; temperature_unit=celsius and precipitation_unit=mm are requested, and
+    utc_offset_seconds is 0 (e06-e08, e11). precipitation_sum includes snowfall (e04).
+  evidence: [e04, e06, e07, e08, e11]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: record the supported scenario and bias adjustment; not a weather forecast for an
+    individual day. Scenario: there is no scenario parameter; the docs say the models are "as
+    close to RCP8.5 as possible within CMIP6" from the HighResMIP group, with no named SSP or
+    experiment per model (e04, e10), so the scenario is recorded as unnamed. Bias adjustment: by
+    default all data is linearly bias-corrected onto ERA5-Land with monthly coefficients over 50
+    years; disable_bias_correction=true returns the raw model (e04). They differ: in 2000 at
+    Bengaluru MRI_AGCM3_2_S rain is 708.4 mm corrected and 587.1 mm raw, and the raw cell is
+    12.890625, 77.5 instead of 13.0, 77.600006 (e06, e07). Daily values are model climate, not a
+    forecast or record of any given day (e04).
+  evidence: [e04, e06, e07, e10]
+
+field_map:
+  - canonical: cell_id
+    upstream: "latitude, longitude in the response"
+    unit_status: not_applicable
+    detail: "Bias-corrected data snaps to the 10 km ERA5-Land cell (13.0, 77.600006); raw data to the model cell (12.890625, 77.5)."
+    evidence: [e06, e07]
+  - canonical: date_local
+    upstream: "daily.time"
+    unit_status: labelled
+    detail: "ISO date; utc_offset_seconds 0 (GMT days)."
+    evidence: [e06]
+  - canonical: model
+    upstream: "the suffix of each daily series name, for example _MRI_AGCM3_2_S"
+    unit_status: not_applicable
+    detail: "Seven models: CMCC_CM2_VHR4, FGOALS_f3_H, HiRAM_SIT_HR, MRI_AGCM3_2_S, EC_Earth3P_HR, MPI_ESM1_2_XR, NICAM16_8S."
+    evidence: [e04, e06]
+  - canonical: scenario
+    upstream: null
+    unit_status: absent
+    detail: "No scenario parameter or field; null with a reason (docs: as close to RCP8.5 as possible, no named SSP)."
+    evidence: [e04, e10]
+  - canonical: rain_mm
+    upstream: "precipitation_sum_<model>"
+    unit_status: labelled
+    detail: "mm per day, including snowfall; no negative value in 1950-2050 at Bengaluru."
+    evidence: [e04, e06]
+  - canonical: tmax_c
+    upstream: "temperature_2m_max_<model>"
+    unit_status: labelled
+    detail: "°C daily maximum at 2 m, requested with temperature_unit=celsius."
+    evidence: [e04, e06]
+
+dependents: [T054]
+retry_condition: null
+failed_fetches:
+  - url: "https://climate-api.open-meteo.com/v1/climate?latitude=12.97&longitude=77.59&daily=precipitation_sum,temperature_2m_max&temperature_unit=celsius&precipitation_unit=mm&models=CMCC_CM2_VHR4,FGOALS_f3_H,HiRAM_SIT_HR,MRI_AGCM3_2_S,EC_Earth3P_HR,MPI_ESM1_2_XR,NICAM16_8S&start_date=2051-01-01&end_date=2051-01-02"
+    attempted_at: "2026-11-09T06:24:49Z"
+    error: "HTTP 400 {\"error\":true,\"reason\":\"Invalid date\"}: data ends in 2050"
