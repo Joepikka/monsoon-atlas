@@ -1,0 +1,119 @@
+# Discovery record for S11 (plan task T061). Evidence IDs refer to tests/fixtures/s11/manifest.json;
+# the files stay in data/raw/S11. See docs/sources/s11.md.
+source_id: S11
+state: ka
+name: "OpenSky flight fallback"
+verify_task: T061
+discovered_at: "2026-11-09T07:23:25Z"
+outcome: blocked
+landing_url: "https://openskynetwork.github.io/opensky-api/rest.html"
+publisher: "The OpenSky Network"
+no_card: true
+account_required: false
+
+access:
+  status: terms_acceptance_required
+  detail: >-
+    The REST root is https://opensky-network.org/api and anonymous requests are documented (e03).
+    The OpenSky API repository says "By using the OpenSky API, you agree with our terms of use"
+    and links the terms page (e01). That page, the home page and robots.txt all return HTTP 403 to
+    the project's scripted client (failed_fetches), so the terms could not be read, and agreeing to
+    terms is an owner step (amendments A5). No API data was captured. OAuth2 client credentials
+    from an OpenSky account are the only authenticated route (e03).
+  evidence: [e01, e03]
+
+licence:
+  status: unverified
+  detail: >-
+    The docs say the API is for "research and non-commerical purposes", ask for a citation of the
+    OpenSky paper in any publication including web pages, and refer to the terms and conditions
+    "for more details on the data license model"; commercial use needs contact (e02). The terms
+    page itself returned 403 (failed_fetches). The repository's GPL-3.0 licence covers the client
+    code, not the data (e01).
+  evidence: [e01, e02]
+
+provider_quota:
+  status: published
+  detail: >-
+    Credits per endpoint family per day: anonymous 400 (by IP), standard user 4,000, active feeder
+    8,000; licensed users 14,400 per hour. /states/all costs 1 credit for a box up to 25 square
+    degrees. When credits run out the API returns 429 with X-Rate-Limit-Retry-After-Seconds (e03).
+    The docs also say OpenSky may block cloud-provider IP ranges (e02). Plan rule: disable rather
+    than bypass a quota.
+  evidence: [e02, e03]
+
+history:
+  status: partial
+  detail: >-
+    Anonymous users get only the most recent state vectors at 10-second resolution; authenticated
+    users can ask for up to 1 hour in the past (e03).
+  evidence: [e03]
+earliest_date: null
+latest_date: null
+
+units:
+  status: labelled
+  detail: >-
+    The state vector table gives time_position as Unix seconds, latitude and longitude in WGS-84
+    degrees, baro_altitude in metres, velocity over ground in m/s, and on_ground as a boolean (e03).
+  evidence: [e03]
+
+source_check:
+  status: blocked
+  detail: >-
+    Plan rule: discover current API credits and licence; disable rather than bypass a quota.
+    Credits are documented (e03), but the data licence sits on a terms page the scripted client
+    cannot read (403), and using the API means agreeing to those terms (e01). The project does not
+    change its user agent or use another route to get past the 403, and the agent does not accept
+    terms for the owner, so S11 stays disabled.
+  evidence: [e01, e02, e03]
+
+field_map:
+  - canonical: aircraft_id
+    upstream: "states[i][0] icao24"
+    unit_status: not_applicable
+    detail: "ICAO 24-bit address in hex, per the documented state vector."
+    evidence: [e03]
+  - canonical: position_at
+    upstream: "states[i][3] time_position"
+    unit_status: labelled
+    detail: "Unix seconds; null if no position report in the past 15 s."
+    evidence: [e03]
+  - canonical: lat
+    upstream: "states[i][6] latitude"
+    unit_status: labelled
+    detail: "WGS-84 decimal degrees; can be null."
+    evidence: [e03]
+  - canonical: lon
+    upstream: "states[i][5] longitude"
+    unit_status: labelled
+    detail: "WGS-84 decimal degrees; can be null."
+    evidence: [e03]
+  - canonical: altitude_m
+    upstream: "states[i][7] baro_altitude"
+    unit_status: labelled
+    detail: "Barometric altitude in metres; can be null."
+    evidence: [e03]
+  - canonical: speed_ms
+    upstream: "states[i][9] velocity"
+    unit_status: labelled
+    detail: "Velocity over ground in m/s; can be null."
+    evidence: [e03]
+
+dependents: [T062]
+retry_condition: >-
+  The owner reads https://opensky-network.org/about/terms-of-use in a browser and decides whether
+  the project accepts the terms for a non-commercial fallback (citation of the OpenSky paper, the
+  data licence model, any limit on public display), and records that decision; then re-run T061.
+  If accepted, anonymous use stays within 400 credits a day; an account and API client (OAuth2)
+  would be a further owner step.
+failed_fetches:
+  - url: "https://opensky-network.org/robots.txt"
+    attempted_at: "2026-11-09T07:23:25Z"
+    error: "HTTP 403 to the scripted client; robots.txt could not be read"
+  - url: "https://opensky-network.org/"
+    attempted_at: "2026-11-09T07:23:29Z"
+    error: "HTTP 403 to the scripted client"
+  - url: "https://opensky-network.org/about/terms-of-use"
+    attempted_at: "2026-11-09T07:23:33Z"
+    error: "HTTP 403 to the scripted client; the terms and data licence could not be read"

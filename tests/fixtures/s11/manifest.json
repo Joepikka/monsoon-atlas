@@ -1,0 +1,38 @@
+{
+  "source_id": "S11",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://github.com/openskynetwork/opensky-api",
+      "fetched_at": "2026-11-09T07:23:37.368380Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "5077ccc7cf698a7bacef2f73dc41b403d854acb97e43ab79da260efd62070ca0",
+      "bytes": 252269,
+      "raw_path": "S11/2026-11-09/5077ccc7cf698a7bacef2f73dc41b403d854acb97e43ab79da260efd62070ca0.html",
+      "shows": "OpenSky API repository on GitHub (OpenSky organisation)"
+    },
+    {
+      "id": "e02",
+      "url": "https://openskynetwork.github.io/opensky-api/",
+      "fetched_at": "2026-11-09T07:23:40.833777Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "dd192d5366b63a973796558451ea786f6414bcb53f4ab4cd71ead377acc8013f",
+      "bytes": 12800,
+      "raw_path": "S11/2026-11-09/dd192d5366b63a973796558451ea786f6414bcb53f4ab4cd71ead377acc8013f.html",
+      "shows": "OpenSky API documentation home"
+    },
+    {
+      "id": "e03",
+      "url": "https://openskynetwork.github.io/opensky-api/rest.html",
+      "fetched_at": "2026-11-09T07:23:44.266961Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "a040f7d15823c3ca0aabc1d56933c88bbdc7340b60819b06f1ef63af806c7ea4",
+      "bytes": 65499,
+      "raw_path": "S11/2026-11-09/a040f7d15823c3ca0aabc1d56933c88bbdc7340b60819b06f1ef63af806c7ea4.html",
+      "shows": "OpenSky REST API documentation"
+    }
+  ]
+}
