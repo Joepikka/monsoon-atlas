@@ -2,6 +2,22 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D130 — Climate product runs on S08 1981-2025 and S06; NDVI and official onset are unavailable (9 Nov 2026, T145).**
+  S42 is blocked on the owner account (H15), so `atlas.analysis.vegetation` implements NDVI
+  (cloud, nodata, negative reflectance and zero denominator stay NaN, so values lie in [-1, 1];
+  10-day valid-pixel median) and tests it on small hand-checked arrays only; the layer status is
+  "unavailable" and the wording is "vegetation greenness" (no verified crop mask). S08 is held for
+  1981-2025, not 1901, so trends cover 1981-2025 and the 1901-1980 gap is a stated limit. No
+  enabled source publishes an IMD onset date (no config mentions one), so `official_onset` is null
+  with a reason; the heuristic onset (first 3 days in a row with at least 2.5 mm from 1 May) is
+  labelled "inferred". The tracker uses cumulative rain from 1 Jun against the strictly 1981-2010
+  distribution. To respect the S08 licence (D129) `reports/eda/08_climate_product/climate.json`
+  holds indices only (percent of median or normal, percentile rank, slope per decade), never mm;
+  H11 still decides the S08 finding. The tracked year is 2025, a past and provisional year, not a
+  live feed. S06 projections reuse T142's results, keyed by model and labelled "climate
+  projection, not a forecast". `Climate.tsx` is built and tested but not mounted, because
+  `Accuracy` is mounted only for approved releases and this page waits for H11.
+
 - **D129 — Kerala release gate passes with all four Kerala models blocked (9 Nov 2026, T144).**
   `docs/releases/kl.md` records 19 Kerala sources (4 enabled: S06, S08, S32, S36; 7 blocked;
   8 available but not yet configured for Kerala), M07 to M10 blocked with null scores and 0
