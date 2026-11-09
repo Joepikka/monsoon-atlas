@@ -1,0 +1,118 @@
+# Discovery record for S05 (plan task T051). Evidence IDs refer to tests/fixtures/s05/manifest.json;
+# the files stay in data/raw (S05, plus one unchanged S01 script). See docs/sources/s05.md.
+source_id: S05
+state: ka
+name: "Open-Meteo ensemble"
+verify_task: T051
+discovered_at: "2026-11-09T05:14:03Z"
+outcome: available
+landing_url: "https://open-meteo.com/en/docs/ensemble-api"
+publisher: "Open-Meteo, serving national weather service ensemble forecasts (ECMWF, NOAA, DWD, CMC and others)"
+no_card: true
+account_required: false
+
+access:
+  status: public_api_no_key
+  detail: >-
+    GET https://ensemble-api.open-meteo.com/v1/ensemble works without a key or account (e08,
+    e10-e14); models is a required parameter (e04). The API host robots.txt disallows all paths
+    (e01); as in D31, API calls follow the published API terms and limits (e02). Requests were
+    spaced 2 seconds apart.
+  evidence: [e01, e02, e04, e08, e10, e11, e12, e13, e14]
+
+licence:
+  status: open
+  detail: >-
+    "API data are offered under Attribution 4.0 International (CC BY 4.0)"; the same page credits
+    "Atmospheric, ensemble and wave forecasts" to ECMWF (CC-BY licence), NOAA NCEP and DWD, and
+    "Atmospheric and ensemble forecasts" to CMC (e03). The free API is for non-commercial use only
+    (e02). Credit Open-Meteo and the model's weather service.
+  evidence: [e02, e03]
+
+provider_quota:
+  status: published
+  detail: "Free non-commercial API: fewer than 10,000 calls per day, 5,000 per hour and 600 per minute (e02)."
+  evidence: [e02]
+
+history:
+  status: partial
+  detail: >-
+    Forecast only. start_date 1 Jul 2024 gets HTTP 400 "out of allowed range from 2026-08-08 to
+    2026-12-14" (failed_fetches); inside that range 8-9 Aug 2026 is all null (e13), and IFS 0.25
+    ensemble values start on 4 Nov 2026 22:00 UTC with no gaps to 8 Nov (e14). So the API keeps
+    about 4.5 days of past values, not an archive of runs: every run must be stored when issued
+    (D07). The 9 Nov sample has values to 23 Nov 2026 12:00 UTC (e08).
+  evidence: [e08, e13, e14]
+earliest_date: "2026-11-04"
+latest_date: "2026-11-23"
+
+units:
+  status: labelled
+  detail: >-
+    hourly_units gives every precipitation series in "mm" and every temperature_2m series in
+    "°C", with time as iso8601; temperature_unit=celsius, precipitation_unit=mm and timezone=GMT
+    are requested, and utc_offset_seconds is 0 (e08, e10-e12). The docs say all data is
+    interpolated to 1-hourly steps and precipitation is the sum over the preceding hour (e04).
+  evidence: [e04, e08, e10, e11, e12]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: discover the actual member count per product; do not hardcode 40. At Bengaluru each
+    response has one unsuffixed series plus numbered members, the same count for rain and
+    temperature: ECMWF IFS 0.25 ensemble 51 (member01-member50, e08), NOAA GFS 0.25 ensemble 31
+    (e10), DWD ICON-EPS 40 (e11), CMC GEM 21 (e12), as the docs table lists (e04). Only ICON-EPS
+    has 40. The response names no run time; the ecmwf_ifs025_ensemble metadata, from the URL the
+    Model Updates page script builds (e05, e06), gives last_run_initialisation_time 8 Nov 2026
+    18:00 UTC, availability 9 Nov 02:43:50 UTC and data_end_time 14 Nov 21:00 UTC, unchanged before
+    and after the call (e07, e09). The response still has values to 23 Nov 12:00 UTC, which is
+    8 Nov 12:00 plus the 15-day length (e04, e08): hours from data_end_time on are consistent with
+    an earlier run, so only hours before data_end_time carry the metadata run time. Six IFS member
+    values are -0.1 mm (members 16 and 37, e08); rain must be >= 0, so T052 rejects them.
+  evidence: [e04, e05, e06, e07, e08, e09, e10, e11, e12]
+
+field_map:
+  - canonical: cell_id
+    upstream: "latitude, longitude in the response"
+    unit_status: not_applicable
+    detail: "Snapped per model: 12.97, 77.59 returns 13.0, 77.5 for IFS, GEFS and GEM, and 13.094358, 77.589874 for ICON-EPS."
+    evidence: [e08, e10, e11, e12]
+  - canonical: valid_at
+    upstream: "hourly.time"
+    unit_status: labelled
+    detail: "ISO 8601 without offset; UTC because timezone=GMT is requested."
+    evidence: [e04, e08]
+  - canonical: issued_at
+    upstream: "last_run_initialisation_time in data/<model>/static/meta.json (Unix seconds)"
+    unit_status: labelled
+    detail: "Read before and after the call; applies only to hours before that run's data_end_time."
+    evidence: [e06, e07, e08, e09]
+  - canonical: member_id
+    upstream: "the series name suffix: none, member01 ... memberNN"
+    unit_status: not_applicable
+    detail: >-
+      Keep the suffix as returned ("00" for the unsuffixed series). The docs do not say which
+      series is the control, so none is labelled control.
+    evidence: [e04, e08]
+  - canonical: rain_mm
+    upstream: "precipitation, precipitation_memberNN"
+    unit_status: labelled
+    detail: "mm over the preceding hour, requested with precipitation_unit=mm; negative values are rejected."
+    evidence: [e04, e08]
+  - canonical: temperature_c
+    upstream: "temperature_2m, temperature_2m_memberNN"
+    unit_status: labelled
+    detail: "°C at 2 m, requested with temperature_unit=celsius."
+    evidence: [e04, e08]
+  - canonical: model
+    upstream: "the models request parameter (not echoed in the response)"
+    unit_status: not_applicable
+    detail: "One named model per call, for example ecmwf_ifs025_ensemble; the member count is read from each response."
+    evidence: [e04, e08, e10, e11, e12]
+
+dependents: [T052]
+retry_condition: null
+failed_fetches:
+  - url: "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=12.97&longitude=77.59&hourly=precipitation,temperature_2m&temperature_unit=celsius&precipitation_unit=mm&timezone=GMT&start_date=2024-07-01&end_date=2024-07-02&models=ecmwf_ifs025_ensemble"
+    attempted_at: "2026-11-09T05:15:25Z"
+    error: "HTTP 400 {\"reason\":\"Parameter 'start_date' is out of allowed range from 2026-08-08 to 2026-12-14\",\"error\":true}: no long ensemble archive"

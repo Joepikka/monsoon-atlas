@@ -1,0 +1,159 @@
+{
+  "source_id": "S05",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://ensemble-api.open-meteo.com/robots.txt",
+      "fetched_at": "2026-11-09T05:14:03.721657Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "efdb5938a9736727f5cce2b60355588e4fa541d19d022d222d8a09b8efd5dcce",
+      "bytes": 25,
+      "raw_path": "S05/2026-11-09/efdb5938a9736727f5cce2b60355588e4fa541d19d022d222d8a09b8efd5dcce.bin",
+      "shows": "Ensemble API host robots.txt"
+    },
+    {
+      "id": "e02",
+      "url": "https://open-meteo.com/en/terms",
+      "fetched_at": "2026-11-09T05:14:06.093851Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "ed615d416b404ab2ec3de944c897b4df7fbaaa13c0b0596406ca84613c48315a",
+      "bytes": 38673,
+      "raw_path": "S05/2026-11-09/ed615d416b404ab2ec3de944c897b4df7fbaaa13c0b0596406ca84613c48315a.html",
+      "shows": "Open-Meteo terms of use"
+    },
+    {
+      "id": "e03",
+      "url": "https://open-meteo.com/en/licence",
+      "fetched_at": "2026-11-09T05:14:08.292330Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "080d43d9ece181c6c03c546a7481a0652bf6372cb16ae3f644b392124d6de16a",
+      "bytes": 40502,
+      "raw_path": "S05/2026-11-09/080d43d9ece181c6c03c546a7481a0652bf6372cb16ae3f644b392124d6de16a.html",
+      "shows": "Open-Meteo licence page"
+    },
+    {
+      "id": "e04",
+      "url": "https://open-meteo.com/en/docs/ensemble-api",
+      "fetched_at": "2026-11-09T05:14:10.534896Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "b63958d72d31efa15ffb37cb3c4e925607f090aed4e099a2eda99d30c5dc3944",
+      "bytes": 395972,
+      "raw_path": "S05/2026-11-09/b63958d72d31efa15ffb37cb3c4e925607f090aed4e099a2eda99d30c5dc3944.html",
+      "shows": "Ensemble API documentation"
+    },
+    {
+      "id": "e05",
+      "url": "https://open-meteo.com/en/docs/model-updates",
+      "fetched_at": "2026-11-09T05:14:12.737278Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "9ab70acc1234c9a40b57c5fcc2d61f823dfb08bf1d6ed4677f0d103d72d0060e",
+      "bytes": 51374,
+      "raw_path": "S05/2026-11-09/9ab70acc1234c9a40b57c5fcc2d61f823dfb08bf1d6ed4677f0d103d72d0060e.html",
+      "shows": "Model Updates page"
+    },
+    {
+      "id": "e06",
+      "url": "https://open-meteo.com/_app/immutable/nodes/73.CMtpKCnE.js",
+      "fetched_at": "2026-11-09T05:15:06.489146Z",
+      "status": 304,
+      "media_type": "application/javascript",
+      "sha256": "b5a293253384583203588aaae34554b3d2c6dccf0893d6bfd6d912943c9b7ecf",
+      "bytes": 22932,
+      "raw_path": "S01/2026-11-05/b5a293253384583203588aaae34554b3d2c6dccf0893d6bfd6d912943c9b7ecf.bin",
+      "shows": "Model Updates page script: builds https://ensemble-api.open-meteo.com/data/<model>/static/meta.json"
+    },
+    {
+      "id": "e07",
+      "url": "https://ensemble-api.open-meteo.com/data/ecmwf_ifs025_ensemble/static/meta.json",
+      "fetched_at": "2026-11-09T05:15:09.319932Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "f208da4e09c7fe02a4a86ace42c4811cee0799918d4190f4512789a67cf59f72",
+      "bytes": 596,
+      "raw_path": "S05/2026-11-09/f208da4e09c7fe02a4a86ace42c4811cee0799918d4190f4512789a67cf59f72.json",
+      "shows": "ECMWF IFS 0.25 ensemble metadata before the forecast call"
+    },
+    {
+      "id": "e08",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=12.97&longitude=77.59&hourly=precipitation,temperature_2m&temperature_unit=celsius&precipitation_unit=mm&timezone=GMT&forecast_days=15&models=ecmwf_ifs025_ensemble",
+      "fetched_at": "2026-11-09T05:15:12.347719Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "34bd4ed7ebe8a636e395d0093b9642aab76ac2fde8c445a03332f5494d6b23c5",
+      "bytes": 196592,
+      "raw_path": "S05/2026-11-09/34bd4ed7ebe8a636e395d0093b9642aab76ac2fde8c445a03332f5494d6b23c5.json",
+      "shows": "Sample: Bengaluru, ECMWF IFS 0.25 ensemble, 15 days hourly rain and temperature for every member"
+    },
+    {
+      "id": "e09",
+      "url": "https://ensemble-api.open-meteo.com/data/ecmwf_ifs025_ensemble/static/meta.json",
+      "fetched_at": "2026-11-09T05:15:15.169463Z",
+      "status": 304,
+      "media_type": "application/json",
+      "sha256": "f208da4e09c7fe02a4a86ace42c4811cee0799918d4190f4512789a67cf59f72",
+      "bytes": 596,
+      "raw_path": "S05/2026-11-09/f208da4e09c7fe02a4a86ace42c4811cee0799918d4190f4512789a67cf59f72.json",
+      "shows": "ECMWF IFS 0.25 ensemble metadata after the forecast call"
+    },
+    {
+      "id": "e10",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=12.97&longitude=77.59&hourly=precipitation,temperature_2m&temperature_unit=celsius&precipitation_unit=mm&timezone=GMT&forecast_days=7&models=ncep_gefs025",
+      "fetched_at": "2026-11-09T05:15:17.972327Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "8d432faaaa202aeb394fa1a1e9c6b997143d5e136d090ad0548ba9eb960250b6",
+      "bytes": 59078,
+      "raw_path": "S05/2026-11-09/8d432faaaa202aeb394fa1a1e9c6b997143d5e136d090ad0548ba9eb960250b6.json",
+      "shows": "Sample: Bengaluru, NOAA GFS 0.25 ensemble, 7 days"
+    },
+    {
+      "id": "e11",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=12.97&longitude=77.59&hourly=precipitation,temperature_2m&temperature_unit=celsius&precipitation_unit=mm&timezone=GMT&forecast_days=7&models=dwd_icon_global_eps",
+      "fetched_at": "2026-11-09T05:15:20.788769Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "92efe8fb501f19efaf84b4a5539386e0d4971b728ea4009da7da9746cbacf563",
+      "bytes": 75261,
+      "raw_path": "S05/2026-11-09/92efe8fb501f19efaf84b4a5539386e0d4971b728ea4009da7da9746cbacf563.json",
+      "shows": "Sample: Bengaluru, DWD ICON-EPS global, 7 days"
+    },
+    {
+      "id": "e12",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=12.97&longitude=77.59&hourly=precipitation,temperature_2m&temperature_unit=celsius&precipitation_unit=mm&timezone=GMT&forecast_days=7&models=gem_global_ensemble",
+      "fetched_at": "2026-11-09T05:15:23.591978Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "b95ffff146bbf0d3aa55156f7b7ea0034e9ce2d7c1a265178f669ed61310d248",
+      "bytes": 41108,
+      "raw_path": "S05/2026-11-09/b95ffff146bbf0d3aa55156f7b7ea0034e9ce2d7c1a265178f669ed61310d248.json",
+      "shows": "Sample: Bengaluru, CMC GEM global ensemble, 7 days"
+    },
+    {
+      "id": "e13",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=12.97&longitude=77.59&hourly=precipitation,temperature_2m&temperature_unit=celsius&precipitation_unit=mm&timezone=GMT&start_date=2026-08-08&end_date=2026-08-09&models=ecmwf_ifs025_ensemble",
+      "fetched_at": "2026-11-09T05:16:06.528800Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "7e1918651b7c0247ebf5ea64ef857c0835df17f27f8a464983a93a5683c2fc2f",
+      "bytes": 31539,
+      "raw_path": "S05/2026-11-09/7e1918651b7c0247ebf5ea64ef857c0835df17f27f8a464983a93a5683c2fc2f.json",
+      "shows": "History check: IFS 0.25 ensemble for 8-9 Aug 2026, the earliest date the API allows"
+    },
+    {
+      "id": "e14",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=12.97&longitude=77.59&hourly=precipitation&precipitation_unit=mm&timezone=GMT&start_date=2026-08-08&end_date=2026-11-08&models=ecmwf_ifs025_ensemble",
+      "fetched_at": "2026-11-09T05:16:20.866494Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "7f74c112a3795c13d841e597bdf7f31ed61452196c4ca861e08974fb26ddb5c1",
+      "bytes": 614671,
+      "raw_path": "S05/2026-11-09/7f74c112a3795c13d841e597bdf7f31ed61452196c4ca861e08974fb26ddb5c1.json",
+      "shows": "History check: IFS 0.25 ensemble precipitation, 8 Aug to 8 Nov 2026"
+    }
+  ]
+}
