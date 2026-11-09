@@ -113,7 +113,9 @@ sources:
     name: "AWS Terrarium terrain"
     verify_task: T067
     cost: free
-    enabled: false
+    schedule: "static, on demand"
+    verified_by: configs/sources/s14.yaml
+    enabled: true
   - source_id: S15
     name: "OpenFreeMap basemap"
     verify_task: T015
