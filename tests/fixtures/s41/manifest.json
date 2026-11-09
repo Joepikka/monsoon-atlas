@@ -1,0 +1,126 @@
+{
+  "source_id": "S41",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://english.mathrubhumi.com/robots.txt",
+      "fetched_at": "2026-11-09T15:46:54.012766Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "7b206072e27aa6b42f7c4949dd80293189439fd08ba141441c623806b4538927",
+      "bytes": 1620,
+      "raw_path": "S41/2026-11-09/7b206072e27aa6b42f7c4949dd80293189439fd08ba141441c623806b4538927.bin",
+      "shows": "Mathrubhumi English robots.txt: all agents allowed except listed paths; AI crawlers blocked; lists the /rss/news/kerala feed as a Sitemap line"
+    },
+    {
+      "id": "e02",
+      "url": "https://english.mathrubhumi.com/rss/news/kerala",
+      "fetched_at": "2026-11-09T15:46:57.282128Z",
+      "status": 200,
+      "media_type": "application/rss+xml",
+      "sha256": "fcd9f667e0423f479199f1e98ebdce207613ead992d0e5e8b2aa6b2c6ce5bead",
+      "bytes": 18769,
+      "raw_path": "S41/2026-11-09/fcd9f667e0423f479199f1e98ebdce207613ead992d0e5e8b2aa6b2c6ce5bead.xml",
+      "shows": "Mathrubhumi English Kerala RSS 2.0 feed published in robots.txt: title, link, guid, category, description, pubDate per item"
+    },
+    {
+      "id": "e03",
+      "url": "https://english.mathrubhumi.com/",
+      "fetched_at": "2026-11-09T15:47:00.556705Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "0376d9b6e18a87e87a5fe0ab542c09ecae1686fe8637fcfdca9c5c36fc87e672",
+      "bytes": 975684,
+      "raw_path": "S41/2026-11-09/0376d9b6e18a87e87a5fe0ab542c09ecae1686fe8637fcfdca9c5c36fc87e672.html",
+      "shows": "Mathrubhumi English home page: footer links Terms of Use and Privacy Policy on media.mathrubhumi.com"
+    },
+    {
+      "id": "e04",
+      "url": "https://media.mathrubhumi.com/static/termsofuse.html",
+      "fetched_at": "2026-11-09T15:47:03.911060Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "aef5062bac9281976c7226b6b17532f888cb6adf7d450cc84ef8e0703fdb426e",
+      "bytes": 23808,
+      "raw_path": "S41/2026-11-09/aef5062bac9281976c7226b6b17532f888cb6adf7d450cc84ef8e0703fdb426e.html",
+      "shows": "Mathrubhumi Terms of Use: personal non-commercial use, prior written consent for ML/AI use, copyright reserved"
+    },
+    {
+      "id": "e05",
+      "url": "https://www.thehindu.com/robots.txt",
+      "fetched_at": "2026-11-09T15:47:07.203421Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "7e494e7fb330ced52571ffd93906b7c158d1e2966b363439333de9b4c96e05f9",
+      "bytes": 4174,
+      "raw_path": "S41/2026-11-09/7e494e7fb330ced52571ffd93906b7c158d1e2966b363439333de9b4c96e05f9.bin",
+      "shows": "The Hindu robots.txt: disallowed paths for all agents"
+    },
+    {
+      "id": "e06",
+      "url": "https://www.thehindu.com/rssfeeds/",
+      "fetched_at": "2026-11-09T15:47:10.790454Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "d1438e5447fa8b7182ddf596ce9b1d66b48d5eed47f93079098fbd685bc20321",
+      "bytes": 273500,
+      "raw_path": "S41/2026-11-09/d1438e5447fa8b7182ddf596ce9b1d66b48d5eed47f93079098fbd685bc20321.html",
+      "shows": "The Hindu RSS Feeds page: lists section feeds (States, Cities) and says clicking the RSS button means agreeing to its T&C"
+    },
+    {
+      "id": "e07",
+      "url": "https://www.thehindugroup.com/termsofuse.html",
+      "fetched_at": "2026-11-09T15:47:14.382091Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "b2373ee0dcd03f42eddd36140b8251a9d16575b42bb44244b785276e7208aa98",
+      "bytes": 89814,
+      "raw_path": "S41/2026-11-09/b2373ee0dcd03f42eddd36140b8251a9d16575b42bb44244b785276e7208aa98.html",
+      "shows": "The Hindu Group Terms of Use: limited licence for personal non-commercial use, RSS feed named as a covered service"
+    },
+    {
+      "id": "e08",
+      "url": "https://www.onmanorama.com/robots.txt",
+      "fetched_at": "2026-11-09T15:47:17.729935Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "611065b6399906cc869226f41356c9cadb0929dfd8a4bfa3529be37967b61923",
+      "bytes": 2488,
+      "raw_path": "S41/2026-11-09/611065b6399906cc869226f41356c9cadb0929dfd8a4bfa3529be37967b61923.bin",
+      "shows": "Onmanorama robots.txt: /rss/ disallowed for all agents"
+    },
+    {
+      "id": "e09",
+      "url": "https://www.onmanorama.com/rss.html",
+      "fetched_at": "2026-11-09T15:47:21.072869Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "5ce1089b48c8edd74741cad789d3c7b8587422e6f1fabfde737582b2b1aee733",
+      "bytes": 138883,
+      "raw_path": "S41/2026-11-09/5ce1089b48c8edd74741cad789d3c7b8587422e6f1fabfde737582b2b1aee733.html",
+      "shows": "Onmanorama RSS page: personal use only, no retained copies, feed links under .feeds.onmrss.xml"
+    },
+    {
+      "id": "e10",
+      "url": "https://www.onmanorama.com/terms-of-use.html",
+      "fetched_at": "2026-11-09T15:47:25.176157Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "dbf8f1702695e35be44d7d4cfef13ee5aedbc9d1a695db45dac4c1623a9c9365",
+      "bytes": 137164,
+      "raw_path": "S41/2026-11-09/dbf8f1702695e35be44d7d4cfef13ee5aedbc9d1a695db45dac4c1623a9c9365.html",
+      "shows": "Onmanorama Terms of Use URL: returns only an unrendered app shell with no terms text (the RSS terms are on the RSS page, e09)"
+    },
+    {
+      "id": "e11",
+      "url": "https://timesofindia.indiatimes.com/rss.cms",
+      "fetched_at": "2026-11-09T15:47:28.565438Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "b430eca1d31e7aa67a61534557beeddf80e6d7c4c63751c67862687d5ba56d22",
+      "bytes": 401739,
+      "raw_path": "S41/2026-11-09/b430eca1d31e7aa67a61534557beeddf80e6d7c4c63751c67862687d5ba56d22.html",
+      "shows": "Times of India RSS page: terms say personal use only, no download, copy, publish or distribution of the feeds, and no retained copies"
+    }
+  ]
+}

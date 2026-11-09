@@ -101,6 +101,12 @@ sources:
     cost: free
     storage_crs: EPSG:4326
     enabled: false
+  - source_id: S41
+    name: "Permitted news RSS sources"
+    verify_task: T125
+    cost: free
+    enabled: false
+    verified_by: configs/sources/s41.yaml
   - source_id: S43
     name: "Kerala official shelters and flood impact labels"
     verify_task: T085
