@@ -39,7 +39,9 @@ sources:
     verify_task: T049
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "every 6 hours"
+    verified_by: configs/sources/s04.yaml
+    enabled: true
   - source_id: S05
     name: "Open-Meteo ensemble"
     verify_task: T051
