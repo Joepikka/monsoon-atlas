@@ -1,0 +1,35 @@
+table 'Model Error'
+	lineageTag: 37de426a-bc90-579a-89ee-b70555f40b29
+
+	measure MAE = AVERAGE('Model Error'[mae])
+		formatString: 0.000
+		lineageTag: bbcce19b-f4ee-5098-a02c-201e08516d2a
+
+	column period
+		dataType: string
+		lineageTag: 0312740f-aac8-59e3-9e6d-b5df73a296f6
+		summarizeBy: none
+		sourceColumn: period
+
+	column model
+		dataType: string
+		lineageTag: ebfceb11-09bf-57e7-9472-06190f4afa19
+		summarizeBy: none
+		sourceColumn: model
+
+	column mae
+		dataType: double
+		formatString: 0.000
+		lineageTag: 69690a77-bc6b-5d05-ad98-3e6214e80d42
+		summarizeBy: none
+		sourceColumn: mae
+
+	partition 'Model Error' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "model_error.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"period", type text}, {"model", type text}, {"mae", type number}}, "en-US")
+				in
+				    Typed

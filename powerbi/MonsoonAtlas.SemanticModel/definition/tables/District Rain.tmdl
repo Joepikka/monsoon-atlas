@@ -1,0 +1,36 @@
+table 'District Rain'
+	lineageTag: 6b0846b2-f002-567f-a164-be3d158b5429
+
+	measure 'Mean Annual Rain' = AVERAGE('District Rain'[gauge_mm])
+		formatString: 0
+		lineageTag: 1f55ba2d-165a-5dd7-8e81-105a074e95a5
+
+	column district
+		dataType: string
+		lineageTag: 9cb7a9d8-059d-5a4d-981e-13e5a62701d9
+		summarizeBy: none
+		sourceColumn: district
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: bee5e16c-c315-5fa2-8f6a-f9e6705573e8
+		summarizeBy: none
+		sourceColumn: year
+
+	column gauge_mm
+		dataType: double
+		formatString: 0.000
+		lineageTag: d676de16-f0ad-5b8c-a451-c989fb7d9ed1
+		summarizeBy: none
+		sourceColumn: gauge_mm
+
+	partition 'District Rain' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "district_rain.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"district", type text}, {"year", Int64.Type}, {"gauge_mm", type number}}, "en-US")
+				in
+				    Typed

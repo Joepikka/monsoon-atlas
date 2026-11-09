@@ -2,6 +2,27 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D132 — T223 Power BI report is generated with four pages, two of them blocked notes; PNG and PDF exports are an owner step (9 Nov 2026, T223).**
+  `powerbi/build_pbip.py` writes `powerbi/MonsoonAtlas.pbip` (TMDL model plus PBIR report, as in
+  kerala-veg-prices) and four small CSVs in `reports/powerbi/data/`, all derived from committed
+  files. Reservoir trends: S28 is blocked (D105), so the page shows the S32 storage change for the
+  8 of 16 dams in `reports/sql_insights.md` Q08 and Q09 (sampled about every 15 days, net of
+  rain and releases; CC BY-SA 2.5 India, credit KSEB, share alike) and a blocked note for S28.
+  Ward rain and flood exposure: S43 is blocked and no ward-level rain is committed, so the page
+  shows S29 gauge totals by district (the S08 columns `grid_mm`, `bias_mm` and `ratio` are
+  dropped) and a blocked note for flood exposure. Prices: S22 and S23 hold zero rows (D120), so the
+  page is a blocked note with no data. Model accuracy: M05 against persistence from the registry
+  records (accuracy figures only, derived from S08; H11 item 3 still decides S08 publication,
+  D129), with a blocked note for M07 and M06. The base theme is not copied (it ships with Power BI
+  Desktop), the DataFolder parameter holds this checkout's path (rerun the script after moving
+  it), and no Power BI Service publishing or sign-in is used. Power BI Desktop is not installed
+  here and the GUI is not driven, so the project is untested in Desktop and **no PNG or PDF
+  exports exist**; none are fabricated. Owner steps: open `powerbi/MonsoonAtlas.pbip` in Power BI
+  Desktop, confirm it loads, then File > Export (PDF) and save PNGs of each page into
+  `reports/powerbi/`, and add them to the README. `tests/test_pbip.py` checks determinism against
+  the committed files, JSON validity, that every visual reads an existing CSV, no blocked source
+  or S08 column as data, and that blocked pages carry their reason.
+
 - **D131 — T224 answers ten questions the held data can support; the spec's examples are not answerable (9 Nov 2026, T224).**
   The example "which reservoirs filled fastest after the heaviest 3-day rain?" needs daily
   reservoir levels (S28 KWRIS, blocked) and the price and flood-label examples need S22, S23 and
