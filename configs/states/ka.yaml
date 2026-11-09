@@ -158,7 +158,9 @@ sources:
     verify_task: T071
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "hourly (past-day feed); history by dated query"
+    verified_by: configs/sources/s20.yaml
+    enabled: true
   - source_id: S21
     name: "Datameet railway schedules"
     verify_task: T073

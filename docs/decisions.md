@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D110 — S20 USGS earthquake rows (9 Nov 2026, T071 and T072).**
+  www.usgs.gov answers the project's scripted client with HTTP 202 and an
+  empty body (policies, copyrights-and-credits and robots.txt), and the
+  browser retry used for S23 (D53) was unavailable, so no licence text was
+  recorded. S20 is treated as restricted, like S12: raw files stay local,
+  rows carry `redistribution_allowed = false`, tests read the local raw files
+  and skip in CI, and the USGS statement is confirmed before public display
+  (H11). The adapter adds `mag_type` and `updated_at` to the plan's fields:
+  the magnitude means nothing without its type, and `updated_at` is the
+  version key the plan's "deduplicate by event ID and update time" needs.
+  Only `type` earthquake is kept (feeds also carry quarry blasts and
+  explosions), and a deleted event is dropped.
+
 - **D109 — CelesTrak GP queries under D31; OMM instead of TLE (9 Nov 2026, T063).**
   celestrak.org's robots.txt disallows `/NORAD/elements/gp*.php` and `*.txt`
   for all agents, but its documentation and usage policy are written for

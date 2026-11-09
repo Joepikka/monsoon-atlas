@@ -1,0 +1,21 @@
+{
+  "$comment": "S20 USGS earthquakes (T072). Measure columns added to the common envelope (common.json). Field map: configs/sources/s20.yaml; rules: decision D110.",
+  "source_id": "S20",
+  "schema_version": 1,
+  "mapping_version": "s20-v1",
+  "fields": [
+    {"name": "event_id", "type": "string", "nullable": false, "meaning": "id, the preferred ComCat event ID"},
+    {"name": "origin_at", "type": "timestamp", "nullable": false, "meaning": "properties.time, epoch milliseconds, UTC"},
+    {"name": "lat", "type": "float64", "nullable": false, "meaning": "geometry.coordinates[1], degrees"},
+    {"name": "lon", "type": "float64", "nullable": false, "meaning": "geometry.coordinates[0], degrees"},
+    {"name": "depth_km", "type": "float64", "nullable": true, "meaning": "geometry.coordinates[2], kilometres"},
+    {"name": "magnitude", "type": "float64", "nullable": true, "meaning": "properties.mag; null with missing_reason not_reported when not determined"},
+    {"name": "mag_type", "type": "string", "nullable": true, "meaning": "properties.magType, for example mb, mww, ml"},
+    {"name": "review_status", "type": "string", "nullable": false, "meaning": "automatic (preliminary) or reviewed"},
+    {"name": "updated_at", "type": "timestamp", "nullable": false, "meaning": "properties.updated; the version key with event_id"}
+  ],
+  "valid_at": "origin_at",
+  "published_at": "updated_at",
+  "kept": "type earthquake inside the requested box; deleted events and other types are dropped",
+  "redistribution": "false until the USGS licence statement is recorded (D110)"
+}
