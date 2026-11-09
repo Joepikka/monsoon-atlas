@@ -1,0 +1,124 @@
+# Discovery record for S26 (plan task T111). Evidence IDs refer to tests/fixtures/s26/manifest.json;
+# the files stay in data/raw/S26. See docs/sources/s26.md.
+source_id: S26
+state: kl
+name: "aisstream ships"
+verify_task: T111
+discovered_at: "2026-11-09T15:21:43Z"
+outcome: blocked
+landing_url: "https://aisstream.io"
+publisher: "AIS Stream (aisstream.io)"
+no_card: true
+account_required: true
+
+access:
+  status: key_required_owner_step
+  detail: >-
+    The only access is the WebSocket wss://stream.aisstream.io/v0/stream. The first message must
+    carry an APIKey, and "Sign in with GitHub and create an API key in Account" (e01, e03). Signing
+    in and creating the key is owner step H12 (amendments A5); no key is configured, so no
+    connection was opened. Direct browser connections are not permitted (e03), and the docs list
+    no REST or download endpoint. No card is asked for on the captured pages ("for free", e01).
+  evidence: [e01, e03]
+
+licence:
+  status: unverified
+  detail: >-
+    No data licence or terms of service page is linked from the site: the footer links only to
+    Documentation, Account, Privacy and Support (e01, e04), and the privacy policy covers visitor
+    and account (GitHub identity) information, not reuse of AIS data (e04). The MIT licence in
+    the ais-message-models repository covers the model definitions, not the stream (e07). Terms
+    that apply at sign-in could not be read without an account.
+  evidence: [e01, e04, e07]
+
+provider_quota:
+  status: published
+  detail: >-
+    3 subscribed connections per account; 3 open connections per originating IP; the first
+    subscription within 3 seconds; 1 subscription update per second per connection; up to 200 MMSI
+    filters; slow readers lose messages; no SLA or uptime guarantee and events are not durably
+    replayed; from September 2026 uncompressed connections have per-user bandwidth limits (e03).
+  evidence: [e03]
+
+history:
+  status: not_public
+  detail: >-
+    A live event stream only: "events are not durably replayed", and the docs describe no archive
+    or history endpoint (e03).
+  evidence: [e03]
+earliest_date: null
+latest_date: null
+
+units:
+  status: labelled
+  detail: >-
+    PositionReport documents Sog as speed over ground in knots, Cog as course over ground in
+    degrees, TrueHeading in degrees, Latitude and Longitude in decimal degrees and Timestamp as an
+    AIS UTC-second timestamp (e03). No sample row was fetched, because no key exists.
+  evidence: [e03]
+
+source_check:
+  status: blocked
+  detail: >-
+    Plan check: terms and websocket quotas unverified; no coastal coverage assumption; disable if
+    unavailable. Quotas are published (e03) but the terms are not (e04) and the stream needs the
+    owner's key (e01, e03), so nothing live was checked. The docs give no coverage map or list of
+    receiving stations for the Kerala coast (e03), so no coastal coverage is assumed; the source
+    stays disabled. The documented example repository is client code only and needs the same key
+    (e06).
+  evidence: [e01, e03, e04, e06]
+
+field_map:
+  - canonical: mmsi
+    upstream: "MetaData.MMSI / PositionReport.UserID"
+    unit_status: not_applicable
+    detail: "Vessel or station MMSI; an identifier, not a measurement."
+    evidence: [e03]
+  - canonical: ship_name
+    upstream: "MetaData.ShipName"
+    unit_status: not_applicable
+    detail: "Free text name in the documented sample."
+    evidence: [e03]
+  - canonical: latitude
+    upstream: "PositionReport.Latitude / MetaData.Latitude"
+    unit_status: labelled
+    detail: "Decimal degrees."
+    evidence: [e03]
+  - canonical: longitude
+    upstream: "PositionReport.Longitude / MetaData.Longitude"
+    unit_status: labelled
+    detail: "Decimal degrees."
+    evidence: [e03]
+  - canonical: speed_over_ground_kn
+    upstream: "PositionReport.Sog"
+    unit_status: labelled
+    detail: "Speed over ground in knots."
+    evidence: [e03]
+  - canonical: course_over_ground_deg
+    upstream: "PositionReport.Cog"
+    unit_status: labelled
+    detail: "Course over ground in degrees."
+    evidence: [e03]
+  - canonical: true_heading_deg
+    upstream: "PositionReport.TrueHeading"
+    unit_status: labelled
+    detail: "True heading in degrees."
+    evidence: [e03]
+  - canonical: ais_second
+    upstream: "PositionReport.Timestamp"
+    unit_status: labelled
+    detail: "AIS UTC-second timestamp, a second within the minute, not a full date-time."
+    evidence: [e03]
+  - canonical: observed_at
+    upstream: null
+    unit_status: absent
+    detail: >-
+      No full UTC date-time of the report is documented in the sample message or the
+      PositionReport fields; the receive time would have to be stamped by the project.
+    evidence: [e03]
+
+dependents: [T112]
+retry_condition: >-
+  The owner signs in and creates an aisstream API key (H12), stores AISSTREAM_API_KEY in .env, and
+  the terms shown at sign-in allow reuse of the AIS data; then T111 runs again.
+failed_fetches: []

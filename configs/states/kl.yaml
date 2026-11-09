@@ -49,6 +49,14 @@ sources:
     cost: free
     storage_crs: EPSG:4326
     enabled: false
+  - source_id: S26
+    name: "aisstream ships"
+    verify_task: T111
+    cost: free_with_key
+    secret_env: AISSTREAM_API_KEY
+    storage_crs: EPSG:4326
+    enabled: false
+    verified_by: configs/sources/s26.yaml
   - source_id: S32
     name: "KSEB daily water level"
     verify_task: T113
