@@ -1,0 +1,108 @@
+# Discovery record for S10 (plan task T059). Evidence IDs refer to tests/fixtures/s10/manifest.json;
+# the files stay in data/raw/S10. See docs/sources/s10.md.
+source_id: S10
+state: ka
+name: "adsb.lol live aircraft"
+verify_task: T059
+discovered_at: "2026-11-09T07:06:01Z"
+outcome: available
+landing_url: "https://www.adsb.lol/docs/open-data/api"
+publisher: "adsb.lol, a community ADS-B receiver network"
+no_card: true
+account_required: false
+
+access:
+  status: public_api_no_key
+  detail: >-
+    The API docs say "the API is available to everyone" and link https://api.adsb.lol (e02),
+    which redirects to its docs page and OpenAPI file (e07, e08). GET /v2/point/{lat}/{lon}/{radius}
+    returns aircraft within a radius of up to 250 nm, without a key (e08, e10). api.adsb.lol has no
+    robots.txt (HTTP 404); the website's robots.txt allows the docs (e01).
+  evidence: [e01, e02, e07, e08, e10]
+
+licence:
+  status: open
+  detail: >-
+    "license: ODbL 1.0" on the API and historical data pages (e02, e05), and the OpenAPI file says
+    "The license for the API as well as all data ADSB.lol makes public is ODbL" (e08). ODbL needs
+    attribution and keeps derived databases under ODbL. The data is provided "as is" with no
+    warranty of accuracy or timeliness (e03).
+  evidence: [e02, e03, e05, e08]
+
+provider_quota:
+  status: published
+  detail: >-
+    No numeric rate limit is published. The terms say "You can use the API for free", that an API
+    key obtained by feeding will be required "in the future", and that production users should make
+    contact first (e08). The plan's own cadence (one poll per region, at least 300 seconds apart)
+    stays the limit.
+  evidence: [e08]
+
+history:
+  status: partial
+  detail: >-
+    The API is live only: the 9 Nov 2026 sample is one snapshot, with "now" 07:07:34 UTC (e10).
+    Past days are a separate daily archive of GitHub releases under ODbL (e05), which T059 does not
+    use. Positions older than 60 seconds move to lastPosition (e09).
+  evidence: [e05, e09, e10]
+earliest_date: "2026-11-09"
+latest_date: "2026-11-09"
+
+units:
+  status: labelled
+  detail: >-
+    The readsb field reference linked from adsb.lol gives the units (e05, e09): alt_baro in feet
+    or the string "ground", gs in knots, seen_pos in seconds before "now", lat and lon in degrees.
+    The reference says "now" is in seconds, but the API returns milliseconds: 1794208054000 is
+    2026-11-09 07:07:34 UTC, one second after the fetch time (e10). Units are not in the response
+    itself, so T060 checks the magnitude of "now" against the fetch time.
+  evidence: [e05, e09, e10]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: stale positions hidden after 5 minutes; no trajectory prediction beyond supplied
+    data; no aircraft-owner enrichment. Each position's age is seen_pos seconds before now (e09);
+    in the sample the oldest is 11.3 s (e10), and T060 hides any position older than 300 s. The API
+    supplies current positions only and T060 adds no predicted positions. The response carries
+    registration (r) and type (t) but no owner or operator field (e08, e10); T060 keeps only the
+    aircraft hex code and adds nothing from other databases. adsb.lol is unfiltered (e06): dbFlags
+    marks LADD and PIA aircraft (e09), so T060 should leave flagged aircraft out of public output
+    under the project's privacy rule.
+  evidence: [e06, e08, e09, e10]
+
+field_map:
+  - canonical: aircraft_id
+    upstream: "ac[].hex"
+    unit_status: not_applicable
+    detail: "24-bit ICAO transponder address (or a non-ICAO address, per type); required in every item."
+    evidence: [e08, e09, e10]
+  - canonical: position_at
+    upstream: "now (milliseconds) minus ac[].seen_pos (seconds)"
+    unit_status: labelled
+    detail: "Unix time of the last position update; now is milliseconds in the API, seconds in the readsb file reference."
+    evidence: [e09, e10]
+  - canonical: lat
+    upstream: "ac[].lat"
+    unit_status: labelled
+    detail: "Degrees; null in the schema when no recent position (then lastPosition may hold an older one)."
+    evidence: [e08, e09]
+  - canonical: lon
+    upstream: "ac[].lon"
+    unit_status: labelled
+    detail: "Degrees, as for lat."
+    evidence: [e08, e09]
+  - canonical: altitude_m
+    upstream: "ac[].alt_baro"
+    unit_status: labelled
+    detail: "Feet to metres (x 0.3048); the string ground is not an altitude and becomes null with a reason (5 of 20 in e10)."
+    evidence: [e09, e10]
+  - canonical: speed_ms
+    upstream: "ac[].gs"
+    unit_status: labelled
+    detail: "Ground speed in knots to m/s (x 0.514444); null for 3 of 20 aircraft in e10."
+    evidence: [e09, e10]
+
+dependents: [T060]
+retry_condition: null
+failed_fetches: []

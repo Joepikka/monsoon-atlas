@@ -1,0 +1,115 @@
+{
+  "source_id": "S10",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://www.adsb.lol/robots.txt",
+      "fetched_at": "2026-11-09T07:06:01.485130Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "d5305f40a4dcca04633aeaaec32b14a1bcd2b03e8b68ec09b32ce16fe945a6eb",
+      "bytes": 306,
+      "raw_path": "S10/2026-11-09/d5305f40a4dcca04633aeaaec32b14a1bcd2b03e8b68ec09b32ce16fe945a6eb.bin",
+      "shows": "Website robots.txt: allows all except /api/ and account pages"
+    },
+    {
+      "id": "e02",
+      "url": "https://www.adsb.lol/docs/open-data/api",
+      "fetched_at": "2026-11-09T07:06:05.167622Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "797bd6bd5c74c68af1e58f432952bb7b0f193625f9e2ffa263d8f907c1ea6547",
+      "bytes": 10514,
+      "raw_path": "S10/2026-11-09/797bd6bd5c74c68af1e58f432952bb7b0f193625f9e2ffa263d8f907c1ea6547.html",
+      "shows": "Open data: API documentation"
+    },
+    {
+      "id": "e03",
+      "url": "https://www.adsb.lol/docs/privacy-license",
+      "fetched_at": "2026-11-09T07:06:08.940754Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "fadee0eb86ea53a668555c1f3086e5a66912b55df537e01a1406bc418aaa426f",
+      "bytes": 12547,
+      "raw_path": "S10/2026-11-09/fadee0eb86ea53a668555c1f3086e5a66912b55df537e01a1406bc418aaa426f.html",
+      "shows": "Privacy and licence page"
+    },
+    {
+      "id": "e04",
+      "url": "https://www.adsb.lol/docs/overview/introduction",
+      "fetched_at": "2026-11-09T07:06:12.716658Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "a04f233ff17dbff4eeb4c99fc8ab70b8aa74e989c104c3fc83c3276c2901557e",
+      "bytes": 10877,
+      "raw_path": "S10/2026-11-09/a04f233ff17dbff4eeb4c99fc8ab70b8aa74e989c104c3fc83c3276c2901557e.html",
+      "shows": "Overview introduction"
+    },
+    {
+      "id": "e05",
+      "url": "https://www.adsb.lol/docs/open-data/historical",
+      "fetched_at": "2026-11-09T07:06:16.427617Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "ccf61940467eabfb2be2838e43789302fe90a7ed1c0c4f885384c77538c8d470",
+      "bytes": 12842,
+      "raw_path": "S10/2026-11-09/ccf61940467eabfb2be2838e43789302fe90a7ed1c0c4f885384c77538c8d470.html",
+      "shows": "Open data: historical data"
+    },
+    {
+      "id": "e06",
+      "url": "https://www.adsb.lol/about",
+      "fetched_at": "2026-11-09T07:06:20.240790Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "2f02f90414e897eb95f82ddd1b8edb118d0bf7ca07085885e9678e9820f2c81e",
+      "bytes": 10437,
+      "raw_path": "S10/2026-11-09/2f02f90414e897eb95f82ddd1b8edb118d0bf7ca07085885e9678e9820f2c81e.html",
+      "shows": "About adsb.lol"
+    },
+    {
+      "id": "e07",
+      "url": "https://api.adsb.lol/docs",
+      "fetched_at": "2026-11-09T07:06:43.141056Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "8e888ebc0c8efc2dd4478755314a9637bf0cdcb6691121e6c8049e1c9e5a7912",
+      "bytes": 902,
+      "raw_path": "S10/2026-11-09/8e888ebc0c8efc2dd4478755314a9637bf0cdcb6691121e6c8049e1c9e5a7912.html",
+      "shows": "API docs page (api.adsb.lol redirects here)"
+    },
+    {
+      "id": "e08",
+      "url": "https://api.adsb.lol/api/openapi.json",
+      "fetched_at": "2026-11-09T07:06:51.918461Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "e0a57f627a253b8cf480adb771f862d7c1f89d5f6c754ad644bae8cf3212fc81",
+      "bytes": 18576,
+      "raw_path": "S10/2026-11-09/e0a57f627a253b8cf480adb771f862d7c1f89d5f6c754ad644bae8cf3212fc81.json",
+      "shows": "OpenAPI specification referenced by the API docs page"
+    },
+    {
+      "id": "e09",
+      "url": "https://github.com/wiedehopf/readsb/blob/dev/README-json.md",
+      "fetched_at": "2026-11-09T07:07:29.731334Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "cf809daca2efda9c4f146d8c3a98543cbfce87b80ee7c2a1f8277de39de35b92",
+      "bytes": 319013,
+      "raw_path": "S10/2026-11-09/cf809daca2efda9c4f146d8c3a98543cbfce87b80ee7c2a1f8277de39de35b92.html",
+      "shows": "readsb JSON field reference linked from the adsb.lol historical data page"
+    },
+    {
+      "id": "e10",
+      "url": "https://api.adsb.lol/v2/point/12.97/77.59/100",
+      "fetched_at": "2026-11-09T07:07:33.431558Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "659ee27406a740005a5aa9aef86429fe5c3341695a244f645d8a8988f5b95a04",
+      "bytes": 11685,
+      "raw_path": "S10/2026-11-09/659ee27406a740005a5aa9aef86429fe5c3341695a244f645d8a8988f5b95a04.json",
+      "shows": "Sample: aircraft within 100 nm of Bengaluru"
+    }
+  ]
+}
