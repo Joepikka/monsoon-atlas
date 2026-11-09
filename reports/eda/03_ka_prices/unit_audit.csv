@@ -1,0 +1,11 @@
+source,canonical,upstream,unit_status,detail,evidence
+S22,market_id,,absent,Not seen: no rows reachable.,e02
+S22,commodity_id,,absent,Not seen: no rows reachable.,e02
+S22,date_local,,absent,Not seen: no rows reachable.,e02
+S22,modal_inr_quintal,,absent,Not seen: no rows reachable.,e02
+S22,arrivals_tonnes,,absent,Not seen: no rows reachable.,e02
+S23,market_id,state + district + market,not_applicable,Names only; a versioned crosswalk maps them to IDs (T026).,e02
+S23,commodity_id,commodity + variety + grade,not_applicable,"Names only, for example Green Chilli / Green Chilly / FAQ.",e01
+S23,date_local,arrival_date (DD/MM/YYYY),labelled,Day of the market report.,e02
+S23,modal_inr_quintal,modal_price,unlabelled,No unit in the response; unit must be confirmed before use.,e01 e04 e05
+S23,arrivals_tonnes,,absent,Not exposed by this API resource.,e01

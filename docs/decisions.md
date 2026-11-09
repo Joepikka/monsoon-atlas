@@ -2,6 +2,15 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D120 — Price notebook is a unit and availability audit (9 Nov 2026, T108).**
+  S22 and S23 are blocked (T023, T025), so there are zero price rows and
+  the plan's market-season, spike and future-label questions cannot be
+  answered. `notebooks/03_ka_prices.ipynb` audits every discovery field and
+  its unit status (S23 price unit stays unlabelled) and reports those
+  measures as n = 0, "not computable", never 0% and never a filled label.
+  The adapters still raise `SourceUnavailable`. The single 5 Nov S23
+  snapshot is not used: its unit is unverified.
+
 - **D119 — Rainfall notebook compares annual district totals (9 Nov 2026, T107).**
   S29 is annual only (D113), so the seasonal gauge/grid comparison the plan
   asks for is impossible; the notebook compares annual district totals for
