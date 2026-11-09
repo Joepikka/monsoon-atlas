@@ -1,0 +1,107 @@
+# Discovery record for S21 (plan task T073). Evidence IDs refer to tests/fixtures/s21/manifest.json;
+# the files stay in data/raw/S21. See docs/sources/s21.md.
+source_id: S21
+state: ka
+name: "Datameet railway schedules"
+verify_task: T073
+discovered_at: "2026-11-09T09:45:51Z"
+outcome: available
+landing_url: "https://github.com/datameet/railways"
+publisher: "DataMeet community (repository datameet/railways)"
+no_card: true
+account_required: false
+
+access:
+  status: public_repository_no_key
+  detail: >-
+    The repository lists stations.json, trains.json and schedules.json (e01, e05). Files are read
+    at the pinned commit from raw.githubusercontent.com without a key (e06-e08); the repository
+    metadata and commit come from the documented GitHub REST API (e03, e04). Neither
+    raw.githubusercontent.com nor api.github.com publishes a robots.txt (HTTP 404).
+  evidence: [e01, e03, e04, e05, e06, e07, e08]
+
+licence:
+  status: open
+  detail: >-
+    The README ends with "License CC0" (e02). The repository has no LICENSE file, so the GitHub
+    API reports license null (e03). Credit DataMeet as a courtesy.
+  evidence: [e02, e03]
+
+provider_quota:
+  status: not_published
+  detail: >-
+    No limit is published for the files (e01). The GitHub API allows anonymous use and is called
+    once per review; files are fetched once per pinned commit.
+  evidence: [e01, e03]
+
+history:
+  status: available
+  detail: >-
+    A static snapshot: the last commit on master is e0c538a1e41ae5eace454d2818902e1065608e16 of
+    8 Aug 2016 ("format readme"), and the repository was last pushed then (e03, e04). The README
+    says the data was gathered over "a few months" (e02); rows carry no dates.
+  evidence: [e02, e03, e04]
+earliest_date: null
+latest_date: "2016-08-08"
+
+units:
+  status: labelled
+  detail: >-
+    The README shows the shapes (e02): stations are GeoJSON points (longitude, latitude) with
+    code, name, state and zone; trains are GeoJSON lines; schedules are an array of stops with
+    train_number, station_code, arrival, departure ("HH:MM:SS" clock text or the string "None")
+    and day (journey day). The files match: 8,990 stations (293 without geometry, 301 in
+    Karnataka), 5,208 trains and 417,080 stops with the same eight keys (e06-e08).
+  evidence: [e02, e06, e07, e08]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: old schedules shown as historical reference, never current ETAs; pin the commit
+    hash. The data stopped changing on 8 Aug 2016 (e04), so every time is a 2016 timetable entry,
+    not a current or predicted time; T074 pins commit e0c538a1 in its URLs and labels times as
+    historical. Arrival is "None" at 5,174 first stops and departure "None" at 5,164 last stops;
+    these become null. Stops have no sequence field: stop ids rise in file order within 5,199 of
+    5,208 trains, so the sequence is the file order and the 9 other trains are flagged (e08).
+  evidence: [e04, e08]
+
+field_map:
+  - canonical: station_id
+    upstream: "schedules[].station_code (stations features[].properties.code)"
+    unit_status: not_applicable
+    detail: "Station code, unique among the 8,990 stations."
+    evidence: [e06, e08]
+  - canonical: train_id
+    upstream: "schedules[].train_number"
+    unit_status: not_applicable
+    detail: "Train number as text (leading zeros kept)."
+    evidence: [e02, e08]
+  - canonical: stop_sequence
+    upstream: null
+    unit_status: absent
+    detail: "Not published; derived from file order within a train (ids rise for 5,199 of 5,208 trains)."
+    evidence: [e08]
+  - canonical: arrival_text
+    upstream: "schedules[].arrival"
+    unit_status: labelled
+    detail: "2016 timetable clock text HH:MM:SS; the string None becomes null."
+    evidence: [e02, e08]
+  - canonical: departure_text
+    upstream: "schedules[].departure"
+    unit_status: labelled
+    detail: "2016 timetable clock text HH:MM:SS; the string None becomes null."
+    evidence: [e02, e08]
+  - canonical: lat
+    upstream: "stations features[].geometry.coordinates[1]"
+    unit_status: labelled
+    detail: "Latitude in degrees, joined by station code; null for the 293 stations without geometry."
+    evidence: [e02, e06]
+  - canonical: lon
+    upstream: "stations features[].geometry.coordinates[0]"
+    unit_status: labelled
+    detail: "Longitude in degrees, joined by station code."
+    evidence: [e02, e06]
+
+dependents: [T074]
+retry_condition: null
+failed_fetches: []
