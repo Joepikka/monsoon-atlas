@@ -47,7 +47,9 @@ sources:
     verify_task: T051
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "daily; store every run (no archive of runs)"
+    verified_by: configs/sources/s05.yaml
+    enabled: true
   - source_id: S06
     name: "Open-Meteo climate projections"
     verify_task: T053
