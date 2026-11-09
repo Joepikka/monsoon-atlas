@@ -1,0 +1,115 @@
+{
+  "source_id": "S20",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://earthquake.usgs.gov/fdsnws/event/1/",
+      "fetched_at": "2026-11-09T08:02:13.734021Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "0315a25f8d962ab9d6ee99a9464f4c8ee115b5f5236344961462dce4a219465c",
+      "bytes": 36735,
+      "raw_path": "S20/2026-11-09/0315a25f8d962ab9d6ee99a9464f4c8ee115b5f5236344961462dce4a219465c.html",
+      "shows": "FDSN event web service documentation"
+    },
+    {
+      "id": "e02",
+      "url": "https://earthquake.usgs.gov/fdsnws/event/1/application.wadl",
+      "fetched_at": "2026-11-09T08:02:17.698525Z",
+      "status": 200,
+      "media_type": "application/xml",
+      "sha256": "e89cf648720b48835a7859d69064744c32dbf2e38929476cf3be8ec68a45a229",
+      "bytes": 5479,
+      "raw_path": "S20/2026-11-09/e89cf648720b48835a7859d69064744c32dbf2e38929476cf3be8ec68a45a229.xml",
+      "shows": "FDSN event service description (WADL)"
+    },
+    {
+      "id": "e03",
+      "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php",
+      "fetched_at": "2026-11-09T08:02:21.330444Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "35ed455a1de0b9178ed59db2c73b59b98e59d03ff0c957e2de7894c9c26a2322",
+      "bytes": 12984,
+      "raw_path": "S20/2026-11-09/35ed455a1de0b9178ed59db2c73b59b98e59d03ff0c957e2de7894c9c26a2322.html",
+      "shows": "GeoJSON summary format: field meanings"
+    },
+    {
+      "id": "e04",
+      "url": "https://earthquake.usgs.gov/data/comcat/data-eventterms.php",
+      "fetched_at": "2026-11-09T08:02:35.472843Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "35ed455a1de0b9178ed59db2c73b59b98e59d03ff0c957e2de7894c9c26a2322",
+      "bytes": 12984,
+      "raw_path": "S20/2026-11-09/35ed455a1de0b9178ed59db2c73b59b98e59d03ff0c957e2de7894c9c26a2322.html",
+      "shows": "ComCat event terms URL: returned the same bytes as the GeoJSON format page (e03)"
+    },
+    {
+      "id": "e05",
+      "url": "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&minlatitude=8&maxlatitude=19&minlongitude=72&maxlongitude=81",
+      "fetched_at": "2026-11-09T08:02:46.156497Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "6e86f5eb8cd7f8b9eccfe2c3009c2c2623aa794cfd1000276a3ef24cfc8a80be",
+      "bytes": 30,
+      "raw_path": "S20/2026-11-09/6e86f5eb8cd7f8b9eccfe2c3009c2c2623aa794cfd1000276a3ef24cfc8a80be.json",
+      "shows": "Count in the South India box with no start time: 0 (the default window is the last 30 days)"
+    },
+    {
+      "id": "e06",
+      "url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&limit=1000&minlatitude=8&maxlatitude=19&minlongitude=72&maxlongitude=81",
+      "fetched_at": "2026-11-09T08:02:50.111180Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "a60d3e7b330ff209803e0cc07854aa372c69e7ba166f4376535dd2f3e00c8d83",
+      "bytes": 316,
+      "raw_path": "S20/2026-11-09/a60d3e7b330ff209803e0cc07854aa372c69e7ba166f4376535dd2f3e00c8d83.json",
+      "shows": "Query in the South India box with no start time: empty (default 30-day window)"
+    },
+    {
+      "id": "e07",
+      "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson",
+      "fetched_at": "2026-11-09T08:02:53.749696Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "ffe000ffb89ffc9af98a6ea4e4a2bc9036e68863b7b43e3a7a18840bdbf83ae5",
+      "bytes": 133289,
+      "raw_path": "S20/2026-11-09/ffe000ffb89ffc9af98a6ea4e4a2bc9036e68863b7b43e3a7a18840bdbf83ae5.json",
+      "shows": "Real-time feed: all events in the past day"
+    },
+    {
+      "id": "e08",
+      "url": "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=1900-01-01&minlatitude=8&maxlatitude=19&minlongitude=72&maxlongitude=81",
+      "fetched_at": "2026-11-09T08:09:13.801956Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "51fc3586fda4a9771753f51339540283eb20564dac1729c665e9b10ba3ade45e",
+      "bytes": 31,
+      "raw_path": "S20/2026-11-09/51fc3586fda4a9771753f51339540283eb20564dac1729c665e9b10ba3ade45e.json",
+      "shows": "Count of catalogued events since 1900 in a box around South India"
+    },
+    {
+      "id": "e09",
+      "url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&limit=1000&starttime=1900-01-01&minlatitude=8&maxlatitude=19&minlongitude=72&maxlongitude=81",
+      "fetched_at": "2026-11-09T08:09:19.704438Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "3b5e16e8307d7287ad8977373856e55395bd1e29953139ccc2b35724969137dc",
+      "bytes": 69348,
+      "raw_path": "S20/2026-11-09/3b5e16e8307d7287ad8977373856e55395bd1e29953139ccc2b35724969137dc.json",
+      "shows": "Newest events since 1900 in the South India box (GeoJSON, at most 1,000)"
+    },
+    {
+      "id": "e10",
+      "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson",
+      "fetched_at": "2026-11-09T08:09:23.325827Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "dc16ddf270d7a1f1808305ff76fcb5d19753a1e29c66c22518fab0b197b4652c",
+      "bytes": 132583,
+      "raw_path": "S20/2026-11-09/dc16ddf270d7a1f1808305ff76fcb5d19753a1e29c66c22518fab0b197b4652c.json",
+      "shows": "Real-time feed, past day, fetched again to compare updates"
+    }
+  ]
+}

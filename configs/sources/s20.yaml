@@ -1,0 +1,118 @@
+# Discovery record for S20 (plan task T071). Evidence IDs refer to tests/fixtures/s20/manifest.json;
+# the files stay in data/raw/S20. See docs/sources/s20.md.
+source_id: S20
+state: ka
+name: "USGS earthquakes"
+verify_task: T071
+discovered_at: "2026-11-09T08:02:13Z"
+outcome: available
+landing_url: "https://earthquake.usgs.gov/fdsnws/event/1/"
+publisher: "USGS Earthquake Hazards Program, ANSS Comprehensive Catalog (ComCat)"
+no_card: true
+account_required: false
+
+access:
+  status: public_api_no_key
+  detail: >-
+    The FDSN event service (query and count, GeoJSON) and the real-time GeoJSON feeds need no key
+    (e01, e05-e10). The docs ask automated applications to use the real-time feeds for display
+    "whenever possible" (e01). earthquake.usgs.gov has no robots.txt (HTTP 404).
+  evidence: [e01, e05, e07, e08, e09, e10]
+
+licence:
+  status: restricted
+  detail: >-
+    No licence text was found on the earthquake.usgs.gov pages captured (e01, e03). They link the
+    USGS policies page, which, like the copyrights-and-credits page and www.usgs.gov/robots.txt,
+    returns HTTP 202 with an empty body to the project's scripted client, and the feed policy link
+    returns 404 (failed_fetches). The browser retry (D53 pattern) was unavailable. Until a USGS
+    licence statement is recorded, treat as restricted: credit the USGS Earthquake Hazards
+    Program, keep raw files local and confirm the licence before public display (H11).
+  evidence: [e01, e03]
+
+provider_quota:
+  status: published
+  detail: >-
+    Queries are limited to 20,000 events ("maxAllowed":20000, e08) and give HTTP 400 above it
+    (e01). Time and area limits are "being evaluated and are not enforced yet": ordering by time
+    with a limit of 1,000 or less has no time-range limit (e01). Live display uses the feeds.
+  evidence: [e01, e08]
+
+history:
+  status: available
+  detail: >-
+    Without a start time the service searches only the last 30 days (0 events, e05, e06). From
+    1900 the South India box (8-19 N, 72-81 E) has 95 events, from 12 Oct 1959 to 4 Dec 2024, 28
+    of them inside the Karnataka box (e08, e09). The past-day feed had 186 events worldwide (e07).
+  evidence: [e05, e06, e07, e08, e09]
+earliest_date: "1959-10-12"
+latest_date: "2024-12-04"
+
+units:
+  status: labelled
+  detail: >-
+    The GeoJSON format gives time and updated as epoch milliseconds, mag with magType, and
+    geometry coordinates as longitude, latitude and depth (km) (e03). Samples follow it (e07, e09).
+  evidence: [e03, e07, e09]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: deduplicate by event ID and update time; distinguish preliminary magnitude. Every
+    feature has an id and an updated time, and merged events list several ids (11 of 186 in the
+    day feed, e07); a stored event is replaced only by a version with a later updated time. In two
+    fetches 25 minutes apart, the 185 shared events kept their updated times and one event left
+    the day window (e07, e10). The status field separates automatic (136) from reviewed (50)
+    events in the feed (e07); every historical event in the box is reviewed, and 16 of the 95
+    have no magnitude, which stays null (e09). Automatic magnitudes are shown as preliminary.
+  evidence: [e03, e07, e09, e10]
+
+field_map:
+  - canonical: event_id
+    upstream: "id (preferred ID); ids lists merged IDs"
+    unit_status: not_applicable
+    detail: "Event ID, for example us6000i13p; deduplicated with updated."
+    evidence: [e03, e07, e09]
+  - canonical: origin_at
+    upstream: "properties.time"
+    unit_status: labelled
+    detail: "Epoch milliseconds, UTC."
+    evidence: [e03, e09]
+  - canonical: lat
+    upstream: "geometry.coordinates[1]"
+    unit_status: labelled
+    detail: "Latitude in degrees."
+    evidence: [e03, e09]
+  - canonical: lon
+    upstream: "geometry.coordinates[0]"
+    unit_status: labelled
+    detail: "Longitude in degrees."
+    evidence: [e03, e09]
+  - canonical: depth_km
+    upstream: "geometry.coordinates[2]"
+    unit_status: labelled
+    detail: "Depth in kilometres."
+    evidence: [e03, e09]
+  - canonical: magnitude
+    upstream: "properties.mag (with magType)"
+    unit_status: labelled
+    detail: "Magnitude of type magType; null when not determined (16 of 95 historical events)."
+    evidence: [e03, e09]
+  - canonical: review_status
+    upstream: "properties.status"
+    unit_status: not_applicable
+    detail: "automatic (preliminary) or reviewed."
+    evidence: [e03, e07]
+
+dependents: [T072]
+retry_condition: null
+failed_fetches:
+  - url: "https://earthquake.usgs.gov/earthquakes/feed/policy.php"
+    attempted_at: "2026-11-09T08:02:38Z"
+    error: "HTTP 404: the feed policy link on the docs page is dead"
+  - url: "https://www.usgs.gov/policies-and-notices"
+    attempted_at: "2026-11-09T08:02:42Z"
+    error: "HTTP 202 with an empty body to the scripted client; licence text not read"
+  - url: "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits"
+    attempted_at: "2026-11-09T09:42:29Z"
+    error: "HTTP 202 with an empty body to the scripted client; licence text not read"
