@@ -1,0 +1,6 @@
+{
+  "source_id": "S25",
+  "status": "disabled",
+  "reason": "T075: FIRMS API needs the owner's MAP_KEY (H09); download pages are script-rendered",
+  "fields": []
+}
