@@ -106,7 +106,9 @@ sources:
     name: "NASA GIBS satellite imagery"
     verify_task: T065
     cost: free
-    enabled: false
+    schedule: "daily layer date check"
+    verified_by: configs/sources/s13.yaml
+    enabled: true
   - source_id: S14
     name: "AWS Terrarium terrain"
     verify_task: T067
