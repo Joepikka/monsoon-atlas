@@ -99,7 +99,9 @@ sources:
     name: "CelesTrak orbit elements"
     verify_task: T063
     cost: free
-    enabled: false
+    schedule: "every 12 hours (never more than once per 2-hour update; no retries)"
+    verified_by: configs/sources/s12.yaml
+    enabled: true
   - source_id: S13
     name: "NASA GIBS satellite imagery"
     verify_task: T065

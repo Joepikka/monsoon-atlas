@@ -1,0 +1,127 @@
+{
+  "$comment": "S12 CelesTrak orbit elements (T064). Measure columns added to the common envelope (common.json). Field map: configs/sources/s12.yaml; rules: decision D109.",
+  "source_id": "S12",
+  "schema_version": 1,
+  "mapping_version": "s12-v1",
+  "fields": [
+    {
+      "name": "norad_id",
+      "type": "int64",
+      "nullable": false,
+      "meaning": "NORAD_CAT_ID; 6 digits for objects catalogued since July 2026"
+    },
+    {
+      "name": "epoch_at",
+      "type": "timestamp",
+      "nullable": false,
+      "meaning": "EPOCH, UTC"
+    },
+    {
+      "name": "tle_line1",
+      "type": "string",
+      "nullable": true,
+      "meaning": "Always null: TLE cannot carry 6-digit catalog numbers, so OMM elements are stored (D109)"
+    },
+    {
+      "name": "tle_line2",
+      "type": "string",
+      "nullable": true,
+      "meaning": "Always null, as tle_line1"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "nullable": false,
+      "meaning": "OBJECT_NAME"
+    },
+    {
+      "name": "object_id",
+      "type": "string",
+      "nullable": false,
+      "meaning": "OBJECT_ID, international designator"
+    },
+    {
+      "name": "mean_motion_rev_day",
+      "type": "float64",
+      "nullable": false,
+      "meaning": "MEAN_MOTION, revolutions per day"
+    },
+    {
+      "name": "eccentricity",
+      "type": "float64",
+      "nullable": false,
+      "meaning": "ECCENTRICITY, 0 to 1"
+    },
+    {
+      "name": "inclination_deg",
+      "type": "float64",
+      "nullable": false,
+      "meaning": "INCLINATION, degrees"
+    },
+    {
+      "name": "raan_deg",
+      "type": "float64",
+      "nullable": false,
+      "meaning": "RA_OF_ASC_NODE, degrees"
+    },
+    {
+      "name": "arg_pericenter_deg",
+      "type": "float64",
+      "nullable": false,
+      "meaning": "ARG_OF_PERICENTER, degrees"
+    },
+    {
+      "name": "mean_anomaly_deg",
+      "type": "float64",
+      "nullable": false,
+      "meaning": "MEAN_ANOMALY, degrees"
+    },
+    {
+      "name": "bstar",
+      "type": "float64",
+      "nullable": false,
+      "meaning": "BSTAR drag term"
+    },
+    {
+      "name": "mean_motion_dot",
+      "type": "float64",
+      "nullable": false,
+      "meaning": "MEAN_MOTION_DOT"
+    },
+    {
+      "name": "mean_motion_ddot",
+      "type": "float64",
+      "nullable": false,
+      "meaning": "MEAN_MOTION_DDOT"
+    },
+    {
+      "name": "element_set_no",
+      "type": "int64",
+      "nullable": false,
+      "meaning": "ELEMENT_SET_NO"
+    },
+    {
+      "name": "rev_at_epoch",
+      "type": "int64",
+      "nullable": false,
+      "meaning": "REV_AT_EPOCH"
+    },
+    {
+      "name": "classification",
+      "type": "string",
+      "nullable": false,
+      "meaning": "CLASSIFICATION_TYPE"
+    },
+    {
+      "name": "ephemeris_type",
+      "type": "int64",
+      "nullable": false,
+      "meaning": "EPHEMERIS_TYPE"
+    }
+  ],
+  "valid_at": "epoch_at",
+  "issued_at": "null",
+  "available_at": "the fetch time",
+  "stale": "quality flag stale when the epoch is more than 7 days before the fetch; the map hides those",
+  "redistribution": "false: no licence published; raw element sets stay local (D109)"
+}
