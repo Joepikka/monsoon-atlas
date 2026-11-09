@@ -55,7 +55,9 @@ sources:
     verify_task: T053
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "once per product revision; split long ranges (weighted calls)"
+    verified_by: configs/sources/s06.yaml
+    enabled: true
   - source_id: S07
     name: "NASA POWER daily point"
     verify_task: T055

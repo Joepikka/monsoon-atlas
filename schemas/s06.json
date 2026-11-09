@@ -1,0 +1,19 @@
+{
+  "$comment": "S06 Open-Meteo climate projections (T054). Measure columns added to the common envelope (common.json). Field map: configs/sources/s06.yaml.",
+  "source_id": "S06",
+  "schema_version": 1,
+  "mapping_version": "s06-v1",
+  "fields": [
+    {"name": "cell_id", "type": "string", "nullable": false, "meaning": "om_cmip6_<lat>N_<lon>E, the cell the API snapped to (ERA5-Land 10 km when bias-corrected, the model grid when raw)"},
+    {"name": "date_local", "type": "date32", "nullable": false, "meaning": "daily.time, a GMT day (utc_offset_seconds 0)"},
+    {"name": "model", "type": "string", "nullable": false, "meaning": "CMIP6 HighResMIP model from the series suffix, for example MRI_AGCM3_2_S"},
+    {"name": "scenario", "type": "string", "nullable": true, "meaning": "Always null: the API has no scenario parameter and names no SSP; the docs say only 'as close to RCP8.5 as possible within CMIP6' (T053 e04)"},
+    {"name": "bias_corrected", "type": "bool", "nullable": false, "meaning": "true for the default linear bias correction onto ERA5-Land; false when disable_bias_correction=true was requested"},
+    {"name": "rain_mm", "type": "float64", "nullable": true, "meaning": "precipitation_sum_<model> in mm per day, including snowfall"},
+    {"name": "tmax_c", "type": "float64", "nullable": true, "meaning": "temperature_2m_max_<model> in °C"}
+  ],
+  "valid_at": "the end of the GMT day",
+  "issued_at": "null: a climate projection has no issue time and is not a forecast",
+  "available_at": "the fetch time",
+  "missing": "A model-day with any value missing becomes an all-null row with missing_reason out_of_coverage; negative rain gives quality_rejected"
+}
