@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D107 — Extra source columns for S06 and S07 (9 Nov 2026, T054 and T056).**
+  As D33 did for S09, the adapters add columns to the plan's section 7 fields
+  where the discovery found they are needed to read a row honestly. S06 adds
+  `bias_corrected`, because the API returns either ERA5-Land-corrected or raw
+  model values on different cells (T053). S07 adds `met_product`,
+  `solar_product` and `api_version`, because POWER names products per request
+  and asks for the version in citations (T055), and `solar_missing_reason`,
+  following the S32 pattern for a measure outside the row's core reason:
+  shortwave lags rain and temperature by months, and one row-level reason
+  would erase good rain and temperature. Rain and temperature stay the core
+  measures checked against `missing_reason`.
+
 - **D106 — NASA POWER API calls under D31 (9 Nov 2026, T055).**
   `power.larc.nasa.gov` serves both the website and the API. Its robots.txt
   disallows `/api/` for all agents (allowing `/api/pages/` and the docs) and
