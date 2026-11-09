@@ -2,6 +2,15 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D112 — Plain-HTTP discovery evidence for hosts without HTTPS (9 Nov 2026, T077).**
+  ksndmc.org refuses connections on port 443 and answers only over plain
+  HTTP. The shared Fetcher stays HTTPS-only for every ingestion path. For
+  discovery evidence only, such a host's public pages may be read once over
+  HTTP with the project's generic user agent, without secrets or forms, and
+  stored in the raw store with a `shows` text that says they came over plain
+  HTTP and outside the Fetcher. No adapter may ingest from such a host; the
+  source stays blocked until the publisher serves HTTPS.
+
 - **D111 — S21 railway stops (9 Nov 2026, T073 and T074).**
   The Datameet files stopped changing on 8 Aug 2016, so S21 rows are a
   historical timetable: provenance `reconstructed`, `published_at` the pinned
