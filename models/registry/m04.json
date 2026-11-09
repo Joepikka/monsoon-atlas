@@ -1,0 +1,22 @@
+{
+  "model_id": "M04",
+  "state": "ka",
+  "status": "blocked",
+  "reason": "M04 blocked: no daily gauge rainfall with coordinates (S27 blocked, T077; S29 annual totals only, D113), so no gauge-day can be withheld (T098).",
+  "evidence": {
+    "configs/sources/s27.yaml": "c6e8ab065a2dab7db23a32d6e954f406300b486c261e2af9320d03caca100f49",
+    "tests/fixtures/s27/manifest.json": "1822a088618461ff3fb2939bdde2c4c041e74bf46647a1ff1bc985e0a3a87bf5",
+    "configs/sources/s29.yaml": "92b5aa50419ef3ee3e82a9870e01f63abaa4038faeeb0bd5ca7e1a2193b6303c",
+    "tests/fixtures/s29/manifest.json": "9f15c16b7bd171c3d21b216e80aa97d31ebf8dd7b7fe67ad2827edd2b085709d",
+    "configs/models/m04.yaml": "ca0b43f162c25ace2d77d550ea9d2aecd4709ccbf270c9b03a345f9f2b4ac26c"
+  },
+  "source_gate_sha256": "6c7835367ee169ad0053eaab2b3488c97db4c3cc3fb5258b71f6b49a103be6ce",
+  "dataset_sha256": null,
+  "split_sha256": null,
+  "weights": null,
+  "baseline_scores": null,
+  "candidate_scores": null,
+  "improvement": null,
+  "prediction_rows": 0,
+  "report": "reports/models/m04.md"
+}
