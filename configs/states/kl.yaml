@@ -85,7 +85,8 @@ sources:
     name: "KSDMA post-disaster assessment"
     verify_task: T121
     cost: free
-    enabled: false
+    schedule: "one-off; two 2018 flood memoranda"
+    enabled: true
     verified_by: configs/sources/s36.yaml
   - source_id: S37
     name: "2018 landslide inventory / ISRO Atlas"

@@ -2,6 +2,20 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D123 — S36 parses three district tables only; raw PDFs stay local (9 Nov 2026, T122).**
+  The KSDMA PDFs have a readable text layer (pypdf 6.21.4, already pinned in
+  `requirements/ocr.in`), so S36 is enabled. It reads NRSC flooded area (Memorandum 1,
+  page 9, as on 16-7-2018, 7 districts, 55,007 ha) and district human fatalities
+  (Memorandum 1 page 14, 138; Memorandum 2 page 20, 339) and checks each against the
+  published Total row. Rows keep the published district name (`district_id` is a name, not
+  an ID; `place_id` null; no crosswalk), the document, page and row text. Period totals have
+  a null `event_date` and `date_basis=period_total`. Not parsed: the relief-cost column, houses,
+  wards, other memoranda, the PDNA and the 2013 memorandum (mixed hazards). Licence is all
+  rights reserved, so `redistribution_allowed` is false, no PDF is committed, and the real-PDF
+  tests skip when `data/raw` lacks the files (CI); text-layer failure cases are tested with
+  patched page text. Fetch streams each memorandum once (`fetch_large`, no conditional GET).
+  `tests/test_kl_data.py` now expects S32 and S36 as the enabled Kerala sources.
+
 - **D122 — Karnataka v1 gate passes; interfaces frozen (9 Nov 2026, T110).**
   `docs/releases/ka-v1.md` and `tests/test_ka_v1.py` audit all 33 Karnataka
   sources (23 enabled, 10 blocked and disabled with retry conditions), the six
