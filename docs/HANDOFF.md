@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 9 Nov 2026, T050 S04 CAMS air-quality adapter (P2),
+Last updated: 9 Nov 2026, T051 S05 ensemble discovery (P2),
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -252,6 +252,7 @@ and a YAML block `- id: T057`.
 | T048 | D105 | S03 adapter `src/atlas/ingest/s03.py`: named `models=seamless_v4` (same values as default; unknown name HTTP 400), IST days, nulls kept with reasons, negatives rejected, provenance model; real CC BY 4.0 fixtures; S03 enabled. Acceptance 11 passed. |
 | T049 | D105 | S04 Open-Meteo CAMS air quality: available, no key, CC BY 4.0 (free API non-commercial). Hourly CAMS global PM2.5/PM10/NO2 in μg/m³ at 0.4°; issue time from `data/cams_global/static/meta.json` (stable before/after); Bengaluru history from 4 Aug 2022, no gaps, no negatives; `cams_europe` HTTP 400 for Karnataka and the Copernicus licence link 404 recorded. Acceptance 7 passed. |
 | T050 | D105 | S04 adapter `src/atlas/ingest/s04.py`: named `domains=cams_global`, metadata read around the call (run change rejects), valid times UTC, `data_end_time` exclusive (later hours null, out_of_coverage), negatives rejected, provenance model, product cams_global; real CC BY 4.0 fixtures; S04 enabled every 6 hours. Acceptance 12 passed; full suite 974 passed (13 min). |
+| T051 | D105 | S05 Open-Meteo ensemble: available, no key, CC BY 4.0 (free API non-commercial). Member counts read per product at Bengaluru (IFS 0.25 51, GEFS 0.25 31, ICON-EPS 40, GEM 21). IFS metadata run time covers only hours before `data_end_time` (later hours match an earlier run); six member rain values -0.1 mm; API keeps ~4.5 days of past values (old start_date HTTP 400). Acceptance 7 passed; tests/sources 423 passed. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -542,6 +543,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S02 Open-Meteo ERA5 | T011, T012 | available, enabled | reanalysis (provenance model); 6-day lag |
 | S03 Open-Meteo GloFAS | T047, T048 | available, enabled | simulated discharge (provenance model); hindcast unless stored at issue |
 | S04 Open-Meteo CAMS | T049, T050 | available, enabled | CAMS global model estimates, never CPCB observations; issue time from meta.json |
+| S05 Open-Meteo ensemble | T051 | available (adapter T052 pending) | members per product: IFS 51, GEFS 31, ICON-EPS 40, GEM 21; ~4.5 days of past values only |
 | S09 Sachet CAP alerts | T013, T014 | available, enabled | public domain; poll every 15 min (feed keeps 100) |
 | S15 OpenFreeMap basemap | T015, T016 | available, enabled | keep attribution; no bulk tiles; integrator 18+ |
 | S16 WorldPop population | T017, T018 | available, enabled | CC BY 4.0; R2025A alpha; needs geo lock |
@@ -689,7 +691,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    rerank with the owner's approval; it did not help, so BM25 stays. Do not tune on Q41-Q50. Workers AI waits for H05.
    T256 adds the T225 core case studies (H14 owner review pending). Next:
    T257 writes the accuracy rows and docs/releases/ka.md checklist (not
-   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T050 are done (S03, S04); next in plan order are T051 (S05 ensemble discovery) and T052 (its adapter); P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
+   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T051 are done (S03, S04, S05 discovery); next in plan order is T052 (S05 adapter: run time only before data_end_time, reject negative rain, read member count per response); P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
    unresolved human/data gates must remain pending rather than blocking independent work.
 
