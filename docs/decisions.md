@@ -2,6 +2,16 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D125 — M07 and M08 are recorded as blocked branches (9 Nov 2026, T130 to T135).**
+  M07 (C1 fallback) stops at the data gate: a known datum for 4 of the 8 dams (D103, D124),
+  S32 history is sampled dates only with a 700-day empty stretch, and S34 needs the T118
+  bulk OCR the owner has not approved (D102). M08 stops too: S35 is blocked and S36 has
+  2018 district labels only, with no audited pre-2018 negatives, so no classifier is trained.
+  The descriptive 2018 replay stays with T142 and makes no accuracy claim (D29). Each
+  branch follows the M01 to M04 pattern: config, gate JSON, no-model manifest, status record,
+  report and disabled-state tests, with no weights, scores or predictions and no fallback
+  output (persistence needs the same missing daily data). C1 stays blocked (D104).
+
 - **D124 — T129 Kerala audit runs with T046 and T118 pending (9 Nov 2026, T129).**
   T046 gates public release (H11, H05, H06), not the audit's inputs, and T118 (S34 bulk
   OCR) was not approved: D102 covered eight crops only. So S34 labels count as unavailable
