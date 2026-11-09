@@ -29,7 +29,9 @@ MAPPING_VERSION = "s08-v1"
 LICENCE_ID = "S08-imd-disclaimer-no-reproduction"  # T057: raw stays local, derived outputs only
 NX, NY, LON0, LAT0, STEP, UNDEF = 135, 129, 66.5, 6.5, 0.25, -999.0
 # shortcut: a bounding box keeps the state's cells; T101 assigns cells to districts with polygons
-BOXES = {"ka": (11.5, 18.5, 74.0, 78.75)}  # lat_min, lat_max, lon_min, lon_max
+# lat_min, lat_max, lon_min, lon_max. "kl" (T142, D127) also holds Tamil Nadu and Karnataka border
+# cells: it is a cell box, not the Kerala boundary (S17 is not yet enabled for Kerala).
+BOXES = {"ka": (11.5, 18.5, 74.0, 78.75), "kl": (8.25, 12.75, 74.75, 77.5)}
 MEASURES = pa.schema(
     [
         pa.field("cell_id", pa.string(), False),

@@ -24,11 +24,21 @@ sources:
     cost: free
     storage_crs: EPSG:4326
     enabled: false
+  - source_id: S06
+    name: "Open-Meteo climate projections"
+    verify_task: T053
+    cost: free
+    storage_crs: EPSG:4326
+    schedule: "once per product revision; split long ranges (weighted calls)"
+    verified_by: configs/sources/s06.yaml
+    enabled: true
   - source_id: S08
     name: "IMD Pune gridded rainfall"
     verify_task: T057
     cost: free
-    enabled: false
+    schedule: "yearly check"
+    enabled: true
+    verified_by: configs/sources/s08.yaml
   - source_id: S09
     name: "NDMA Sachet CAP alerts"
     verify_task: T013

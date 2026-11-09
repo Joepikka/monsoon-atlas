@@ -46,7 +46,8 @@ def test_kerala_does_not_enable_unimplemented_or_ka_only_adapters(kl):
     assert {"S32", "S33", "S34", "S35", "S36", "S37", "S40", "S41", "S42", "S43"} <= {
         source.source_id for source in kl.sources
     }
-    assert {source.source_id for source in kl.sources if source.enabled} == {"S32", "S36"}
+    # S06 and S08 are national/global grids whose verify tasks passed (T142, D127).
+    assert {s.source_id for s in kl.sources if s.enabled} == {"S06", "S08", "S32", "S36"}
     # Karnataka discovery is not evidence for Kerala wards or flood labels.
     assert kl.source("S40").verified_by is None
     assert kl.source("S43").verified_by is None

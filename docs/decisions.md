@@ -2,6 +2,23 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D127 — Kerala event study, 2018 replay and climate run on what exists (9 Nov 2026, T142).**
+  The rain-to-price event study is not computable: S22/S23 hold zero price rows (D120, D126),
+  so `notebooks/06_rain_price.ipynb` reports n = 0, "not computable" and no chart. The method is
+  ready and tested in `atlas.analysis.event_study` (fixed effects with event-time dummies, CR1
+  cluster-robust SEs with t(G-1) CIs, pre-trend and placebo checks); any failed check, or no
+  data, labels the result "association only", and `coef_chart` refuses a chart without a CI,
+  source or vintage. S08 gets a `"kl"` cell box (8.25-12.75 N, 74.75-77.5 E; it holds Tamil Nadu
+  and Karnataka border cells, so it is a box, not the boundary), and S06 and S08 are enabled in
+  `kl.yaml` (national/global grids whose verify tasks passed). A replay record is **as_known**
+  only when the publisher's own dated issue falls on or before 30 Sep 2018, and it shows only
+  from that date: the S36 memoranda submission dates (7 Aug and 13 Sep 2018; the web copies sit
+  under a 2019 upload path, so this means issued by the state, not online). Every S08 value is
+  **reconstructed** (a fetch date is not a publication date). S32 holds no 2018 dam row (the
+  15 Aug 2018 report is empty). No forecast vintage is held or imitated. S06 projections use two
+  points (request budget), are labelled with no scenario, and show model spread, never a CI.
+  `Replay.tsx` is built and tested but not mounted, like T104/T105.
+
 - **D126 — M09 and M10 are recorded as blocked branches (9 Nov 2026, T136 to T141).**
   M09 stops at the data gate: S37 is blocked (the NRSC Atlas gives Kerala counts only, with no
   landslide point, date, positional error or survey footprint, D124) and S42 waits for the
