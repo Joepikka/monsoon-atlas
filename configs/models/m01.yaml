@@ -1,0 +1,26 @@
+# Planned M01 definition, not a fitted model or a claim that labels exist. T089.
+model_id: M01
+state: ka
+enabled: false
+task: classification
+unit: Bengaluru ward x issue day
+sources: [S43, S40, S01]
+target:
+  event: ">=1 independently documented inundation in the next 24 h"
+  horizon_hours: 24
+  negatives: "a monitored ward-day with explicit coverage, never a missing report"
+data_gate:
+  min_monsoons: 3
+  min_positive_ward_days: 100
+  min_events: 10
+  requires: [valid ward polygons, audited negatives]
+planned_splits:
+  train: ["2017-01-01", "2022-12-31"]
+  tune: ["2023-01-01", "2023-06-30"]
+  calibrate: ["2023-07-01", "2023-12-31"]
+  locked_test: ["2024-01-01", "2024-12-31"]
+spatial_blocks: 5
+split_manifest: null
+status: blocked
+reason: S43 found no official dated ward-level inundation records, so there are no labels or audited negatives.
+fallback: "rainfall exposure index: next-24 h forecast rain per ward from S01, explicitly not a probability"
