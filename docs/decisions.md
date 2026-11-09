@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D131 — T224 answers ten questions the held data can support; the spec's examples are not answerable (9 Nov 2026, T224).**
+  The example "which reservoirs filled fastest after the heaviest 3-day rain?" needs daily
+  reservoir levels (S28 KWRIS, blocked) and the price and flood-label examples need S22, S23 and
+  S43 (blocked), so none is answered; `reports/sql_insights.md` lists them under "Not answerable".
+  The ten questions use S29 (open), S44 (open), S21 (CC0), S32 (CC BY-SA 2.5 India, credit
+  KSEB), S06 (open) and M05 accuracy records. The S08 IMD grid enters only as the grid-to-gauge
+  ratio (an index) in Q03, never as millimetres, and H11 item 3 still decides its publication
+  (D105, D129). Q01 to Q06 read files tracked in git and run in CI; Q07 to Q10 need `data/raw`
+  and skip in CI. Two Kerala reservoir questions use the S32 reports sampled about every 15 days
+  (8 of 16 dams with complete readings), so they say storage change, not fill speed after rain.
+  S44 counts are registered cases, not incidence. S30 (restricted) is not used.
+
 - **D130 — Climate product runs on S08 1981-2025 and S06; NDVI and official onset are unavailable (9 Nov 2026, T145).**
   S42 is blocked on the owner account (H15), so `atlas.analysis.vegetation` implements NDVI
   (cloud, nodata, negative reflectance and zero denominator stay NaN, so values lie in [-1, 1];
