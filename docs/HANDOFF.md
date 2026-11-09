@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 9 Nov 2026, T062 S11 disabled contract (P2),
+Last updated: 9 Nov 2026, T066 S13 NASA GIBS adapter (P2),
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -29,7 +29,7 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
 | `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T267. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D108. Every deviation from the plan is recorded here before it is made |
+| `docs/decisions.md` | Decisions D01 to D109. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -96,7 +96,7 @@ and a YAML block `- id: T057`.
 | `src/atlas/ingest/raw_store.py` | Content-addressed raw store and JSONL ledger under `data/raw/<source>/<date>/<sha256>.<ext>` (T004) |
 | `src/atlas/ingest/base.py` | Adapter protocol `fetch(ctx)` and `parse(raw, config)`; error types (T004) |
 | `src/atlas/ingest/discovery.py` | Shared discovery contract (D27): `Discovery` record, `EvidenceManifest`, `capture()`, `check()` |
-| `src/atlas/ingest/s01.py`, `s02.py`, `s03.py`, `s04.py`, `s05.py`, `s06.py`, `s07.py`, `s08.py`, `s10.py`, `s09.py`, `s15.py`, `s16.py`, `s17.py`, `s18.py` | Source adapters (T010 to T022, T048 to T060 even): `fetch(ctx)` with the shared Fetcher, `parse(raw, config, ...)` to the common envelope plus source columns; `schemas/sNN.json` documents the columns |
+| `src/atlas/ingest/s01.py`, `s02.py`, `s03.py`, `s04.py`, `s05.py`, `s06.py`, `s07.py`, `s08.py`, `s10.py`, `s12.py`, `s13.py`, `s09.py`, `s15.py`, `s16.py`, `s17.py`, `s18.py` | Source adapters (T010 to T022, T048 to T066 even; T062 disabled): `fetch(ctx)` with the shared Fetcher, `parse(raw, config, ...)` to the common envelope plus source columns; `schemas/sNN.json` documents the columns |
 | `src/atlas/spatial/places.py`, `crosswalk.py` | Place table, gazetteer with version history, H3 cells, point lookup, area and population crosswalks, metres (T032) |
 | `src/atlas/features/base.py`, `src/atlas/models/base.py`, `splits.py` | FeatureSpec and as-of feature building with leakage checks, ModelSpec, evaluators, rolling-origin and spatial splits, hashed split manifests (T033) |
 | `src/atlas/models/uncertainty.py`, `evaluate.py`, `registry.py` | Paired block bootstrap, validation-only intervals and thresholds, champion gates, immutable releases with owner approval (T034) |
@@ -265,6 +265,10 @@ and a YAML block `- id: T057`.
 | T060 | D108 | S10 adapter `src/atlas/ingest/s10.py`: /v2/point route, `now` checked as ms near fetch time; one row per aircraft (hex, now - seen_pos or lastPosition, lat/lon, ft to m, kt to m/s, on_ground, position_type); provenance inferred; drops positions >300 s old at fetch, position-less and LADD/PIA aircraft; never stores callsign/registration/type; fixture is real e10 with flight/r/t removed; S10 enabled. Acceptance 13 passed; full suite 1060 passed. |
 | T061 | A5 | S11 OpenSky: **blocked**. OpenSky's API repo says using the API means agreeing to its terms; terms page, home page and robots.txt return 403 to the scripted client (no user-agent change or other route). Owner step: read https://opensky-network.org/about/terms-of-use and decide. Docs record research/non-commercial use, citation of the OpenSky paper, anonymous 400 credits/day, units. One anonymous probe returned 200 before the clause was read (body not stored). Acceptance 6 passed; tests/sources 508 passed. |
 | T062 | A5 | S11 disabled contract `src/atlas/ingest/s11.py`: fetch and parse raise SourceUnavailable before any I/O even if force-enabled; `schemas/s11.json` has no fields. Acceptance 3 passed; tests/sources 511 passed. |
+| T063 | D109 | S12 CelesTrak: available, no key, licence **restricted** (none published). robots.txt disallows gp*.php but the usage policy addresses M2M software: D109 applies D31; once per 2-hour update; stop on any non-200. TLE checksums/epochs pass, but TLE lacks 6-digit catalog numbers (stations: 19 OMM vs 15 TLE; crewed Soyuz/Dragon missing), so OMM JSON. Acceptance 7 passed. |
+| T064 | D109 | S12 adapter `src/atlas/ingest/s12.py`: OMM JSON per GROUP, one row per object (norad_id, epoch_at, name, mean elements; tle lines null), stale flag after 7 days, provenance official, redistribution false. Fetcher gains opt-in `retry_delays=()`; adapter refuses a retrying Fetcher. Raw sample is local only (tests skip in CI). S12 enabled. Acceptance 12 passed; full suite 1089 passed. |
+| T065 | D105 | S13 NASA GIBS: available, no key, NASA open data (cite). NOAA-20 VIIRS true colour from 2018 in five ranges with gaps; Suomi NPP stopped 2 Nov 2026. Capabilities default (today) tile over Bengaluru is all black before the pass; 8 Nov shows imagery with cloud; gap date 404. Acceptance 7 passed. |
+| T066 | D105 | S13 adapter `src/atlas/ingest/s13.py`: capabilities, then probe state tile for up to 3 newest listed dates until not blank; one row (layer_id, imagery_date, tile_template, bounds, crs); fixtures: NOAA-20 layer block + two real tiles; pillow needed (tests skip in CI). S13 enabled. Acceptance 9 passed. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -555,7 +559,9 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S02 Open-Meteo ERA5 | T011, T012 | available, enabled | reanalysis (provenance model); 6-day lag |
 | S03 Open-Meteo GloFAS | T047, T048 | available, enabled | simulated discharge (provenance model); hindcast unless stored at issue |
 | S04 Open-Meteo CAMS | T049, T050 | available, enabled | CAMS global model estimates, never CPCB observations; issue time from meta.json |
-| S11 OpenSky fallback | T061 | blocked (owner reads terms) | API use = agreeing to terms; terms page 403 to scripts; anonymous 400 credits/day |
+| S13 NASA GIBS imagery | T065, T066 | available, enabled | NOAA-20 VIIRS true colour; newest listed non-blank date; Suomi NPP stopped |
+| S12 CelesTrak orbit elements | T063, T064 | available (restricted), enabled | OMM JSON (TLE lacks 6-digit IDs); once per 2 h; no retries; raw local only (D109) |
+| S11 OpenSky fallback | T061, T062 | blocked (owner reads terms) | API use = agreeing to terms; terms page 403 to scripts; anonymous 400 credits/day |
 | S10 adsb.lol live aircraft | T059, T060 | available, enabled | ODbL 1.0; free now, key may be required later; now in ms; hide >300 s; drop LADD/PIA |
 | S07 NASA POWER daily | T055, T056 | available, enabled | no use restrictions (CC BY 4.0); fill -999; units by community; MERRA2 to GEOSIT switch early Oct 2026; D106 robots |
 | S06 Open-Meteo climate | T053, T054 | available, enabled | 7 HighResMIP models, daily 1950-2050; no named scenario; bias-corrected by default; long ranges weighted |
@@ -712,7 +718,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    rerank with the owner's approval; it did not help, so BM25 stays. Do not tune on Q41-Q50. Workers AI waits for H05.
    T256 adds the T225 core case studies (H14 owner review pending). Next:
    T257 writes the accuracy rows and docs/releases/ka.md checklist (not
-   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T052 are done (S03, S04, S05); T047-T058 are done (S03 to S08); T059-T061 done (S10 enabled, S11 blocked on terms); T062 done (S11 disabled contract); next in plan order is T063 (S12 CelesTrak orbit elements) to T088 source pairs; P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
+   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T052 are done (S03, S04, S05); T047-T058 are done (S03 to S08); T059-T061 done (S10 enabled, S11 blocked on terms); T062-T066 done (S11 disabled, S12 CelesTrak and S13 GIBS enabled); next in plan order is T067 (S14 AWS Terrarium terrain) to T088 source pairs; P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
    unresolved human/data gates must remain pending rather than blocking independent work.
 
