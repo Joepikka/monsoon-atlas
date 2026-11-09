@@ -1,0 +1,6 @@
+{
+  "source_id": "S42",
+  "status": "disabled",
+  "reason": "T127: Copernicus Data Space product download needs a registered account and access token (owner step); the catalogue alone holds no pixel values",
+  "fields": []
+}
