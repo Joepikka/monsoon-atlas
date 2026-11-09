@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 9 Nov 2026, T078 S27 KSNDMC blocked (P2),
+Last updated: 9 Nov 2026, T082 S31 RERA blocked (P2),
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -29,7 +29,7 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
 | `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T267. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D112. Every deviation from the plan is recorded here before it is made |
+| `docs/decisions.md` | Decisions D01 to D113. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -96,7 +96,7 @@ and a YAML block `- id: T057`.
 | `src/atlas/ingest/raw_store.py` | Content-addressed raw store and JSONL ledger under `data/raw/<source>/<date>/<sha256>.<ext>` (T004) |
 | `src/atlas/ingest/base.py` | Adapter protocol `fetch(ctx)` and `parse(raw, config)`; error types (T004) |
 | `src/atlas/ingest/discovery.py` | Shared discovery contract (D27): `Discovery` record, `EvidenceManifest`, `capture()`, `check()` |
-| `src/atlas/ingest/s01.py`, `s02.py`, `s03.py`, `s04.py`, `s05.py`, `s06.py`, `s07.py`, `s08.py`, `s10.py`, `s12.py`, `s13.py`, `s14.py`, `s19.py`, `s20.py`, `s21.py`, `s09.py`, `s15.py`, `s16.py`, `s17.py`, `s18.py` | Source adapters (T010 to T022, T048 to T074 even; T062 disabled): `fetch(ctx)` with the shared Fetcher, `parse(raw, config, ...)` to the common envelope plus source columns; `schemas/sNN.json` documents the columns |
+| `src/atlas/ingest/s01.py`, `s02.py`, `s03.py`, `s04.py`, `s05.py`, `s06.py`, `s07.py`, `s08.py`, `s10.py`, `s12.py`, `s13.py`, `s14.py`, `s19.py`, `s20.py`, `s21.py`, `s29.py`, `s09.py`, `s15.py`, `s16.py`, `s17.py`, `s18.py` | Source adapters (T010 to T022, T048 to T080 even; T062, T076, T078 disabled): `fetch(ctx)` with the shared Fetcher, `parse(raw, config, ...)` to the common envelope plus source columns; `schemas/sNN.json` documents the columns |
 | `src/atlas/spatial/places.py`, `crosswalk.py` | Place table, gazetteer with version history, H3 cells, point lookup, area and population crosswalks, metres (T032) |
 | `src/atlas/features/base.py`, `src/atlas/models/base.py`, `splits.py` | FeatureSpec and as-of feature building with leakage checks, ModelSpec, evaluators, rolling-origin and spatial splits, hashed split manifests (T033) |
 | `src/atlas/models/uncertainty.py`, `evaluate.py`, `registry.py` | Paired block bootstrap, validation-only intervals and thresholds, champion gates, immutable releases with owner approval (T034) |
@@ -281,6 +281,10 @@ and a YAML block `- id: T057`.
 | T076 | A5 | S25 disabled contract `src/atlas/ingest/s25.py` (no I/O even if force-enabled; empty schema). Acceptance 3 passed. |
 | T077 | D112 | S27 KSNDMC: **blocked**. HTTPS refused (ksndmc.org), www name unresolved, Varunamitra unreachable. Over plain HTTP (read once under D112) only an ASP.NET template with three undocumented TRG endpoints (no station list, units, licence). Acceptance 5 passed. |
 | T078 | D112 | S27 disabled contract `src/atlas/ingest/s27.py`. Acceptance 3 passed. |
+| T079 | D113 | S29 OpenCity KSNDMC: available, "Other (Public Domain)", crawl delay 10 s. **Annual only**: district/taluk/hobli CSVs 2020-2025 (layouts differ; 2025 lacks the D/T/H marker) and 2023 station totals (5,266); no daily series, so D113. Acceptance 6 passed. |
+| T080 | D113 | S29 adapter `src/atlas/ingest/s29.py`: per-layout parse (2020 annual columns, 2021/2022/2024, 2023 stations); rows by level and name path with rain/normal/departure; coverage null; duplicates flagged; 2025 refused. Real public-domain subsets. S29 enabled. Acceptance 9 passed; full suite 1205 passed. |
+| T081 | A5 | S31 Karnataka RERA: **blocked**. Public list, no CAPTCHA, 10,106 applications (9,065 registered) embedded in page script with project and promoter names (individuals included); copyright policy: reproduction only after emailed permission (owner). No location/status in the list. Acceptance 6 passed. |
+| T082 | A5 | S31 disabled contract `src/atlas/ingest/s31.py`. Acceptance 3 passed. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -571,6 +575,8 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S02 Open-Meteo ERA5 | T011, T012 | available, enabled | reanalysis (provenance model); 6-day lag |
 | S03 Open-Meteo GloFAS | T047, T048 | available, enabled | simulated discharge (provenance model); hindcast unless stored at issue |
 | S04 Open-Meteo CAMS | T049, T050 | available, enabled | CAMS global model estimates, never CPCB observations; issue time from meta.json |
+| S31 Karnataka RERA | T081, T082 | blocked (reproduction needs emailed permission) | 10,106 applications; promoter names include individuals; no location |
+| S29 OpenCity KSNDMC rainfall | T079, T080 | available (annual only), enabled | district/taluk/hobli annual 2020-2024, stations 2023; 2025 refused; D113 |
 | S27 KSNDMC gauges | T077, T078 | blocked (no HTTPS; undocumented template endpoints) | D112; disabled contract |
 | S25 NASA FIRMS | T075, T076 | blocked (owner step H09 MAP_KEY) | open data; pages script-rendered; disabled contract |
 | S21 Datameet railways | T073, T074 | available, enabled | CC0; pinned 2016 commit; historical timetable only, never ETAs; D111 |
@@ -601,6 +607,9 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S43 Bengaluru flood labels | T085 | blocked | not ground truth |
 
 ### Pending human-only steps (owner)
+
+- **S31 Karnataka RERA (T081):** optional: email K-RERA (per its copyright policy) for permission
+  to reproduce the registered-projects list; record the reply, then T081 runs again.
 
 - **H09 NASA FIRMS (S25, T075):** get a FIRMS MAP_KEY and store it as `NASA_FIRMS_MAP_KEY` in
   `.env`; then T075/T076 run again. Optional for the MVP.
@@ -744,7 +753,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    rerank with the owner's approval; it did not help, so BM25 stays. Do not tune on Q41-Q50. Workers AI waits for H05.
    T256 adds the T225 core case studies (H14 owner review pending). Next:
    T257 writes the accuracy rows and docs/releases/ka.md checklist (not
-   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T052 are done (S03, S04, S05); T047-T058 are done (S03 to S08); T059-T061 done (S10 enabled, S11 blocked on terms); T062-T078 done (S11, S25, S27 disabled; S12, S13, S14, S19, S20, S21 enabled); next in plan order is T079 (S29 OpenCity KSNDMC hobli rainfall) to T088 source pairs; P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
+   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T052 are done (S03, S04, S05); T047-T058 are done (S03 to S08); T059-T061 done (S10 enabled, S11 blocked on terms); T062-T082 done (S11, S25, S27, S31 disabled; S12, S13, S14, S19, S20, S21, S29 enabled); next in plan order is T083 (S39 Telegram Bot API; bot token is owner step H08) to T088; P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
    unresolved human/data gates must remain pending rather than blocking independent work.
 
