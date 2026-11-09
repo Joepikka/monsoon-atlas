@@ -217,7 +217,7 @@ sources:
     storage_crs: EPSG:4326
     schedule: "weekly"
     verified_by: configs/sources/s30.yaml
-    enabled: false
+    enabled: true
   - source_id: S31
     name: "Karnataka RERA projects"
     verify_task: T081

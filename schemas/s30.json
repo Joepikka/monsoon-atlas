@@ -1,0 +1,20 @@
+{
+  "$comment": "S30 BMTC and Namma Metro static GTFS (T029). Measure columns added to the common envelope (common.json). Field map: configs/sources/s30.yaml; rules: decision D115.",
+  "source_id": "S30",
+  "schema_version": 1,
+  "mapping_version": "s30-v1",
+  "fields": [
+    {"name": "feed_id", "type": "string", "nullable": false, "meaning": "bmtc or bmrcl, one per pinned Vonter repository commit"},
+    {"name": "service_date", "type": "date32", "nullable": false, "meaning": "local (Asia/Kolkata) service date whose calendar and calendar_dates run the trip"},
+    {"name": "trip_id", "type": "string", "nullable": false, "meaning": "stop_times.trip_id"},
+    {"name": "route_id", "type": "string", "nullable": false, "meaning": "trips.route_id"},
+    {"name": "stop_id", "type": "string", "nullable": false, "meaning": "stop_times.stop_id (BMRCL: platform with a parent station)"},
+    {"name": "stop_sequence", "type": "int64", "nullable": false, "meaning": "stop_times.stop_sequence; unique within a trip"},
+    {"name": "arrival_sec", "type": "int64", "nullable": true, "meaning": "seconds after noon minus 12 h of service_date; may exceed 86400; null with missing_reason not_reported when blank"},
+    {"name": "departure_sec", "type": "int64", "nullable": true, "meaning": "seconds after noon minus 12 h of service_date; may exceed 86400"}
+  ],
+  "valid_at": "null: scheduled timetable entries; the scheduled instant is service_date plus seconds, never a live position or ETA",
+  "published_at": "the pinned commit time of the feed",
+  "quality_flags": "imputed where timepoint is 0 (BMRCL times approximated by the compiler)",
+  "redistribution_allowed": "false: licence restricted (T028)"
+}

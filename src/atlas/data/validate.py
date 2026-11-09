@@ -105,6 +105,9 @@ def validate_table(table: pa.Table, *, measures: Sequence[str] = ()) -> pa.Table
 def dedupe_snapshots(table: pa.Table) -> pa.Table:
     """Drop exact duplicate rows of the same (record_id, snapshot_id). A published snapshot is
     immutable, so the same key with different content is an error, not a revision."""
+    keys = list(zip(table["record_id"].to_pylist(), table["snapshot_id"].to_pylist(), strict=True))
+    if len(set(keys)) == len(keys):  # no repeated key: nothing to compare (large tables, S30)
+        return table
     rows = table.to_pylist()
     seen: dict[tuple[str, str], dict] = {}
     keep = []
