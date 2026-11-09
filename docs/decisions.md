@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D119 — Rainfall notebook compares annual district totals (9 Nov 2026, T107).**
+  S29 is annual only (D113), so the seasonal gauge/grid comparison the plan
+  asks for is impossible; the notebook compares annual district totals for
+  2020, 2021, 2022 and 2024 against the S08 grid area-weighted to S17
+  districts (the 2023 file has stations only: its coverage is reported, no
+  pairs). S29 names reach S17 only through the committed crosswalk
+  `configs/crosswalks/s29_s17_districts.csv` (same spelling or the 1 Nov
+  2014 renamings). Ballari from 2021 loses Vijayanagara, which S17 Bellary
+  keeps, and Vijayanagara has no S17 polygon, so both are excluded for 2021
+  on (6 of 123 district-years), never filled. S08 is labelled a
+  reconstruction (a gauge-based analysis), so it is not independent of the
+  gauges.
+
 - **D118 — Feed-quality notebook uses the feeds with real history (9 Nov 2026, T106).**
   T106 names S01 and the price feeds, but S22/S23 have no rows (blocked)
   and S01/S09 have one local capture day, so a daily heatmap of them would
