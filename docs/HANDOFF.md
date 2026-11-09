@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 9 Nov 2026, T074 S21 Datameet railways adapter (P2),
+Last updated: 9 Nov 2026, T076 S25 FIRMS blocked (P2),
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -277,6 +277,8 @@ and a YAML block `- id: T057`.
 | T072 | D110 | S20 adapter `src/atlas/ingest/s20.py`: day feed hourly or dated query; rows per earthquake in box (event_id, origin_at, lat, lon, depth_km, magnitude, mag_type, review_status, updated_at); record_id = id+updated; null magnitude not_reported; other types/deleted dropped; redistribution false; tests read local raw (skip in CI). S20 enabled. Acceptance 14 passed; full suite 1154 passed (2 Ask tests needed decisions.md committed; rerun 69 passed). |
 | T073 | D111 | S21 Datameet railways: CC0 (README), last change 8 Aug 2016, commit e0c538a1 pinned. 8,990 stations (301 Karnataka, 293 no geometry), 5,208 trains, 417,080 stops; "None" first arrivals/last departures; no stop sequence (file order; ids rise for 5,199 trains). schedules.json 82 MB streamed. Acceptance 5 passed. |
 | T074 | D111 | S21 adapter `src/atlas/ingest/s21.py`: pinned-commit stations + streamed schedules; stops at state stations (station_id, train_id, stop_sequence, arrival/departure text, journey_day, lat/lon); None to null; imputed flag when ids disagree; provenance reconstructed; real CC0 subset fixtures. S21 enabled. Acceptance 12 passed. |
+| T075 | A5 | S25 NASA FIRMS: **blocked** on owner step H09 (MAP_KEY). Data open (NASA full and open sharing; acknowledge FIRMS/LANCE/ESDIS), within 3 hours; download pages are script shells and robots closes /dist/; browser pane unavailable. VIIRS units recorded. Acceptance 6 passed. |
+| T076 | A5 | S25 disabled contract `src/atlas/ingest/s25.py` (no I/O even if force-enabled; empty schema). Acceptance 3 passed. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -567,6 +569,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S02 Open-Meteo ERA5 | T011, T012 | available, enabled | reanalysis (provenance model); 6-day lag |
 | S03 Open-Meteo GloFAS | T047, T048 | available, enabled | simulated discharge (provenance model); hindcast unless stored at issue |
 | S04 Open-Meteo CAMS | T049, T050 | available, enabled | CAMS global model estimates, never CPCB observations; issue time from meta.json |
+| S25 NASA FIRMS | T075, T076 | blocked (owner step H09 MAP_KEY) | open data; pages script-rendered; disabled contract |
 | S21 Datameet railways | T073, T074 | available, enabled | CC0; pinned 2016 commit; historical timetable only, never ETAs; D111 |
 | S20 USGS earthquakes | T071, T072 | available (licence restricted until read), enabled | feed hourly; history needs starttime; id+updated versioning; D110 |
 | S19 Google Open Buildings | T069, T070 | available, enabled | CC BY 4.0 branch; Karnataka = cell 3bb (4.8 GB), streamed to disk; display confidence >= 0.75 |
@@ -595,6 +598,9 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S43 Bengaluru flood labels | T085 | blocked | not ground truth |
 
 ### Pending human-only steps (owner)
+
+- **H09 NASA FIRMS (S25, T075):** get a FIRMS MAP_KEY and store it as `NASA_FIRMS_MAP_KEY` in
+  `.env`; then T075/T076 run again. Optional for the MVP.
 
 - **USGS licence (S20, D110) and CelesTrak (S12, D109):** at H11, confirm the USGS copyright
   statement (https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits,
@@ -735,7 +741,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    rerank with the owner's approval; it did not help, so BM25 stays. Do not tune on Q41-Q50. Workers AI waits for H05.
    T256 adds the T225 core case studies (H14 owner review pending). Next:
    T257 writes the accuracy rows and docs/releases/ka.md checklist (not
-   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T052 are done (S03, S04, S05); T047-T058 are done (S03 to S08); T059-T061 done (S10 enabled, S11 blocked on terms); T062-T074 done (S11 disabled; S12, S13, S14, S19, S20, S21 enabled); next in plan order is T075 (S24 NASA FIRMS; MAP_KEY is owner step H09) to T088 source pairs; P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
+   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T052 are done (S03, S04, S05); T047-T058 are done (S03 to S08); T059-T061 done (S10 enabled, S11 blocked on terms); T062-T076 done (S11, S25 disabled; S12, S13, S14, S19, S20, S21 enabled); next in plan order is T077 (KSNDMC gauges) to T088 source pairs; P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
    unresolved human/data gates must remain pending rather than blocking independent work.
 
