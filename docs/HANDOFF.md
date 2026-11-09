@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 8 Nov 2026, T267 KSEB dam datum evidence,
+Last updated: 9 Nov 2026, T048 S03 GloFAS adapter (P2 started),
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -26,7 +26,7 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
 |---|---|
 | `docs/plan.pdf` | The full plan written by ChatGPT (263 pages, 4 Nov 2026): tasks T001 to T221, model cards M01 to M20, source catalogue S01 onwards, decisions D01 to D16, schemas, leakage rules |
 | `docs/amendments.md`, `docs/amendments.yaml` | Amendments v1 plus recorded splits through T267. **They win where they conflict with the plan.** GATE-CORE (A4), human-only steps (A5), P1 order (A8) and child-task dependencies |
-| `docs/decisions.md` | Decisions D01 to D103. Every deviation from the plan is recorded here before it is made |
+| `docs/decisions.md` | Decisions D01 to D105. Every deviation from the plan is recorded here before it is made |
 | `AGENTS.md` (imported by `CLAUDE.md`) | Rules for AI agents: hard constraints, environment, how to work on a task, commands |
 | `docs/planning/1-handoff.pdf`, `2-project-overview.pdf`, `3-chatgpt-prompt.pdf` | The earlier handoff, overview and the prompt that produced `plan.pdf` |
 | `docs/research/kw-live-and-india-data-research.md` | The original KW Live and Indian open-data research |
@@ -247,6 +247,9 @@ and a YAML block `- id: T057`.
 | T265 (child of T179) | D100/A48 | Limit the two append-only logs (`project/decisions`, `project/amendments`, 154 of 333 chunks) in Ask results. Rules fixed first: L0 as before, L1 one result per log, L2 also halves their BM25. Dev only: L0 and L1 tie (0.852 support, 0.85 recall), L2 0.80 recall, so L0 stays (`log_rule: L0`, `log_documents` in `configs/rag.yaml`). C3 report once: same as T264 (0.86; Q02, Q23, Q26, Q33, Q43). Known ceiling: section fixes alone max 33/35 = 0.943 < 0.95. Acceptance 4 passed. |
 | T266 (child of T046) | D101/A49 | Owner approved ("Yes, record it"): C3 Ask is research-only under A3 (evidence support 0.86 < 0.95; T264 and T265 gave no gain). Checklist shows the C3 check as `research-only` (never `pass`); the Ask page shows a research-only note; the Ask case study's deployment decision says so. Owner decides at H11 whether research-only C3 meets T046 extra check (2). Review fix 848c3d5: L2 halves log scores in SQL before the top-50 cut. Acceptance 18 passed. |
 | T267 (child of T130) | D103/A50 | Owner approved downloading KSEB's 18 dam O&M manuals (about 101 MB, kseb.in, robots allows all) as S32 evidence e81-e98 in ignored `data/raw/S32/`. Stated datum (above MSL) only for the Idukki reservoir (e81 p223, Survey of India benchmarks), Sengulam (e83), Kakki-Anathode (e96), Pamba (e97); 13 manuals give elevations with no named datum. 4 < 8 dams, so T130's datum gate is not met. Table in `docs/labels/kerala.md`; S32 units claim updated. Also D102: owner-delegated agent review of the S34 OCR sample. Acceptance 3 passed. |
+| D104/D105 | owner | C1 deferred to the owner at the end of the project (no KSEB email); P2 starts locally while T046 stays open. T223/T224 deferred to the end of P2 (their data is blocked; IMD-derived values wait for H11 item 3). |
+| T047 | D105 | S03 Open-Meteo GloFAS river discharge: available, no key, CC BY 4.0 (free API non-commercial). Simulated m³/s; sea point and 1984-1996 at the Cauvery cell stay null; values from 2 Jan 1997 with no gaps; GloFAS licence link 404 recorded. Acceptance 6 passed. |
+| T048 | D105 | S03 adapter `src/atlas/ingest/s03.py`: named `models=seamless_v4` (same values as default; unknown name HTTP 400), IST days, nulls kept with reasons, negatives rejected, provenance model; real CC BY 4.0 fixtures; S03 enabled. Acceptance 11 passed. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -682,7 +685,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    rerank with the owner's approval; it did not help, so BM25 stays. Do not tune on Q41-Q50. Workers AI waits for H05.
    T256 adds the T225 core case studies (H14 owner review pending). Next:
    T257 writes the accuracy rows and docs/releases/ka.md checklist (not
-   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. Next local work is thin: most P1 items wait on owner steps; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
+   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): next in plan order are T049 (S04 CAMS air quality) and T051 (S05 ensemble); P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
    unresolved human/data gates must remain pending rather than blocking independent work.
 
