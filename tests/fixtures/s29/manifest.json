@@ -1,0 +1,104 @@
+{
+  "source_id": "S29",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://data.opencity.in/robots.txt",
+      "fetched_at": "2026-11-09T10:43:30.445538Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "e5692a133e1e9afafb7ce555a0d4cb8807a4895537c21028661835e8b3c9bb77",
+      "bytes": 123,
+      "raw_path": "S29/2026-11-09/e5692a133e1e9afafb7ce555a0d4cb8807a4895537c21028661835e8b3c9bb77.bin",
+      "shows": "OpenCity robots.txt (crawl delay 10 s, /api/ closed)"
+    },
+    {
+      "id": "e02",
+      "url": "https://data.opencity.in/dataset/karnataka-annual-rainfall-districts-taluks-and-hoblis",
+      "fetched_at": "2026-11-09T10:43:42.853108Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "0c96a345d8ca58dbede72cc66a835e1ab580bd26c36810a3b956bc91b3819387",
+      "bytes": 51540,
+      "raw_path": "S29/2026-11-09/0c96a345d8ca58dbede72cc66a835e1ab580bd26c36810a3b956bc91b3819387.html",
+      "shows": "OpenCity dataset page: Karnataka annual rainfall for districts, taluks and hoblis"
+    },
+    {
+      "id": "e03",
+      "url": "https://data.opencity.in/dataset?q=hobli+rainfall",
+      "fetched_at": "2026-11-09T10:43:53.329229Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "4e1d38c3ea0854a01c4b87824bac8b721afb93f2750de9b6f79469d1407e068c",
+      "bytes": 16591,
+      "raw_path": "S29/2026-11-09/4e1d38c3ea0854a01c4b87824bac8b721afb93f2750de9b6f79469d1407e068c.html",
+      "shows": "OpenCity search results for hobli rainfall"
+    },
+    {
+      "id": "e04",
+      "url": "https://data.opencity.in/dataset/03e23dd0-8f29-4249-a28a-67bdf8fd07b3/resource/cc183e5a-5408-4431-8dad-0f350d66deff/download/741349d2-9f58-45ae-9744-b6d5c10a8b7f.csv",
+      "fetched_at": "2026-11-09T10:45:12.404683Z",
+      "status": 200,
+      "media_type": "text/csv",
+      "sha256": "001e3fe34cbe1fb1ffded6866f5da5de8b9ff657b22a31990681fcf47f1b3c5a",
+      "bytes": 69565,
+      "raw_path": "S29/2026-11-09/001e3fe34cbe1fb1ffded6866f5da5de8b9ff657b22a31990681fcf47f1b3c5a.csv",
+      "shows": "2020 rainfall for districts, taluks and hoblis (CSV)"
+    },
+    {
+      "id": "e05",
+      "url": "https://data.opencity.in/dataset/03e23dd0-8f29-4249-a28a-67bdf8fd07b3/resource/534eace1-0121-4054-80a0-cf3ce1f9a04b/download/275cb296-b3aa-4c96-b614-c3c3ca19dec0.csv",
+      "fetched_at": "2026-11-09T10:45:23.686452Z",
+      "status": 200,
+      "media_type": "text/csv",
+      "sha256": "da78d69fa1cf59642382fb2e09472cd2e0b00d8e3aabf6c93014183867b709b0",
+      "bytes": 40891,
+      "raw_path": "S29/2026-11-09/da78d69fa1cf59642382fb2e09472cd2e0b00d8e3aabf6c93014183867b709b0.csv",
+      "shows": "2021 rainfall for districts, taluks and hoblis (CSV)"
+    },
+    {
+      "id": "e06",
+      "url": "https://data.opencity.in/dataset/03e23dd0-8f29-4249-a28a-67bdf8fd07b3/resource/50aed54d-bc1e-41cf-8776-9bc1ca6e3500/download/d9c463e4-3203-49fd-95c3-33b79f85c9b3.csv",
+      "fetched_at": "2026-11-09T10:45:36.083351Z",
+      "status": 200,
+      "media_type": "text/csv",
+      "sha256": "44d836c9981a757ffe21f249b6bc71957596c0a137b1fca01f27e96032a47e0a",
+      "bytes": 32773,
+      "raw_path": "S29/2026-11-09/44d836c9981a757ffe21f249b6bc71957596c0a137b1fca01f27e96032a47e0a.csv",
+      "shows": "2022 rainfall for districts, taluks and hoblis (CSV)"
+    },
+    {
+      "id": "e07",
+      "url": "https://data.opencity.in/dataset/03e23dd0-8f29-4249-a28a-67bdf8fd07b3/resource/dcedf0af-82ae-414b-b2b7-5c6adf560262/download/0dbfcd4a-75d8-4c78-8594-b2aece2e479c.csv",
+      "fetched_at": "2026-11-09T10:45:47.409212Z",
+      "status": 200,
+      "media_type": "text/csv",
+      "sha256": "3d498834741a244413101414400b7a7780cd9ac64d916c46db1068c0944d969c",
+      "bytes": 215003,
+      "raw_path": "S29/2026-11-09/3d498834741a244413101414400b7a7780cd9ac64d916c46db1068c0944d969c.csv",
+      "shows": "2023 annual rainfall at all KSNDMC stations (CSV)"
+    },
+    {
+      "id": "e08",
+      "url": "https://data.opencity.in/dataset/03e23dd0-8f29-4249-a28a-67bdf8fd07b3/resource/9a86a46b-e7ca-4703-a17e-91daf9af1385/download/0ec5ad8d-be55-4e92-a942-6918c025735b.csv",
+      "fetched_at": "2026-11-09T10:45:58.590508Z",
+      "status": 200,
+      "media_type": "text/csv",
+      "sha256": "f467d4b03776ef4394126cca49afb5bcb3603d3bee2a766031dd30d07c252f3d",
+      "bytes": 31377,
+      "raw_path": "S29/2026-11-09/f467d4b03776ef4394126cca49afb5bcb3603d3bee2a766031dd30d07c252f3d.csv",
+      "shows": "2024 rainfall at taluk and hobli level (CSV)"
+    },
+    {
+      "id": "e09",
+      "url": "https://data.opencity.in/dataset/03e23dd0-8f29-4249-a28a-67bdf8fd07b3/resource/b1b9805f-1df4-4049-bce7-31563c33710f/download/karnataka_rainfall_2025_table1_1.csv",
+      "fetched_at": "2026-11-09T10:46:10.064331Z",
+      "status": 200,
+      "media_type": "text/csv",
+      "sha256": "bc14b7f35707d180f0c9839b6e2f4ed0229b366a4dc0c57fcc69d9b1155c9678",
+      "bytes": 31638,
+      "raw_path": "S29/2026-11-09/bc14b7f35707d180f0c9839b6e2f4ed0229b366a4dc0c57fcc69d9b1155c9678.csv",
+      "shows": "2025 rainfall for districts, taluks and hoblis (CSV)"
+    }
+  ]
+}

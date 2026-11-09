@@ -1,0 +1,97 @@
+# Discovery record for S29 (plan task T079). Evidence IDs refer to tests/fixtures/s29/manifest.json;
+# the files stay in data/raw/S29. See docs/sources/s29.md and decision D113.
+source_id: S29
+state: ka
+name: "OpenCity KSNDMC hobli rainfall"
+verify_task: T079
+discovered_at: "2026-11-09T10:43:30Z"
+outcome: available
+landing_url: "https://data.opencity.in/dataset/karnataka-annual-rainfall-districts-taluks-and-hoblis"
+publisher: "OpenCity (data.opencity.in), republishing Karnataka State Natural Disaster Monitoring Centre (KSNDMC) reports"
+no_card: true
+account_required: false
+
+access:
+  status: public_download_no_key
+  detail: >-
+    The dataset page lists one CSV per year and the annual PDF reports, each with a public
+    download link (e02); the CSVs download without a key (e04-e09). robots.txt asks for a 10-second
+    crawl delay and closes /api/ (e01), so pages and files are fetched 10 seconds apart and the
+    CKAN API is not used.
+  evidence: [e01, e02, e04, e05, e06, e07, e08, e09]
+
+licence:
+  status: open
+  detail: >-
+    The dataset page states "License Other (Public Domain)", source https://www.ksndmc.org/,
+    author opencity, created 19 Oct 2022 and last updated 17 Mar 2026 (e02). Credit KSNDMC and
+    OpenCity. KSNDMC's own site could not be read over HTTPS (S27, T077).
+  evidence: [e02]
+
+provider_quota:
+  status: published
+  detail: "robots.txt sets Crawl-Delay: 10 and disallows /api/ (e01)."
+  evidence: [e01]
+
+history:
+  status: available
+  detail: >-
+    Annual totals only: district, taluk and hobli CSVs for 2020, 2021, 2022, 2024 and 2025, and
+    annual totals for 5,266 stations in 2023 (e02, e04-e09). The page says "Data is available from
+    2020 to 2024" (e02). Searches of the KSNDMC organisation (5 datasets) found no daily series
+    (e03); D113 records that S29 is annual.
+  evidence: [e02, e03, e04, e05, e06, e07, e08, e09]
+earliest_date: "2020-01-01"
+latest_date: "2025-12-31"
+
+units:
+  status: labelled
+  detail: >-
+    Headers give millimetres: "Normal (mm)" and "Actual (mm)" (2021, 2022, 2024), "Normal_mm" and
+    "Actual_mm" (2025), seasonal "(mm)" columns (2020) and "TOTAL_RAIN (mm)" (2023 stations); the
+    departure is a percentage (e04-e09). Annual actual values run from 316.6 to 6,173.1 mm
+    (e05, e06, e08).
+  evidence: [e04, e05, e06, e07, e08, e09]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: reconcile station/hobli aggregation; do not mix duplicate gauges with S27. Rows are
+    marked D, T or H (district, taluk, hobli) in 2020-2024: 30/227/877 in 2020, 31/227/850 in
+    2021 and 2022, 31/236/850 in 2024 (e04-e06, e08). Hobli name paths are unique except two
+    repeats in 2021-2024 (850 rows, 848 paths), which must be flagged; 827 of 848 paths match
+    between 2022 and 2024 because taluks were added. The 2025 file has no D/T/H marker, only a
+    serial number that restarts (e09), so its levels cannot be told apart without inference. The
+    2023 file is per station, not per hobli (e07), and is kept separate from S27's gauges.
+  evidence: [e04, e05, e06, e07, e08, e09]
+
+field_map:
+  - canonical: station_id
+    upstream: "DISTRICT / TALUK / STATION (2023 station file)"
+    unit_status: not_applicable
+    detail: "Name path; 5,266 unique stations, no codes published."
+    evidence: [e07]
+  - canonical: hobli_id
+    upstream: "district, taluk and hobli names from the D/T/H rows"
+    unit_status: not_applicable
+    detail: "Name path district / taluk / hobli (no codes published); repeats within a taluk are flagged."
+    evidence: [e05, e06, e08]
+  - canonical: date_local
+    upstream: "the year in the resource title"
+    unit_status: not_applicable
+    detail: "Annual total for the named year (D113); no daily dates exist."
+    evidence: [e02]
+  - canonical: rain_mm
+    upstream: "Actual (mm) / Actual_mm / TOTAL_RAIN (mm)"
+    unit_status: labelled
+    detail: "Annual rainfall in mm; 2020 gives seasonal columns instead of one annual total."
+    evidence: [e04, e05, e07, e08, e09]
+  - canonical: coverage
+    upstream: null
+    unit_status: absent
+    detail: "Not published; null with a reason."
+    evidence: [e02]
+
+dependents: [T080]
+retry_condition: null
+failed_fetches: []

@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D113 — S29 is annual hobli rainfall, not a daily 2017-2023 series (9 Nov 2026, T079).**
+  The plan names "OpenCity KSNDMC hobli rainfall 2017-2023" with a daily
+  `date_local`. OpenCity's KSNDMC organisation has five datasets and none is
+  daily: the rainfall dataset holds annual district, taluk and hobli totals
+  for 2020 to 2025 (one CSV per year, each with its own layout) and annual
+  totals for 5,266 stations in 2023. S29 therefore records annual values:
+  the period is the calendar year named by the resource, `coverage` is null
+  (not published), and hoblis and stations are identified by their published
+  name path (district / taluk / hobli or station), because no codes are
+  published. Names that repeat inside one taluk are flagged, and paths are
+  matched across years only by exact name. No daily S29 rows are invented;
+  models that need daily hobli rain wait for another source (S27 retry).
+
 - **D112 — Plain-HTTP discovery evidence for hosts without HTTPS (9 Nov 2026, T077).**
   ksndmc.org refuses connections on port 443 and answers only over plain
   HTTP. The shared Fetcher stays HTTPS-only for every ingestion path. For
