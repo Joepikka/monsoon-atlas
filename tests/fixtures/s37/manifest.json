@@ -1,0 +1,93 @@
+{
+  "source_id": "S37",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://www.nrsc.gov.in/",
+      "fetched_at": "2026-11-09T15:30:30.070721Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "413f19085f6dd739258a231200042885e4944063ea9d6762e13889e822b85001",
+      "bytes": 513379,
+      "raw_path": "S37/2026-11-09/413f19085f6dd739258a231200042885e4944063ea9d6762e13889e822b85001.html",
+      "shows": "NRSC home page (https://www.nrsc.gov.in/ redirects to /nrscnew/): menu links Resources > Atlas, Disaster Management Support, Terms and Conditions, Disclaimer; footer 'Copyright 2025 - NRSC All Rights Reserved'"
+    },
+    {
+      "id": "e02",
+      "url": "https://www.nrsc.gov.in/nrscnew/resources_atlas.php",
+      "fetched_at": "2026-11-09T15:34:02.091122Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "8a58aabfbb18caf7649d7acea3774c61770c0a0e0d975e942c7925e48532504b",
+      "bytes": 129912,
+      "raw_path": "S37/2026-11-09/8a58aabfbb18caf7649d7acea3774c61770c0a0e0d975e942c7925e48532504b.html",
+      "shows": "Resources > Atlas page: sidebar lists the ten NRSC atlases including the Landslide Atlas"
+    },
+    {
+      "id": "e03",
+      "url": "https://www.nrsc.gov.in/nrscnew/Apps_DMS_overview.php",
+      "fetched_at": "2026-11-09T15:34:05.937842Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "dab4a4fe70cfa8af7f6e21269eae99173467f6bd006d6190b10b7f66be6af0c3",
+      "bytes": 144512,
+      "raw_path": "S37/2026-11-09/dab4a4fe70cfa8af7f6e21269eae99173467f6bd006d6190b10b7f66be6af0c3.html",
+      "shows": "Disaster Management Support overview: DMSP covers landslide zonation and inventory; links View Maps and View GIS Layers (Bhuvan)"
+    },
+    {
+      "id": "e04",
+      "url": "https://www.nrsc.gov.in/nrscnew/disclaimer.php",
+      "fetched_at": "2026-11-09T15:34:09.189136Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "064feac23c57c53130bbc41ab4a6809e7c42fd6822a21122812c8950cc0f5cb5",
+      "bytes": 129703,
+      "raw_path": "S37/2026-11-09/064feac23c57c53130bbc41ab4a6809e7c42fd6822a21122812c8950cc0f5cb5.html",
+      "shows": "Disclaimer page: no liability, no warranty of completeness or accuracy"
+    },
+    {
+      "id": "e05",
+      "url": "https://www.nrsc.gov.in/nrscnew/resources_atlas_landslide.php",
+      "fetched_at": "2026-11-09T15:35:25.146280Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "218aae592d10abc7dc1e5c37232bf8477daa03c65b76c45e0357abeb76e79311",
+      "bytes": 131915,
+      "raw_path": "S37/2026-11-09/218aae592d10abc7dc1e5c37232bf8477daa03c65b76c45e0357abeb76e79311.html",
+      "shows": "Landslide Atlas page: ~80,000 landslides, 1998-2022, 17 states and 2 UTs; one link 'Click here to view Landslide Atlas' to the PDF"
+    },
+    {
+      "id": "e06",
+      "url": "https://www.nrsc.gov.in/nrscnew/termsConditions.php",
+      "fetched_at": "2026-11-09T15:35:28.351823Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "18a3a879385b314db7fc22f272f678f9ca64249a9560f54511b00dc664cd06b5",
+      "bytes": 134237,
+      "raw_path": "S37/2026-11-09/18a3a879385b314db7fc22f272f678f9ca64249a9560f54511b00dc664cd06b5.html",
+      "shows": "Terms and Conditions page: copyright NRSC, ISRO; downloadable content for non-commercial use with attribution 'Source: NRSC, ISRO/DOS'; derivative works allowed"
+    },
+    {
+      "id": "e07",
+      "url": "https://www.nrsc.gov.in/nrscnew/assets/pdf/atlas/landslide/Landslides_Atlas_of_India_Updated_25Aug2023.pdf",
+      "fetched_at": "2026-11-09T15:36:52.991941Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "33d4180819f255539588440dce44a3c1c6d979ebca8eda724e6b7475c95fd1e8",
+      "bytes": 29080102,
+      "raw_path": "S37/2026-11-09/33d4180819f255539588440dce44a3c1c6d979ebca8eda724e6b7475c95fd1e8.pdf",
+      "shows": "Landslide Atlas of India PDF (updated 25Aug2023), 94 pages, 29 MB: Table 2 gives landslide counts per state by season and event year; maps are figures; reproduction terms on the front matter"
+    },
+    {
+      "id": "e08",
+      "url": "https://bhuvan.nrsc.gov.in/ngmaps",
+      "fetched_at": "2026-11-09T15:38:01.589791Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "44b160048a622aa4e1750b707d8ff702358dabde27d3e91d32983a044d25e5a4",
+      "bytes": 11045,
+      "raw_path": "S37/2026-11-09/44b160048a622aa4e1750b707d8ff702358dabde27d3e91d32983a044d25e5a4.html",
+      "shows": "Bhuvan NG Maps landing page linked from the NRSC home page: a client-rendered app shell with no text content, data download link or API description"
+    }
+  ]
+}
