@@ -207,7 +207,9 @@ sources:
     verify_task: T079
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "one backfill of annual files (10 s apart)"
+    verified_by: configs/sources/s29.yaml
+    enabled: true
   - source_id: S30
     name: "BMTC and Namma Metro static GTFS"
     verify_task: T028
