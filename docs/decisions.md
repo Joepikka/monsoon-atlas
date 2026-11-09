@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D124 — T129 Kerala audit runs with T046 and T118 pending (9 Nov 2026, T129).**
+  T046 gates public release (H11, H05, H06), not the audit's inputs, and T118 (S34 bulk
+  OCR) was not approved: D102 covered eight crops only. So S34 labels count as unavailable
+  and the audit changes no source flag. T114/T116, T120, T122 and T124 are done. Result:
+  16 S32 dams registered in `configs/states/kl/dams.yaml` (outside `kl.yaml`, because
+  `StateConfig` rejects extra keys and config.py is frozen), 4 with a known datum (MSL, D103),
+  12 unknown; the 8-dam datum gate for T130 is still unmet. Precedence: S32 daily, S34 after
+  T118, S33 monthly never daily. Available label families: S32 dated daily levels (sampled
+  dates only, 700 verified-empty days) and one S36 dated 16 Jul 2018 flooded-area table.
+  Excluded: S36 period totals, 2018 narrative dates, pre-2018 negatives, S35, S34, S33,
+  S37 landslides (survey footprint unknown), and Kerala ward and shelter evidence (none
+  verified; Karnataka geometry is not reused). S33 now cites its blocked discovery record.
+
 - **D123 — S36 parses three district tables only; raw PDFs stay local (9 Nov 2026, T122).**
   The KSDMA PDFs have a readable text layer (pypdf 6.21.4, already pinned in
   `requirements/ocr.in`), so S36 is enabled. It reads NRSC flooded area (Memorandum 1,

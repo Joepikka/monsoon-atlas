@@ -1,6 +1,8 @@
 # T226: minimal Kerala bootstrap, split from T129 by D44 for the D17 M07 fallback.
 # Discovery references record evidence, not adapter readiness. Enable a source only
 # after its Kerala adapter and source-specific acceptance tests pass (S32: T114).
+# T129: dam IDs, datum status and dam-level source precedence are in configs/states/kl/dams.yaml
+# (StateConfig rejects extra keys); label audit is docs/labels/kerala.md.
 state_id: kl
 name: Kerala
 storage_tz: UTC
@@ -69,6 +71,7 @@ sources:
     verify_task: T115
     cost: free
     enabled: false
+    verified_by: configs/sources/s33.yaml
   - source_id: S34
     name: "KSDMA dam level reports"
     verify_task: T117

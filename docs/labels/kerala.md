@@ -1,9 +1,10 @@
-# Kerala evidence audit: T226 bootstrap of T129
+# Kerala evidence audit: T226 bootstrap and T129 history report
 
 Checked against the repository's captured discovery evidence on 5 November 2026.
 This is a record of evidence already collected, not a new source verification.
-**Full T129 remains pending. M07 is not training-ready.** Decision D44 splits the
-configuration prerequisite from the later adapter, geography and label audit.
+**T129 audit run 9 Nov 2026 (D124): see the history availability report below.
+M07 is not training-ready.** Decision D44 split the configuration prerequisite
+from this audit.
 
 **6 November update (T114):** S32 is now the only enabled Kerala source. Its
 adapter normalizes today's report and quarantines missing/conflicting rows; all
@@ -20,8 +21,45 @@ filters, ward polygons or verified coverage can be used for Kerala.
 
 S40/T030 and S43/T085 are the original catalogue verification task references;
 their Karnataka results do not verify Kerala. There is no `verified_by` reference
-for those Kerala entries. Full T129 must supply Kerala-specific evidence before
-either can be enabled. No public Kerala records or predictions are created here.
+for those Kerala entries. T129 found no Kerala-specific evidence, so
+neither can be enabled. No public Kerala records or predictions are created here.
+
+## History availability report (T129, 9 November 2026)
+
+Dam IDs, per-dam datum status and source precedence are registered in
+[`configs/states/kl/dams.yaml`](../../configs/states/kl/dams.yaml): 16 KSEB dams
+exactly as S32 publishes them, **4 with a known datum (MSL), 12 unknown**; the
+T130 gate needs 8, so it is **not met**. Precedence for dam levels: S32 daily,
+then S34 only after T118 reviewed OCR and a known datum, S33 monthly never as a
+daily label. T118 (bulk OCR) is not done: D102 approved eight crops only, so S34
+counts as **unavailable**. No cleaned Kerala data (`data/clean/kl`) exists yet.
+
+### Label families held
+
+| Label family | Source | Resolution | Date range actually held | Count | Verifiable |
+|---|---|---|---|---|---|
+| Dam level (S32) | KSEB daily report | daily 07:00 IST, per dam | Sampled dates only: 26 Oct 2023; 15 Nov 2023-1 Aug 2024; 1 Aug-1 Nov 2026 (73-date twice-monthly sample, e08-e80). Census of 15 Aug 2024-15 Jul 2026: 700 dates, all empty (T227) | 16 dams per populated report; per-day parsed series not stored | Yes for the dated reports; the 700 empty days are absence of rows, not zero level. Datum known for 4 dams only |
+| 2018 district flood area | S36 (enabled, D123) | one dated table, 16 Jul 2018, NRSC flooded area | 16 Jul 2018 | 7 districts, 55,007 ha | Yes, page-cited. It is an area snapshot, not a daily flood label for every district |
+
+### EXCLUDED labels (not used for any training label)
+
+| Excluded item | Reason |
+|---|---|
+| S36 district period totals (fatalities: 138 in Memorandum 1, 339 in Memorandum 2) | Cover whole periods (29 May-31 Jul 2018; 1-30 Aug 2018), `event_date` is null. Not spread over days; no monthly-to-daily or period-to-daily interpolation |
+| 2018 August narrative dates (for example 8-9 Aug flooding in Wayanad, Kannur, Malappuram) | Prose in the memorandum, not a table with district-day rows; no negatives for other districts |
+| Pre-2018 negatives (no flood) | None audited. S36 holds a year-only 2013 map (e10) and mixed-hazard June 2013 totals (e11). A district missing from a document is not a verified negative |
+| S35 Kerala 2018 flood dataset | Blocked (T119): origin unverified, monthly or annual flood yes/no flags, no certified labels |
+| S34 KSDMA dam reports (2,296 archive dates, 20 Jun 2020-4 Nov 2026) | Scanned images; T118 bulk OCR not approved (D102); no datum; mixed units. Archive dates are not verified observations |
+| S33 monthly dam statistics | Blocked (T115); pages return error content. Monthly values are EDA-only and never become daily labels |
+| S32 dates 15 Aug 2024-15 Jul 2026 | 700 empty reports: no observations to label |
+| S32 early rows (26 Oct 2023 feet-for-metres, 15 Nov 2023 percentage x100) | Quarantined by the adapter, not rescaled |
+| Landslide labels (S37) | Blocked (T123/T124): no inventory points were obtained, so the survey footprint (which areas were mapped) is unknown and no negatives exist. The atlas gives year counts only (for example 5,191 for 2018), with no per-event date. Absence from an inventory is not a negative |
+| Kerala ward or taluk geometry (S40) | None verified. T030 is Karnataka-only (GBA wards); Karnataka ward geometry is never reused for Kerala. No S40 Kerala `verified_by` |
+| Kerala institutional shelters and flood impact labels (S43) | None verified. T085 found no official shelter dataset even for Karnataka; no Kerala source exists in `configs/sources`. No shelter coordinates are invented |
+
+The one Kerala flood geometry source in use is S36 district names (published
+names, no crosswalk); S17 geoBoundaries remains disabled until a Kerala filter
+and boundary version are tested.
 
 ## Available history and its limits
 
@@ -43,8 +81,8 @@ affected villages in the PDNA remains unresolved, as recorded in T121.
 
 ## Dam identity, units, datum and precedence
 
-The source names are documented; canonical dam IDs are **not registered yet**.
-A vertical datum is verified for four KSEB reservoirs only (T267, below). T114/T118 must produce the registry from parsed real
+The 16 S32 dam IDs are now registered (T129, `configs/states/kl/dams.yaml`).
+A vertical datum is verified for four KSEB reservoirs only (T267, below). T118 must extend the registry from parsed real
 evidence, retaining the original name, operator, units and cited mapping. In S34,
 KSEB Kuttiyadi and irrigation Kuttiyadi are different dams: a name-only join is
 invalid. Do not assume a latitude, elevation datum or alias match from the name.
@@ -100,7 +138,7 @@ No Kerala ward/taluk geometry or institutional shelter dataset is verified here.
 Karnataka's GBA wards must never appear in Kerala. S17 India district evidence may
 support a future Kerala extension, after its state filter and boundary version
 are tested; it is disabled in this bootstrap. Shelter coordinates, operators and
-current status require their own official evidence in full T129. No synthetic
+current status require their own official evidence; T129 found none. No synthetic
 locations, raster-to-ward labels or claims of safe routing are permitted.
 
 Keep S34/S36 restricted raw PDFs local under the existing project policy. Source
@@ -113,9 +151,8 @@ terms must follow any permitted derived publication.
 
 T226 acceptance: `python -m pytest tests/test_kl_data.py -q`, plus this evidence
 audit. It proved isolated config and disabled source registration. T114 updates
-the isolation checks to permit only its tested S32 adapter. The full T129
-audit (dam registry/datum, parsed labels, survey footprint, Kerala boundaries and
-shelters) stays pending on its original dependencies. T114/T227 are complete;
+the isolation checks to permit only its tested S32 adapter. The T129
+audit (report above) ran on 9 Nov 2026 with T046 and T118 pending (D124). T114/T227 are complete;
 the gap census found 700 validated empty reports (see `docs/sources/s32-history.md`).
 Next is T118 with the required owner OCR review.
 S33/T115-T116 is resolved as a blocked source and tested disabled adapter (D51),
