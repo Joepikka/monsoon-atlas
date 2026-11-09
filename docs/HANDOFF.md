@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 9 Nov 2026, T061 S11 OpenSky blocked (P2),
+Last updated: 9 Nov 2026, T062 S11 disabled contract (P2),
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -19,6 +19,9 @@ date: add a row to section 7 after every task and refresh sections 8 and 9.
   cross-state work (P5).
 - **Owner's working rule (5 Nov 2026):** do not ask the owner to approve each next task; make the
   best decision for the project, record it, and keep going. Still stop for human-only steps.
+- **Owner's rule (9 Nov 2026):** "do not stop or ask me anything ... continue the project till the
+  project is fully completed". Work through the plan continuously; a human-only step is recorded
+  as blocked (owner list in section 8) and skipped, never done by the agent.
 
 ## 2. Source-of-truth documents (all in the repository)
 
@@ -261,6 +264,7 @@ and a YAML block `- id: T057`.
 | T059 | D105 | S10 adsb.lol live aircraft: available, no key, ODbL 1.0; terms: free, key by feeding may be required later, contact for production. /v2/point radius <= 250 nm. Units from linked readsb reference (ft, kt, s); API `now` is milliseconds (checked against fetch time). Live only (daily archive on GitHub not used). Rules for T060: hide positions older than 300 s, no prediction, no owner enrichment, drop LADD/PIA (dbFlags). Acceptance 7 passed; tests/sources 489 passed. |
 | T060 | D108 | S10 adapter `src/atlas/ingest/s10.py`: /v2/point route, `now` checked as ms near fetch time; one row per aircraft (hex, now - seen_pos or lastPosition, lat/lon, ft to m, kt to m/s, on_ground, position_type); provenance inferred; drops positions >300 s old at fetch, position-less and LADD/PIA aircraft; never stores callsign/registration/type; fixture is real e10 with flight/r/t removed; S10 enabled. Acceptance 13 passed; full suite 1060 passed. |
 | T061 | A5 | S11 OpenSky: **blocked**. OpenSky's API repo says using the API means agreeing to its terms; terms page, home page and robots.txt return 403 to the scripted client (no user-agent change or other route). Owner step: read https://opensky-network.org/about/terms-of-use and decide. Docs record research/non-commercial use, citation of the OpenSky paper, anonymous 400 credits/day, units. One anonymous probe returned 200 before the clause was read (body not stored). Acceptance 6 passed; tests/sources 508 passed. |
+| T062 | A5 | S11 disabled contract `src/atlas/ingest/s11.py`: fetch and parse raise SourceUnavailable before any I/O even if force-enabled; `schemas/s11.json` has no fields. Acceptance 3 passed; tests/sources 511 passed. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -708,7 +712,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    rerank with the owner's approval; it did not help, so BM25 stays. Do not tune on Q41-Q50. Workers AI waits for H05.
    T256 adds the T225 core case studies (H14 owner review pending). Next:
    T257 writes the accuracy rows and docs/releases/ka.md checklist (not
-   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T052 are done (S03, S04, S05); T047-T058 are done (S03 to S08); T059-T061 done (S10 enabled, S11 blocked on terms); next in plan order is T062 (S11 disabled adapter only), then T063 (S12 CelesTrak) to T088 source pairs; P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
+   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T052 are done (S03, S04, S05); T047-T058 are done (S03 to S08); T059-T061 done (S10 enabled, S11 blocked on terms); T062 done (S11 disabled contract); next in plan order is T063 (S12 CelesTrak orbit elements) to T088 source pairs; P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
    unresolved human/data gates must remain pending rather than blocking independent work.
 
