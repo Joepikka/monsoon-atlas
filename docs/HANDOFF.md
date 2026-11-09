@@ -1,6 +1,6 @@
 # Monsoon Atlas: handoff for the next AI agent
 
-Last updated: 9 Nov 2026, T053 S06 climate projections discovery (P2),
+Last updated: 9 Nov 2026, T054 S06 climate projections adapter (P2),
 branch `p1/gate-core`. Uploaded handoff/ZIP remain historical snapshots.
 
 This file lets another agent (for example ChatGPT) continue the project without the earlier chat.
@@ -93,7 +93,7 @@ and a YAML block `- id: T057`.
 | `src/atlas/ingest/raw_store.py` | Content-addressed raw store and JSONL ledger under `data/raw/<source>/<date>/<sha256>.<ext>` (T004) |
 | `src/atlas/ingest/base.py` | Adapter protocol `fetch(ctx)` and `parse(raw, config)`; error types (T004) |
 | `src/atlas/ingest/discovery.py` | Shared discovery contract (D27): `Discovery` record, `EvidenceManifest`, `capture()`, `check()` |
-| `src/atlas/ingest/s01.py`, `s02.py`, `s03.py`, `s04.py`, `s05.py`, `s08.py`, `s09.py`, `s15.py`, `s16.py`, `s17.py`, `s18.py` | Source adapters (T010 to T022, T048, T050, T052, T058): `fetch(ctx)` with the shared Fetcher, `parse(raw, config, ...)` to the common envelope plus source columns; `schemas/sNN.json` documents the columns |
+| `src/atlas/ingest/s01.py`, `s02.py`, `s03.py`, `s04.py`, `s05.py`, `s06.py`, `s08.py`, `s09.py`, `s15.py`, `s16.py`, `s17.py`, `s18.py` | Source adapters (T010 to T022, T048 to T054 even, T058): `fetch(ctx)` with the shared Fetcher, `parse(raw, config, ...)` to the common envelope plus source columns; `schemas/sNN.json` documents the columns |
 | `src/atlas/spatial/places.py`, `crosswalk.py` | Place table, gazetteer with version history, H3 cells, point lookup, area and population crosswalks, metres (T032) |
 | `src/atlas/features/base.py`, `src/atlas/models/base.py`, `splits.py` | FeatureSpec and as-of feature building with leakage checks, ModelSpec, evaluators, rolling-origin and spatial splits, hashed split manifests (T033) |
 | `src/atlas/models/uncertainty.py`, `evaluate.py`, `registry.py` | Paired block bootstrap, validation-only intervals and thresholds, champion gates, immutable releases with owner approval (T034) |
@@ -255,6 +255,7 @@ and a YAML block `- id: T057`.
 | T051 | D105 | S05 Open-Meteo ensemble: available, no key, CC BY 4.0 (free API non-commercial). Member counts read per product at Bengaluru (IFS 0.25 51, GEFS 0.25 31, ICON-EPS 40, GEM 21). IFS metadata run time covers only hours before `data_end_time` (later hours match an earlier run); six member rain values -0.1 mm; API keeps ~4.5 days of past values (old start_date HTTP 400). Acceptance 7 passed; tests/sources 423 passed. |
 | T052 | D105 | S05 adapter `src/atlas/ingest/s05.py`: named `models=ecmwf_ifs025_ensemble`, metadata read around the call, one row per cell/hour/member with the member set read from each response; hours before the run or at/after its exclusive `data_end_time` stay all-null with null `issued_at` (flags missing, stale); negative rain rejected; real CC BY 4.0 fixtures; S05 enabled daily. Acceptance 14 passed; full suite 995 passed. |
 | T053 | D105 | S06 Open-Meteo climate projections: available, no key, CC BY 4.0 (Open-Meteo and CMIP6). 7 HighResMIP models, daily 1 Jan 1950 to 31 Dec 2050 at Bengaluru (EC_Earth3P_HR ends 2049; 2051 HTTP 400). No scenario parameter (docs: "as close to RCP8.5 as possible"), so scenario null; default bias-corrected onto ERA5-Land, raw differs; long ranges count as many calls. Acceptance 7 passed; tests/sources 444 passed. |
+| T054 | D105 | S06 adapter `src/atlas/ingest/s06.py`: chosen HighResMIP models within 1950-2050 (unknown model/date refused before any request), one row per cell/GMT day/model, `scenario` always null, `bias_corrected` flag (default ERA5-Land or raw), no issue time, missing model-days null, negative rain rejected, response must hold exactly the requested models; one request per fetch (callers split weighted long ranges); real CC BY 4.0 fixtures; S06 enabled. Acceptance 14 passed; full suite 1016 passed. |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -545,7 +546,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S02 Open-Meteo ERA5 | T011, T012 | available, enabled | reanalysis (provenance model); 6-day lag |
 | S03 Open-Meteo GloFAS | T047, T048 | available, enabled | simulated discharge (provenance model); hindcast unless stored at issue |
 | S04 Open-Meteo CAMS | T049, T050 | available, enabled | CAMS global model estimates, never CPCB observations; issue time from meta.json |
-| S06 Open-Meteo climate | T053 | available (adapter T054 pending) | 7 HighResMIP models, daily 1950-2050; no named scenario; bias-corrected by default; long ranges weighted |
+| S06 Open-Meteo climate | T053, T054 | available, enabled | 7 HighResMIP models, daily 1950-2050; no named scenario; bias-corrected by default; long ranges weighted |
 | S05 Open-Meteo ensemble | T051, T052 | available, enabled (IFS 0.25 ensemble) | members per product: IFS 51, GEFS 31, ICON-EPS 40, GEM 21; ~4.5 days of past values only |
 | S09 Sachet CAP alerts | T013, T014 | available, enabled | public domain; poll every 15 min (feed keeps 100) |
 | S15 OpenFreeMap basemap | T015, T016 | available, enabled | keep attribution; no bulk tiles; integrator 18+ |
@@ -694,7 +695,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    rerank with the owner's approval; it did not help, so BM25 stays. Do not tune on Q41-Q50. Workers AI waits for H05.
    T256 adds the T225 core case studies (H14 owner review pending). Next:
    T257 writes the accuracy rows and docs/releases/ka.md checklist (not
-   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T052 are done (S03, S04, S05); T053 done (S06 discovery); next in plan order is T054 (S06 adapter: model per row, scenario null with reason, record bias-corrected or raw, budget weighted calls); P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
+   releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T052 are done (S03, S04, S05); T053/T054 done (S06); next in plan order is T055 (S07 NASA POWER discovery: decode fill values, verify units, do not combine products); P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
    unresolved human/data gates must remain pending rather than blocking independent work.
 
