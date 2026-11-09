@@ -361,10 +361,17 @@ def rolling_residuals(rows: pa.Table, alpha: float, *, end: date = date(2019, 12
                 np.asarray(window["month_of_year"].to_pylist()),
                 y - model.predict(_design(window, mean, std)[0]),
                 y - np.asarray(window["spi3_lag1"].to_pylist(), dtype=float),
+                np.asarray(window["place_id"].to_pylist()),
             )
         )
-    year, month, ridge, persistence = (np.concatenate(p) for p in zip(*parts, strict=True))
-    return {"year": year, "month": month, "ridge": ridge, "persistence": persistence}
+    year, month, ridge, persistence, place = (np.concatenate(p) for p in zip(*parts, strict=True))
+    return {
+        "year": year,
+        "month": month,
+        "ridge": ridge,
+        "persistence": persistence,
+        "place_id": place,
+    }
 
 
 def _offsets(cal_resid, cal_month, month, seasonal: bool) -> tuple[np.ndarray, np.ndarray]:

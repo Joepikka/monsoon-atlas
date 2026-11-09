@@ -1,0 +1,31 @@
+place_id,name,neighbours,neighbour_names
+gb-IND-ADM2-76128533B43335986553000,Mandya,5,Chamarajanagar; Hassan; Mysore; Ramanagara; Tumkur
+gb-IND-ADM2-76128533B95879808095476,Mysore,4,Chamarajanagar; Hassan; Kodagu; Mandya
+gb-IND-ADM2-76128533B80772392204057,Chikkaballapura,3,Bangalore Rural; Kolar; Tumkur
+gb-IND-ADM2-76128533B84927972855096,Yadgir,3,Bijapur; Gulbarga; Raichur
+gb-IND-ADM2-76128533B15550697205080,Chikmagalur,7,Chitradurga; Dakshina Kannada; Davanagere; Hassan; Shimoga; Tumkur; Udupi
+gb-IND-ADM2-76128533B47594161132413,Chitradurga,4,Bellary; Chikmagalur; Davanagere; Tumkur
+gb-IND-ADM2-76128533B86721175299079,Haveri,6,Bellary; Davanagere; Dharwad; Gadag; Shimoga; Uttara Kannada
+gb-IND-ADM2-76128533B54396396829952,Dakshina Kannada,4,Chikmagalur; Hassan; Kodagu; Udupi
+gb-IND-ADM2-76128533B284680734793,Raichur,5,Bagalkot; Bellary; Bijapur; Koppal; Yadgir
+gb-IND-ADM2-76128533B29292403538801,Kolar,2,Bangalore Rural; Chikkaballapura
+gb-IND-ADM2-76128533B40495457052818,Bijapur,5,Bagalkot; Belgaum; Gulbarga; Raichur; Yadgir
+gb-IND-ADM2-76128533B79180273895456,Uttara Kannada,5,Belgaum; Dharwad; Haveri; Shimoga; Udupi
+gb-IND-ADM2-76128533B49597693387243,Davanagere,5,Bellary; Chikmagalur; Chitradurga; Haveri; Shimoga
+gb-IND-ADM2-76128533B75110579117636,Dharwad,4,Belgaum; Gadag; Haveri; Uttara Kannada
+gb-IND-ADM2-76128533B9794868259401,Bidar,1,Gulbarga
+gb-IND-ADM2-76128533B16628456658675,Chamarajanagar,3,Mandya; Mysore; Ramanagara
+gb-IND-ADM2-76128533B1083016608278,Gulbarga,3,Bidar; Bijapur; Yadgir
+gb-IND-ADM2-76128533B33966968116377,Gadag,6,Bagalkot; Belgaum; Bellary; Dharwad; Haveri; Koppal
+gb-IND-ADM2-76128533B4839184447445,Udupi,4,Chikmagalur; Dakshina Kannada; Shimoga; Uttara Kannada
+gb-IND-ADM2-76128533B83278580643229,Bagalkot,5,Belgaum; Bijapur; Gadag; Koppal; Raichur
+gb-IND-ADM2-76128533B54775433755383,Hassan,6,Chikmagalur; Dakshina Kannada; Kodagu; Mandya; Mysore; Tumkur
+gb-IND-ADM2-76128533B85389886560116,Shimoga,5,Chikmagalur; Davanagere; Haveri; Udupi; Uttara Kannada
+gb-IND-ADM2-76128533B92621859299479,Bellary,6,Chitradurga; Davanagere; Gadag; Haveri; Koppal; Raichur
+gb-IND-ADM2-76128533B57609583882472,Kodagu,3,Dakshina Kannada; Hassan; Mysore
+gb-IND-ADM2-76128533B48075109668277,Bangalore Rural,5,Bangalore; Chikkaballapura; Kolar; Ramanagara; Tumkur
+gb-IND-ADM2-76128533B64905184636422,Tumkur,7,Bangalore Rural; Chikkaballapura; Chikmagalur; Chitradurga; Hassan; Mandya; Ramanagara
+gb-IND-ADM2-76128533B74319098136622,Belgaum,5,Bagalkot; Bijapur; Dharwad; Gadag; Uttara Kannada
+gb-IND-ADM2-76128533B79601545186231,Koppal,4,Bagalkot; Bellary; Gadag; Raichur
+gb-IND-ADM2-76128533B76927648517269,Bangalore,2,Bangalore Rural; Ramanagara
+gb-IND-ADM2-76128533B79600797037735,Ramanagara,5,Bangalore; Bangalore Rural; Chamarajanagar; Mandya; Tumkur

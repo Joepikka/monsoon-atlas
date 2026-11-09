@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D121 — Spatial statistics use M05 residuals; M04 is not comparable (9 Nov 2026, T109).**
+  M04 is blocked, so there are no M04 outputs to compare; nothing is
+  substituted. `notebooks/10_spatial_statistics.ipynb` tests Moran's I on the
+  approved M05 ridge residuals (saved v1 fit, never refitted) for each of
+  the 60 locked-test issue months 2020-01 to 2024-12, 30 S17 districts.
+  Weights: queen contiguity (any shared boundary point), row-standardised.
+  999 permutations (seed 109), two-sided pseudo p = (1 + #{|I_perm - E| >=
+  |I_obs - E|}) / 1000; Benjamini-Hochberg at q = 0.05 across the tested
+  months. The semivariogram uses only out-of-sample residuals of the D97
+  rolling-origin refits, target years 2000-2019: no 2020+ row enters it.
+  `rolling_residuals` now also returns `place_id` (values unchanged).
+
 - **D120 — Price notebook is a unit and availability audit (9 Nov 2026, T108).**
   S22 and S23 are blocked (T023, T025), so there are zero price rows and
   the plan's market-season, spike and future-label questions cannot be
