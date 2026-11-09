@@ -1,0 +1,49 @@
+{
+  "source_id": "S39",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://core.telegram.org/bots/api",
+      "fetched_at": "2026-11-09T11:03:39.243377Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "7b2f62519c2c819a6a0bbd71d8260cc8f35d17f373a6171258a059741bc141a0",
+      "bytes": 860230,
+      "raw_path": "S39/2026-11-09/7b2f62519c2c819a6a0bbd71d8260cc8f35d17f373a6171258a059741bc141a0.html",
+      "shows": "Telegram Bot API reference"
+    },
+    {
+      "id": "e02",
+      "url": "https://core.telegram.org/bots/faq",
+      "fetched_at": "2026-11-09T11:03:42.927013Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "a8af34276a09c489e6ad1cbd20283669efaad64f862c7a2105b91a03d88c7ad5",
+      "bytes": 20272,
+      "raw_path": "S39/2026-11-09/a8af34276a09c489e6ad1cbd20283669efaad64f862c7a2105b91a03d88c7ad5.html",
+      "shows": "Telegram bots FAQ (broadcast limits)"
+    },
+    {
+      "id": "e03",
+      "url": "https://telegram.org/tos/bot-developers",
+      "fetched_at": "2026-11-09T11:03:46.874814Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "1ea7524e25024398f4ab406a1dd35afd80f370d03f26e8a0563951488b662759",
+      "bytes": 67244,
+      "raw_path": "S39/2026-11-09/1ea7524e25024398f4ab406a1dd35afd80f370d03f26e8a0563951488b662759.html",
+      "shows": "Telegram Bot Developer Terms of Service"
+    },
+    {
+      "id": "e04",
+      "url": "https://core.telegram.org/bots/features",
+      "fetched_at": "2026-11-09T11:03:50.757963Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "192874c97f41d8423750b7d2c1328b8f5e0801160c8560a03afda3bcddc48426",
+      "bytes": 117106,
+      "raw_path": "S39/2026-11-09/192874c97f41d8423750b7d2c1328b8f5e0801160c8560a03afda3bcddc48426.html",
+      "shows": "Telegram bot features (BotFather token)"
+    }
+  ]
+}
