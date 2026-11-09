@@ -1,0 +1,26 @@
+# Planned M09 definition, not a fitted model or a claim that labels exist. T136.
+model_id: M09
+state: kl
+enabled: false
+task: classification
+unit: "100 m terrain cell (relative susceptibility to mapped slope failure; not a daily probability or trigger warning)"
+sources: [S37, S42, S14]
+target:
+  event: "mapped slope failure in a 100 m cell"
+  negatives: "sampled controls inside the surveyed footprint only, never outside it"
+features_planned: [S14 slope aspect elevation, S18 roughness and drainage proximity, S08 antecedent climatology before the event]
+excluded_features: [post-event land cover, event footprints]
+data_gate:
+  min_independent_landslides: 200
+  max_positional_error_m: 100
+  requires: [survey footprint]
+  absence_sensitivity_control_ratios: ["1:1", "1:5", "1:10"]
+planned_splits:
+  train: ["through 2016-12-31"]
+  tune: ["2017-01-01", "2017-12-31"]
+  locked_test: ["2018-01-01", "2018-12-31"]
+spatial_fallback: "if only a 2018 inventory exists: 5 catchment-block folds within 2018, spatial validation only, no temporal-generalisation claim"
+split_manifest: null
+status: blocked
+reason: "S37 holds only state-level NRSC counts (no landslide point, date, positional error or survey footprint) and S42 imagery needs an unregistered account, so there is no label and no surveyed absence cell; the 200-landslide gate cannot pass."
+fallback: "none: the card names no label-free fallback, and a terrain-only layer would be an exposure map, not a susceptibility score"

@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D126 — M09 and M10 are recorded as blocked branches (9 Nov 2026, T136 to T141).**
+  M09 stops at the data gate: S37 is blocked (the NRSC Atlas gives Kerala counts only, with no
+  landslide point, date, positional error or survey footprint, D124) and S42 waits for the
+  owner's Copernicus account (H15), so there is no label and no surveyed absence cell. M10
+  stops too: S22 exposes no price row and S23 is a one-day snapshot with an unverified unit
+  (D120), so there is no weekly panel, 30 markets or 50 rain events, and no effect is
+  estimated from zero data. Both follow the M07/M08 pattern (config, gate JSON, no-model
+  manifest, status record, report, disabled-state tests). No fallback is published: the cards
+  name none, and a terrain-only layer from S14 would be exposure, not susceptibility.
+  Retry M09 when S37 gives a downloadable inventory with footprint; retry M10 when S22 or S23
+  gives weekly modal prices for 30 markets with a publisher-stated unit.
+
 - **D125 — M07 and M08 are recorded as blocked branches (9 Nov 2026, T130 to T135).**
   M07 (C1 fallback) stops at the data gate: a known datum for 4 of the 8 dams (D103, D124),
   S32 history is sampled dates only with a 700-day empty stretch, and S34 needs the T118

@@ -1,0 +1,45 @@
+{
+  "model_id": "M09",
+  "status": "blocked",
+  "reason": "M09 blocked: S37 holds only state-level NRSC counts (no landslide point, date, positional error or survey footprint) and S42 imagery needs an unregistered account, so there is no label and no surveyed absence cell; the 200-landslide gate cannot pass (T136).",
+  "sources": {
+    "S37": {
+      "outcome": "blocked",
+      "licence": "restricted",
+      "units": "not_checked",
+      "history": "partial",
+      "earliest_date": "2014-06-01",
+      "latest_date": "2021-12-31",
+      "retry_condition": "Retry T123 when NRSC links a downloadable landslide inventory (shapefile, GeoJSON or CSV, or a documented Bhuvan data service) from the pages in e02, e03 or e05, with its terms stated. If the owner obtains the Kerala 2018 inventory from NRSC or Bhuvan (an owner step if it needs a sign-in or request form), re-verify its licence, a landslide ID per row, coordinates, the survey footprint and the event date before enabling S37."
+    },
+    "S42": {
+      "outcome": "blocked",
+      "licence": "open",
+      "units": "checked",
+      "history": "available",
+      "earliest_date": "2014-10-03",
+      "latest_date": "2026-11-08",
+      "retry_condition": "Retry T127 when the owner registers a free Copernicus Data Space Ecosystem account (no card; accepts the terms and verifies the e-mail; a new owner step, proposed H15) and puts the login in the ignored .env as CDSE_USERNAME and CDSE_PASSWORD (read only by variable name; the docs warn against hard-coding them). Then re-verify with a short-lived access token that one small Sentinel-2 L2A band (B04 or B08 of a selected scene) downloads, check the quota against the account, and enable T128 for selected scenes only. If imagery is needed sooner, the owner may approve a keyless open-data mirror in decisions.md, after its own discovery task."
+    },
+    "S14": {
+      "outcome": "available",
+      "licence": "open",
+      "units": "labelled",
+      "history": "available",
+      "earliest_date": null,
+      "latest_date": null,
+      "retry_condition": null
+    }
+  },
+  "evidence": {
+    "configs/sources/s37.yaml": "264e76bff0d6f604eca9cfdc726e6ccaffeba44ec78de1b243cd853c7c6b5072",
+    "tests/fixtures/s37/manifest.json": "96f694592035f116f86a0456b0794fe064222c5c96b334a712fac75bb95c3f92",
+    "configs/sources/s42.yaml": "dfbb847615023d71d6ad0bf824fa7461b6d502eb67a74a613ddf5143ef220233",
+    "tests/fixtures/s42/manifest.json": "8925cc0bb9f332f5c26750866ce8f8f05f686736f18cb178c9aef14658e6c7dc",
+    "configs/sources/s14.yaml": "4354a703f99d3fe77e5d978c1f870094071f7dc45271fa6ea35df37de952e66f",
+    "tests/fixtures/s14/manifest.json": "4b23d056ae3c28b290e77aedb62586055d82a1706577f24d06263f8de8ae684e",
+    "configs/models/m09.yaml": "0c463616bcb43d6d4a6b7656eae7f623068f1b7cea76bd9072da090b38a2d0d7"
+  },
+  "split_manifest": null,
+  "prediction_rows": 0
+}
