@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D106 — NASA POWER API calls under D31 (9 Nov 2026, T055).**
+  `power.larc.nasa.gov` serves both the website and the API. Its robots.txt
+  disallows `/api/` for all agents (allowing `/api/pages/` and the docs) and
+  blocks named AI training crawlers. The POWER docs invite scripted use: the
+  API tutorial says developers can include "a POWER API URL in your scripted
+  application", and the Daily API page documents the `/api/temporal/daily/point`
+  route, a 20-parameter limit, HTTP 429 and blocking of repeated same-location
+  requests (T055 e01, e03, e04). D31 therefore applies: the documented API is
+  called within those limits with the project's generic user agent, never for
+  crawling or training data, at least 3 seconds apart and once per location
+  and range. Website pages outside the docs are not crawled. Revisit if POWER
+  publishes terms that say otherwise.
+
 - **D105 — P2 starts while T046 stays open (9 Nov 2026; owner: "continue with the project", C1 deferred in D104).**
   A8 puts P2 after the T046 gate and H11. T046 cannot close now: C1 is
   deferred (D104), and the H11 sheet (`docs/releases/h11-ka.md`) and the
