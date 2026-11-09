@@ -2,6 +2,23 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D109 — CelesTrak GP queries under D31; OMM instead of TLE (9 Nov 2026, T063).**
+  celestrak.org's robots.txt disallows `/NORAD/elements/gp*.php` and `*.txt`
+  for all agents, but its documentation and usage policy are written for
+  machine-to-machine software: documented query URLs, one download per
+  update (every 2 hours), and "M2M software should immediately stop querying
+  when it receives any non-HTTP 200 responses and report the results to a
+  human" (T063 e03, e05). D31 therefore applies as in D106: only documented
+  GP queries, at most once per group and format per 2 hours, and the adapter
+  stops on any non-200 response without retrying. Since 11 July 2026 new
+  objects have 6-digit catalog numbers that the TLE format cannot carry; the
+  stations group lists 19 objects in OMM JSON but 15 in TLE (crewed Soyuz and
+  Dragon flights are missing). The adapter therefore uses OMM JSON and keeps
+  the plan's `tle_line1`/`tle_line2` null with that reason. No licence is
+  published, so the licence status is restricted: raw element sets stay
+  local, CelesTrak is credited, and only derived positions may be shown after
+  H11.
+
 - **D108 — S10 adsb.lol rows (9 Nov 2026, T060).**
   Aircraft positions are community receiver reports, some computed by
   multilateration, not an official air-traffic feed and not a model, so rows
