@@ -2,6 +2,17 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D122 — Karnataka v1 gate passes; interfaces frozen (9 Nov 2026, T110).**
+  `docs/releases/ka-v1.md` and `tests/test_ka_v1.py` audit all 33 Karnataka
+  sources (23 enabled, 10 blocked and disabled with retry conditions), the six
+  KA models (M05 approved; M01 to M04 and M06 blocked with null scores) and
+  nine KA layers (1 measured, 5 blocked, 3 built but not mounted). Every item
+  has measured or blocked evidence, so Kerala work can begin. The shared files
+  listed there (contracts, config, ingest base, discovery, http, raw store,
+  validate, common schema) are frozen: changing one during Kerala work needs a
+  decision entry and new hashes in the same commit. T110 does not approve a
+  public release: T046 still waits for H11, and C1 stays blocked (D104).
+
 - **D121 — Spatial statistics use M05 residuals; M04 is not comparable (9 Nov 2026, T109).**
   M04 is blocked, so there are no M04 outputs to compare; nothing is
   substituted. `notebooks/10_spatial_statistics.ipynb` tests Moran's I on the
