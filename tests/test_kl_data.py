@@ -49,7 +49,7 @@ def test_kerala_does_not_enable_unimplemented_or_ka_only_adapters(kl):
         kl.source("S28")  # Karnataka reservoir source must not leak into Kerala.
 
 
-@pytest.mark.parametrize("source_id", ["S32", "S34", "S35", "S36"])
+@pytest.mark.parametrize("source_id", ["S32", "S34", "S35", "S36", "S37"])
 def test_existing_discovery_references_belong_to_kerala(kl, source_id):
     source = kl.source(source_id)
     discovery = load_yaml(ROOT / source.verified_by, Discovery)
@@ -58,5 +58,5 @@ def test_existing_discovery_references_belong_to_kerala(kl, source_id):
     assert discovery.verify_task == source.verify_task
     # Only T114 (S32) and T122 (S36) are completed Kerala adapters; discovery alone enables nothing.
     assert source.enabled == (source_id in {"S32", "S36"})
-    if source_id == "S35":
+    if source_id in {"S35", "S37"}:
         assert discovery.outcome == "blocked"

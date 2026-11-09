@@ -94,6 +94,7 @@ sources:
     cost: free
     storage_crs: EPSG:4326
     enabled: false
+    verified_by: configs/sources/s37.yaml
   - source_id: S40
     name: "Kerala ward / taluk polygons and crosswalks"
     verify_task: T030
