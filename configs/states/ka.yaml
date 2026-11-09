@@ -150,7 +150,9 @@ sources:
     verify_task: T069
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "once per release (stream cell 3bb to disk)"
+    verified_by: configs/sources/s19.yaml
+    enabled: true
   - source_id: S20
     name: "USGS earthquakes"
     verify_task: T071
