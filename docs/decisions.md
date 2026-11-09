@@ -2,6 +2,15 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D116 — Scheduled transit layer built, not mounted (9 Nov 2026, T104).**
+  The position engine and the web component are complete and tested on the
+  real pinned feeds, but the component is not added to the app: S30 is
+  restricted (D115), so no public transit snapshot may be built until H11.
+  A stop counts as on the trip's shape within 150 m, matched in stop order;
+  otherwise the segment pauses (18 of 4,153 BMTC trips at 08:00 on 12 Nov
+  2026). GTFS blank times are not interpolated: any missing time pauses the
+  running trip, as the plan says to pause on gaps.
+
 - **D115 — S30 uses unofficial GTFS compilations, restricted and labelled (9 Nov 2026, T028).**
   BMTC and BMRCL publish no GTFS feed: the Mobility Database lists only a
   deprecated 2013 BMTC feed and Vonter's unofficial BMTC feed, and has no

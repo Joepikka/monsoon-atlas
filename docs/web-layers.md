@@ -44,3 +44,26 @@ and unit checks; desktop/mobile/tablet toggles, original timestamps, severity,
 keyboard radius selection and ticker controls; populated-view axe and overflow
 checks. Screenshots stay in `.cache/playwright-results/`. This is an inspected
 first reference, not a completed screen-reader or visual-regression audit.
+
+## Scheduled transit and historical railway (T104)
+
+`src/atlas/transit/schedule.py` builds the layer's JSON from S30 timetables
+(`snapshot()`); `web/src/map/ScheduledTransit.tsx` validates and renders it.
+
+- A trip runs on a local service date; times count from noon minus 12 h and
+  may pass 24:00, so an instant checks that day's and the previous day's
+  service (00:20 on 12 Nov shows BMRCL trips of 11 Nov; 25:10 is 01:10 next day).
+- A vehicle is placed only between two consecutive scheduled stops, along the
+  trip's shape (stops within 150 m of it, in order). No shape, a stop off the
+  shape, a missing time or inconsistent times pause the trip: it is counted,
+  never drawn.
+- Every marker says "Scheduled position (timetable estimate), not live", with
+  the feed's pinned commit, the service date and the compiler's own timing
+  caveat. Metro stations (83 BMRCL parent stations) and S21 railway stations
+  are overlays.
+- S21 stays "2016 timetable (historical reference)": clock text only, no
+  instant, position or ETA; passing S21 to the position engine is refused.
+
+The component is not mounted in the app yet: S30's licence is restricted
+(D115), so no public transit snapshot exists until the owner's H11 review
+(D116).
