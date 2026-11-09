@@ -2,6 +2,17 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D118 — Feed-quality notebook uses the feeds with real history (9 Nov 2026, T106).**
+  T106 names S01 and the price feeds, but S22/S23 have no rows (blocked)
+  and S01/S09 have one local capture day, so a daily heatmap of them would
+  be empty. The notebook measures what exists: S08's Karnataka box (540
+  cells, 1981-2025: 8,875,440 of 8,875,440 cell-days, no missing day, no
+  duplicate rows; 2 of 48 year-file fetches were unchanged re-downloads),
+  the reporting lag of the committed S10 sample (20 aircraft) and the single
+  S01 run's availability lag. The limits are written into the outputs. S08
+  is local only, so the notebook re-run test skips in CI; the exported
+  counts and charts are derived outputs and are committed.
+
 - **D117 — Context layers follow the source contracts (9 Nov 2026, T105).**
   FIRMS (S25) and RERA (S31) are blocked, so T105 cannot render hotspots or
   projects; their controls are disabled with the recorded retry condition

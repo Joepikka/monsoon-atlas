@@ -1,0 +1,43 @@
+{
+  "s08": {
+    "cells": 540,
+    "days": 16436,
+    "expected_cell_days": 8875440,
+    "present_cell_days": 8875440,
+    "missing_days": 0,
+    "row_duplicates": {
+      "total": 8875440,
+      "duplicates": 0,
+      "fraction": 0.0
+    },
+    "file_duplicates": {
+      "total": 48,
+      "duplicates": 2,
+      "fraction": 0.041666666666666664,
+      "urls": 46
+    },
+    "data_start": "1981-01-01",
+    "data_end": "2025-12-31",
+    "first_fetch": "2026-11-05T15:47:17.066208+00:00",
+    "last_fetch": "2026-11-08T16:17:03.445582+00:00",
+    "caption": "S08 IMD 0.25 deg daily rainfall, Karnataka box: cell-days with a value (share of calendar days x 540 cells), 1981-01-01 to 2025-12-31; coverage 0 days with a missing cell."
+  },
+  "s10": {
+    "aircraft": 20,
+    "with_position": 20,
+    "fetched_ms": 1794208054000,
+    "max_age_s": 11.302,
+    "caption": "S10 adsb.lol, Bengaluru 100 nm: seconds since the last position report (s), 2026-11-09 to 2026-11-09; coverage 20 of 20 aircraft."
+  },
+  "s01": {
+    "runs": 1,
+    "availability_lag_s": 32655,
+    "initialised": 1793836800,
+    "available": 1793869455
+  },
+  "limits": [
+    "S22/S23 prices: no rows (blocked, T024/T025; price denominator unverified).",
+    "S01 and S09: one capture day (5 Nov 2026): no daily coverage or missing-day calendar.",
+    "S10: one 9 Nov 2026 snapshot of 20 aircraft; the ECDF is that snapshot only."
+  ]
+}
