@@ -1,0 +1,104 @@
+# Discovery record for S13 (plan task T065). Evidence IDs refer to tests/fixtures/s13/manifest.json;
+# the files stay in data/raw/S13. See docs/sources/s13.md.
+source_id: S13
+state: ka
+name: "NASA GIBS satellite imagery"
+verify_task: T065
+discovered_at: "2026-11-09T07:38:20Z"
+outcome: available
+landing_url: "https://nasa-gibs.github.io/gibs-api-docs/"
+publisher: "NASA Global Imagery Browse Services (GIBS), Earth Science Data Systems"
+no_card: true
+account_required: false
+
+access:
+  status: public_wmts_no_key
+  detail: >-
+    WMTS tiles and capabilities need no key (e06-e08). The docs give the REST pattern
+    https://gibs.earthdata.nasa.gov/wmts/<projection>/best/{LayerIdentifier}/default/{Time}/
+    {TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.{FormatExt} (e03), and the capabilities give
+    each layer's template (e06). gibs.earthdata.nasa.gov has no robots.txt (HTTP 404).
+  evidence: [e03, e06, e07, e08]
+
+licence:
+  status: open
+  detail: >-
+    The GIBS docs link NASA's Earthdata policies (e02), which say "data and information generated
+    under NASA sponsorship are available to all users" and encourage "citation and acknowledgment
+    of NASA data and services whenever data or works based on the data are published" (e05).
+    Credit NASA GIBS and the instrument (for example VIIRS on NOAA-20).
+  evidence: [e02, e05]
+
+provider_quota:
+  status: not_published
+  detail: >-
+    The docs publish no request limit; they describe domain sharding for browser clients loading
+    many tiles (e04). Tiles are fetched only for the map view, never in bulk.
+  evidence: [e04]
+
+history:
+  status: available
+  detail: >-
+    Each layer lists its dates in the capabilities Time dimension (e06). VIIRS NOAA-20 true colour
+    runs from 5 Jan 2018 in five ranges with gaps (for example 13 Jan 2022 is missing and its tile
+    returns 404, failed_fetches); MODIS Terra runs from 24 Feb 2000 in eleven ranges. The Earthdata
+    page warns that Suomi NPP no longer delivers data (e05): its layer stops on 2 Nov 2026 (e06).
+  evidence: [e05, e06]
+earliest_date: "2018-01-05"
+latest_date: "2026-11-09"
+
+units:
+  status: not_applicable
+  detail: >-
+    Imagery tiles are JPEG pictures, not measurements: 256 x 256 pixels on the
+    GoogleMapsCompatible_Level9 matrix set (EPSG:3857), with dates YYYY-MM-DD (e06-e08).
+  evidence: [e06, e07, e08]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: select an available date, not an assumed today; clouds are not a missing feed;
+    imagery date visible. The capabilities default for NOAA-20 is 9 Nov 2026, but at 07:39 UTC that
+    day's tile over Bengaluru is entirely black (every pixel 0) because the afternoon pass has not
+    happened, while 8 Nov shows real imagery with clouds (e06-e08). A date outside the time ranges
+    returns 404 (failed_fetches). T066 therefore picks the newest date that is inside the time
+    ranges and whose tile over the state is not blank, shows that date on the map, and treats
+    white cloud as data.
+  evidence: [e06, e07, e08]
+
+field_map:
+  - canonical: layer_id
+    upstream: "Layer/ows:Identifier in the capabilities"
+    unit_status: not_applicable
+    detail: "VIIRS_NOAA20_CorrectedReflectance_TrueColor (active daily layer); not the Suomi NPP layer, which has stopped."
+    evidence: [e05, e06]
+  - canonical: imagery_date
+    upstream: "Layer/Dimension (Time) values and default"
+    unit_status: labelled
+    detail: "ISO date chosen from the listed ranges after checking the tile over Karnataka is not blank."
+    evidence: [e06, e07, e08]
+  - canonical: tile_template
+    upstream: "Layer/ResourceURL@template"
+    unit_status: not_applicable
+    detail: "REST template with {Time}, {TileMatrixSet}, {TileMatrix}, {TileRow}, {TileCol}; JPEG for true colour."
+    evidence: [e03, e06]
+  - canonical: bounds
+    upstream: "Layer/ows:WGS84BoundingBox"
+    unit_status: labelled
+    detail: "Lower and upper corners in WGS84 degrees: -180 -85.051129 to 180 85.051129 for EPSG:3857 layers."
+    evidence: [e06]
+  - canonical: crs
+    upstream: "the service path (epsg3857) and TileMatrixSet GoogleMapsCompatible_Level9"
+    unit_status: not_applicable
+    detail: "EPSG:3857, matching the MapLibre web map."
+    evidence: [e03, e06]
+
+dependents: [T066]
+retry_condition: null
+failed_fetches:
+  - url: "https://gibs.earthdata.nasa.gov/robots.txt"
+    attempted_at: "2026-11-09T07:38:20Z"
+    error: "HTTP 404: no robots.txt on the GIBS host"
+  - url: "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_NOAA20_CorrectedReflectance_TrueColor/default/2022-01-13/GoogleMapsCompatible_Level9/6/29/45.jpeg"
+    attempted_at: "2026-11-09T07:39:30Z"
+    error: "HTTP 404 for a date outside the layer's time ranges (a deliberate gap check)"

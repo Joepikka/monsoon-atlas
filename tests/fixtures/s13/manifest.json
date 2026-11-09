@@ -1,0 +1,93 @@
+{
+  "source_id": "S13",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://gibs.earthdata.nasa.gov/",
+      "fetched_at": "2026-11-09T07:38:24.785441Z",
+      "status": 200,
+      "media_type": "image/jpeg",
+      "sha256": "bcba78c5d01ba5ff545281d3acd77f7429f724f6213bec949f8298c518a963ab",
+      "bytes": 12721,
+      "raw_path": "S13/2026-11-09/bcba78c5d01ba5ff545281d3acd77f7429f724f6213bec949f8298c518a963ab.jpg",
+      "shows": "GIBS host root page"
+    },
+    {
+      "id": "e02",
+      "url": "https://nasa-gibs.github.io/gibs-api-docs/",
+      "fetched_at": "2026-11-09T07:38:28.232745Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "652b7eef9e18fe2f82c0078df0f79a87ad43d028ad18621ee9378caacc834522",
+      "bytes": 10615,
+      "raw_path": "S13/2026-11-09/652b7eef9e18fe2f82c0078df0f79a87ad43d028ad18621ee9378caacc834522.html",
+      "shows": "GIBS API documentation home"
+    },
+    {
+      "id": "e03",
+      "url": "https://nasa-gibs.github.io/gibs-api-docs/access-basics/",
+      "fetched_at": "2026-11-09T07:38:31.620661Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "1221a74f1a0ccf696b23b5c9ef9a290e914a1578bfd06a7c7385cd48476a79ff",
+      "bytes": 47865,
+      "raw_path": "S13/2026-11-09/1221a74f1a0ccf696b23b5c9ef9a290e914a1578bfd06a7c7385cd48476a79ff.html",
+      "shows": "GIBS API access basics"
+    },
+    {
+      "id": "e04",
+      "url": "https://nasa-gibs.github.io/gibs-api-docs/access-advanced-topics/",
+      "fetched_at": "2026-11-09T07:38:35.018863Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "265c0dc49a3b6631b45b2542f8de4afa2daae499bf14a86956cc72756441b377",
+      "bytes": 69815,
+      "raw_path": "S13/2026-11-09/265c0dc49a3b6631b45b2542f8de4afa2daae499bf14a86956cc72756441b377.html",
+      "shows": "GIBS API advanced topics"
+    },
+    {
+      "id": "e05",
+      "url": "https://www.earthdata.nasa.gov/engage/open-data-services-software-policies",
+      "fetched_at": "2026-11-09T07:38:39.011747Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "aa8bce8a11f63edcc5f16b340a675387dbed7d1a613c25ba4fead07c63b9743d",
+      "bytes": 139475,
+      "raw_path": "S13/2026-11-09/aa8bce8a11f63edcc5f16b340a675387dbed7d1a613c25ba4fead07c63b9743d.html",
+      "shows": "NASA Earthdata open data, services and software policies, linked from the GIBS docs"
+    },
+    {
+      "id": "e06",
+      "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml",
+      "fetched_at": "2026-11-09T07:38:43.042421Z",
+      "status": 200,
+      "media_type": "text/xml",
+      "sha256": "d0deee12493df14df526730a41614ede4326e62c8fcd5f346d348c9c500cf08b",
+      "bytes": 5848438,
+      "raw_path": "S13/2026-11-09/d0deee12493df14df526730a41614ede4326e62c8fcd5f346d348c9c500cf08b.xml",
+      "shows": "GIBS WMTS capabilities, EPSG:3857 best available"
+    },
+    {
+      "id": "e07",
+      "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_NOAA20_CorrectedReflectance_TrueColor/default/2026-11-08/GoogleMapsCompatible_Level9/6/29/45.jpeg",
+      "fetched_at": "2026-11-09T07:39:24.242635Z",
+      "status": 200,
+      "media_type": "image/jpeg",
+      "sha256": "5d3acdf37b7da38eae76a47876bc635e1cc6dd3f401bd9b74afba791a453bd0a",
+      "bytes": 19049,
+      "raw_path": "S13/2026-11-09/5d3acdf37b7da38eae76a47876bc635e1cc6dd3f401bd9b74afba791a453bd0a.jpg",
+      "shows": "Tile over Bengaluru, NOAA-20 true colour, 8 Nov 2026 (zoom 6, row 29, col 45)"
+    },
+    {
+      "id": "e08",
+      "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_NOAA20_CorrectedReflectance_TrueColor/default/2026-11-09/GoogleMapsCompatible_Level9/6/29/45.jpeg",
+      "fetched_at": "2026-11-09T07:39:27.991596Z",
+      "status": 200,
+      "media_type": "image/jpeg",
+      "sha256": "1e66d737e7fa11a9d5a0e02832431ac06f4fa5dda6f4a17f729a3ded152d8eb0",
+      "bytes": 1665,
+      "raw_path": "S13/2026-11-09/1e66d737e7fa11a9d5a0e02832431ac06f4fa5dda6f4a17f729a3ded152d8eb0.jpg",
+      "shows": "Same tile for 9 Nov 2026, the capabilities default date"
+    }
+  ]
+}
