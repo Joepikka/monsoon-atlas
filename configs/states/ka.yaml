@@ -166,7 +166,9 @@ sources:
     verify_task: T073
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "once at the pinned commit; annual review"
+    verified_by: configs/sources/s21.yaml
+    enabled: true
   - source_id: S22
     name: "India Data Portal Agmarknet / existing price data"
     verify_task: T023

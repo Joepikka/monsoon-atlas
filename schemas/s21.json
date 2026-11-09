@@ -1,0 +1,19 @@
+{
+  "$comment": "S21 Datameet railway schedules (T074). Measure columns added to the common envelope (common.json). Field map: configs/sources/s21.yaml; rules: decision D111.",
+  "source_id": "S21",
+  "schema_version": 1,
+  "mapping_version": "s21-v1",
+  "fields": [
+    {"name": "station_id", "type": "string", "nullable": false, "meaning": "station_code"},
+    {"name": "train_id", "type": "string", "nullable": false, "meaning": "train_number (text, leading zeros kept)"},
+    {"name": "stop_sequence", "type": "int64", "nullable": false, "meaning": "1-based file order within the train (not published; flagged imputed when stop ids disagree)"},
+    {"name": "arrival_text", "type": "string", "nullable": true, "meaning": "2016 timetable arrival HH:MM:SS; null where the file says None (first stops)"},
+    {"name": "departure_text", "type": "string", "nullable": true, "meaning": "2016 timetable departure HH:MM:SS; null where the file says None (last stops)"},
+    {"name": "journey_day", "type": "int64", "nullable": true, "meaning": "day of the journey (day), 1 for the starting day"},
+    {"name": "lat", "type": "float64", "nullable": true, "meaning": "station latitude from stations.json; null when the station has no geometry"},
+    {"name": "lon", "type": "float64", "nullable": true, "meaning": "station longitude from stations.json"}
+  ],
+  "valid_at": "null: a 2016 timetable; never a current time or ETA",
+  "published_at": "the pinned commit time, 2016-08-08T07:20:00Z",
+  "kept": "stops at stations whose published state is the configured state"
+}

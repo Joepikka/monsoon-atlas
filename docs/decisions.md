@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D111 — S21 railway stops (9 Nov 2026, T073 and T074).**
+  The Datameet files stopped changing on 8 Aug 2016, so S21 rows are a
+  historical timetable: provenance `reconstructed`, `published_at` the pinned
+  commit time, no `valid_at`, and the map labels them "2016 timetable", never
+  a current time or ETA. The schedules publish no stop sequence; the adapter
+  numbers stops in file order within each train (stop ids rise in that order
+  for 5,199 of 5,208 trains) and flags the stops of the other trains
+  `imputed`. It adds `journey_day` (the published `day`), because a clock time
+  means nothing without the day of the journey. Rows are kept for stops at
+  stations whose published state is the configured state; the string "None"
+  becomes null.
+
 - **D110 — S20 USGS earthquake rows (9 Nov 2026, T071 and T072).**
   www.usgs.gov answers the project's scripted client with HTTP 202 and an
   empty body (policies, copyrights-and-credits and robots.txt), and the
