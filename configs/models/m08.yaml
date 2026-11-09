@@ -1,0 +1,24 @@
+# Planned M08 definition, not a fitted model or a claim that labels exist. T133.
+model_id: M08
+state: kl
+enabled: false
+task: classification
+unit: "district (coarsest label-supported unit; never downscaled to wards) x issue day"
+sources: [S35, S36, S43]
+target:
+  event: ">=1 independently dated documented inundation in the next 24 h"
+  horizon_hours: 24
+  negatives: "a monitored district-day with explicit coverage, never a missing report"
+data_gate:
+  requires: [independent positive and negative labels before 2018]
+  note: with 2018 labels only, a descriptive disaster replay is allowed (T142), with no predictive accuracy claim
+planned_splits:
+  train: ["2005-01-01", "2015-12-31"]
+  tune: ["2016-01-01", "2016-12-31"]
+  calibrate: ["2017-01-01", "2017-12-31"]
+  locked_test: ["2018-01-01", "2018-12-31"]
+spatial_blocks: catchment
+split_manifest: null
+status: blocked
+reason: "S35 is blocked and S36 holds 2018 district labels only, with no audited pre-2018 positives or negatives, so no classifier can be trained."
+fallback: "none: a descriptive 2018 replay belongs to T142 and makes no predictive claim"
