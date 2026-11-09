@@ -2,6 +2,20 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D115 — S30 uses unofficial GTFS compilations, restricted and labelled (9 Nov 2026, T028).**
+  BMTC and BMRCL publish no GTFS feed: the Mobility Database lists only a
+  deprecated 2013 BMTC feed and Vonter's unofficial BMTC feed, and has no
+  Namma Metro feed; OpenCity and the BMRCL home page have none. The plan's
+  F011 transit layer can still be built from Vonter's two ODbL compilations
+  (BMTC scraped from the Namma BMTC app, BMRCL transcribed from BMRCL
+  timetable images), read at pinned commits. Because BMTC keeps copyright in
+  some contents and BMRCL states no licence, the licence is recorded as
+  restricted: raw files stay local, tests skip in CI, and public display
+  waits for H11. Rows are `reconstructed` (third-party timetables, not the
+  operators' own feed); BMRCL stop times with `timepoint` 0 are approximate
+  and flagged `imputed`. P1's T028/T029 had been left out of the A8 order;
+  they run now because T104 depends on T029.
+
 - **D114 — S44 crime rows keep police units (9 Nov 2026, T087 and T088).**
   The police tables count registered cases per police unit, and those units
   are not revenue districts: city commissionerates are split from their

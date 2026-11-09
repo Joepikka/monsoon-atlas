@@ -1,0 +1,137 @@
+{
+  "source_id": "S30",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://storage.googleapis.com/storage/v1/b/mdb-csv/o/sources.csv?alt=media",
+      "fetched_at": "2026-11-09T11:27:39.235123Z",
+      "status": 200,
+      "media_type": "text/csv",
+      "sha256": "ad230f175298accba234b977aa895941b272f838ebc94f51e3b3cd787255cae9",
+      "bytes": 1209259,
+      "raw_path": "S30/2026-11-09/ad230f175298accba234b977aa895941b272f838ebc94f51e3b3cd787255cae9.csv",
+      "shows": "Mobility Database catalogue CSV: Karnataka rows are the 2013 openbangalore BMTC feed, the unofficial Vonter BMTC feed (is_official False) and a Hubli-Dharwad BRTS feed; no BMRCL or publisher-issued BMTC feed."
+    },
+    {
+      "id": "e02",
+      "url": "https://data.opencity.in/api/3/action/package_search?q=gtfs&rows=20",
+      "fetched_at": "2026-11-09T11:28:05.070025Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "d76ec6a7f23ddc106c46c472a7d03e56c221333559de259b9bf85f7d2f6a118d",
+      "bytes": 6648,
+      "raw_path": "S30/2026-11-09/d76ec6a7f23ddc106c46c472a7d03e56c221333559de259b9bf85f7d2f6a118d.json",
+      "shows": "OpenCity CKAN search for gtfs: two Hyderabad datasets only, no Bengaluru GTFS."
+    },
+    {
+      "id": "e03",
+      "url": "https://data.opencity.in/api/3/action/package_search?q=bmtc&rows=20",
+      "fetched_at": "2026-11-09T11:28:21.810910Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "afb429860015d4a3e14e746998c3b31ce45dab45699410280292a9e24c1505e2",
+      "bytes": 215353,
+      "raw_path": "S30/2026-11-09/afb429860015d4a3e14e746998c3b31ce45dab45699410280292a9e24c1505e2.json",
+      "shows": "OpenCity CKAN search for bmtc: BMTC stop and route KML/CSV, performance data and audits; no GTFS resource."
+    },
+    {
+      "id": "e04",
+      "url": "https://english.bmrc.co.in/",
+      "fetched_at": "2026-11-09T11:29:55.823910Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "37f113b14dc86241869d26a0821af2060bb3a1b312ff583e1c1cd93614324154",
+      "bytes": 52097,
+      "raw_path": "S30/2026-11-09/37f113b14dc86241869d26a0821af2060bb3a1b312ff583e1c1cd93614324154.html",
+      "shows": "BMRCL official home page: no GTFS or open-data feed link."
+    },
+    {
+      "id": "e05",
+      "url": "https://raw.githubusercontent.com/Vonter/bmtc-gtfs/ee945dc0c21b29193f88e3e1e9af218dd24ea182/README.md",
+      "fetched_at": "2026-11-09T11:29:59.763414Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "59f38da87b006915181223b7b476756a97545651f84fa9e9e83363c90612eee7",
+      "bytes": 6360,
+      "raw_path": "S30/2026-11-09/59f38da87b006915181223b7b476756a97545651f84fa9e9e83363c90612eee7.bin",
+      "shows": "Vonter bmtc-gtfs README at the pinned commit: unofficial GTFS scraped from the Namma BMTC app, ODbL 1.0, some contents copyright BMTC, known inaccurate timetables, only routes with live tracking."
+    },
+    {
+      "id": "e06",
+      "url": "https://api.github.com/repos/Vonter/bmtc-gtfs",
+      "fetched_at": "2026-11-09T11:30:03.508489Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "516a7ba082f26d0788a3a23441893925a324ea463a5a6fa3acbe4280e6cd8088",
+      "bytes": 5175,
+      "raw_path": "S30/2026-11-09/516a7ba082f26d0788a3a23441893925a324ea463a5a6fa3acbe4280e6cd8088.json",
+      "shows": "GitHub REST metadata for Vonter/bmtc-gtfs: licence ODbL-1.0 and push date."
+    },
+    {
+      "id": "e07",
+      "url": "https://api.github.com/repos/Vonter/bmtc-gtfs/commits/ee945dc0c21b29193f88e3e1e9af218dd24ea182",
+      "fetched_at": "2026-11-09T11:30:07.386953Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "753af05fac55ec501799133b84e9fdf0369cdf2a92b1dc45e16d8aaa985af5d5",
+      "bytes": 15058,
+      "raw_path": "S30/2026-11-09/753af05fac55ec501799133b84e9fdf0369cdf2a92b1dc45e16d8aaa985af5d5.json",
+      "shows": "GitHub REST record of the pinned bmtc-gtfs commit ee945dc (8 Sep 2026)."
+    },
+    {
+      "id": "e08",
+      "url": "https://raw.githubusercontent.com/Vonter/bmrcl-gtfs/f402c4c69a5d314320024f84620fa83e909c4188/README.md",
+      "fetched_at": "2026-11-09T11:30:11.022808Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "1a1d08f7b7960bb45460d1b7043603404fad694aa693cd793691948b239ec413",
+      "bytes": 4445,
+      "raw_path": "S30/2026-11-09/1a1d08f7b7960bb45460d1b7043603404fad694aa693cd793691948b239ec413.bin",
+      "shows": "Vonter bmrcl-gtfs README at the pinned commit: unofficial GTFS from BMRCL timetable images and OpenStreetMap; intermediate stop times approximated; licence ODbL."
+    },
+    {
+      "id": "e09",
+      "url": "https://api.github.com/repos/Vonter/bmrcl-gtfs",
+      "fetched_at": "2026-11-09T11:30:14.711767Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "cf2654e44662af5cec6164764c84dca0449e298ce0a749885490277c740ec1d6",
+      "bytes": 5232,
+      "raw_path": "S30/2026-11-09/cf2654e44662af5cec6164764c84dca0449e298ce0a749885490277c740ec1d6.json",
+      "shows": "GitHub REST metadata for Vonter/bmrcl-gtfs: licence ODbL-1.0 and push date."
+    },
+    {
+      "id": "e10",
+      "url": "https://api.github.com/repos/Vonter/bmrcl-gtfs/commits/f402c4c69a5d314320024f84620fa83e909c4188",
+      "fetched_at": "2026-11-09T11:30:18.382375Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "74513be37d1605c6c5d84531d06453640ec388ac1e45c475b01976afbd22d029",
+      "bytes": 40902,
+      "raw_path": "S30/2026-11-09/74513be37d1605c6c5d84531d06453640ec388ac1e45c475b01976afbd22d029.json",
+      "shows": "GitHub REST record of the pinned bmrcl-gtfs commit f402c4c (17 Aug 2026, Yellow Line timetable)."
+    },
+    {
+      "id": "e11",
+      "url": "https://raw.githubusercontent.com/Vonter/bmrcl-gtfs/f402c4c69a5d314320024f84620fa83e909c4188/gtfs/bmrcl.zip",
+      "fetched_at": "2026-11-09T11:30:22.599311Z",
+      "status": 200,
+      "media_type": "application/zip",
+      "sha256": "c19f56f32ad53525c71191125409dc8dded12dd2cebfc576ad9a4db23a62b8a7",
+      "bytes": 2369725,
+      "raw_path": "S30/2026-11-09/c19f56f32ad53525c71191125409dc8dded12dd2cebfc576ad9a4db23a62b8a7.zip",
+      "shows": "BMRCL GTFS zip at the pinned commit: 3 routes, 3,279 trips, 88,906 stop times, 488 stops, 19 shapes, 4 services with 64 calendar_dates exceptions, times up to 24:29:25."
+    },
+    {
+      "id": "e12",
+      "url": "https://raw.githubusercontent.com/Vonter/bmtc-gtfs/ee945dc0c21b29193f88e3e1e9af218dd24ea182/gtfs/bmtc.zip",
+      "fetched_at": "2026-11-09T11:30:28.409096Z",
+      "status": 200,
+      "media_type": "application/zip",
+      "sha256": "b5fe4a8e05495f719e4c8f16452dc6c4820f342b5414c3fb51e19687b5ea3333",
+      "bytes": 44392885,
+      "raw_path": "S30/2026-11-09/b5fe4a8e05495f719e4c8f16452dc6c4820f342b5414c3fb51e19687b5ea3333.zip",
+      "shows": "BMTC GTFS zip at the pinned commit (44 MB, streamed): 4,434 routes, 57,836 trips, 1,540,686 stop times, 9,960 stops, 7,355 shapes, one all-days service 2026-09-07 to 2027-09-07, no times at or above 24:00."
+    }
+  ]
+}

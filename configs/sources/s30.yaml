@@ -1,0 +1,133 @@
+# Discovery record for S30 (plan task T028). Evidence IDs refer to tests/fixtures/s30/manifest.json;
+# the files stay in data/raw/S30. See docs/sources/s30.md.
+source_id: S30
+state: ka
+name: "BMTC and Namma Metro static GTFS"
+verify_task: T028
+discovered_at: "2026-11-09T11:27:39Z"
+outcome: available
+landing_url: "https://mobilitydatabase.org"
+publisher: "Vonter (unofficial GTFS compilations of BMTC and BMRCL timetables; repositories Vonter/bmtc-gtfs and Vonter/bmrcl-gtfs)"
+no_card: true
+account_required: false
+
+access:
+  status: public_repository_no_key
+  detail: >-
+    Neither operator publishes a GTFS feed. The Mobility Database catalogue lists for Karnataka
+    only the deprecated 2013 openbangalore BMTC feed, the Vonter BMTC feed (is_official False) and
+    a Hubli-Dharwad BRTS feed; it has no Namma Metro feed (e01). OpenCity has no Bengaluru GTFS
+    (e02) and its BMTC datasets are stop and route KML/CSV files (e03). The BMRCL home page links
+    no feed (e04); the BMTC home page could not be fetched over verified TLS (failed fetches).
+    The two unofficial feeds are read at pinned commits from raw.githubusercontent.com without a
+    key (e11, e12); repository metadata and commits come from the GitHub REST API (e06, e07,
+    e09, e10).
+  evidence: [e01, e02, e03, e04, e06, e07, e09, e10, e11, e12]
+
+licence:
+  status: restricted
+  detail: >-
+    Both repositories carry an ODbL-1.0 LICENSE file (e06, e09). The BMTC README adds that "some
+    individual contents of the database are under copyright by BMTC" (e05); the BMRCL README states
+    no licence and says the times come from BMRCL timetable images (e08). Neither operator has
+    granted redistribution. Raw files stay in data/raw, are never committed, and public display
+    waits for the owner's H11 review; credit BMTC, BMRCL and Vonter (ODbL attribution).
+  evidence: [e05, e06, e08, e09]
+
+provider_quota:
+  status: not_published
+  detail: >-
+    No limit is published for raw.githubusercontent.com files (e05, e08). The GitHub REST API is
+    called once per review; each feed is fetched once per pinned commit, at most weekly.
+  evidence: [e05, e06, e08, e09]
+
+history:
+  status: partial
+  detail: >-
+    Each commit is a snapshot of the timetable in force when it was compiled. The pinned BMTC
+    commit ee945dc is of 8 Sep 2026 (e07) and holds the September 2026 refetch; the pinned BMRCL
+    commit f402c4c is of 17 Aug 2026, "Yellow Line timetable as of 17th August 2026" (e10).
+    Earlier snapshots exist in git history (repositories created 5 Jan 2024 and 28 Jun 2026, e06,
+    e09) but are not checked. The feeds' end dates (2027) are compiler defaults, not publisher
+    promises (e11, e12).
+  evidence: [e06, e07, e09, e10, e11, e12]
+earliest_date: "2026-08-17"
+latest_date: "2026-09-08"
+
+units:
+  status: labelled
+  detail: >-
+    Standard GTFS: agency_timezone Asia/Kolkata in both feeds; stop_times arrival_time and
+    departure_time are HH:MM:SS from noon minus 12 h of the service day and may pass 24:00;
+    stop_lat and stop_lon are WGS84 degrees; calendar dates are YYYYMMDD (e11, e12). BMTC: 4,434
+    routes, 57,836 trips, 1,540,686 stop times, 9,960 stops, 7,355 shapes. BMRCL: 3 routes,
+    3,279 trips, 88,906 stop times, 488 stops and platforms, 19 shapes (e11, e12).
+  evidence: [e11, e12]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan checks. Calendar exceptions: BMRCL has 4 services (weekday Tue-Sat, monday, sunday,
+    holiday) and 64 calendar_dates rows from 2026-08-22 to 2027-08-14 (32 holiday additions, 32
+    weekday/monday removals); BMTC has one service on every day and no exceptions, so BMTC
+    holiday changes are unknown (e11, e12). Times above 24:00: BMRCL has 150 arrivals at or after 24:00 in
+    23 trips, 25 trips depart after 24:00 somewhere, latest 24:29:25; BMTC has none (latest
+    23:59:00). Stop coordinates: all present; BMRCL
+    stops lie within 12.82-13.06 N, 77.46-77.76 E; 163 BMTC stops lie more than 100 km from
+    Bengaluru (KSRTC bus stands up to 17.77 N), kept as published. Not live GPS: the BMTC README
+    says only routes with live tracking in the app are included and timetables are known to be
+    inaccurate (e05); BMRCL intermediate stop times are an approximation from spacing, dwell and
+    speed (e08). Every position derived from S30 is a scheduled estimate.
+  evidence: [e05, e08, e11, e12]
+
+field_map:
+  - canonical: feed_id
+    upstream: null
+    unit_status: not_applicable
+    detail: "Assigned: bmtc or bmrcl, one per pinned repository commit."
+    evidence: [e11, e12]
+  - canonical: service_date
+    upstream: "calendar.txt days and date range, calendar_dates.txt exceptions"
+    unit_status: labelled
+    detail: "Local service date (Asia/Kolkata) on which the trip's service_id runs."
+    evidence: [e11, e12]
+  - canonical: trip_id
+    upstream: "stop_times.trip_id"
+    unit_status: not_applicable
+    detail: "Trip identifier, unique within a feed."
+    evidence: [e11, e12]
+  - canonical: route_id
+    upstream: "trips.route_id"
+    unit_status: not_applicable
+    detail: "Route identifier joined from trips.txt."
+    evidence: [e11, e12]
+  - canonical: stop_id
+    upstream: "stop_times.stop_id"
+    unit_status: not_applicable
+    detail: "Stop or platform identifier (BMRCL platforms have a parent station)."
+    evidence: [e11, e12]
+  - canonical: stop_sequence
+    upstream: "stop_times.stop_sequence"
+    unit_status: not_applicable
+    detail: "Integer order within a trip; strictly rising in every trip of both feeds."
+    evidence: [e11, e12]
+  - canonical: arrival_sec
+    upstream: "stop_times.arrival_time"
+    unit_status: labelled
+    detail: "Seconds after noon minus 12 h of the service date; may exceed 86,400."
+    evidence: [e11, e12]
+  - canonical: departure_sec
+    upstream: "stop_times.departure_time"
+    unit_status: labelled
+    detail: "Seconds after noon minus 12 h of the service date; may exceed 86,400."
+    evidence: [e11, e12]
+
+dependents: [T029, T104]
+retry_condition: null
+failed_fetches:
+  - url: "https://mybmtc.karnataka.gov.in/en"
+    attempted_at: "2026-11-09T11:30:54Z"
+    error: "TLS certificate verification failed (unable to get local issuer certificate); not bypassed."
+  - url: "https://mybmtc.karnataka.gov.in/robots.txt"
+    attempted_at: "2026-11-09T11:31:39Z"
+    error: "TLS certificate verification failed (unable to get local issuer certificate); not bypassed."
