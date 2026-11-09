@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D114 — S44 crime rows keep police units (9 Nov 2026, T087 and T088).**
+  The police tables count registered cases per police unit, and those units
+  are not revenue districts: city commissionerates are split from their
+  districts, range rows are empty headings, and railways, coastal security
+  and CID cover no area. The adapter keeps the published unit name in
+  `district_id` and adds `unit_kind` (district, commissionerate, state total
+  or no area; a range row with counts would be a range subtotal); joining units to S17 districts is a
+  later, explicit crosswalk, never a name guess inside the adapter. Offence
+  heads are stored as published in `offence_category`, because they change
+  between years and with the IPC to BNS change. Every display says that
+  registered cases are not crime incidence.
+
 - **D113 — S29 is annual hobli rainfall, not a daily 2017-2023 series (9 Nov 2026, T079).**
   The plan names "OpenCity KSNDMC hobli rainfall 2017-2023" with a daily
   `date_local`. OpenCity's KSNDMC organisation has five datasets and none is

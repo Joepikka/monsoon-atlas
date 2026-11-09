@@ -248,4 +248,7 @@ sources:
     name: "District crime statistics"
     verify_task: T087
     cost: free
-    enabled: false
+    storage_crs: EPSG:4326
+    schedule: "annual if published (10 s apart)"
+    verified_by: configs/sources/s44.yaml
+    enabled: true
