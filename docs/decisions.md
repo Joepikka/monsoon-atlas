@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D117 — Context layers follow the source contracts (9 Nov 2026, T105).**
+  FIRMS (S25) and RERA (S31) are blocked, so T105 cannot render hotspots or
+  projects; their controls are disabled with the recorded retry condition
+  and evidence, and the guards (thermal anomaly only; public RERA fields
+  only) are in place for when they open. S44 cleared its gate, but police
+  units are not districts (D114): the crime layer lists the published
+  district "Total" per year and maps nothing; the 2024 table has no total,
+  and its offence heads are not summed into one. Building clipping is tested
+  on real S19 footprints inside a real H3 cell, because no Bengaluru shard is
+  stored locally. The controls are not mounted in the app until a public
+  snapshot carries them.
+
 - **D116 — Scheduled transit layer built, not mounted (9 Nov 2026, T104).**
   The position engine and the web component are complete and tested on the
   real pinned feeds, but the component is not added to the app: S30 is

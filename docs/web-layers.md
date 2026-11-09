@@ -67,3 +67,24 @@ first reference, not a completed screen-reader or visual-regression audit.
 The component is not mounted in the app yet: S30's licence is restricted
 (D115), so no public transit snapshot exists until the owner's H11 review
 (D116).
+
+## Context layers (T105)
+
+`atlas.spatial.context.layer_status()` derives each context layer's control
+from its source contract (enabled, discovery outcome, licence); the web copy is
+`web/tests/fixtures/context-layers.json`, kept equal by a Python test.
+`web/src/map/ContextLayers.tsx` renders disabled controls with the recorded
+reason, the provider page and the evidence path.
+
+- Fire (S25): disabled until the FIRMS MAP_KEY (H09). A hotspot can only be a
+  `thermal_anomaly`; "fire", "confirmed_fire" and "structure_fire" are refused.
+- RERA (S31): disabled until K-RERA permission; only the discovery's public
+  fields pass `rera_public`, so promoter names and contacts never do.
+- Buildings (S19): footprints of confidence 0.75 or more, clipped to one place
+  boundary whose version must match; rows joined to another version fail.
+- Crime (S44): district units' published "Total" per year (2023), listed with
+  the under-reporting note; 2024 offence heads are never summed and nothing is
+  mapped until a police-unit crosswalk exists (D114).
+
+Like the transit layer, the controls are not mounted in the app until a
+public snapshot carries them (D117).
