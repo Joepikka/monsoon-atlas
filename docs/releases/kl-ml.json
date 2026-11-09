@@ -1,0 +1,18 @@
+{
+  "_status": "machine-drafted, needs native review before release (owner H11)",
+  "language": "ml",
+  "strings": {
+    "layer_dams": {"en": "Dams", "ml": "അണക്കെട്ടുകൾ"},
+    "layer_flood": {"en": "Flood", "ml": "വെള്ളപ്പൊക്കം"},
+    "layer_landslide": {"en": "Landslide", "ml": "ഉരുൾപൊട്ടൽ"},
+    "layer_replay_2018": {"en": "2018 flood replay", "ml": "2018 പ്രളയത്തിന്റെ പുനരവലോകനം"},
+    "layer_weather": {"en": "Weather", "ml": "കാലാവസ്ഥ"},
+    "layer_alerts": {"en": "Official warnings", "ml": "ഔദ്യോഗിക മുന്നറിയിപ്പുകൾ"},
+    "layer_prices": {"en": "Market prices", "ml": "വിപണി വിലകൾ"},
+    "layer_models": {"en": "Research models", "ml": "ഗവേഷണ മാതൃകകൾ"},
+    "scheduled_not_live": {"en": "Scheduled, not live", "ml": "ഷെഡ്യൂൾ പ്രകാരം, തത്സമയമല്ല"},
+    "not_a_safe_route": {"en": "not a safe route", "ml": "സുരക്ഷിതമായ വഴിയല്ല"},
+    "research_only": {"en": "research-only", "ml": "ഗവേഷണ ആവശ്യത്തിന് മാത്രം"},
+    "blocked": {"en": "blocked", "ml": "തടസ്സപ്പെട്ടിരിക്കുന്നു"}
+  }
+}

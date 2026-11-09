@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D129 — Kerala release gate passes with all four Kerala models blocked (9 Nov 2026, T144).**
+  `docs/releases/kl.md` records 19 Kerala sources (4 enabled: S06, S08, S32, S36; 7 blocked;
+  8 available but not yet configured for Kerala), M07 to M10 blocked with null scores and 0
+  predictions, the 2018 chronology (35 `as_known` S36 records from the 7 Aug and 13 Sep 2018
+  memoranda, 122 `reconstructed` S08 records, 0 forecast vintages), a licence audit (restricted
+  sources keep raw files local; git holds manifests only) and the Karnataka frozen-interface
+  hashes, unchanged. No Kerala model is research-only; the case-study draft quotes only measured
+  or blocked results. The Malayalam strings in `docs/releases/kl-ml.json` are machine-drafted and
+  need native review before release (H11). The committed S08 box-mean rain in `reports/eda/`
+  conflicts with S08's no-area-average licence if ever published, so H11 must decide (drop the
+  S08 records or get IMD permission). The gate does not approve a public release: that still
+  waits for H11.
+
 - **D128 — Exposure and route comparison run without roads, shelters or hazard polygons (9 Nov 2026, T143).**
   `atlas.spatial.exposure` splits S16 cell people by the area share inside the union of any
   supplied hazard polygons (EPSG:6933; overlaps count once; inside + outside = total; coverage
