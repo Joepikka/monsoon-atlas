@@ -107,6 +107,12 @@ sources:
     cost: free
     enabled: false
     verified_by: configs/sources/s41.yaml
+  - source_id: S42
+    name: "Sentinel-1 / NDVI quantitative imagery"
+    verify_task: T127
+    cost: free
+    enabled: false
+    verified_by: configs/sources/s42.yaml
   - source_id: S43
     name: "Kerala official shelters and flood impact labels"
     verify_task: T085

@@ -1,0 +1,137 @@
+# Discovery record for S42 (plan task T127). Evidence IDs refer to tests/fixtures/s42/manifest.json;
+# the files stay in data/raw/S42. See docs/sources/s42.md.
+source_id: S42
+state: kl
+name: "Sentinel-1 / NDVI quantitative imagery"
+verify_task: T127
+discovered_at: "2026-11-09T15:56:04Z"
+outcome: blocked
+landing_url: "https://dataspace.copernicus.eu/"
+publisher: "Copernicus Data Space Ecosystem (ESA and the European Commission; operated by T-Systems and CloudFerro)"
+no_card: true
+account_required: true
+
+access:
+  status: catalogue_keyless_download_needs_account
+  detail: >-
+    Searching the catalogue needs no account or token: the OData search (e12, e13) and the STAC
+    search (e14) answered HTTP 200 with no credentials, and the OData docs show the same queries
+    without a header (e06). Getting the imagery does not: the docs say users must have an access
+    token to download products (e07), the product download example sends an Authorization Bearer
+    header (e06), and a download request for the Sentinel-1 product in e12 without a token returned
+    HTTP 401 "Token not found" (see failed_fetches). The token comes from the identity server with a
+    registered account's username and password (e07). Registration means filling the register form,
+    accepting the terms and verifying an e-mail (e08), and the terms say users need to register to
+    access EO data (e03). The STAC assets point at s3:// paths and download URLs that need
+    authentication (e14). Registering, accepting terms and entering a password are owner steps
+    (AGENTS.md, human-only steps), so no scene was downloaded. robots.txt allows the pages used
+    (e01); the documentation host publishes only a Sitemap line (e05).
+  evidence: [e01, e03, e05, e06, e07, e08, e12, e13, e14]
+
+licence:
+  status: open
+  detail: >-
+    Sentinel data on the portal is free, full and open, governed by the Legal Notice (e03). The
+    notice grants free use for reproduction, distribution, communication to the public, and
+    adaptation, modification and combination with other data, and requires the notice "Copernicus
+    Sentinel data [Year]" (or "Contains modified Copernicus Sentinel data [Year]" if adapted) when
+    the data is communicated or distributed (e04). Other portal content is for non-commercial use
+    with credit and may not be resold or redistributed (e03). The licence does not remove the
+    account step above.
+  evidence: [e03, e04]
+
+provider_quota:
+  status: published
+  detail: >-
+    Per registered account: for S3, OData and STAC, 20 MB/s per connection, 4 concurrent
+    connections, 12 TB transfer per rolling 30 days on immediately available data and 100 active
+    sessions; an access token lasts 10 minutes and can be refreshed within 60 minutes; direct COG
+    access allows 50,000 requests per month (e09). Not tested, because no account exists. The plan
+    uses selected scenes only (4 GB, local), never bulk.
+  evidence: [e09]
+
+history:
+  status: available
+  detail: >-
+    Sentinel-1 GRD is offered from Oct 2014 (temporal interval starts 2014-10-03), as SAFE with COG
+    for the whole archive and original SAFE for the last year only (e10). Sentinel-2 L2A is offered
+    from Jul 2015 (e11). The catalogue returned a Sentinel-1 IW GRD COG product over Kochi from
+    2 Nov 2026 and Sentinel-2 L2A products from 8 Nov 2026 (e12, e13).
+  evidence: [e10, e11, e12, e13]
+earliest_date: "2014-10-03"
+latest_date: "2026-11-08"
+
+units:
+  status: checked
+  detail: >-
+    Catalogue times are UTC with a Z suffix (ContentDate/Start, e12, e13). Sentinel-2 cloudCover
+    (OData) and eo:cloud_cover (STAC) are numbers from 0 to 100 with no unit in the response, for
+    example 86.019641 and 86.02 (e13, e14), so they are read as percent and divided by 100 for
+    cloud_fraction. The STAC red band B04 at 10 m carries data_type uint16, nodata 0, scale 0.0001
+    and offset -0.1 (e14), so reflectance = DN * 0.0001 - 0.1. The CRS is given per asset
+    (EPSG:32643 for tile 43PFM, e14). Sentinel-1 GRD COG polarisations are VV and VH (e10, e12).
+    No pixel value was read.
+  evidence: [e10, e12, e13, e14]
+
+source_check:
+  status: fail
+  detail: >-
+    Plan rule: Sentinel-1 cannot yield NDVI, so NDVI comes from Sentinel-2 red (B04) and NIR (B08)
+    at 10 m with a cloud mask, and SAR needs terrain correction and co-registration. The bands exist
+    (e11, e14) and the first Sentinel-2 product over Kochi on 8 Nov 2026 had 86 percent cloud
+    cover (e13), so cloud gaps must stay missing. The rule cannot be exercised, because pixel
+    values need a token and no account exists (e07, e08). Catalogue metadata alone is not
+    quantitative imagery.
+  evidence: [e07, e08, e11, e13, e14]
+
+field_map:
+  - canonical: scene_id
+    upstream: "Products/Name (OData) or the item id (STAC)"
+    unit_status: not_applicable
+    detail: "SAFE product name such as S2B_MSIL2A_20261108T051019_N0513_R019_T43PFM_20261108T085247.SAFE; the catalogue GUID Id is a separate key."
+    evidence: [e12, e13, e14]
+  - canonical: acquired_at
+    upstream: "Products/ContentDate/Start (OData) or properties.datetime (STAC)"
+    unit_status: labelled
+    detail: "UTC timestamp with Z suffix, for example 2026-11-08T05:10:19.024000Z."
+    evidence: [e12, e13, e14]
+  - canonical: product
+    upstream: "Attributes productType (OData) or properties.product:type (STAC)"
+    unit_status: not_applicable
+    detail: "IW_GRDH_1S-COG for Sentinel-1 GRD COG_SAFE; S2MSI2A for Sentinel-2 L2A."
+    evidence: [e12, e13, e14]
+  - canonical: asset_uri
+    upstream: "Products/S3Path (OData) or the asset href (STAC)"
+    unit_status: not_applicable
+    detail: "/eodata/... or s3://eodata/... path; the matching download URL needs an access token, so no asset is fetched."
+    evidence: [e06, e12, e14]
+  - canonical: crs
+    upstream: "asset proj:code (STAC)"
+    unit_status: labelled
+    detail: "EPSG code per asset, EPSG:32643 for the 43PFM tile; OData lists no CRS."
+    evidence: [e14]
+  - canonical: cloud_fraction
+    upstream: "Attributes cloudCover (OData) or properties.eo:cloud_cover (STAC)"
+    unit_status: unlabelled
+    detail: "0 to 100, read as percent and divided by 100; null for Sentinel-1 because SAR is not affected by cloud."
+    evidence: [e13, e14]
+  - canonical: bands
+    upstream: "Attributes polarisationChannels (Sentinel-1) or asset bands (STAC, Sentinel-2)"
+    unit_status: not_applicable
+    detail: "VV&VH for Sentinel-1 IW GRD; B04 red and B08 NIR (10 m) for NDVI from Sentinel-2."
+    evidence: [e12, e14]
+
+dependents: [T128, T145]
+retry_condition: >-
+  Retry T127 when the owner registers a free Copernicus Data Space Ecosystem account (no card;
+  accepts the terms and verifies the e-mail; a new owner step, proposed H15) and puts the login in
+  the ignored .env as CDSE_USERNAME and CDSE_PASSWORD (read only by variable name; the docs warn
+  against hard-coding them). Then re-verify with a short-lived access token that one small
+  Sentinel-2 L2A band (B04 or B08 of a selected scene) downloads, check the quota against the
+  account, and enable T128 for selected scenes only. If imagery is needed sooner, the owner may
+  approve a keyless open-data mirror in decisions.md, after its own discovery task.
+
+failed_fetches:
+  - url: "https://download.dataspace.copernicus.eu/odata/v1/Products(3e18b855-c969-4d84-ae64-0116a5c304a0)/$value"
+    attempted_at: "2026-11-09T15:57:21Z"
+    error: "HTTP 401 for a product download without an access token (body: Token not found)"

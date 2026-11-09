@@ -1,0 +1,159 @@
+{
+  "source_id": "S42",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://dataspace.copernicus.eu/robots.txt",
+      "fetched_at": "2026-11-09T15:56:04.778356Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "773fb8d35bb9a39d35335ee6db8dc5c912d2aacbfb823152d9c61cd647dd902d",
+      "bytes": 2027,
+      "raw_path": "S42/2026-11-09/773fb8d35bb9a39d35335ee6db8dc5c912d2aacbfb823152d9c61cd647dd902d.bin",
+      "shows": "Copernicus Data Space Ecosystem robots.txt: allows all agents except admin, search and user paths; no Crawl-delay"
+    },
+    {
+      "id": "e02",
+      "url": "https://dataspace.copernicus.eu/",
+      "fetched_at": "2026-11-09T15:56:08.448982Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "a3a242fcea6cfc49f42f4dc4810b16542d2789de0cdaaa8e6db560409c5175fd",
+      "bytes": 111059,
+      "raw_path": "S42/2026-11-09/a3a242fcea6cfc49f42f4dc4810b16542d2789de0cdaaa8e6db560409c5175fd.html",
+      "shows": "CDSE home page: links the Terms and conditions page"
+    },
+    {
+      "id": "e03",
+      "url": "https://dataspace.copernicus.eu/terms-and-conditions",
+      "fetched_at": "2026-11-09T15:56:12.096188Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "74bdf7fa9732caea2b8e18be1d5bcf20752ce712349516631449d115b74b67ac",
+      "bytes": 78719,
+      "raw_path": "S42/2026-11-09/74bdf7fa9732caea2b8e18be1d5bcf20752ce712349516631449d115b74b67ac.html",
+      "shows": "CDSE Terms and Conditions: Sentinel data free, full and open under the Legal Notice; portal content non-commercial; clause 4 says users must register to access EO data"
+    },
+    {
+      "id": "e04",
+      "url": "https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice",
+      "fetched_at": "2026-11-09T15:56:16.785106Z",
+      "status": 200,
+      "media_type": "application/pdf",
+      "sha256": "fa2955ff48a1d82e77fc7296d63681670ecdb9d2811a0505ae60d0683b62fa64",
+      "bytes": 115881,
+      "raw_path": "S42/2026-11-09/fa2955ff48a1d82e77fc7296d63681670ecdb9d2811a0505ae60d0683b62fa64.pdf",
+      "shows": "Legal notice on the use of Copernicus Sentinel Data and Service Information (PDF): free, full and open use incl. reproduction, distribution, adaptation; attribution notice 'Copernicus Sentinel data [Year]'"
+    },
+    {
+      "id": "e05",
+      "url": "https://documentation.dataspace.copernicus.eu/robots.txt",
+      "fetched_at": "2026-11-09T15:56:20.886030Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "d1bbaa6f17ccab7a7d303f607a6bacc93d389283a9f961db2f0b200907bda26f",
+      "bytes": 67,
+      "raw_path": "S42/2026-11-09/d1bbaa6f17ccab7a7d303f607a6bacc93d389283a9f961db2f0b200907bda26f.bin",
+      "shows": "CDSE documentation robots.txt"
+    },
+    {
+      "id": "e06",
+      "url": "https://documentation.dataspace.copernicus.eu/APIs/OData.html",
+      "fetched_at": "2026-11-09T15:56:36.818422Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "3d7949dda5da0022b0a54cdc972e2c76b2bb83e926ae6d5263e326f085346d35",
+      "bytes": 403682,
+      "raw_path": "S42/2026-11-09/3d7949dda5da0022b0a54cdc972e2c76b2bb83e926ae6d5263e326f085346d35.html",
+      "shows": "OData documentation: keyless product search with filters and Attributes; product download and node listing use an Authorization Bearer access token"
+    },
+    {
+      "id": "e07",
+      "url": "https://documentation.dataspace.copernicus.eu/APIs/Token.html",
+      "fetched_at": "2026-11-09T15:56:40.883610Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "049c4045c7538862456bf3b051c1bdc2c0da245a3b0aefe69a9df7194b86e865",
+      "bytes": 182448,
+      "raw_path": "S42/2026-11-09/049c4045c7538862456bf3b051c1bdc2c0da245a3b0aefe69a9df7194b86e865.html",
+      "shows": "Token generation: users must have an access token to download products; obtained from the identity server with account username and password"
+    },
+    {
+      "id": "e08",
+      "url": "https://documentation.dataspace.copernicus.eu/Registration.html",
+      "fetched_at": "2026-11-09T15:56:44.980509Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "271288cf9622867a871d753e3e0d84241be1427228185468cfa3c9d69c3fd2b9",
+      "bytes": 178164,
+      "raw_path": "S42/2026-11-09/271288cf9622867a871d753e3e0d84241be1427228185468cfa3c9d69c3fd2b9.html",
+      "shows": "User registration: register form, accept terms and conditions, verify e-mail; registration is an account step"
+    },
+    {
+      "id": "e09",
+      "url": "https://documentation.dataspace.copernicus.eu/Quotas.html",
+      "fetched_at": "2026-11-09T15:56:49.049441Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "f36297df385b06ef4e98b41d4e1071797bedf2253ef6249935aa8ba90579faf8",
+      "bytes": 187531,
+      "raw_path": "S42/2026-11-09/f36297df385b06ef4e98b41d4e1071797bedf2253ef6249935aa8ba90579faf8.html",
+      "shows": "Quotas and limitations per user account: requests, transfer, token lifetime"
+    },
+    {
+      "id": "e10",
+      "url": "https://documentation.dataspace.copernicus.eu/Data/SentinelMissions/Sentinel1.html",
+      "fetched_at": "2026-11-09T15:56:53.540446Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "42ae20afe4cc9f9e7e49e71dd686d2cb3d2d1786dbbd5649f85aba86dcd87eab",
+      "bytes": 244000,
+      "raw_path": "S42/2026-11-09/42ae20afe4cc9f9e7e49e71dd686d2cb3d2d1786dbbd5649f85aba86dcd87eab.html",
+      "shows": "Sentinel-1 data page: GRD products, COG_SAFE format, VV/VH bands, archive from Oct 2014, free of charge"
+    },
+    {
+      "id": "e11",
+      "url": "https://documentation.dataspace.copernicus.eu/Data/SentinelMissions/Sentinel2.html",
+      "fetched_at": "2026-11-09T15:56:57.451579Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "2ca859769ec944f0b12047c271ecd1d1ca80cff2793309637fe358d1a3f7f825",
+      "bytes": 215136,
+      "raw_path": "S42/2026-11-09/2ca859769ec944f0b12047c271ecd1d1ca80cff2793309637fe358d1a3f7f825.html",
+      "shows": "Sentinel-2 data page: L2A surface reflectance, B04 red and B08 NIR at 10 m, archive from Jul 2015"
+    },
+    {
+      "id": "e12",
+      "url": "https://catalogue.dataspace.copernicus.eu/odata/v1/Products?$filter=Collection/Name%20eq%20%27SENTINEL-1%27%20and%20OData.CSC.Intersects(area=geography%27SRID=4326;POINT(76.27%209.93)%27)%20and%20ContentDate/Start%20gt%202026-10-01T00:00:00.000Z%20and%20contains(Name,%27GRD%27)&$top=2&$orderby=ContentDate/Start%20desc&$expand=Attributes",
+      "fetched_at": "2026-11-09T15:57:04.325337Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "afedacbb4e176ee8c933a08159561641a0ca82f5635a0b00a377659316fd7872",
+      "bytes": 9559,
+      "raw_path": "S42/2026-11-09/afedacbb4e176ee8c933a08159561641a0ca82f5635a0b00a377659316fd7872.json",
+      "shows": "Keyless OData search, no token: two newest Sentinel-1 GRD COG_SAFE products over Kochi (Kerala) with ContentDate, S3Path, polarisationChannels"
+    },
+    {
+      "id": "e13",
+      "url": "https://catalogue.dataspace.copernicus.eu/odata/v1/Products?$filter=Collection/Name%20eq%20%27SENTINEL-2%27%20and%20OData.CSC.Intersects(area=geography%27SRID=4326;POINT(76.27%209.93)%27)%20and%20ContentDate/Start%20gt%202026-10-15T00:00:00.000Z%20and%20contains(Name,%27MSIL2A%27)&$top=2&$orderby=ContentDate/Start%20desc&$expand=Attributes",
+      "fetched_at": "2026-11-09T15:57:14.892470Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "87c6eb019128397dea2ae804f4d51620711ed89686144aaeba555b4e8e83f515",
+      "bytes": 9397,
+      "raw_path": "S42/2026-11-09/87c6eb019128397dea2ae804f4d51620711ed89686144aaeba555b4e8e83f515.json",
+      "shows": "Keyless OData search, no token: two newest Sentinel-2 L2A products over Kochi with cloudCover, tileId, ContentDate"
+    },
+    {
+      "id": "e14",
+      "url": "https://stac.dataspace.copernicus.eu/v1/collections/sentinel-2-l2a/items?limit=1&bbox=76.2,9.9,76.3,10.0&datetime=2026-10-15T00:00:00Z/..",
+      "fetched_at": "2026-11-09T15:57:18.835791Z",
+      "status": 200,
+      "media_type": "application/geo+json",
+      "sha256": "2878c132bee0143c926408a2f113c8db66dc5f09f2eb39aed4844760d0528cdb",
+      "bytes": 72110,
+      "raw_path": "S42/2026-11-09/2878c132bee0143c926408a2f113c8db66dc5f09f2eb39aed4844760d0528cdb.geojson",
+      "shows": "Keyless STAC item search: one Sentinel-2 L2A item with eo:cloud_cover and assets whose hrefs are s3://eodata paths and download.dataspace URLs"
+    }
+  ]
+}
