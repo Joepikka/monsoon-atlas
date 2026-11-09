@@ -63,7 +63,9 @@ sources:
     verify_task: T055
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "backfill; monthly; split requests that mix products"
+    verified_by: configs/sources/s07.yaml
+    enabled: true
   - source_id: S08
     name: "IMD Pune gridded rainfall 1901-2024"
     verify_task: T057
