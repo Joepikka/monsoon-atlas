@@ -2,6 +2,23 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D155 — The twenty news annotation batches are one recorded blocked batch (11 Nov 2026, T189 to T208).**
+  The plan gives each batch its own `eval/news/batch_NN.jsonl`, report and test, accepted by
+  50 labelled records. None can exist: S41 (permitted news RSS sources) is blocked (T125, T126),
+  because every publisher limits RSS use to personal reading and no permission to store a
+  headline, link and timestamp is on record, so there are 0 permitted articles and no frozen
+  temporal split to select from. Owner step H13 also needs the owner to review at least 20% of
+  every batch and every held-out test item, and AI-only labels cannot be the ground truth for an
+  AI extractor; no review exists. Deviation: instead of twenty empty batch files, twenty reports
+  and twenty tests, which would look like finished batches with zero rows, one record
+  (`eval/news/blocked.json`), one page (`reports/labels/news.md`) and one test
+  (`tests/labels/test_news_blocked.py`) cover T189 to T208. The record lists the twenty task IDs,
+  counts (selected 0, labelled 0, reviewed 0, against 50 per batch and 1000 in total) and the
+  SHA256 of the S41 record and manifest, so the test fails loudly if S41 changes. All 1000 records
+  are carried into future bounded tasks; none is done. Retry when written publisher permission is
+  on record and T125 is re-run, then select from a frozen temporal split, pre-label and obtain the
+  H13 review.
+
 - **D154 — Wall mode built, not mounted; nothing stale is styled as current (11 Nov 2026, T188).**
   `web/src/map/WallMode.tsx` shows the snapshot timestamp large, a tile per source (status text plus
   last-success time as `<time>`) and the existing `EventTicker` unchanged: it already has a pause
