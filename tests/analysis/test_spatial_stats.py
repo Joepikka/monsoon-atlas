@@ -13,10 +13,13 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-import shapely
-from scipy.stats import false_discovery_control
 
-from atlas.analysis.spatial import (
+pytest.importorskip("shapely")  # geo and ml locks are not installed in CI (D35)
+pytest.importorskip("scipy")
+import shapely  # noqa: E402
+from scipy.stats import false_discovery_control  # noqa: E402
+
+from atlas.analysis.spatial import (  # noqa: E402
     benjamini_hochberg,
     morans_i,
     permutation_test,

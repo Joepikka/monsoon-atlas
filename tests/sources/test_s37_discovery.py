@@ -3,7 +3,10 @@ discovery contract only with cited evidence and explicit access, licence and his
 
 import re
 
-from pypdf import PdfReader
+import pytest
+
+pytest.importorskip("pypdf")  # the ocr lock is not installed in CI (D35)
+from pypdf import PdfReader  # noqa: E402
 
 
 def text(path) -> str:

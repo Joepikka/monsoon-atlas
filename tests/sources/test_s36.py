@@ -13,14 +13,16 @@ import pyarrow.compute as pc
 import pyarrow.parquet as pq
 import pytest
 
-from atlas.config import load_state
-from atlas.contracts import Budget, FetchContext, RawArtifact
-from atlas.data.validate import read_mapping, validate_table
-from atlas.ingest import s36
-from atlas.ingest.base import IngestError, SourceUnavailable
-from atlas.ingest.http import Fetcher
-from atlas.ingest.raw_store import RawStore
-from atlas.ingest.s36 import HOSTS, S36, TABLES
+pytest.importorskip("pypdf")  # the ocr lock is not installed in CI (D35)
+
+from atlas.config import load_state  # noqa: E402
+from atlas.contracts import Budget, FetchContext, RawArtifact  # noqa: E402
+from atlas.data.validate import read_mapping, validate_table  # noqa: E402
+from atlas.ingest import s36  # noqa: E402
+from atlas.ingest.base import IngestError, SourceUnavailable  # noqa: E402
+from atlas.ingest.http import Fetcher  # noqa: E402
+from atlas.ingest.raw_store import RawStore  # noqa: E402
+from atlas.ingest.s36 import HOSTS, S36, TABLES  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / "data" / "raw"

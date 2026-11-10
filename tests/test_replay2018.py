@@ -13,8 +13,10 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from atlas.analysis import event_study as es
-from atlas.analysis.replay import LABEL, as_known, mode, validate
+pytest.importorskip("scipy")  # the ml lock is not installed in CI (D35)
+
+from atlas.analysis import event_study as es  # noqa: E402
+from atlas.analysis.replay import LABEL, as_known, mode, validate  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 EDA = ROOT / "reports/eda"
