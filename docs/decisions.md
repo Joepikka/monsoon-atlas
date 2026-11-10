@@ -2,6 +2,26 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D158 — M16 rule run on the held S08 daily grids; per-source usability; counts only (11 Nov 2026, T215).**
+  Decided from the files: **S08** (IMD 0.25 degree daily rain, 1981-2025, 45 year files, enabled
+  for ka and kl) is the only source with a real daily history on this machine. **S02 and S07**
+  hold only single-point (Bengaluru) discovery probes, no daily series; **S32** has two sampled
+  dates a month, so a trailing 28-day window is undefined (and T114 quarantine applies);
+  **S22 and S23** hold zero price rows (blocked); no other enabled source is a held daily or finer
+  feed. S08 is licence restricted (D129): no rainfall value, cell or date is committed, only
+  `reports/models/m16-flag-counts.json` with flags by state, year, season (IMD) and strength band
+  (|z| 4-6, 6-10, above 10) plus per-year coverage (evaluated, missing, too_few_valid, mad_zero,
+  bound). The run uses `read_grid` and `state_cells` directly (as M05 does), not the Arrow adapter
+  table, the 28 days before each year come from the previous held year, and 1981 starts with no
+  history (no earlier day is invented). The ka and kl cell boxes overlap, so shared cells count in
+  both. Result: ka 417,948 and kl 152,086 flags (all but 19 are above the window median, none
+  breaks the 0 mm bound). Flags are 18.8% of evaluated ka cell-days and 0.33 per entity-week over
+  all cell-days (1.32 per evaluated entity-week), above the card's "at most 1 false alert per
+  entity-week" if most were false; with no labels this is reported, not judged. Rain is
+  zero-heavy and heavy-tailed, and 75% of ka cell-days have no z (mad_zero or too few valid days).
+  The table by year includes 2025 (the card's test year) as a count only: nothing is tuned,
+  scored or selected on it. `fit` reads no train or tune row; nothing is learned.
+
 - **D157 — M16 rule implemented as pure functions; gaps in the card settled and recorded (11 Nov 2026, T214).**
   `src/atlas/features/m16.py` computes `robust_z = (x - median) / (1.4826 * MAD)` against the 28
   report days strictly before the report; a future row cannot change an earlier flag (mutation
