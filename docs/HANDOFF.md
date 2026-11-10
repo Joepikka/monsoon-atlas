@@ -321,6 +321,8 @@ and a YAML block `- id: T057`.
 | CI fix 2 | `78a989d` | Two failures hidden behind the collection error: `test_pbip` read `powerbi/__pycache__/*.pyc` as UTF-8; the price notebook test needs matplotlib (geo/ml lock) |
 | T146 | `85bf52b` (D133) | S24 CPCB stations via data.gov.in: **blocked**. Plain HTTP gets 403 on the resource page; the Browser pane loads it but its read tools returned "Policy check temporarily unavailable" (retried 10 Nov, same). Resource ID, licence, fields, units, averaging interval and history are all unread. A resource ID seen in a third-party tutorial was not used. The S23 key works on the API host (e01). Acceptance 5 passed. (Sonnet subagent) |
 | T147 | `9c3e83e` (D134) | S24 disabled adapter: raises `SourceUnavailable` before I/O; schema lists no fields; no Delhi state config yet (T150). Acceptance 3 passed |
+| T148 | `6b021c7` (D135) | S38 Delhi Open Transit Data: **blocked on owner step H04**. Static GTFS downloads are POST forms (usage, purpose, name, email, Terms tick); real time is `VehiclePositions.pb` with a private key (no key: 401); no TripUpdates path published. Terms give no open licence (restricted). Static counts published: bus 543 routes (20 Jun 2024), DMRC 36 routes (10 Aug 2023). Docs call static stop times a constant-speed estimate. Acceptance 5 passed. (Sonnet subagent) |
+| T149 | `2922ab1` (D136) | S38 disabled adapter; schema lists no fields; secret name `OTD_API_KEY`. Acceptance 3 passed |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -799,8 +801,11 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    all four Kerala models blocked) and T224/T223 are done. P4 Delhi has started: T146/T147 are
    done (S24 blocked on a tooling failure, not on the source: re-run T146 once a browser can
    read https://www.data.gov.in/resource/real-time-air-quality-index-various-locations and take
-   the resource ID from its API tab; no new key needed). Next is T148/T149 (S38 Delhi Open
-   Transit Data, owner step H04), then T150 onwards in plan order. New owner steps from P3: H12 (aisstream key), proposed
+   the resource ID from its API tab; no new key needed). T148/T149 are done (S38 blocked on H04:
+   the owner submits the real time key request and static download forms on otd.delhi.gov.in,
+   accepts the Terms, stores the key as `OTD_API_KEY` in `.env` and the static ZIP in
+   `data/raw/S38`; then T148 re-runs). CI is green on `71e1fd2`. Next is T150 onwards in plan
+   order; with S24 and S38 both blocked, T150-T166 take their blocked branches. New owner steps from P3: H12 (aisstream key), proposed
    H15 (Copernicus account), T118 bulk OCR approval, S41 publisher permission, Power BI Desktop
    exports (D132);
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
