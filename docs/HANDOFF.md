@@ -318,6 +318,9 @@ and a YAML block `- id: T057`.
 | T224 | `6af2690` (D131) | SQL insights report: ten questions the held data can answer (`reports/sql_insights.md`) |
 | T223 | `15e7f3d` (D132) | Power BI report generated as PBIP (`powerbi/MonsoonAtlas.pbip`), four pages, two blocked notes; untested in Power BI Desktop; PNG/PDF exports are an owner step |
 | CI fix | `50b7329` | `ci` failed at collection on `6af2690` and `15e7f3d`: four test modules imported shapely, scipy or pypdf, which CI does not install. They now use `pytest.importorskip` (D35) |
+| CI fix 2 | `78a989d` | Two failures hidden behind the collection error: `test_pbip` read `powerbi/__pycache__/*.pyc` as UTF-8; the price notebook test needs matplotlib (geo/ml lock) |
+| T146 | `85bf52b` (D133) | S24 CPCB stations via data.gov.in: **blocked**. Plain HTTP gets 403 on the resource page; the Browser pane loads it but its read tools returned "Policy check temporarily unavailable" (retried 10 Nov, same). Resource ID, licence, fields, units, averaging interval and history are all unread. A resource ID seen in a third-party tutorial was not used. The S23 key works on the API host (e01). Acceptance 5 passed. (Sonnet subagent) |
+| T147 | `9c3e83e` (D134) | S24 disabled adapter: raises `SourceUnavailable` before I/O; schema lists no fields; no Delhi state config yet (T150). Acceptance 3 passed |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -793,9 +796,11 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    T257 writes the accuracy rows and docs/releases/ka.md checklist (not
    releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T052 are done (S03, S04, S05); T047-T058 are done (S03 to S08); T059-T061 done (S10 enabled, S11 blocked on terms); P2 source pairs T047-T088 are done (S11, S25, S27, S31, S39, S43 disabled; S03-S07, S10, S12-S14, S19-S21, S29, S44 enabled); T089-T100 recorded M01-M04 as blocked branches; T028/T029 (S30 GTFS) and T104-T110 are done; the Karnataka v1 gate (T110, docs/releases/ka-v1.md) opens P3: next is T111 (aisstream ships, needs H12) and the rest of P3 in plan order; shared interfaces are hash-frozen (D122); from 9 Nov simple/medium tasks run on Sonnet 5.5 high subagents and hard ones on Opus 5.5 high; P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
    **Update 10 Nov 2026:** P3 Kerala is done through the gate (T111-T145, `docs/releases/kl.md`,
-   all four Kerala models blocked) and T224/T223 are done. P4 Delhi starts: next is T146/T147
-   (S24 CPCB stations via data.gov.in), then T148/T149 (S38 Delhi Open Transit Data, owner step
-   H04), then T150 onwards in plan order. New owner steps from P3: H12 (aisstream key), proposed
+   all four Kerala models blocked) and T224/T223 are done. P4 Delhi has started: T146/T147 are
+   done (S24 blocked on a tooling failure, not on the source: re-run T146 once a browser can
+   read https://www.data.gov.in/resource/real-time-air-quality-index-various-locations and take
+   the resource ID from its API tab; no new key needed). Next is T148/T149 (S38 Delhi Open
+   Transit Data, owner step H04), then T150 onwards in plan order. New owner steps from P3: H12 (aisstream key), proposed
    H15 (Copernicus account), T118 bulk OCR approval, S41 publisher permission, Power BI Desktop
    exports (D132);
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
