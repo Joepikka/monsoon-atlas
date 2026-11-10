@@ -6,7 +6,7 @@
   "engines": { "node": "22.16.0" },
   "scripts": {
     "check": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test tests/core.test.mjs tests/ask.test.mjs tests/ask-route.test.mjs",
+    "test": "node --experimental-strip-types --test tests/core.test.mjs tests/ask.test.mjs tests/ask-route.test.mjs tests/transit.test.mjs",
     "test:runtime": "node tests/runtime.test.mjs"
   },
   "devDependencies": { "typescript": "7.0.2", "wrangler": "4.157.0" }

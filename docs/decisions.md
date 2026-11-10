@@ -2,6 +2,20 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D138 — T151 builds no live poller; only the fail-closed rules exist (10 Nov 2026, T151).**
+  With S38 blocked (D135, D137) there is no feed to poll, so no cron trigger, upstream URL, key
+  binding, decoder or storage write was added to the Worker, and `worker/src/cron.ts` is untouched
+  (it does not exist; nothing in the blocked state belongs there). `worker/src/transit.ts` holds
+  only what can be true and tested now: the poll budget (16 h x 60 s = 960 polls/day, below the
+  D1 write and Worker request caps in `configs/budgets.yaml`), the rule that a position aged
+  120 s or more (or in the future, or with a bad timestamp) is never fresh, and a
+  `TRANSIT_LIVE` state, unavailable with the reason "transit live mode unavailable: S38 blocked
+  (H04)", that keeps `liveMarker` false. Nothing imports the module yet. The module test is added
+  to `npm test`. `tests/test_dl_poll.py` checks the constants against the budgets, that no Worker
+  or web file names `OTD_API_KEY`, `VehiclePositions` or the OTD host, and that `wrangler.toml` has
+  no `crons`. Deferred, with T150's retry condition: the 60 s cron, one upstream call per tick,
+  route-filtered decode, one compressed snapshot per tick and the static schedule fallback.
+
 - **D137 — T150 Delhi is registered with every source disabled; the study cannot start and the decoder is deferred (10 Nov 2026, T150).**
   `configs/states/dl.yaml` is an isolated Delhi config in the shape of `kl.yaml`: paths under
   `data/*/dl`, S24 and S38 listed disabled with their discovery records, and the shared national
