@@ -917,3 +917,24 @@ h1,h2,h3,p{
 .wall-ticker .event-ticker p { font-size: 20px; }
 .wall-ticker .event-ticker button { min-height: 44px; font-size: 16px; }
 .wall-alerts-hidden, .wall-note { margin-top: 24px; font-size: 18px; }
+.dashboard{
+  max-width:1200px;
+  margin:0 auto;
+  padding:24px 16px
+}
+.dash-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:12px;
+  list-style:none;
+  padding:0
+}
+.dash-card{
+  border:1px solid var(--line);
+  background:var(--paper);
+  padding:12px
+}
+.dash-state{
+  color:var(--muted);
+  font-size:13px
+}

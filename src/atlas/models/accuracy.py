@@ -9,9 +9,12 @@ import json
 import re
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parents[3]
 OUTPUT = ROOT / "docs/releases/ka.md"
 WEB_FIXTURE = ROOT / "web/tests/fixtures/accuracy-ka.json"
+DASHBOARD_DATA = ROOT / "web/src/dashboards.json"
 
 
 def _json(path: str) -> dict:
@@ -169,12 +172,196 @@ def release_json() -> str:
     return json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
 
 
+GATE_PAGES = {
+    "ka": "docs/releases/ka-v1.md",
+    "kl": "docs/releases/kl.md",
+    "dl": "docs/releases/dl.md",
+}
+# T217 (D161): analysis reports that exist, with the sources each one reads.
+ANALYSES = [
+    (
+        "reports/eda/01_ka_quality/summary.json",
+        "Karnataka feed quality (T106)",
+        ["S08", "S10", "S01"],
+    ),
+    (
+        "reports/eda/02_ka_rain/summary.json",
+        "Karnataka gauge and grid rainfall (T107)",
+        ["S29", "S08"],
+    ),
+    (
+        "reports/eda/03_ka_prices/summary.json",
+        "Karnataka price sources, no price rows",
+        ["S22", "S23"],
+    ),
+    (
+        "reports/eda/05_kl_flood2018/summary.json",
+        "Kerala 2018 flood replay (T142)",
+        ["S08", "S32", "S36"],
+    ),
+    (
+        "reports/eda/06_rain_price/summary.json",
+        "Rain and price event study, blocked",
+        ["S22", "S23"],
+    ),
+    ("reports/eda/07_climate/summary.json", "Climate trends and projections", ["S08", "S06"]),
+    ("reports/eda/08_delhi_transit/summary.json", "Delhi transit audit, blocked", ["S38"]),
+    ("reports/eda/09_delhi_air/summary.json", "Delhi air audit, blocked", ["S24", "S04"]),
+    ("reports/eda/10_spatial_statistics/summary.json", "Spatial statistics (T109)", ["S08", "S17"]),
+    ("reports/sql_insights.md", "SQL insights (T224)", ["S29", "S08", "S32", "S44"]),
+]
+
+
+def _registry() -> list[dict]:
+    """One card per model. Scores come only from a registry release (M05); never from text."""
+    release = _json("models/registry/M05/v1.json")
+    evaluation = _json("models/registry/M05/v1.evaluation.json")
+    row = next(r for r in accuracy_rows() if r["model"] == "M05")
+    cards = []
+    for n in range(1, 21):
+        mid = f"M{n:02d}"
+        if mid == "M05":
+            cards.append(
+                {
+                    "id": mid,
+                    "state": "ka",
+                    "status": row["status"],
+                    "reason": "Ridge beats persistence on the locked 2020 to 2024 test; hindcast.",
+                    "links": ["reports/models/m05.md", "reports/models/m05-card.md"],
+                    "score": {
+                        "label": "hindcast",
+                        "metric": "MAE",
+                        "model": release["candidate"],
+                        "baseline": release["baseline"],
+                        "test": release["cutoffs"]["test"],
+                        "model_value": row["candidate"],
+                        "baseline_value": row["baseline_value"],
+                        "improvement": row["improvement"],
+                        "ci95": row["ci95"],
+                        "rows": evaluation["rows"],
+                        "months": evaluation["months"],
+                    },
+                }
+            )
+            continue
+        reg = _json(f"models/registry/{mid.lower()}.json")
+        cards.append(
+            {
+                "id": mid,
+                "state": reg["state"],
+                "status": reg["status"],
+                "reason": reg["reason"],
+                "links": [reg["report"]],
+                "score": None,
+            }
+        )
+    return cards
+
+
+def _sources() -> list[dict]:
+    from atlas.config import load_state
+
+    out = []
+    for state in ("ka", "kl", "dl"):
+        for s in load_state(ROOT / f"configs/states/{state}.yaml").sources:
+            record = f"configs/sources/{s.source_id.lower()}.yaml"
+            d = yaml.safe_load((ROOT / record).read_text("utf-8"))
+            out.append(
+                {
+                    "state": state,
+                    "id": s.source_id,
+                    "name": s.name,
+                    "enabled": s.enabled,
+                    "outcome": d["outcome"],
+                    "licence": d["licence"]["status"],
+                    "retry": d.get("retry_condition"),
+                    "link": record,
+                }
+            )
+    return out
+
+
+def dashboard_data() -> dict:
+    """T217 (D161): everything the four dashboards show, from files that already exist."""
+    cards, sources = _registry(), _sources()
+    flags = _json("reports/models/m16-flag-counts.json")["totals"]
+    monitor = _json("models/registry/M05/v1.monitor-2025.json")
+    states = {}
+    for state in ("ka", "kl", "dl"):
+        mine = [s for s in sources if s["state"] == state]
+        models = [c["status"] for c in cards if c["state"] == state]
+        states[state] = {
+            "sources": len(mine),
+            "enabled": sum(s["enabled"] for s in mine),
+            "blocked": sum(s["outcome"] == "blocked" for s in mine),
+            "models": len(models),
+            "models_blocked": models.count("blocked"),
+            "link": f"configs/states/{state}.yaml",
+            "page": GATE_PAGES[state],
+        }
+    licence = {s["id"]: s["licence"] for s in sources}
+    analyses = [
+        {
+            "link": path,
+            "title": title,
+            "sources": ids,
+            "restricted": [i for i in ids if licence.get(i) == "restricted"],
+        }
+        for path, title, ids in ANALYSES
+    ]
+    return {
+        "schema_version": 1,
+        "models": cards,
+        "sources": sources,
+        "anomaly_queue": {
+            "model": "M16",
+            "label": "unadjudicated rule output, not incidents",
+            "adjudicated": 0,
+            "required": 100,
+            "states": {
+                k: {"evaluated": v["evaluated"], "flags": v["flags_z"]} for k, v in flags.items()
+            },
+            "links": ["reports/models/m16.md", "reports/models/m16-flag-counts.json"],
+        },
+        "drift": {
+            "model": "M05",
+            "period": monitor["period"],
+            "rows": monitor["rows"],
+            "flag": monitor["flag"],
+            "mae_ratio": monitor["mae_ratio"],
+            "ci95": [monitor["improvement"]["lower95"], monitor["improvement"]["upper95"]],
+            "label": "hindcast, provisional",
+            "link": "reports/models/m05-2025.md",
+        },
+        "analyses": analyses,
+        "states": states,
+        "series": [
+            {
+                "state": "ka",
+                "name": "M05 MAE",
+                "level": "district",
+                "unit": "SPI-3",
+                "span": _json("models/registry/M05/v1.json")["cutoffs"]["test"].split("/"),
+                "normalisation": "climate_reference",  # SPI is standardised on 1981-2010
+                "coverage": 1.0,
+                "link": "reports/models/m05.md",
+            }
+        ],
+    }
+
+
+def dashboard_json() -> str:
+    return json.dumps(dashboard_data(), indent=2, ensure_ascii=False) + "\n"
+
+
 def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(render(), "utf-8", newline="\n")
     # The browser fixture mirrors the committed records; it is test data, not a publication.
     WEB_FIXTURE.write_text(release_json(), "utf-8", newline="\n")
-    print(json.dumps({"written": [str(p.relative_to(ROOT)) for p in (OUTPUT, WEB_FIXTURE)]}))
+    DASHBOARD_DATA.write_text(dashboard_json(), "utf-8", newline="\n")
+    written = (OUTPUT, WEB_FIXTURE, DASHBOARD_DATA)
+    print(json.dumps({"written": [str(p.relative_to(ROOT)) for p in written]}))
 
 
 if __name__ == "__main__":

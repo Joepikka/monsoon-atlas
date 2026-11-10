@@ -2,6 +2,32 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D161 — Four dashboards built on one generated data file; built, not mounted (11 Nov 2026, T217).**
+  `atlas.models.accuracy.dashboard_data()` (beside `accuracy_rows`, no new package) writes
+  `web/src/dashboards.json` from files that already exist: per model the registry status and reason;
+  scores only where the registry has them (M05: MAE 0.732 against persistence 0.808, improvement
+  0.076, 95% CI 0.003 to 0.150, 1800 district-months over 60 months, test 2020 to 2024, label
+  "hindcast", D39); a link to each report and, for M05, its model card; the hidden M05 intervals stay
+  hidden (D42, T262), and a test checks the data holds no interval or S08 cell field. A test
+  regenerates the file and compares bytes, and compares the per-state source counts with the three
+  gate pages (ka 23 of 33, kl 4 of 19, dl 0 of 8), so the pages cannot drift. `Accuracy.tsx` keeps its
+  release table and gains a model-status section; `Quality.tsx` shows source health from the source
+  records, the M16 counts as a review queue labelled "unadjudicated rule output, not incidents" (0 of
+  100 flags adjudicated; counts only, no S08 value) in its own section, a "Hazard extremes" section
+  that shows none, and the M05 2025 monitor result as drift (PSI and the 14-day labelled MAE ratio
+  are "unavailable": no live issue-time predictions exist). `Analysis.tsx` indexes ten committed
+  reports with their sources and a licence note, and inlines no S08 rainfall value (the H11 item on
+  S08 publication stays open). `Compare.tsx` shows source and model status counts side by side with
+  coverage (enabled/total) and no ranking; its pure `comparable(a, b)` rejects a different geography
+  level, unit or non-overlapping span and requires a normalisation (per capita, per area or climate
+  reference) and a coverage in (0, 1]. Only Karnataka has a metric series (M05), so every metric pair
+  reads "unavailable" with its reason. An undefined denominator (`ratio`) renders "Unavailable", never
+  0 or NaN. Like Accuracy and Ask, the pages are reachable only by `?page=quality`, `analysis` and
+  `compare` (a lookup in `main.tsx` replaced the nested conditional); no public snapshot carries them.
+  Strings go through `t()` in four locales (kn, ml, hi are unreviewed machine drafts, A7).
+  Placeholders must keep the English order in every locale, so some English sentences are phrased in
+  the order the other languages use. Models with state ALL (M16, M20) belong to no state count.
+
 - **D160 — M16 is published as research-only, not blocked (11 Nov 2026, T216).**
   The card allows no quality claim under 100 manual labels. The rule ran on real data (D158) and
   flag counts exist, so the blocked branch (used for M18, which had no data at all) would
