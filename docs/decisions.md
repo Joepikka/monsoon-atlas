@@ -2,6 +2,23 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D157 — M16 rule implemented as pure functions; gaps in the card settled and recorded (11 Nov 2026, T214).**
+  `src/atlas/features/m16.py` computes `robust_z = (x - median) / (1.4826 * MAD)` against the 28
+  report days strictly before the report; a future row cannot change an earlier flag (mutation
+  test). Flag: `abs(z) > 4` or a value outside a stated unit bound. Settled where the card is
+  silent: a missing value never becomes 0, never flags and stays out of every window; a value that
+  breaks a bound flags as `bound` and stays out of later windows; MAD of exactly 0 gives no z (no
+  division by zero, no flag, counted as `mad_zero`, so a 200 mm day after a dry spell is not
+  flagged by this rule); fewer than 21 usable days in the window gives no z (21 is an
+  implementation choice, not on the card). The only unit bound is S08 rain >= 0 mm, taken from the
+  source record ("from 0 upward"; the adapter already rejects negatives, D30); no upper bound is
+  stated by any source, so none is invented. Season/hour correction is not applied: the trailing
+  window follows the local level and daily data has no hour; season only stratifies reports. The
+  feature framework's `build_features` (duckdb, one sub-query per row) does not fit millions of
+  cell-days, so the window is a vectorised regular daily grid (shortcut noted in the module). No
+  IsolationForest: with 0 adjudicated labels no challenger can be evaluated. Tests use hand-built
+  series labelled as test inputs for the rule, not feeds.
+
 - **D156 — M18 is recorded as a blocked branch (11 Nov 2026, T209 to T211).**
   M18 (Malayalam/English news event extraction) needs 1000 permitted annotated texts, at least
   100 per class, across 2 or more publishers and both languages. Actual: 0. S41 is blocked (T125,
