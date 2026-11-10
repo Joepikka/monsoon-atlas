@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D133 — T146 S24 is blocked because the resource page could not be read; the ID is not taken from a tutorial (10 Nov 2026, T146).**
+  Plain HTTP gets 403 on the data.gov.in resource and catalogue pages (as in T025). The Browser pane
+  loaded the S24 resource page, but every content-reading tool returned "Policy check temporarily
+  unavailable", so the API tab (resource ID) and the licence text were not read, and Claude in
+  Chrome was not connected. A third-party tutorial quotes an ID; it is not a page the source
+  publishes, so it was not used or tested. The one evidence file (e01) is a one-record keyed request
+  for the S23 resource, kept only to show that the key and API host work and that no rate limit is
+  published; the YAML says it is not an S24 sample. Licence is unverified, units, averaging
+  interval and history are unestablished, the field map lists no upstream fields, and
+  redistribution stays false. Dependents T147, T150 and T159 are blocked. Retry: read the page in a
+  browser that can read content, then re-run T146 (no new key needed).
+
 - **D132 — T223 Power BI report is generated with four pages, two of them blocked notes; PNG and PDF exports are an owner step (9 Nov 2026, T223).**
   `powerbi/build_pbip.py` writes `powerbi/MonsoonAtlas.pbip` (TMDL model plus PBIR report, as in
   kerala-veg-prices) and four small CSVs in `reports/powerbi/data/`, all derived from committed
