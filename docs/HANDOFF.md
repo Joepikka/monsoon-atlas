@@ -303,6 +303,21 @@ and a YAML block `- id: T057`.
 | T108 | `581cdb5` (D120) | Price notebook is a unit and availability audit: S22/S23 blocked, zero rows, measures n = 0 "not computable". Acceptance 9 passed. (Sonnet subagent) |
 | T109 | `9df5092` (D121) | Spatial statistics on M05 ridge residuals: queen adjacency (66 borders), Moran's I 0.09-0.84, 57 of 60 test months significant after BH; training-only variogram 2000-2019. M04 blocked: no comparison. Acceptance 10 passed. (Opus subagent) |
 | T110 | `732113d` (D122) | Karnataka v1 gate `docs/releases/ka-v1.md`: 33 KA sources (23 enabled, 10 blocked), M05 approved, M01-M04/M06 blocked, 9 v1 layers (1 measured, 5 blocked, 3 built not mounted); 8 shared interface files hash-frozen (LF bytes). Kerala work may begin; public release (T046) still waits for H11. Acceptance 9 passed. (Sonnet subagent) |
+| T111/T112 | `af349f7`, `9d36872` | S26 aisstream ships: **blocked** on owner step H12 (key); disabled contract |
+| T120 | `36d6ee5` | S35 Kaggle Kerala floods: disabled contract (H10) |
+| T122 | `8d0775e` (D123) | S36 KSDMA assessment adapter enabled in KL: three district tables only, document and page kept; raw PDFs local. Needs pypdf (ocr lock) |
+| T123/T124 | `28e95f7`, `d2c3002` | S37 landslide inventory: **blocked** (state-level counts only, no points or dates); disabled contract |
+| T125/T126 | `8960e04`, `b066bcb` | S41 news RSS: **blocked** (no publisher permission); disabled contract |
+| T127/T128 | `4c9286c`, `ee08b81` | S42 Sentinel-1 / NDVI: **blocked** (Copernicus account, proposed owner step H15); disabled contract |
+| T129 | `b25a3c7` (D124) | Kerala configuration and label audit, run with T046 and T118 pending |
+| T130-T141 | `0196599` to `89dfbbf` (D125, D126) | M07, M08, M09 and M10 recorded as blocked branches: data gate, no-model fit and notebook, published status and report. No baseline, score or prediction for any of them |
+| T142 | `8604abd` (D127) | Kerala event study, climate and 2018 replay on what exists: 157 replay records (35 as-known from S36, 122 reconstructed from S08), 0 forecast vintages; price study not computable |
+| T143 | `9b49715` (D128) | Population exposure and route comparison code, tested on hand-built graphs; returns unavailable without roads (S18), shelters (S43) or hazard polygons |
+| T144 | `5720f3f` (D129) | Kerala release gate `docs/releases/kl.md`: 4 of 19 KL sources enabled, 7 blocked; M07-M10 all blocked; S08 box-mean files in `reports/eda/` need an H11 ruling before any release. Not a public release |
+| T145 | `1d4804c` (D130) | Monsoon and climate product layers on S08 1981-2025 and S06; NDVI and official onset unavailable |
+| T224 | `6af2690` (D131) | SQL insights report: ten questions the held data can answer (`reports/sql_insights.md`) |
+| T223 | `15e7f3d` (D132) | Power BI report generated as PBIP (`powerbi/MonsoonAtlas.pbip`), four pages, two blocked notes; untested in Power BI Desktop; PNG/PDF exports are an owner step |
+| CI fix | `50b7329` | `ci` failed at collection on `6af2690` and `15e7f3d`: four test modules imported shapely, scipy or pypdf, which CI does not install. They now use `pytest.importorskip` (D35) |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -777,6 +792,12 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    T256 adds the T225 core case studies (H14 owner review pending). Next:
    T257 writes the accuracy rows and docs/releases/ka.md checklist (not
    releasable); T258 adds the M05 model card and T259 the web accuracy page. T260 adds the Ask route over trusted D1 chunks (extractive only) and T261 the English text Ask page. The checklist now marks the accuracy page local. T262 recalibrated the M05 intervals: 72.8%, still below the gate, so they stay hidden; do not try another rule on 2020-2024. The M05 case study (H14) predates T262. T263 finds M05 holds on the unused 2025 year (provisional). The card's retraining rule (refit when a new IMD year is published) is now triggered; a refit is a new version and needs an owner decision, since no untouched test year would remain. P2 has started (D105): T047-T052 are done (S03, S04, S05); T047-T058 are done (S03 to S08); T059-T061 done (S10 enabled, S11 blocked on terms); P2 source pairs T047-T088 are done (S11, S25, S27, S31, S39, S43 disabled; S03-S07, S10, S12-S14, S19-S21, S29, S44 enabled); T089-T100 recorded M01-M04 as blocked branches; T028/T029 (S30 GTFS) and T104-T110 are done; the Karnataka v1 gate (T110, docs/releases/ka-v1.md) opens P3: next is T111 (aisstream ships, needs H12) and the rest of P3 in plan order; shared interfaces are hash-frozen (D122); from 9 Nov simple/medium tasks run on Sonnet 5.5 high subagents and hard ones on Opus 5.5 high; P1 owner items stay open; C3 still fails on evidence support (0.86). T264 (e5) and T265 (log limit) gave no gain; section fixes alone cannot pass (max 0.943). T266 records C3 as research-only (D101); revisit only with a fresh held-out question set or reviewed generated answers after H05; `docs/releases/h11-ka.md` lists the six H11 decisions with recommended answers;
+   **Update 10 Nov 2026:** P3 Kerala is done through the gate (T111-T145, `docs/releases/kl.md`,
+   all four Kerala models blocked) and T224/T223 are done. P4 Delhi starts: next is T146/T147
+   (S24 CPCB stations via data.gov.in), then T148/T149 (S38 Delhi Open Transit Data, owner step
+   H04), then T150 onwards in plan order. New owner steps from P3: H12 (aisstream key), proposed
+   H15 (Copernicus account), T118 bulk OCR approval, S41 publisher permission, Power BI Desktop
+   exports (D132);
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
    unresolved human/data gates must remain pending rather than blocking independent work.
 

@@ -135,7 +135,9 @@ def test_reservoir_rows_are_the_published_s32_sample():
 
 def test_no_service_publishing_or_credentials():
     text = " ".join(
-        p.read_text("utf-8") for p in PROJECT.rglob("*") if p.is_file() and p.suffix != ".csv"
+        p.read_text("utf-8")
+        for p in PROJECT.rglob("*")
+        if p.is_file() and p.suffix not in {".csv", ".pyc"}
     )
     assert not re.search(r"powerbi\.com|api\.powerbi|tenant|token", text, re.I)
 

@@ -77,6 +77,7 @@ def test_blocked_adapters_raise_before_returning_rows(adapter, sid):
 
 
 def test_notebook_reproduces_from_a_clean_process(tmp_path):
+    pytest.importorskip("matplotlib")  # geo and ml locks are not installed in CI (D35)
     nb = json.loads((ROOT / "notebooks/03_ka_prices.ipynb").read_text("utf-8"))
     code = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
     env = os.environ | {"ATLAS_EDA_OUT": str(tmp_path), "MPLBACKEND": "Agg"}
