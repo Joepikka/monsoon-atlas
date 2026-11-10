@@ -2,7 +2,22 @@
 
 ## Continuation review (5 Nov 2026)
 
-- **D159 — The two anomaly adjudication batches are one recorded blocked batch (11 Nov 2026, T212 and T213).**
+- **D160 — M16 is published as research-only, not blocked (11 Nov 2026, T216).**
+  The card allows no quality claim under 100 manual labels. The rule ran on real data (D158) and
+  flag counts exist, so the blocked branch (used for M18, which had no data at all) would
+  understate what was done. The status is `research_only`, the one the release framework gives
+  when a score is missing (D38), with `dataset_sha256`, `split_sha256`, weights, baseline and
+  candidate scores and improvement all null, 0 published prediction rows and no champion
+  (`champion` finds no release). It is a status file in the M06 to M20 shape, not a `Release`
+  (a Release needs baseline scores). The report says "rule implemented; flag counts reported;
+  precision not measured (0 of 100 adjudicated)" in those terms and states what the counts do
+  not show (75% of Karnataka cell-days have no z; the flag rate on evaluated cell-days is above
+  the card's 1 false alert per entity-week if most flags are false). M16 is state ALL; the
+  Kerala and Delhi release pages list only M07 to M10 and M12 to M15, so their "no model is
+  research-only" sentences stay true and no frozen file changed. T216 also fixed the M16
+  notebook line length that the T215 commit left over 100 characters. Retry: see D159.
+
+— The two anomaly adjudication batches are one recorded blocked batch (11 Nov 2026, T212 and T213).**
   The plan gives each batch `eval/anomalies/batch_N.jsonl` and a test, accepted by 50 adjudicated
   real flags each. None can exist: the only flags are the agent's own M16 rule output on S08 (T215),
   and the agent does not adjudicate its own detector's flags as ground truth (the H13 principle:

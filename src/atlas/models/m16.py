@@ -15,8 +15,10 @@ import numpy as np
 
 from atlas.features import m16
 from atlas.features.m05 import year_artifacts
+from atlas.features.m16 import data_gate
 from atlas.ingest.base import IngestError, SourceUnavailable
 from atlas.ingest.s08 import BOXES, UNDEF, read_grid, state_cells
+from atlas.models import blocked
 
 ROOT = Path(__file__).resolve().parents[3]
 COUNTS = "reports/models/m16-flag-counts.json"
@@ -137,3 +139,18 @@ def fit(train, tune, folder: Path) -> Path:
 
 def predict(model, rows):
     raise SourceUnavailable("M16 is research-only: no flag is published as a prediction or alert")
+
+
+def status_record() -> dict:
+    """The registry file (T216): bound to the gate's bytes, never a release; every score null."""
+    gate = data_gate()
+    record = blocked.status_record(gate, "all")
+    return {**record, "status": "research_only", "label_gate": gate["label_gate"]}
+
+
+def write_status() -> tuple[Path, Path]:
+    """Write the gate and the registry status, in that order (the status hashes the gate)."""
+    gate_file = blocked.write_gate(data_gate())
+    path = ROOT / "models" / "registry" / "m16.json"
+    path.write_text(json.dumps(status_record(), indent=2) + "\n", encoding="utf-8", newline="\n")
+    return gate_file, path
