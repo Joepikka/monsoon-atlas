@@ -329,6 +329,7 @@ and a YAML block `- id: T057`.
 | T153-T164 | `cd4f997` to `48ed322` (D140, D141) | M12 (bus arrival/delay) and M13 (bunching) blocked by S38; M14 (station PM2.5) blocked by S24 (S04 CAMS is a baseline input, never a label); M15 (heat outlook) blocked: no Delhi source enabled and no S01 forecast vintages held, so calibration skill cannot be claimed. Each has a data gate, no-model fit and notebook, registry record (all scores null, 0 rows) and report. Per model: 5, 3 and 3 acceptance tests passed. (Sonnet subagent) |
 | T165 | `262040f` (D142) | Delhi interface, built and not mounted: `Transit.tsx` (scheduled/live/predicted distinct; position aged >= 120 s hidden), `AirQuality.tsx` (station and CAMS layers separate), shared `ScoreCard.tsx`, `src/atlas/analysis/route_exposure.py` (time-weighted ambient concentration only; refuses mixed units, averaging or provenance). Rules tested on hand-built inputs. Real Delhi transit, station, CAMS comparison and route exposure are all unavailable. Notebooks 08/09 audit the blocked sources and draw no chart. Acceptance 27 passed; web tests 73 passed. (Sonnet subagent) |
 | T166 | `dc82187` (D143) | Delhi release gate `docs/releases/dl.md`: 0 of 8 Delhi sources enabled (S24, S38 blocked); M12-M15 blocked; label windows planned, not started; nothing published or exported; KA and KL gates and the 8 frozen hashes still hold. Acceptance 9 passed |
+| T167-T178 | `9281ae3` to `8d8490a` (D144, D145) | P5 model chains, all blocked: M19 GRU reservoir challenger (M02/S28 blocked, no free GPU session), M11 Karnataka-to-Kerala flood transfer (M01 and M08 blocked), M17 Sentinel-1 U-Net (S42 needs H15; no inundation masks), M20 rain what-if explorer (card needs an approved M01 or M08 flood score; M05 is a drought model, so no explorer was built under this ID). No scores, weights or predictions. Per chain 5 (4 for M17), 3 and 3 acceptance tests passed. (Sonnet subagent) |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -815,9 +816,10 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    benchmark, study manifest, live poller). T153-T164 are done (M12-M15 blocked). M15 is the one
    Delhi model not gated by an owner step: it needs S01 and S02 enabled for Delhi and S01
    forecast vintages collected over the plan's prospective window. T165 and the Delhi gate T166 are done
-   (`docs/releases/dl.md`; nothing released). **P4 is complete on its blocked branches. Next is
-   P5 from T167** (M19 GRU reservoir challenger: depends on the blocked M02, so expect its
-   blocked branch) in plan order. New owner steps from P3: H12 (aisstream key), proposed
+   (`docs/releases/dl.md`; nothing released). **P4 is complete on its blocked branches.** P5:
+   T167-T178 are done (M19, M11, M17, M20 blocked). **Next is T179 onwards** (multilingual Ask,
+   map layers, news annotation, anomalies, dashboards, final acceptance T221); check each
+   against the earlier child tasks T252-T266 before building. New owner steps from P3: H12 (aisstream key), proposed
    H15 (Copernicus account), T118 bulk OCR approval, S41 publisher permission, Power BI Desktop
    exports (D132);
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
