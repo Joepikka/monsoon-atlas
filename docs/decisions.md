@@ -2,6 +2,35 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D162 — Offline plan, widget and export controls built; no service worker registered (11 Nov 2026, T218).**
+  Registration is deferred until H11 (retry: the owner approves a public snapshot and a host, H05,
+  H06, H11; then register from `main.tsx` with `planCache` and add the offline Playwright spec). There
+  is no public host and no approved snapshot, and a registered worker that cached an unapproved
+  shell is hard to undo on a user's device. Built and tested instead: `web/public/manifest.webmanifest`
+  (name Monsoon Atlas, relative start URL, no icons because none exist and none is borrowed from
+  another project, so browsers may not offer install yet) linked from `index.html`; `sw.ts`, an
+  unregistered module with a pure `planCache` (explicit allowlist of shell files plus an empty list
+  of permitted state summaries, a hard 20 MB budget, every entry stamped with its fetch time),
+  `stamp` (adds `x-atlas-cached-at` to a response) and `offlineBanner(cachedAt, now)`, which always
+  names the cache date and says risk in it is not current and that this is not an emergency service
+  with nothing running in the background; a missing, invalid or future date reads "unknown date".
+  A test greps that nothing calls `serviceWorker.` or `.register(`. `web/tests/offline.spec.ts` is
+  not written: with no worker an offline reload has nothing to test, and a mock would only
+  pretend. `Widget.tsx` (`?page=widget&state=ka`) is a read-only catalogue summary with source links
+  that open in a new tab: no form, button, script or iframe, no `postMessage`, no read of the parent
+  or referrer. Framing: no place defines response headers for the web shell (the Worker serves the
+  API only), so nothing is added. Deploy-time requirement: serve the app with
+  `frame-ancestors 'self'` (`APP_FRAME_ANCESTORS`) and give the widget its own path with
+  `frameAncestors(WIDGET_ORIGINS)`; headers cannot match a query string, so the widget needs a path of
+  its own (for example a second HTML entry) before anyone can embed it. `WIDGET_ORIGINS` is empty,
+  since no partner exists, and `frameAncestors` accepts only exact https origins. Exports:
+  `atlas.export.export_manifest` and `web/src/export.ts` allow a source only when its discovery
+  record is available and open, through `require_open_source`, which `require_tile_source` (T185) now
+  calls too, so there is one licence rule. S08, S30 and S34 are refused and S02 passes on its
+  committed Open-Meteo fixture. The manifest carries source ID, licence, row count, a content hash
+  and a hash per shard; a shard holds at most 10,000 rows and 10 MiB. No export button is mounted.
+  Strings go through `t()` in four locales (kn, ml, hi are unreviewed machine drafts, A7).
+
 - **D161 — Four dashboards built on one generated data file; built, not mounted (11 Nov 2026, T217).**
   `atlas.models.accuracy.dashboard_data()` (beside `accuracy_rows`, no new package) writes
   `web/src/dashboards.json` from files that already exist: per model the registry status and reason;

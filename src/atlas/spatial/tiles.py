@@ -23,14 +23,19 @@ RESERVE = 1024 * 1024  # planning margin for the header, directories and metadat
 ATTRIBUTION = {"S19": "Google Research Open Buildings v3 (CC BY 4.0)"}
 
 
-def require_tile_source(source_id: str) -> str:
-    """The credit line for a source that may be redistributed in tiles, else SourceUnavailable."""
+def require_open_source(source_id: str, use: str = "a tile build") -> None:
+    """Raise SourceUnavailable unless the source is available with an open licence (T185, T218)."""
     d = _discovery(source_id)
     if d["outcome"] != "available" or d["licence"]["status"] != "open":
         raise SourceUnavailable(
-            f"{source_id} cannot enter a tile build: outcome {d['outcome']}, "
+            f"{source_id} cannot enter {use}: outcome {d['outcome']}, "
             f"licence {d['licence']['status']}"
         )
+
+
+def require_tile_source(source_id: str) -> str:
+    """The credit line for a source that may be redistributed in tiles, else SourceUnavailable."""
+    require_open_source(source_id)
     if source_id not in ATTRIBUTION:
         raise SourceUnavailable(f"{source_id} has no registered attribution for tiles")
     return ATTRIBUTION[source_id]

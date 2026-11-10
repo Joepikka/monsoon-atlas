@@ -96,5 +96,12 @@
   "cmp.r_span": "The time spans do not overlap.",
   "cmp.r_unit": "The units differ.",
   "cmp.r_norm": "No normalisation is stated (per capita, per area or against a climate reference).",
-  "cmp.r_cov": "Coverage is not stated."
+  "cmp.r_cov": "Coverage is not stated.",
+  "offline.banner": "Offline: showing a saved copy from {when}, {age} old. Anything about risk in it is not current. This is not an emergency service and nothing runs in the background to alert you.",
+  "offline.unknown": "Offline: showing a saved copy of unknown date. Anything about risk in it is not current. This is not an emergency service.",
+  "offline.age_days": "{n} days",
+  "offline.age_hours": "{n} hours",
+  "widget.heading": "{state}: source and model catalogue",
+  "widget.summary": "Of {sources} sources, {enabled} are enabled (coverage {coverage}). Of {models} state models, {models_blocked} are blocked.",
+  "widget.note": "A summary of the catalogue at build time. It is not current conditions, a forecast or an emergency service; use the official warnings."
 }
