@@ -2,6 +2,31 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D145 — M11 and M20 are recorded as blocked branches (11 Nov 2026, T170 to T172, T176 to T178).**
+  Both depend on a flood model that does not exist. M11 (Karnataka-to-Kerala transfer) freezes
+  M01 and needs common Kerala flood labels: M01 is blocked (S43 holds no official dated
+  ward-level inundation records, T085) and M08 is blocked (S35 is blocked, S36 holds 2018
+  district tables only), so there is no frozen score, no common 2023-24 labels and no 30 Kerala
+  flood events. M20 (rain what-if) must recompute an already-approved flood score from the exact
+  M01 or M08 input snapshot, so its gate is not satisfiable: M05 is the only approved model, it
+  is a drought model and the card names flood models only, so no M05 sensitivity explorer is
+  built under this ID. Blocking IDs: M11 S43, S35, S36 through M01, M08; M20 the same. Both
+  follow the M07 to M10 pattern with no weights, scores, predictions or fallback; M20's controls
+  stay disabled. Retry both after M01 or M08 is released and approved.
+
+- **D144 — M19 and M17 are recorded as blocked branches (11 Nov 2026, T167 to T169, T173 to T175).**
+  M19 (GRU reservoir challenger) must beat M02 on the same level target and needs 5 reservoirs
+  with 5 years of daily data: M02 is blocked because S28 KWRIS has no verified daily history
+  (T092), so there is no baseline and no target. M17 (Sentinel-1 flood extent U-Net) is blocked
+  by S42, whose downloads need a Copernicus account (proposed owner step H15, so no scene was
+  read), and by the absence of independent inundation masks for 5 events (S35 blocked, S36 2018
+  district tables only, S43 no official impact labels); the card's threshold illustration also
+  needs the gated scenes, so none is shown. Both are deep-learning models: no torch or other
+  package was installed, the 2 GB local GPU is too small (AGENTS.md), and the free GPU session
+  needs the open Kaggle owner step H10. Blocking IDs: M19 S28 through M02; M17 S42, S35, S36,
+  S43. Plan dates are recorded as planned only (M19's 2028 dates are identical to M02's). No
+  weights, scores, predictions or fallback exist.
+
 - **D143 — Delhi release gate records a blocked product; nothing is released or exported (10 Nov 2026, T166).**
   `docs/releases/dl.md` follows the Kerala page (D129) section by section and
   `tests/test_dl_release.py` checks each table against `dl.yaml`, the S01 to S38 discovery
