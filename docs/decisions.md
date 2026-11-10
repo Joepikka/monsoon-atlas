@@ -2,6 +2,13 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D134 — T147 S24 is a disabled contract with no Delhi state config (10 Nov 2026, T147).**
+  Because T146 ended blocked, `src/atlas/ingest/s24.py` raises `SourceUnavailable` from `fetch` and
+  `parse` before any I/O, even if force-enabled, and `schemas/s24.json` lists no fields. No
+  enabled-source tests (real sample, malformed, empty, changed columns) exist, because no real
+  sample was read. `configs/states/dl.yaml` is not created (T150 owns Delhi registration), so the
+  test builds a disabled `SourceConfig` itself.
+
 - **D133 — T146 S24 is blocked because the resource page could not be read; the ID is not taken from a tutorial (10 Nov 2026, T146).**
   Plain HTTP gets 403 on the data.gov.in resource and catalogue pages (as in T025). The Browser pane
   loaded the S24 resource page, but every content-reading tool returned "Policy check temporarily
