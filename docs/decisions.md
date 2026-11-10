@@ -2,6 +2,14 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D136 — T149 S38 is a disabled contract; the Delhi state config is still not created (10 Nov 2026, T149).**
+  Because T148 ended blocked on H04, `src/atlas/ingest/s38.py` raises `SourceUnavailable` from
+  `fetch` and `parse` before any I/O, even if force-enabled, and `schemas/s38.json` lists no
+  fields (the plan's eight section 7 fields stay unverified: no protobuf or GTFS file was read).
+  No enabled-source tests (real sample, malformed, empty, changed columns) exist, because no real
+  sample was permitted or read. `configs/states/dl.yaml` is not created (T150), so the test builds
+  a disabled `SourceConfig` with `OTD_API_KEY` as the secret name, as D134 did for S24.
+
 - **D135 — T148 S38 is blocked on owner step H04; only the public pages were read (10 Nov 2026, T148).**
   otd.delhi.gov.in answers plain HTTP (no robots.txt, 404). Its static GTFS files and the real time
   feed are behind forms that ask for a purpose, name and email and a tick accepting the Terms
