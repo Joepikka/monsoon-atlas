@@ -29,11 +29,11 @@ Extractive correctness means the cited chunk contains the gold fact; generated a
 
 ## Languages
 
-| Language | Gold cases | Reviewed translations | Generation allowed |
-|---|---|---|---|
-| en | 60 | 60 | False |
-| kn | 60 | 0 | False |
-| ml | 60 | 0 | False |
-| hi | 60 | 0 | False |
+| Language | Questions | Drafted translations | Reviewed | Status | Generation allowed |
+|---|---|---|---|---|---|
+| en | 60 | n/a | 60 | measured | False |
+| kn | 50 | 50 | 0 | not validated | False |
+| ml | 50 | 50 | 0 | not validated | False |
+| hi | 50 | 50 | 0 | not validated | False |
 
-No translation is reviewed, so Kannada, Malayalam and Hindi generation stays disabled. The Kannada UI needs at least 10 reviewed Kannada questions first (A7).
+English rows are the measured scores above. The Kannada, Malayalam and Hindi rows are machine drafts of the 50 fixed questions (`eval/rag/translations.jsonl`, status `machine_draft_unreviewed`), written without a native-speaker review; they are not scored, so those languages are not validated and their generation stays disabled (T181 step 3). The 10 numeric cases are not translated. The Kannada UI needs at least 10 reviewed Kannada questions first (A7).

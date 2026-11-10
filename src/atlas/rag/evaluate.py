@@ -191,16 +191,28 @@ def run_current(cases: list[dict], *, index: Path, as_of: datetime, rerank=None,
     return answers
 
 
-def language_coverage(fixed: list[dict], numeric: list[dict]) -> dict:
+def language_coverage(
+    fixed: list[dict], numeric: list[dict], drafts: list[dict] | tuple = ()
+) -> dict:
+    """English is measured; drafts (T256) are review material and are never scored."""
     cases = fixed + numeric
-    coverage = {"en": {"cases": len(cases), "reviewed": len(cases), "generation_allowed": False}}
-    for language in TRANSLATIONS:
-        reviewed = sum(
-            case.get("translations", {}).get(language, {}).get("reviewed") is True for case in cases
-        )
-        coverage[language] = {
+    coverage = {
+        "en": {
             "cases": len(cases),
+            "drafted": None,
+            "reviewed": len(cases),
+            "status": "measured",
+            "generation_allowed": False,
+        }
+    }
+    for language in TRANSLATIONS:
+        rows = [row for row in drafts if row["language"] == language]
+        reviewed = sum(row["language_review"] == "reviewed" for row in rows)
+        coverage[language] = {
+            "cases": len(fixed),
+            "drafted": len(rows),
             "reviewed": reviewed,
+            "status": "not validated",
             "generation_allowed": False,
         }
     return coverage
@@ -275,16 +287,23 @@ def report(
         "",
         "## Languages",
         "",
-        "| Language | Gold cases | Reviewed translations | Generation allowed |",
-        "|---|---|---|---|",
+        "| Language | Questions | Drafted translations | Reviewed | Status | Generation allowed |",
+        "|---|---|---|---|---|---|",
     ]
     for language, values in coverage.items():
-        cells = (language, values["cases"], values["reviewed"], values["generation_allowed"])
+        cells = [language] + [
+            "n/a" if values[key] is None else values[key]
+            for key in ("cases", "drafted", "reviewed", "status", "generation_allowed")
+        ]
         lines.append("| " + " | ".join(map(str, cells)) + " |")
     lines += [
         "",
-        "No translation is reviewed, so Kannada, Malayalam and Hindi generation stays disabled. "
-        "The Kannada UI needs at least 10 reviewed Kannada questions first (A7).",
+        "English rows are the measured scores above. The Kannada, Malayalam and Hindi rows are "
+        "machine drafts of the 50 fixed questions (`eval/rag/translations.jsonl`, status "
+        "`machine_draft_unreviewed`), written without a native-speaker review; they are not "
+        "scored, so those languages are not validated and their generation stays disabled "
+        "(T181 step 3). The 10 numeric cases are not translated. The Kannada UI needs at least "
+        "10 reviewed Kannada questions first (A7).",
         "",
     ]
     return "\n".join(lines)
@@ -400,7 +419,7 @@ def main() -> None:
         run_current(fixed + numbers, index=args.index, as_of=as_of, rerank=rerank, **options),
         load_chunks(args.index),
     )
-    coverage = language_coverage(fixed, numbers)
+    coverage = language_coverage(fixed, numbers, read_jsonl(EVAL / "translations.jsonl"))
     corpus = (built["documents"], built["chunks"])
     text = report(result, coverage, fixed, as_of, corpus, method, options["log_rule"])
     args.report.write_text(text, "utf-8", newline="\n")

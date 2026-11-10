@@ -179,3 +179,10 @@ this table exists.
 | T180.2 Live usage counters per day and minute | blocked (H05) | `worker/src/index.ts` passes zero usage because generation is off (D95); counters need the AI binding and a store |
 | T180.3 Fallback to cited extractive answer; no emergency advice, tools or user URLs | done | `answer()` in `worker/src/ask.ts` (timeout, quota, failed check or no evidence); fixed system prompt; `worker/tests/ask-route.test.mjs` refuses client evidence and unknown fields |
 | T180 acceptance: quota exhaustion, hostile text, no secret in bundle | done | `tests/test_ask_config.py`, `worker/tests/ask.test.mjs` (deviation: `.mjs`, not ask.test.ts) |
+| T181.1 Fifty fixed questions plus ten numeric snapshot cases | done | `eval/rag/questions.jsonl`, `eval/rag/snapshot_gold.jsonl`, `tests/rag/test_eval.py` (60 English gold cases) |
+| T181.1 Kannada, Malayalam and Hindi translations with review status | done as drafts | `eval/rag/translations.jsonl`: 150 rows (the 50 fixed questions in 3 languages, each with the English ID), all `machine_draft_unreviewed`; the native-speaker review is an owner step and the numeric cases are not translated |
+| T181.2 Frozen 20% held-out questions and perturbations | done | Q41-Q50 are hash-frozen in `tests/rag/test_eval.py` (no longer a blind test, D101); stale, unknown-place, injection and invalid-citation cases in the same file |
+| T181.3 Score the five thresholds | done; gate not passed | `src/atlas/rag/evaluate.py`, `reports/rag.md`: evidence support 0.86 against 0.95, so C3 stays research-only (D101); a re-run on 11 Nov 2026 gives 0.80 on the grown corpus (D147) |
+| T181.3 Slice by language, keep unvalidated generation off | done | the Languages table in `reports/rag.md`: English measured; kn, ml and hi 50 drafted, 0 reviewed, "not validated", generation disabled |
+| T181.3 Reviewed non-English questions (A7: at least 10 Kannada before the Kannada UI) | blocked (owner review) | 0 reviewed; needs a native-speaker review of the drafts |
+| T181 acceptance: 60 English cases, explicit language coverage, invalid answer fails | done | `tests/rag/test_eval.py` |

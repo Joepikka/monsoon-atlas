@@ -2,6 +2,22 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D147 — Kannada, Malayalam and Hindi question drafts; language slice in the Ask report (11 Nov 2026, T181).**
+  `eval/rag/translations.jsonl` holds machine drafts of the 50 fixed questions in the three
+  languages (150 rows: English ID, language, question, `language_review`). Every row is
+  `machine_draft_unreviewed`; none is scored, none has an expected answer, and no tuning used
+  them (Q41-Q50 stay hash-frozen, D101). `questions.jsonl` is unchanged. `language_coverage`
+  reads the file, and `reports/rag.md` now shows English as measured and kn, ml and hi as 50
+  drafted, 0 reviewed, "not validated", generation disabled. Owner steps before any non-English
+  Ask: a native-speaker review of the drafts (and 10 reviewed Kannada questions, A7) and H05.
+  Only the Languages section of `reports/rag.md` was edited by hand-splicing the generator's
+  own text; the English scores were not regenerated because they do not reproduce. Re-running
+  `python -m atlas.rag.evaluate` on 11 Nov 2026 (31 documents, 406 chunks; the logs grew since
+  the 8 Nov report's 348) gives correctness 0.84, evidence support 0.80 and failing cases
+  Q02, Q12, Q23, Q26, Q33, Q43 and Q45, against the committed 0.89, 0.86 and five failures.
+  The retrieval rules were not touched (D99, D100), the cause was not investigated, and C3
+  stays research-only (D101); the committed English numbers are the 8 Nov measurement.
+
 - **D146 — Plan coverage audit for T179 and T180 (11 Nov 2026).**
   Every step of T179 and T180 was checked against the code and recorded in
   `docs/ask.md`, section "Plan coverage T179-T181", which `tests/test_ask_config.py` reads

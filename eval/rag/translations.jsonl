@@ -1,0 +1,150 @@
+{"id": "Q01", "language": "kn", "question": "ಮೊದಲು ಯಾವ ರಾಜ್ಯವನ್ನು ನಿರ್ಮಿಸಲಾಗುತ್ತದೆ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q02", "language": "kn", "question": "ಈ ಯೋಜನೆಯು ಪ್ರವೇಶಕ್ಕೆ ಶುಲ್ಕ ವಿಧಿಸುತ್ತದೆಯೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q03", "language": "kn", "question": "ಇದು ಅಧಿಕೃತ ತುರ್ತು ಸೇವೆಯೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q04", "language": "kn", "question": "ಮಾದರಿ ಬ್ಯಾಡ್ಜ್ ಎಂದರೆ ಏನು?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q05", "language": "kn", "question": "ಊಹಿತ (inferred) ಬ್ಯಾಡ್ಜ್ ಎಂದರೆ ಏನು?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q06", "language": "kn", "question": "CAMS ನಕ್ಷೆಯು CPCB ನಿಲ್ದಾಣದ ವಾಚನವೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q07", "language": "kn", "question": "ಕರ್ನಾಟಕದ ಬಸ್ ಚುಕ್ಕೆಗಳು ನೇರ ಜಿಪಿಎಸ್ ಆಗಿವೆಯೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q08", "language": "kn", "question": "ದೆಹಲಿಯಲ್ಲಿ ನೇರ ಬಸ್‌ಗಳು ಯಾವುದರಿಂದ ಸಾಧ್ಯವಾಗುತ್ತವೆ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q09", "language": "kn", "question": "ಹಳೆಯ ರೈಲು ವೇಳಾಪಟ್ಟಿಯು ಪ್ರಸ್ತುತ ಅಂದಾಜು ಆಗಮನ ಸಮಯವನ್ನು ವಿಶ್ವಾಸಾರ್ಹವಾಗಿ ನೀಡಬಹುದೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q10", "language": "kn", "question": "FIRMS ಬಿಂದುವು ಮನೆಯ ಬೆಂಕಿಯನ್ನು ದೃಢಪಡಿಸುತ್ತದೆಯೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q11", "language": "kn", "question": "ಭಾರೀ ಮಳೆಯು ಸಿಡಿಲು ಎಚ್ಚರಿಕೆ ಇದೆ ಎಂದು ಸಾಬೀತುಪಡಿಸುತ್ತದೆಯೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q12", "language": "kn", "question": "ಎಚ್ಚರಿಕೆ ಏಕೆ ಇನ್ನು ಸಕ್ರಿಯವಾಗಿಲ್ಲ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q13", "language": "kn", "question": "ಮುನ್ಸೂಚನೆ ಹೊರಡಿಸಿದ ಸಮಯ ಎಂದರೇನು?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q14", "language": "kn", "question": "ಡೇಟಾ ಪಡೆದ ಸಮಯವೇ ವೀಕ್ಷಣಾ ಸಮಯವೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q15", "language": "kn", "question": "ಇಂಟರ್‌ಫೇಸ್ ಯಾವ ಸಮಯ ವಲಯವನ್ನು ತೋರಿಸುತ್ತದೆ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q16", "language": "kn", "question": "ಕಾಣೆಯಾದ ಮಳೆಯ ಮೌಲ್ಯವನ್ನು ಸೊನ್ನೆ ಎಂದು ಪರಿಗಣಿಸಬಹುದೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q17", "language": "kn", "question": "ನನ್ನ ವಾರ್ಡ್ ಏಕೆ ಲಭ್ಯವಿಲ್ಲ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q18", "language": "kn", "question": "H3 ಕೋಶವು ವಾರ್ಡ್‌ಗೆ ಸಮನೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q19", "language": "kn", "question": "ಕಟ್ಟಡದ ರೂಪರೇಖೆಯು ಅದರ ಮಾಲೀಕರನ್ನು ಗುರುತಿಸುತ್ತದೆಯೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q20", "language": "kn", "question": "ಪಟ್ಟಿಯಲ್ಲಿರುವ ಹತ್ತಿರದ ಆಶ್ರಯ ತೆರೆದಿದೆ ಎಂದು ಅರ್ಥವೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q21", "language": "kn", "question": "ಸುರಕ್ಷಿತ ಸ್ಥಳಾಂತರ ಮಾರ್ಗಕ್ಕೆ ಅಪ್ಲಿಕೇಶನ್ ಖಾತರಿ ನೀಡಬಹುದೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q22", "language": "kn", "question": "\"ಒಡ್ಡಿಕೊಂಡ ಜನಸಂಖ್ಯೆ\" ಎಂದರೆ ಏನು?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q23", "language": "kn", "question": "ಮಾಸಿಕ ಅಣೆಕಟ್ಟು ವರದಿಗಳು ಏಳು ದಿನಗಳ ದೈನಂದಿನ ಮುನ್ಸೂಚನೆಯನ್ನು ಮೌಲ್ಯೀಕರಿಸಬಹುದೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q24", "language": "kn", "question": "ಜಲಾಶಯದ ಮಟ್ಟದಿಂದ ಮಾತ್ರ ಒಳಹರಿವನ್ನು ಲೆಕ್ಕಹಾಕಬಹುದೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q25", "language": "kn", "question": "ಬೆಲೆ ಏರಿಕೆಯ ಗುರಿ ಯಾವುದು?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q26", "language": "kn", "question": "ಹಳೆಯ PR-AUC 0.33 ಈ ಹೊಸ ಮಾದರಿಯ ಫಲಿತಾಂಶವೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q27", "language": "kn", "question": "ಯಾದೃಚ್ಛಿಕ ಸಮಯ ವಿಭಜನೆಗಳನ್ನು ಏಕೆ ತಪ್ಪಿಸಬೇಕು?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q28", "language": "kn", "question": "ಮಾದರಿಯು ಯಾವುದನ್ನು ಮೀರಿಸಬೇಕು?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q29", "language": "kn", "question": "ಹೆಚ್ಚಿನ ROC-AUC ಅಪರೂಪದ ಘಟನೆಗಳಿಗೆ ಉಪಯುಕ್ತ ಎಚ್ಚರಿಕೆಗಳನ್ನು ಖಾತರಿಪಡಿಸುತ್ತದೆಯೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q30", "language": "kn", "question": "80% ಭವಿಷ್ಯ ಅಂತರ ಎಂದರೇನು?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q31", "language": "kn", "question": "ಮಳೆ ಪ್ರವಾಹಕ್ಕೆ ಹೇಗೆ ಕಾರಣವಾಯಿತು ಎಂದು SHAP ತೋರಿಸುತ್ತದೆಯೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q32", "language": "kn", "question": "ಗ್ರೇಂಜರ್ ಕಾರಣತ್ವವು ಮಳೆ ಮತ್ತು ಬೆಲೆಯ ನಡುವಿನ ಕಾರಣ ಪರಿಣಾಮವನ್ನು ಸ್ಥಾಪಿಸುತ್ತದೆಯೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q33", "language": "kn", "question": "SPI-3 ಏನನ್ನು ಅಳೆಯುತ್ತದೆ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q34", "language": "kn", "question": "ಭೂಕುಸಿತ ಒಳಗಾಗುವಿಕೆಯು ನಾಳೆಯ ಎಚ್ಚರಿಕೆಯೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q35", "language": "kn", "question": "ಮಳೆ ಸಿಮ್ಯುಲೇಟರ್ ನಿಖರವಾದ ಪ್ರವಾಹದ ಆಳವನ್ನು ಊಹಿಸುತ್ತದೆಯೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q36", "language": "kn", "question": "ನ್ಯೂರಲ್ ನೆಟ್‌ವರ್ಕ್ ಅನ್ನು ಏಕೆ ಬಿಡುಗಡೆ ಮಾಡದಿರಬಹುದು?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q37", "language": "kn", "question": "2022ರಲ್ಲಿ ತರಬೇತಿ ಪಡೆದ ಮಾದರಿಯು 2018ರ ನಿರೀಕ್ಷಿತ ಮುನ್ಸೂಚನೆಯನ್ನು ಹೇಳಿಕೊಳ್ಳಬಹುದೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q38", "language": "kn", "question": "ಪುನರ್ನಿರ್ಮಿತ ಇತಿಹಾಸ ಎಂದರೇನು?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q39", "language": "kn", "question": "ಸಿಟಿ ಮೆಮೊರಿ ಈ ಅಪ್ಲಿಕೇಶನ್ 2018ರಲ್ಲಿ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತಿತ್ತು ಎಂದು ತೋರಿಸಬಹುದೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q40", "language": "kn", "question": "ಆರ್ಕೈವ್ ಸ್ಥಳ ಖಾಲಿಯಾದಾಗ ಏನಾಗುತ್ತದೆ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q41", "language": "kn", "question": "ಉಚಿತ GPU ಯಾವಾಗಲೂ ಲಭ್ಯವಿರುತ್ತದೆಯೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q42", "language": "kn", "question": "LLM ಮಿತಿ ಮುಗಿದಾಗ ಏನಾಗುತ್ತದೆ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q43", "language": "kn", "question": "ಉಲ್ಲೇಖವು ಸರಿಯಾಗಿ ಕಾಣುವುದರಿಂದಲೇ ಅದನ್ನು ನಂಬಬಹುದೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q44", "language": "kn", "question": "ವೆಬ್ ಪುಟವು ರಹಸ್ಯಗಳನ್ನು ಬಹಿರಂಗಪಡಿಸಲು Ask ಗೆ ಸೂಚಿಸಬಹುದೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q45", "language": "kn", "question": "ಡೇಟಾ ಇಲ್ಲದೆ Ask ನನ್ನ ಬೀದಿಯ ನಿಖರ ಪ್ರವಾಹವನ್ನು ಊಹಿಸಬಹುದೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q46", "language": "kn", "question": "ನನ್ನ ಉಳಿಸಿದ ಸ್ಥಳ ವೀಕ್ಷಣೆಗಳು ಎಲ್ಲಿ ಸಂಗ್ರಹವಾಗುತ್ತವೆ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q47", "language": "kn", "question": "ಹಿನ್ನೆಲೆ ವೆಬ್ ಪುಶ್ ಏಕೆ ನಿಷ್ಕ್ರಿಯವಾಗಿದೆ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q48", "language": "kn", "question": "ನೇರ ಪರಿಸ್ಥಿತಿಗಳಿಗೆ ಆಫ್‌ಲೈನ್ ನೋಟವನ್ನು ನಂಬಬಹುದೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q49", "language": "kn", "question": "NDVI ಇಳಿಕೆ ಯಾವಾಗಲೂ ಬೆಳೆ ವೈಫಲ್ಯವೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q50", "language": "kn", "question": "CMIP6 2050ರ ಒಂದು ದಿನದ ನಿಖರ ಹವಾಮಾನವನ್ನು ಹೇಳುತ್ತದೆಯೇ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q01", "language": "ml", "question": "ഏത് സംസ്ഥാനമാണ് ആദ്യം നിർമ്മിക്കുന്നത്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q02", "language": "ml", "question": "ഈ പദ്ധതി ഉപയോഗത്തിന് പണം ഈടാക്കുന്നുണ്ടോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q03", "language": "ml", "question": "ഇത് ഔദ്യോഗിക അടിയന്തര സേവനമാണോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q04", "language": "ml", "question": "മോഡൽ ബാഡ്ജ് എന്നാൽ എന്താണ്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q05", "language": "ml", "question": "അനുമാന (inferred) ബാഡ്ജ് എന്നാൽ എന്താണ്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q06", "language": "ml", "question": "CAMS ഭൂപടം CPCB സ്റ്റേഷൻ റീഡിംഗാണോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q07", "language": "ml", "question": "കർണാടകയിലെ ബസ് ഡോട്ടുകൾ തത്സമയ ജിപിഎസ് ആണോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q08", "language": "ml", "question": "ഡൽഹിയിൽ തത്സമയ ബസുകൾ സാധ്യമാക്കുന്നത് എന്താണ്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q09", "language": "ml", "question": "പഴയ റെയിൽവേ സമയപ്പട്ടികയ്ക്ക് നിലവിലെ എത്തിച്ചേരൽ സമയം വിശ്വസനീയമായി നൽകാൻ കഴിയുമോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q10", "language": "ml", "question": "ഒരു FIRMS പോയിന്റ് വീടിന് തീപിടിച്ചതായി സ്ഥിരീകരിക്കുന്നുണ്ടോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q11", "language": "ml", "question": "കനത്ത മഴ ഇടിമിന്നൽ മുന്നറിയിപ്പ് ഉണ്ടെന്ന് തെളിയിക്കുന്നുണ്ടോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q12", "language": "ml", "question": "ഒരു മുന്നറിയിപ്പ് ഇനി സജീവമല്ലാത്തത് എന്തുകൊണ്ട്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q13", "language": "ml", "question": "പ്രവചനം പുറപ്പെടുവിച്ച സമയം എന്താണ്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q14", "language": "ml", "question": "ഡാറ്റ ശേഖരിച്ച സമയമാണോ നിരീക്ഷണ സമയം?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q15", "language": "ml", "question": "ഇന്റർഫേസ് ഏത് സമയ മേഖലയാണ് കാണിക്കുന്നത്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q16", "language": "ml", "question": "ലഭ്യമല്ലാത്ത മഴ വിവരം പൂജ്യമായി കണക്കാക്കാമോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q17", "language": "ml", "question": "എന്റെ വാർഡ് ലഭ്യമല്ലാത്തത് എന്തുകൊണ്ട്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q18", "language": "ml", "question": "ഒരു H3 സെൽ വാർഡിന് തുല്യമാണോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q19", "language": "ml", "question": "ഒരു കെട്ടിടത്തിന്റെ രൂപരേഖ അതിന്റെ ഉടമയെ തിരിച്ചറിയുന്നുണ്ടോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q20", "language": "ml", "question": "പട്ടികയിലുള്ള ഏറ്റവും അടുത്ത അഭയകേന്ദ്രം തുറന്നിരിക്കുന്നു എന്നാണോ അർത്ഥം?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q21", "language": "ml", "question": "സുരക്ഷിതമായ ഒഴിപ്പിക്കൽ വഴി ആപ്പിന് ഉറപ്പുനൽകാൻ കഴിയുമോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q22", "language": "ml", "question": "\"ബാധിക്കപ്പെടാവുന്ന ജനസംഖ്യ\" എന്നാൽ എന്താണ്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q23", "language": "ml", "question": "പ്രതിമാസ ഡാം റിപ്പോർട്ടുകൾക്ക് ഏഴ് ദിവസത്തെ ദൈനംദിന പ്രവചനം സാധൂകരിക്കാൻ കഴിയുമോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q24", "language": "ml", "question": "ജലാശയത്തിലെ നിരപ്പ് മാത്രം ഉപയോഗിച്ച് നീരൊഴുക്ക് കണക്കാക്കാമോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q25", "language": "ml", "question": "വിലക്കയറ്റ ലക്ഷ്യം എന്താണ്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q26", "language": "ml", "question": "പഴയ PR-AUC 0.33 ഈ പുതിയ മോഡലിന്റെ ഫലമാണോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q27", "language": "ml", "question": "ക്രമരഹിതമായ സമയ വിഭജനങ്ങൾ എന്തുകൊണ്ട് ഒഴിവാക്കണം?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q28", "language": "ml", "question": "ഒരു മോഡൽ എന്തിനെ മറികടക്കണം?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q29", "language": "ml", "question": "ഉയർന്ന ROC-AUC അപൂർവ സംഭവങ്ങൾക്ക് ഉപയോഗപ്രദമായ മുന്നറിയിപ്പുകൾ ഉറപ്പാക്കുന്നുണ്ടോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q30", "language": "ml", "question": "80% പ്രവചന ഇടവേള എന്നാൽ എന്താണ്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q31", "language": "ml", "question": "മഴ എങ്ങനെ വെള്ളപ്പൊക്കത്തിന് കാരണമായി എന്ന് SHAP കാണിക്കുന്നുണ്ടോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q32", "language": "ml", "question": "ഗ്രേഞ്ചർ കാരണത്വം മഴയും വിലയും തമ്മിലുള്ള കാര്യകാരണ ബന്ധം സ്ഥാപിക്കുന്നുണ്ടോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q33", "language": "ml", "question": "SPI-3 എന്താണ് അളക്കുന്നത്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q34", "language": "ml", "question": "മണ്ണിടിച്ചിൽ സാധ്യതാ ഭൂപടം നാളത്തേക്കുള്ള മുന്നറിയിപ്പാണോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q35", "language": "ml", "question": "മഴ സിമുലേറ്റർ വെള്ളപ്പൊക്കത്തിന്റെ കൃത്യമായ ആഴം പ്രവചിക്കുന്നുണ്ടോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q36", "language": "ml", "question": "ഒരു ന്യൂറൽ നെറ്റ്‌വർക്ക് എന്തുകൊണ്ട് പുറത്തിറക്കാതിരിക്കാം?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q37", "language": "ml", "question": "2022-ൽ പരിശീലിപ്പിച്ച മോഡലിന് 2018-ലെ ഭാവി പ്രവചനം എന്ന് അവകാശപ്പെടാമോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q38", "language": "ml", "question": "പുനർനിർമ്മിച്ച ചരിത്രം എന്നാൽ എന്താണ്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q39", "language": "ml", "question": "ഈ ആപ്പ് 2018-ൽ പ്രവർത്തിച്ചിരുന്നു എന്ന് സിറ്റി മെമ്മറിക്ക് കാണിക്കാൻ കഴിയുമോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q40", "language": "ml", "question": "ആർക്കൈവ് സ്ഥലം തീർന്നാൽ എന്ത് സംഭവിക്കും?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q41", "language": "ml", "question": "സൗജന്യ GPU എപ്പോഴും ലഭ്യമായിരിക്കുമോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q42", "language": "ml", "question": "LLM ക്വോട്ട തീർന്നാൽ എന്ത് സംഭവിക്കും?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q43", "language": "ml", "question": "ഒരു ഉദ്ധരണി ശരിയായി തോന്നുന്നു എന്നതുകൊണ്ട് മാത്രം അത് വിശ്വസിക്കാമോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q44", "language": "ml", "question": "ഒരു വെബ് പേജിന് രഹസ്യങ്ങൾ വെളിപ്പെടുത്താൻ Ask-നോട് നിർദ്ദേശിക്കാൻ കഴിയുമോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q45", "language": "ml", "question": "ഡാറ്റ ഇല്ലാതെ Ask-ന് എന്റെ തെരുവിലെ കൃത്യമായ വെള്ളപ്പൊക്കം പ്രവചിക്കാൻ കഴിയുമോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q46", "language": "ml", "question": "ഞാൻ സേവ് ചെയ്ത സ്ഥല നിരീക്ഷണങ്ങൾ എവിടെയാണ് സൂക്ഷിക്കുന്നത്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q47", "language": "ml", "question": "പശ്ചാത്തല വെബ് പുഷ് എന്തുകൊണ്ട് പ്രവർത്തനരഹിതമാണ്?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q48", "language": "ml", "question": "തത്സമയ സാഹചര്യങ്ങൾക്ക് ഓഫ്‌ലൈൻ കാഴ്ചയെ ആശ്രയിക്കാമോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q49", "language": "ml", "question": "NDVI കുറയുന്നത് എപ്പോഴും വിള നാശമാണോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q50", "language": "ml", "question": "CMIP6 2050-ലെ ഒരു ദിവസത്തെ കൃത്യമായ കാലാവസ്ഥ പറയുന്നുണ്ടോ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q01", "language": "hi", "question": "सबसे पहले कौन सा राज्य बनाया जाता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q02", "language": "hi", "question": "क्या यह परियोजना पहुँच के लिए शुल्क लेती है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q03", "language": "hi", "question": "क्या यह एक आधिकारिक आपातकालीन सेवा है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q04", "language": "hi", "question": "मॉडल बैज का क्या अर्थ है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q05", "language": "hi", "question": "अनुमानित (inferred) बैज का क्या अर्थ है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q06", "language": "hi", "question": "क्या CAMS मानचित्र CPCB स्टेशन की रीडिंग है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q07", "language": "hi", "question": "क्या कर्नाटक के बस बिंदु लाइव जीपीएस हैं?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q08", "language": "hi", "question": "दिल्ली में लाइव बसें किससे संभव होती हैं?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q09", "language": "hi", "question": "क्या पुरानी रेलवे समय सारणी वर्तमान अनुमानित आगमन समय भरोसेमंद ढंग से बता सकती है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q10", "language": "hi", "question": "क्या FIRMS का एक बिंदु किसी घर में आग की पुष्टि करता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q11", "language": "hi", "question": "क्या भारी बारिश यह साबित करती है कि बिजली गिरने की चेतावनी मौजूद है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q12", "language": "hi", "question": "कोई चेतावनी अब सक्रिय क्यों नहीं है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q13", "language": "hi", "question": "पूर्वानुमान जारी करने का समय क्या है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q14", "language": "hi", "question": "क्या डेटा प्राप्त करने का समय ही अवलोकन का समय है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q15", "language": "hi", "question": "इंटरफ़ेस कौन सा समय क्षेत्र दिखाता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q16", "language": "hi", "question": "क्या अनुपलब्ध वर्षा को शून्य माना जा सकता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q17", "language": "hi", "question": "मेरा वार्ड उपलब्ध क्यों नहीं है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q18", "language": "hi", "question": "क्या H3 सेल वार्ड के समान है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q19", "language": "hi", "question": "क्या किसी इमारत की रूपरेखा उसके मालिक की पहचान बताती है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q20", "language": "hi", "question": "क्या सूची में सबसे नज़दीकी आश्रय का मतलब है कि वह खुला है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q21", "language": "hi", "question": "क्या ऐप सुरक्षित निकासी मार्ग की गारंटी दे सकता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q22", "language": "hi", "question": "\"जोखिम के संपर्क में जनसंख्या\" का क्या अर्थ है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q23", "language": "hi", "question": "क्या मासिक बाँध रिपोर्टें सात दिन के दैनिक पूर्वानुमान को सत्यापित कर सकती हैं?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q24", "language": "hi", "question": "क्या केवल जलाशय के स्तर से अंतर्वाह की गणना की जा सकती है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q25", "language": "hi", "question": "मूल्य वृद्धि (price-spike) का लक्ष्य क्या है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q26", "language": "hi", "question": "क्या पुराना PR-AUC 0.33 इस नए मॉडल का परिणाम है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q27", "language": "hi", "question": "यादृच्छिक समय विभाजन से क्यों बचना चाहिए?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q28", "language": "hi", "question": "किसी मॉडल को किसे पार करना चाहिए?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q29", "language": "hi", "question": "क्या उच्च ROC-AUC दुर्लभ घटनाओं के लिए उपयोगी चेतावनियों की गारंटी देता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q30", "language": "hi", "question": "80% पूर्वानुमान अंतराल क्या है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q31", "language": "hi", "question": "क्या SHAP यह दिखाता है कि बारिश से बाढ़ क्यों आई?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q32", "language": "hi", "question": "क्या ग्रेंजर कार्य-कारणता वर्षा और कीमत के बीच कारण-प्रभाव संबंध स्थापित करती है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q33", "language": "hi", "question": "SPI-3 क्या मापता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q34", "language": "hi", "question": "क्या भूस्खलन संवेदनशीलता कल की चेतावनी है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q35", "language": "hi", "question": "क्या वर्षा सिम्युलेटर बाढ़ की सटीक गहराई का पूर्वानुमान देता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q36", "language": "hi", "question": "किसी न्यूरल नेटवर्क को जारी क्यों नहीं किया जा सकता?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q37", "language": "hi", "question": "क्या 2022 में प्रशिक्षित मॉडल 2018 का संभावित (prospective) पूर्वानुमान होने का दावा कर सकता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q38", "language": "hi", "question": "पुनर्निर्मित इतिहास का क्या अर्थ है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q39", "language": "hi", "question": "क्या सिटी मेमोरी दिखा सकती है कि यह ऐप 2018 में चल रहा था?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q40", "language": "hi", "question": "जब आर्काइव की जगह खत्म हो जाती है तो क्या होता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q41", "language": "hi", "question": "क्या मुफ़्त GPU हमेशा उपलब्ध रहेगा?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q42", "language": "hi", "question": "जब LLM कोटा खत्म हो जाता है तो क्या होता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q43", "language": "hi", "question": "क्या मैं किसी उद्धरण पर केवल इसलिए भरोसा कर सकता हूँ कि वह वैध दिखता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q44", "language": "hi", "question": "क्या कोई वेब पेज Ask को रहस्य उजागर करने का निर्देश दे सकता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q45", "language": "hi", "question": "क्या Ask डेटा के बिना मेरी सड़क पर बाढ़ का सटीक पूर्वानुमान लगा सकता है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q46", "language": "hi", "question": "मेरे सहेजे गए स्थान वॉच कहाँ संग्रहीत होते हैं?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q47", "language": "hi", "question": "बैकग्राउंड वेब पुश क्यों बंद है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q48", "language": "hi", "question": "क्या मैं लाइव स्थितियों के लिए ऑफ़लाइन दृश्य पर भरोसा कर सकता हूँ?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q49", "language": "hi", "question": "क्या NDVI में गिरावट हमेशा फसल की विफलता होती है?", "language_review": "machine_draft_unreviewed"}
+{"id": "Q50", "language": "hi", "question": "क्या CMIP6 2050 के किसी दिन का सटीक मौसम बताता है?", "language_review": "machine_draft_unreviewed"}

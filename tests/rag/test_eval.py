@@ -23,6 +23,8 @@ from atlas.rag.retrieve import retrieve
 
 FIXED = read_jsonl(EVAL / "questions.jsonl")
 NUMERIC = read_jsonl(EVAL / "snapshot_gold.jsonl")
+DRAFTS = read_jsonl(EVAL / "translations.jsonl")
+SCRIPTS = {"kn": (0x0C80, 0x0CFF), "ml": (0x0D00, 0x0D7F), "hi": (0x0900, 0x097F)}
 HOLDOUT_SHA256 = "65802f1d9a1752f909f6b0722d5cba441c663b471128c8506cfd3498ac5888f1"
 NOW = datetime.now(UTC)
 
@@ -88,10 +90,32 @@ def test_sixty_english_cases_with_frozen_holdout_and_explicit_language_coverage(
     assert hashlib.sha256(json.dumps(frozen, sort_keys=True).encode()).hexdigest() == HOLDOUT_SHA256
     assert all(case["reason"] for case in FIXED if case["scope"] == "deferred")
     assert sum(case["scope"] == "mvp_en" for case in FIXED) == 35
-    coverage = language_coverage(FIXED, NUMERIC)
-    assert coverage["en"]["cases"] == 60
+    coverage = language_coverage(FIXED, NUMERIC, DRAFTS)
+    assert coverage["en"]["cases"] == 60 and coverage["en"]["status"] == "measured"
     for language in ("kn", "ml", "hi"):
-        assert coverage[language] == {"cases": 60, "reviewed": 0, "generation_allowed": False}
+        assert coverage[language] == {
+            "cases": 50,
+            "drafted": 50,
+            "reviewed": 0,
+            "status": "not validated",
+            "generation_allowed": False,
+        }
+    assert language_coverage(FIXED, NUMERIC)["kn"]["drafted"] == 0  # no file, no claim
+
+
+def test_translations_are_unreviewed_machine_drafts_of_the_fixed_questions():
+    english = {case["id"]: case["question"] for case in FIXED}
+    assert len(DRAFTS) == 150
+    assert {(row["id"], row["language"]) for row in DRAFTS} == {
+        (qid, language) for qid in english for language in SCRIPTS
+    }
+    assert all(set(row) == {"id", "language", "question", "language_review"} for row in DRAFTS)
+    assert {row["language_review"] for row in DRAFTS} == {"machine_draft_unreviewed"}
+    for row in DRAFTS:
+        low, high = SCRIPTS[row["language"]]
+        assert any(low <= ord(char) <= high for char in row["question"]), row["id"]
+        assert row["question"] != english[row["id"]]
+    assert not (EVAL / "translations.jsonl").read_bytes().startswith(bytes([239, 187, 191]))
 
 
 def test_every_in_scope_gold_key_resolves_to_one_indexed_chunk(chunks):

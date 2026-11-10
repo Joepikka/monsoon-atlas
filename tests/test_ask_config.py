@@ -75,6 +75,10 @@ def test_plan_coverage_table_matches_the_repository():
         "T179.3",
         "T180.1",
         "T180.2",
+        "T180.3",
+        "T181.1",
+        "T181.2",
+        "T181.3",
     }
     allowed = ("done", "not adopted", "blocked", "deviation", "FTS done")
     assert all(status.startswith(allowed) for status, _ in rows.values())
