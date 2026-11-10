@@ -1,0 +1,54 @@
+{
+  "record": "anomaly_adjudication_batches",
+  "status": "blocked",
+  "reason": "T212 and T213 blocked: no flag has been adjudicated. The only flags that exist come from the agent's own M16 rule on the S08 daily grids (T215), and the agent does not adjudicate its own detector's flags as ground truth (principle of H13). S08 is the only feed with flags, so a sample stratified across feeds cannot be drawn. No flag-level record may carry S08 rainfall values (restricted licence), and no independent evidence packet has been prepared. No flag, evidence item, label, rationale or review exists (D159).",
+  "blocking": {
+    "owner_step": "owner adjudication of the flags and a second review of 10% (proposed; no H number yet, same principle as H13)",
+    "feeds": "S08 only; S22 and S23 hold zero price rows, S32 has no 28-day window, S02 and S07 hold no daily history",
+    "licence": "S08 restricted (D129): no rainfall values in a committed flag record",
+    "source_tasks": [
+      "T024",
+      "T215"
+    ]
+  },
+  "tasks": [
+    {
+      "task": "T212",
+      "batch": 1,
+      "planned_file": "eval/anomalies/batch_1.jsonl"
+    },
+    {
+      "task": "T213",
+      "batch": 2,
+      "planned_file": "eval/anomalies/batch_2.jsonl"
+    }
+  ],
+  "counts": {
+    "batches": 2,
+    "required_per_batch": 50,
+    "required_total": 100,
+    "second_review_required_per_batch": 5,
+    "flags_selected": 0,
+    "flags_adjudicated": 0,
+    "flags_second_reviewed": 0,
+    "batches_completed": 0,
+    "feeds_with_candidate_flags": 1,
+    "candidate_real_flags": {
+      "S08_ka": 417948,
+      "S08_kl": 152086
+    },
+    "candidate_note": "counts of the agent's own rule, not labels; the ka and kl cell boxes overlap, so shared cells are counted in both"
+  },
+  "labels": [
+    "data error",
+    "genuine extreme",
+    "normal",
+    "unknown"
+  ],
+  "unknown_handling": "excluded from the precision denominator and counted separately",
+  "evidence": {
+    "reports/models/m16-flag-counts.json": "551175dae5a13d45c75fc54fc755db602f5af6ad4dfd5928ca9d32411727f3e6",
+    "configs/sources/s08.yaml": "dc6ce8b91c193cb3e29b82990f45fab5d71ae490a25b1e3215866bc3518235e2"
+  },
+  "retry_condition": "Select 50 dated real flags per batch stratified by feed, season and strength band (needs at least one more feed with a daily history), attach independent source evidence for each (for a rain flag, an independent product such as S02 ERA5 or S07 NASA POWER for the same place and date), keep the S08 licence rule (no rainfall values in a committed record), and have the owner label each flag as data error, genuine extreme, normal or unknown with a rationale and a second review of 10%. The agent may prepare the evidence packet in a later bounded task but does not assign the labels. Genuine extremes are never deleted."
+}

@@ -2,6 +2,27 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D159 — The two anomaly adjudication batches are one recorded blocked batch (11 Nov 2026, T212 and T213).**
+  The plan gives each batch `eval/anomalies/batch_N.jsonl` and a test, accepted by 50 adjudicated
+  real flags each. None can exist: the only flags are the agent's own M16 rule output on S08 (T215),
+  and the agent does not adjudicate its own detector's flags as ground truth (the H13 principle:
+  AI-only labels cannot judge an AI detector). A sample stratified across feeds is also
+  impossible, because S08 is the only feed with flags (S22 and S23 hold zero price rows, S32 has no
+  28-day window, S02 and S07 hold no daily history); the S08 licence (D129) forbids rainfall values
+  in a committed flag record; and no independent evidence packet exists. Deviation: instead of two
+  empty batch files and two tests, which would look like finished batches, one record
+  (`eval/anomalies/blocked.json`) and one test (`tests/labels/test_anomaly_blocked.py`) cover both
+  tasks: required 50 per batch, 5 second-reviewed per batch, selected 0, adjudicated 0,
+  second-reviewed 0, candidate real flags 417,948 (ka) and 152,086 (kl) from the committed count
+  table, with the SHA256 of that table and of the S08 record. There is no numbered owner step for
+  this review yet; one is proposed (owner adjudication plus a 10% second review). Retry: select 50
+  dated real flags per batch stratified by feed, season and strength band, attach independent
+  source evidence (S02 ERA5 or S07 NASA POWER for the same place and date), and have the owner
+  label each (data error, genuine extreme, normal, unknown). The agent may prepare the evidence
+  packet in a later bounded task but does not assign the labels. Because the T214 to T216 chain
+  needs the count table, these two tasks were committed after T215 (order T214, T215, T212-T213,
+  T216).
+
 - **D158 — M16 rule run on the held S08 daily grids; per-source usability; counts only (11 Nov 2026, T215).**
   Decided from the files: **S08** (IMD 0.25 degree daily rain, 1981-2025, 45 year files, enabled
   for ka and kl) is the only source with a real daily history on this machine. **S02 and S07**
