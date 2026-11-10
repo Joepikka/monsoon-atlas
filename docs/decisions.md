@@ -2,6 +2,30 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D142 — Delhi transit, air and exposure interface is built and tested without a feed (10 Nov 2026, T165).**
+  With S38 (D135) and S24 (D133) blocked there is no Delhi marker, ETA or station value, so the
+  real states are "unavailable" and "blocked", never a number. `Transit.tsx` separates scheduled,
+  live and predicted markers; a GPS position aged 120 s or more, in the future, or without a
+  clock offset is `aged_out` (hidden, never animated); `STALE_SECONDS = 120` equals the Worker
+  constant and `tests/test_delhi_product.py` checks both. No static GTFS was read, so there are no
+  scheduled markers either. ETA p10/p50/p90 with source and release parse only when the model
+  card is available; M12 is blocked, so the card says "blocked" with the planned (not started)
+  window from its config (2028-04-27 to 2028-05-26, months Jan to May) and no score.
+  `AirQuality.tsx` keeps the station (observation) and gridded model (CAMS) layers distinct and
+  compares them only on identical pollutant, unit and averaging; `ScoreCard.tsx` (new, shared)
+  puts test period and months beside any score. `atlas.analysis.route_exposure` computes the
+  time-weighted ambient concentration (sum of concentration x seconds over total seconds), never
+  a dose, and returns "unavailable" with a reason for mixed pollutant, unit, averaging or
+  provenance, naive or overlapping times, non-finite or negative values, an instantaneous value
+  (no interpolation), or a segment outside the window its reading represents (the reading's own
+  averaging interval and start/end stamp are passed in, no constant is guessed). Units must match
+  as strings; nothing is converted. CAMS is instantaneous (S04 record) and `dl.yaml` lists no
+  S04, so the real Delhi comparison and route exposure are "unavailable". The rules are tested
+  on hand-built TEST INPUTS only. Notebooks 08 and 09 audit S38, S24 and S04, draw no chart and
+  reproduce byte for byte from a clean process (core packages only, so no skip is needed). The
+  components are not mounted (no route, no public snapshot) pending H11, as for D116 and D127.
+  `source_status` now tolerates a null retry condition (S04 is available).
+
 - **D141 — M14 and M15 are recorded as blocked branches (10 Nov 2026, T159 to T164).**
   M14 (station PM2.5 forecast) takes its labels from S24, which is blocked (D133, D134): the
   resource ID, licence, fields, units, averaging interval and history are unread and there are

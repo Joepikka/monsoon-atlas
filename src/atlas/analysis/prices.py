@@ -46,7 +46,7 @@ def source_status(record: Mapping) -> dict:
         "earliest_date": record["earliest_date"],
         "latest_date": record["latest_date"],
         "units": record["units"]["status"],
-        "retry_condition": " ".join(record["retry_condition"].split()),
+        "retry_condition": " ".join((record["retry_condition"] or "").split()),
     }
 
 

@@ -1,0 +1,101 @@
+{
+  "sources": {
+    "S24": {
+      "source": "S24",
+      "discovered_at": "2026-11-10T12:46:41.986230Z",
+      "outcome": "blocked",
+      "licence": "unverified",
+      "history": "not_public",
+      "earliest_date": null,
+      "latest_date": null,
+      "units": "unlabelled",
+      "retry_condition": "In a browser that can read page content (the Browser pane read tools or the owner's Chrome), open the data.gov.in resource page for \"Real time Air Quality Index from various locations\", read the resource ID from its API tab and the licence text from the page, then re-run T146 with that ID: record one keyed sample (Delhi stations), fields, units, the averaging interval, last_update semantics and any history. Enable S24 only if the licence is verified and the units and averaging interval are stated by the publisher. The key already exists; no new key is needed.",
+      "fields": 7,
+      "fields_by_unit_status": {
+        "absent": 7
+      }
+    },
+    "S04": {
+      "source": "S04",
+      "discovered_at": "2026-11-09T04:50:49Z",
+      "outcome": "available",
+      "licence": "open",
+      "history": "available",
+      "earliest_date": "2022-08-04",
+      "latest_date": "2026-11-13",
+      "units": "labelled",
+      "retry_condition": "",
+      "fields": 7,
+      "fields_by_unit_status": {
+        "labelled": 5,
+        "not_applicable": 2
+      }
+    }
+  },
+  "s24_enabled_in_dl": false,
+  "s04_listed_in_dl": false,
+  "adapter_error": "S24 is blocked (T146): the data.gov.in resource ID and licence were not read, and units and averaging interval are unverified; retry the conditions in configs/sources/s24.yaml",
+  "station_rows": 0,
+  "cams_basis": {
+    "kind": "model",
+    "pollutant": "pm2_5",
+    "unit": "\u03bcg/m\u00b3",
+    "interval_minutes": 0
+  },
+  "comparison": {
+    "status": "unavailable",
+    "reason": "no station basis (S24 blocked); nothing to compare with"
+  },
+  "route_exposure": {
+    "status": "unavailable",
+    "reason": "no Delhi route (S38 blocked) and no station concentration (S24 blocked); nothing is computed"
+  },
+  "view": {
+    "station": {
+      "layer": "station",
+      "state": "unavailable",
+      "source_id": "S24",
+      "reason": "S24 blocked: api key resource unresolved",
+      "retry_condition": "In a browser that can read page content (the Browser pane read tools or the owner's Chrome), open the data.gov.in resource page for \"Real time Air Quality Index from various locations\", read the resource ID from its API tab and the licence text from the page, then re-run T146 with that ID: record one keyed sample (Delhi stations), fields, units, the averaging interval, last_update semantics and any history. Enable S24 only if the licence is verified and the units and averaging interval are stated by the publisher. The key already exists; no new key is needed."
+    },
+    "model": {
+      "layer": "model",
+      "state": "unavailable",
+      "source_id": "S04",
+      "reason": "S04 is available but not configured for Delhi: dl.yaml lists no S04 entry",
+      "retry_condition": "Add S04 to dl.yaml with Delhi points and an adapter test."
+    },
+    "comparison": {
+      "status": "unavailable",
+      "reason": "no station basis (S24 blocked); nothing to compare with"
+    },
+    "card": {
+      "status": "blocked",
+      "model_id": "M14",
+      "reason": "M14 blocked: S24 CPCB station data is blocked (D133, D134): resource ID, licence, fields, units, averaging interval and history are unread and there are 0 station rows, so no PM2.5 label exists; S04 CAMS is a model estimate and baseline input, never a label (T159).",
+      "coverage": {
+        "status": "planned, not started",
+        "test_period": [
+          "2028-04-27",
+          "2028-05-26"
+        ],
+        "months": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    }
+  },
+  "charts": [],
+  "limits": [
+    "S24 is blocked: no station value, unit or averaging interval was read; no chart is drawn.",
+    "S04 is a gridded model estimate (provenance model), never a station observation, and dl.yaml does not list it, so it is not shown for Delhi.",
+    "The CAMS value is instantaneous; a time-weighted route concentration needs a value that represents a time span, and nothing is interpolated.",
+    "Route exposure is an ambient concentration, never an inhaled dose.",
+    "Coverage windows come from configs/models/m14.yaml; they are planned, not started, and shift as a whole if approval is late.",
+    "The comparison and exposure rules are tested on hand-built inputs only."
+  ]
+}

@@ -1,0 +1,15 @@
+source,canonical,upstream,unit_status,detail,evidence
+S24,station_id,,absent,Unresolved: no upstream field list for the S24 resource was read.,e01
+S24,observed_at,,absent,Unresolved: last_update semantics and time zone not read.,e01
+S24,pollutant,,absent,Unresolved: pollutant naming and coverage for Delhi stations not read.,e01
+S24,concentration,,absent,"Unresolved: concentration or sub-index, and its unit, not read.",e01
+S24,unit,,absent,Unresolved: no unit statement read.,e01
+S24,averaging_hours,,absent,Unresolved: the publisher's averaging interval not read.,e01
+S24,reported_aqi,,absent,Unresolved: whether an AQI field is published not read.,e01
+S04,cell_id,"latitude, longitude in the response",not_applicable,"Snapped to the CAMS global grid: 12.97, 77.59 returns 13.0, 77.600006.",e08
+S04,valid_at,hourly.time,labelled,ISO 8601 without offset; UTC because timezone=GMT is requested.,e04 e08
+S04,issued_at,last_run_initialisation_time in data/cams_global/static/meta.json (Unix seconds),labelled,"Read before and after the forecast call; null for past hours, which carry no run time.",e06 e07 e09
+S04,pm25_ugm3,pm2_5,labelled,"μg/m³, instant value close to the surface; null where the run has no value.",e04 e08
+S04,pm10_ugm3,pm10,labelled,"μg/m³, instant value close to the surface.",e04 e08
+S04,no2_ugm3,nitrogen_dioxide,labelled,"μg/m³, instant value close to the surface.",e04 e08
+S04,product,the domains request parameter (not echoed in the response),not_applicable,"cams_global, named explicitly: the default auto returns identical values at Bengaluru (e08, e10); cams_europe has no data there (HTTP 400, failed_fetches).",e04 e08 e10
