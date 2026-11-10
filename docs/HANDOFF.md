@@ -326,6 +326,7 @@ and a YAML block `- id: T057`.
 | T150 | `31e3dee` (D137) | `configs/states/dl.yaml` (isolated, every source disabled) and `docs/studies/delhi.md`: no access approval, no schema read, no routes selected, no dates frozen; study cannot start. Protobuf decoder and protobufjs deferred until H04 (no sample to test). Acceptance 5 passed. (Sonnet subagent) |
 | T151 | `e839147` (D138) | `worker/src/transit.ts`: poll budget 960/day, position aged >= 120 s never live, state "transit live mode unavailable". No cron, upstream call or key binding; nothing imports the module. Acceptance 5 passed; Worker tests 25 of 25 |
 | T152 | `fdba7b9` (D139) | `docs/studies/delhi-readiness.md`: gate failed (not run); no measurement claimed; continuous capture unavailable; quota arithmetic checked against `configs/budgets.yaml`. Acceptance 4 passed |
+| T153-T164 | `cd4f997` to `48ed322` (D140, D141) | M12 (bus arrival/delay) and M13 (bunching) blocked by S38; M14 (station PM2.5) blocked by S24 (S04 CAMS is a baseline input, never a label); M15 (heat outlook) blocked: no Delhi source enabled and no S01 forecast vintages held, so calibration skill cannot be claimed. Each has a data gate, no-model fit and notebook, registry record (all scores null, 0 rows) and report. Per model: 5, 3 and 3 acceptance tests passed. (Sonnet subagent) |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -809,8 +810,10 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    accepts the Terms, stores the key as `OTD_API_KEY` in `.env` and the static ZIP in
    `data/raw/S38`; then T148 re-runs). CI is green on `6f5b496`. T150-T152 are done on their
    blocked branches (after H04, in order: decoder and protobufjs, 20 routes and trip linkage,
-   benchmark, study manifest, live poller). Next is T153-T164 (M12-M15 blocked branches), then
-   T165 and the Delhi gate T166. New owner steps from P3: H12 (aisstream key), proposed
+   benchmark, study manifest, live poller). T153-T164 are done (M12-M15 blocked). M15 is the one
+   Delhi model not gated by an owner step: it needs S01 and S02 enabled for Delhi and S01
+   forecast vintages collected over the plan's prospective window. Next is T165 and the Delhi
+   gate T166, then P5 from T167. New owner steps from P3: H12 (aisstream key), proposed
    H15 (Copernicus account), T118 bulk OCR approval, S41 publisher permission, Power BI Desktop
    exports (D132);
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
