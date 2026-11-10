@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D140 — M12 and M13 are recorded as blocked branches (10 Nov 2026, T153 to T158).**
+  Both Delhi bus models take their labels from S38 only, and S38 is blocked on owner step H04
+  (D135): no static GTFS, real-time sample, protobuf field list or trip linkage was read, so
+  there are 0 vehicle positions, 0 service days, no scheduled arrival (the publisher calls
+  static stop_times a rough constant-speed estimate) and no scheduled headway. No study approval,
+  routes or dates exist (D137) and the readiness gate failed, not run (D139). M12 (arrival and
+  delay) and M13 (bunching) therefore stop at the data gate and follow the M07 to M10 pattern
+  (config, gate JSON, no-model manifest, status record, report, disabled-state tests), with
+  no weights, scores or predictions. The plan's prospective dates (collect from 2028-01-17) are
+  recorded as planned only and shift as a whole if approval is late. No fallback is published:
+  a schedule ETA and the headway rule need the same unread GTFS. Retry both when the owner
+  completes H04 and T148 is re-run with a real sample.
+
 - **D139 — T152 readiness gate is recorded as failed (not run); no measurement is claimed (10 Nov 2026, T152).**
   Without approved S38 access there is no real sample, so Worker CPU, memory, snapshot blob size,
   compressed daily history and the hot to archive to replay counts are "not measured" or "not

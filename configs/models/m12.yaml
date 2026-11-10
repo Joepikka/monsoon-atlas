@@ -1,0 +1,40 @@
+# Planned M12 definition, not a fitted model or a claim that labels exist. T153.
+model_id: M12
+state: dl
+enabled: false
+task: regression
+unit: "vehicle x trip x stop x sampled position"
+sources: [S38]
+target: >-
+  seconds until the first observed stop arrival (within 30 m, dwell >= 10 s, or crossed stop with
+  interpolation gap <= 120 s); delay = observed arrival minus static GTFS scheduled arrival;
+  label source S38 only
+data_gate:
+  min_service_days: 60
+  min_routes: 20
+  min_matched_completed_stop_arrivals: 5000
+  requires: [complete static trip links]
+  note: "missing trip IDs: headway only, no fabricated delays"
+baselines:
+  - schedule ETA
+  - distance over current speed capped at 1..25 m/s
+  - median route-stop-time-of-week from training
+candidates: [ridge, random_forest, lightgbm_quantile]
+provisional_candidate: lightgbm
+purge: target horizon
+planned_splits:
+  collect_from: "2028-01-17"
+  train: ["2028-01-17", "2028-03-28"]
+  tune: ["2028-03-29", "2028-04-12"]
+  calibrate: ["2028-04-13", "2028-04-26"]
+  locked_test: ["2028-04-27", "2028-05-26"]
+  note: >-
+    Planned only. Dates assume source approval and readiness pass on schedule; if delayed the
+    whole manifest shifts before training. No observation earlier than collection is invented.
+split_manifest: null
+status: blocked
+reason: >-
+  M12 blocked: S38 is blocked on owner step H04 (D135), so no static GTFS, real-time sample or
+  trip linkage was read and there are 0 vehicle positions and 0 service days; a scheduled-delay
+  label cannot be built and no arrival or delay can be predicted (T153).
+fallback: "none: schedule ETA needs verified static trip links, which are unread"
