@@ -1,0 +1,23 @@
+{
+  "model_id": "M13",
+  "status": "blocked",
+  "reason": "M13 blocked: S38 is blocked on owner step H04 (D135), so there are 0 completed trajectories, 0 service days and no verified scheduled headways; bunching cannot be labelled and no flag or persistence forecast can be made (T156).",
+  "sources": {
+    "S38": {
+      "outcome": "blocked",
+      "licence": "restricted",
+      "units": "unlabelled",
+      "history": "not_public",
+      "earliest_date": null,
+      "latest_date": null,
+      "retry_condition": "The owner completes H04 in a browser: submits the real time key request and the static data forms at otd.delhi.gov.in with an honest purpose (non-commercial research), accepts the Terms, keeps the key in .env as OTD_API_KEY (variable name only in code), and downloads the static GTFS ZIP into data/raw/S38. Then T148 is re-run to record one VehiclePositions sample, its protobuf fields, units, timestamp meaning, trip and calendar match against the static files, the key quota and whether the Terms allow the project's use; the source is enabled only if the licence allows it and the field map is verified. Approval may take time (e08)."
+    }
+  },
+  "evidence": {
+    "configs/sources/s38.yaml": "b6320c1a08f1c0f8a9ca55774871e3833461c265dd3262c7f045fb355febd38d",
+    "tests/fixtures/s38/manifest.json": "8ffec2dfcbeb59aaf6cb2c5a7922e9e522fcb303d2a2cd7109a3f2681870c019",
+    "configs/models/m13.yaml": "00f35533878a5d28a6eb477981591a3535dfe34dca9c206cf3a358f7f0c5fd9e"
+  },
+  "split_manifest": null,
+  "prediction_rows": 0
+}
