@@ -1,0 +1,42 @@
+[
+  {
+    "layer": "aircraft",
+    "source_id": "S10",
+    "title": "Aircraft",
+    "note": "Community receiver reports, not an official air-traffic feed: never use for safety. Positions older than 5 minutes are hidden. No callsign, registration or owner is shown.",
+    "available": true,
+    "reason": null,
+    "evidence": "docs/sources/s10.md",
+    "landing_url": "https://www.adsb.lol/docs/open-data/api"
+  },
+  {
+    "layer": "satellite",
+    "source_id": "S12",
+    "title": "Satellites (predicted)",
+    "note": "Positions are predicted from published orbit elements, not observed; the element date is shown. Elements older than 7 days are hidden.",
+    "available": false,
+    "reason": "Licence restricted: waits for the owner's review (H11). Orbit propagation unavailable: sgp4 not in the lock (add to requirements/geo.in with pip-tools in a follow-up).",
+    "evidence": "docs/sources/s12.md",
+    "landing_url": "https://celestrak.org/NORAD/documentation/gp-data-formats.php"
+  },
+  {
+    "layer": "earthquake",
+    "source_id": "S20",
+    "title": "Earthquakes",
+    "note": "USGS events are revised after first report; the revision time and the source link are shown with each event.",
+    "available": false,
+    "reason": "Licence restricted: waits for the owner's review (H11).",
+    "evidence": "docs/sources/s20.md",
+    "landing_url": "https://earthquake.usgs.gov/fdsnws/event/1/"
+  },
+  {
+    "layer": "vessel",
+    "source_id": "S26",
+    "title": "Ships",
+    "note": "Ship positions are not shown: the AIS feed is blocked.",
+    "available": false,
+    "reason": "The owner signs in and creates an aisstream API key (H12), stores AISSTREAM_API_KEY in .env, and the terms shown at sign-in allow reuse of the AIS data; then T111 runs again.",
+    "evidence": "docs/sources/s26.md",
+    "landing_url": "https://aisstream.io"
+  }
+]

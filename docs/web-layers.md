@@ -97,3 +97,14 @@ reported (no imagery and a message when it reported none). No WebGL, a lost cont
 device with 2 GB or less memory falls back to the flat map or to a status message that points
 to the record list; reduced motion removes camera animation; nothing is stored for later use.
 Not mounted (D152); the Python contract test is `tests/test_tiles.py`.
+
+## Movement overlays (T187)
+
+`atlas.spatial.orbits.movement_status()` gates four layers from their source contracts (web copy:
+`web/tests/fixtures/movement-layers.json`, kept equal by a Python test); `web/src/map/Movement.tsx`
+renders them. Aircraft (S10) older than 300 s are hidden and carry no callsign, registration or
+owner; satellites (S12) show only positions predicted from dated orbit elements, so none show
+while propagation is unavailable; earthquakes (S20) show the USGS revision time and source
+link; ships (S26) stay hidden. All but aircraft are held for H11 or H12. One region key and
+poll gate serves flights and ships, so a fallback source cannot add a second poll. Not mounted
+(D153).

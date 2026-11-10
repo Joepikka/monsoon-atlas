@@ -2,6 +2,31 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D153 — Movement overlays built, not mounted; satellite propagation unavailable (11 Nov 2026, T187).**
+  `src/atlas/spatial/orbits.py` and `web/src/map/Movement.tsx` draw a layer only when its source is
+  enabled, available and licence-open: today only S10 aircraft qualifies. S12 and S20 are licence
+  restricted until the H11 review (D109, D110) and S26 ships are blocked on H12; S11 OpenSky is
+  blocked, so aircraft has exactly one upstream. The layer status is written to
+  `web/tests/fixtures/movement-layers.json` and a Python test keeps it equal. **SGP4 is not in any
+  lock and is not installed**, so `propagation_status()` is unavailable with the reason "sgp4 not in
+  the lock (add to requirements/geo.in with pip-tools in a follow-up)", `predict()` raises
+  `SourceUnavailable`, and no satellite position is drawn; no propagator was written by hand. Kept
+  and tested: OMM epoch parsing (CelesTrak serves OMM JSON, so the plan's "TLE epoch" is the OMM
+  `EPOCH`, D109), the 7-day element age rule, the "predicted, not observed" label with the element
+  date. Not run: the TLE known-example propagation (nothing to propagate with). Follow-up: add
+  `sgp4==<version>` to `requirements/geo.in`, compile with pip-tools (D25), write `predict()` over
+  the OMM fields and test it against a published example. Aircraft older than 300 s, in the future
+  or with no zone are hidden (the adapter already drops LADD and PIA and stores no callsign,
+  registration or owner; the web allowlist equals the adapter's columns). `region_key()` snaps a
+  centre to 0.5 degrees and the radius up to a 25 nm step, wraps the antimeridian, and serves both
+  flights and ships; `PollGate` allows one poll per layer and region per interval (300 s aircraft,
+  2 h satellites, 1 h earthquakes) whichever source asks, so a fallback cannot double the upstream
+  poll; ships have no recorded interval and raise `SourceUnavailable`. The browser component makes
+  no request. Earthquakes show `updated_at` as the revision time and the row's `source_url` (the
+  USGS feed address S20 stored; no per-event page address was invented), hide `deleted` events and
+  accept https `earthquake.usgs.gov` links only. Strings are English literals; they need keys in
+  all four locale files (D148) before mounting.
+
 - **D152 — Terrain and globe built, not mounted; globe works in the pinned MapLibre (11 Nov 2026, T186).**
   `web/src/map/Terrain.tsx` builds the MapLibre `raster-dem` source (Terrarium encoding, the S14
   bucket, zoom 15 as in the adapter) and `setTerrain` with exaggeration 1 by default (a zero,
