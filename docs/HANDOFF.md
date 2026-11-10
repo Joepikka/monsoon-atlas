@@ -341,6 +341,9 @@ and a YAML block `- id: T057`.
 | T189-T208 | `48043e5` (D155) | Twenty news annotation batches recorded as blocked in one record, `eval/news/blocked.json` (S41 no publisher permission; owner step H13): 0 of 1000 articles selected, labelled or reviewed. No per-batch files were created (an empty batch file would look complete). Tests 24 passed. (Sonnet subagent) |
 | T209-T211 | `179ae49`, `af5aa67`, `46caaa3` (D156) | M18 news event extraction blocked (S41, H13); registry all null, 0 rows. Tests 11 passed |
 | T214-T216, T212-T213 | `42297ff`, `cbbffd0`, `694e733`, `0b11913` (D157-D160) | M16 anomaly rule built (`src/atlas/features/m16.py`: robust z on the 28 days before the report, as-of mutation-tested; MAD 0 gives no z) and run on the held S08 daily grids 1981-2025; counts only in `reports/models/m16-flag-counts.json` (no rainfall value, cell or date). Finding: 18.8% of evaluated Karnataka cell-days flag and 75% of cell-days have no z, so the rule as specified is poorly suited to daily rain. Status `research_only`: precision not measured, 0 of 100 flags adjudicated (`eval/anomalies/blocked.json`; the agent does not label its own detector's flags). IsolationForest not run. Tests 20 + 30 passed. (Sonnet subagent) |
+| T217 | `3135bef` (D161) | `dashboard_data()` in `src/atlas/models/accuracy.py` writes `web/src/dashboards.json` (byte-checked against the registry and the three gate pages). New pages `?page=quality`, `analysis`, `compare`; Accuracy gains an all-models section. Only M05 shows numbers (MAE 0.732 vs 0.808, improvement 0.076, 95% CI 0.003 to 0.150, hindcast); 19 models show status and reason only. No state ranking; every metric comparison "unavailable". Acceptance 10 passed. Pages checked in a browser on 12 Nov; fix: healthy sources now show "None needed" under retry condition. (Sonnet subagent) |
+| T218 | `77be4fe` (D162) | `manifest.webmanifest`; `sw.ts` as an **unregistered** cache plan (allowlist, 20 MB, timestamps, offline banner); read-only `?page=widget`; licence-gated exports in `src/atlas/export.py` and `web/src/export.ts` (S08, S30, S34 refused; 10,000 rows or 10 MiB shards), sharing one licence rule with tiles. Deferred to deploy: service worker registration, offline spec, `frame-ancestors` header, widget path. Acceptance 7 passed |
+| T219 | `06b70ea` (D163) | `src/atlas/monitoring.py` (feed age, missingness, schema, PSI two windows, MAE vs 1.2 x M05 frozen baseline, storage via D24 code; stale feed stops dependent models), manual-only `monitor.yml` (not dispatched), `docs/runbooks/rollback.md`, rollback drill on a temp store. Agent-chosen constants: stale after two cadences, missingness alert above 10%. Gate tests now allow the one tracked file `web/public/manifest.webmanifest`. Acceptance 15 passed |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -842,8 +845,8 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    test `predict()`; move `Terrain`, `Movement` and `EventTicker` strings into the locale
    files before mounting. T189-T211 are recorded as blocked (D155, D156).
    T212-T216 are done (M16 research-only, D157-D160; proposed owner step: adjudicate 100
-   anomaly flags with independent evidence). **Next is T217 onwards** (dashboards T217, PWA
-   T218, drill T219, portfolio pack T220, final acceptance T221). New owner steps from P3: H12 (aisstream key), proposed
+   anomaly flags with independent evidence). T217-T219 are done (D161-D163). `.claude/launch.json` has a `web-dev`
+   entry for the local preview. **Next is T220 (portfolio pack) and T221 (final acceptance).** New owner steps from P3: H12 (aisstream key), proposed
    H15 (Copernicus account), T118 bulk OCR approval, S41 publisher permission, Power BI Desktop
    exports (D132);
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
