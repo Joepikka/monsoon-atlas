@@ -338,6 +338,8 @@ and a YAML block `- id: T057`.
 | T186 | `22a84eb` (D152) | `web/src/map/Terrain.tsx`, `Globe.tsx`: S14 terrain (exaggeration 1), S13 imagery only with a real date, WebGL/low-memory/reduced-motion fallbacks. Built, not mounted; strings still English literals. Acceptance 6 passed, 1 skip |
 | T187 | `bcd6f38` (D153) | `orbits.py`, `Movement.tsx`: only S10 aircraft available (stale > 300 s hidden); satellites unavailable because `sgp4` is in no lock (no propagator written); S20 waits for H11; ships blocked (H12); one poll gate per layer and region. Acceptance 8 passed, 1 skip |
 | T188 | `60be31c` (D154) | `WallMode.tsx`: timestamps, source health, existing pausable ticker, Escape exit, stale never styled current; 17 `wall.*` keys in four locales. Built, not mounted. Acceptance 5 passed; web tests 108 passed |
+| T189-T208 | `48043e5` (D155) | Twenty news annotation batches recorded as blocked in one record, `eval/news/blocked.json` (S41 no publisher permission; owner step H13): 0 of 1000 articles selected, labelled or reviewed. No per-batch files were created (an empty batch file would look complete). Tests 24 passed. (Sonnet subagent) |
+| T209-T211 | `179ae49`, `af5aa67`, `46caaa3` (D156) | M18 news event extraction blocked (S41, H13); registry all null, 0 rows. Tests 11 passed |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -837,9 +839,9 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    built and not mounted. Follow-ups: verify the Tippecanoe 2.79.0 tag SHA on GitHub before
    any `tiles.yml` run; add `sgp4` to `requirements/geo.in` with pip-tools, then write and
    test `predict()`; move `Terrain`, `Movement` and `EventTicker` strings into the locale
-   files before mounting. **Next is T189 onwards** (news annotation T189-T208 and M18
-   T209-T211, anomaly adjudication T212-T213 and M16 T214-T216, dashboards T217, PWA T218,
-   drill T219, portfolio pack T220, final acceptance T221). New owner steps from P3: H12 (aisstream key), proposed
+   files before mounting. T189-T211 are recorded as blocked (D155, D156).
+   **Next is T212 onwards** (anomaly adjudication T212-T213 and M16 T214-T216, dashboards
+   T217, PWA T218, drill T219, portfolio pack T220, final acceptance T221). New owner steps from P3: H12 (aisstream key), proposed
    H15 (Copernicus account), T118 bulk OCR approval, S41 publisher permission, Power BI Desktop
    exports (D132);
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
