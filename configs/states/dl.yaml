@@ -1,0 +1,60 @@
+# T150: isolated Delhi config. Every source is disabled: S24 (T146) and S38 (T148) are blocked, and
+# the other sources stay off until a Delhi adapter test exists (as for Kerala, T226).
+# See docs/studies/delhi.md. Enable S38 only after owner step H04 and a re-run of T148.
+state_id: dl
+name: Delhi
+storage_tz: UTC
+display_tz: Asia/Kolkata
+paths:
+  raw_root: data/raw/dl
+  clean_root: data/clean/dl
+  publish_root: data/publish/dl
+sources:
+  - source_id: S01
+    name: "Open-Meteo weather forecast"
+    verify_task: T009
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S02
+    name: "Open-Meteo historical weather / ERA5"
+    verify_task: T011
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S09
+    name: "NDMA Sachet CAP alerts"
+    verify_task: T013
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S15
+    name: "OpenFreeMap basemap"
+    verify_task: T015
+    cost: free
+    enabled: false
+  - source_id: S16
+    name: "WorldPop India population"
+    verify_task: T017
+    cost: free
+    enabled: false
+  - source_id: S17
+    name: "geoBoundaries administrative boundaries"
+    verify_task: T019
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S24
+    name: "CPCB station pollution via data.gov.in"
+    verify_task: T146
+    cost: free_with_key
+    secret_env: DATA_GOV_IN_API_KEY
+    enabled: false
+    verified_by: configs/sources/s24.yaml
+  - source_id: S38
+    name: "Delhi Open Transit Data"
+    verify_task: T148
+    cost: free_with_key
+    secret_env: OTD_API_KEY
+    enabled: false
+    verified_by: configs/sources/s38.yaml

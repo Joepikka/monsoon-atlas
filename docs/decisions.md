@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D137 — T150 Delhi is registered with every source disabled; the study cannot start and the decoder is deferred (10 Nov 2026, T150).**
+  `configs/states/dl.yaml` is an isolated Delhi config in the shape of `kl.yaml`: paths under
+  `data/*/dl`, S24 and S38 listed disabled with their discovery records, and the shared national
+  sources (S01, S02, S09, S15, S16, S17) disabled until a Delhi adapter test exists. `docs/studies/delhi.md`
+  records access approval = none (H04 pending), protobuf schema = not published and not read, trip
+  linkage = unknown, selected routes = none (the 543 bus and 36 DMRC route counts are public-page
+  counts, not a selection), study dates = not frozen (the plan's 2028-01-17 start assumed approval
+  on schedule, so the whole manifest shifts and nothing earlier is invented). Deviation from the
+  plan: step 3 (`worker/src/protobuf.ts` with pinned protobufjs) is deferred, because there is no
+  real sample to inspect and no feed to decode, so a decoder would be untested speculative code and
+  a new dependency with no user. `tests/test_dl_study.py` reads the S24/S38 records so the page
+  cannot drift. Retry: owner completes H04, T148 re-runs with a real sample, then add the decoder.
+
 - **D136 — T149 S38 is a disabled contract; the Delhi state config is still not created (10 Nov 2026, T149).**
   Because T148 ended blocked on H04, `src/atlas/ingest/s38.py` raises `SourceUnavailable` from
   `fetch` and `parse` before any I/O, even if force-enabled, and `schemas/s38.json` lists no
