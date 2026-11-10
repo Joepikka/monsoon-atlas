@@ -334,6 +334,10 @@ and a YAML block `- id: T057`.
 | T182 | `d05b2ad` (D148) | Ask page strings go through `web/src/i18n` (`t()` throws on a missing key); `en.json` reviewed, `kn`/`ml`/`hi` machine drafts unreviewed, only English selectable (A7). Citation paths link to the file on GitHub `main`. Opt-in voice input and read-aloud (`web/src/voice.ts`), never started before a button press. Existing page extended; no `components/Ask.tsx`. Acceptance 9 passed; web tests 84 passed. (Sonnet subagent) |
 | T183 | `eb51db9` (D149) | `Watches.tsx` (IndexedDB only, built, not mounted), `src/atlas/alerts/brief.py` (deterministic brief from S09 after `supersede()`, dedupe, expiry, source links; 30-minute on-time grace is an agent choice), `telegram.py` (formatter; send raises `SourceUnavailable`, S39/H08). Acceptance 11 passed |
 | T184 | `66e6202` (D150) | Web push disabled by the no-personal-data rule: `docs/decisions/web-push.md`, detection in `web/src/push.ts`, Worker route refuses every registration with 403. No feature catalogue file exists; "conditional stretch" recorded in the decision. Acceptance 5 passed; Worker tests 27 passed |
+| T185 | `a16f6e0` (D151) | `src/atlas/spatial/tiles.py`: licence gate (only S19 may enter a tile build), shard planning under 20 MiB, GeoJSON as the default delivery; manual-only `tiles.yml` that takes the Tippecanoe commit SHA as a required input (not verified, not dispatched). Not run: Tippecanoe, tile sampling, Range 206/CORS (no host). Acceptance 8 passed, 1 explicit skip. (Sonnet subagent) |
+| T186 | `22a84eb` (D152) | `web/src/map/Terrain.tsx`, `Globe.tsx`: S14 terrain (exaggeration 1), S13 imagery only with a real date, WebGL/low-memory/reduced-motion fallbacks. Built, not mounted; strings still English literals. Acceptance 6 passed, 1 skip |
+| T187 | `bcd6f38` (D153) | `orbits.py`, `Movement.tsx`: only S10 aircraft available (stale > 300 s hidden); satellites unavailable because `sgp4` is in no lock (no propagator written); S20 waits for H11; ships blocked (H12); one poll gate per layer and region. Acceptance 8 passed, 1 skip |
+| T188 | `60be31c` (D154) | `WallMode.tsx`: timestamps, source health, existing pausable ticker, Escape exit, stale never styled current; 17 `wall.*` keys in four locales. Built, not mounted. Acceptance 5 passed; web tests 108 passed |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -829,9 +833,13 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    once; do not tune on Q41-Q50 (D101). T182-T184 are done (D148-D150; non-English UI off
    until native review; Telegram waits for H08; web push disabled by policy). The Worker
    `test:runtime` script does not run on this Windows laptop ("Could not resolve
-   /D:/.../index.ts"); rely on the Ubuntu "Worker local runtime" CI job. **Next is T185
-   onwards** (PMTiles, terrain and globe, movement overlays, wall mode, news annotation,
-   anomalies, dashboards, final acceptance T221). New owner steps from P3: H12 (aisstream key), proposed
+   /D:/.../index.ts"); rely on the Ubuntu "Worker local runtime" CI job. T185-T188 are done (D151-D154), all
+   built and not mounted. Follow-ups: verify the Tippecanoe 2.79.0 tag SHA on GitHub before
+   any `tiles.yml` run; add `sgp4` to `requirements/geo.in` with pip-tools, then write and
+   test `predict()`; move `Terrain`, `Movement` and `EventTicker` strings into the locale
+   files before mounting. **Next is T189 onwards** (news annotation T189-T208 and M18
+   T209-T211, anomaly adjudication T212-T213 and M16 T214-T216, dashboards T217, PWA T218,
+   drill T219, portfolio pack T220, final acceptance T221). New owner steps from P3: H12 (aisstream key), proposed
    H15 (Copernicus account), T118 bulk OCR approval, S41 publisher permission, Power BI Desktop
    exports (D132);
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
