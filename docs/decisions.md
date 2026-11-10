@@ -2,6 +2,26 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D143 — Delhi release gate records a blocked product; nothing is released or exported (10 Nov 2026, T166).**
+  `docs/releases/dl.md` follows the Kerala page (D129) section by section and
+  `tests/test_dl_release.py` checks each table against `dl.yaml`, the S01 to S38 discovery
+  records, the M12 to M15 registry and configs, git, and the Karnataka and Kerala gates. Result:
+  the Delhi config passes the shared checks (0 of 8 sources enabled, S24 and S38 blocked, six
+  available but unconfigured); every item has measured or blocked evidence; M12 to M15 are all
+  blocked and none is research-only; no ETA or AQI accuracy exists or is shown. The label
+  windows (collect from 2028-01-17, locked test 2028-04-27 to 2028-05-26) are planned, not
+  started, and approval delay is a calendar delay that shifts the whole manifest, not a
+  development failure. The plan's fallback (publish scheduled transit and observed air quality
+  with blocked cards) is only partly possible: no static GTFS and no station data were read, so
+  only the blocked cards are published. "Export frozen study and metrics to portfolio": there is
+  no study manifest and no metric, so nothing is exported. Cross-state regression re-checks the
+  eight frozen interface hashes (D122), the Karnataka and Kerala source counts and blocked
+  models, and that the three state configs keep separate paths. No-card audit: all eight Delhi
+  records have `no_card: true` and `scripts/audit_dependencies.py --policy` reports 0 problems.
+  Owner-gated: H04 (S38), the S24 browser read (no new key), H05 and H06 (hosting), H11 (any
+  release). M15's retry is not an owner step: enable S01 and S02 for Delhi and collect S01
+  forecast vintages over the prospective window. Nothing here approves a public release.
+
 - **D142 — Delhi transit, air and exposure interface is built and tested without a feed (10 Nov 2026, T165).**
   With S38 (D135) and S24 (D133) blocked there is no Delhi marker, ETA or station value, so the
   real states are "unavailable" and "blocked", never a number. `Transit.tsx` separates scheduled,
