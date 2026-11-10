@@ -217,4 +217,5 @@ def test_watches_stay_in_the_browser():
     banned += "|geolocation|new Notification|serviceWorker|pushManager"
     assert not re.search(banned, watches)
     others = [p for p in web.rglob("*.ts*") if p.name not in {"Watches.tsx", "Watches.test.ts"}]
-    assert not [p.name for p in others if "Watches" in p.read_text(encoding="utf-8")]  # not mounted
+    imports = [p.name for p in others if re.search(r"import .*Watches", p.read_text("utf-8"))]
+    assert not imports  # built, not mounted

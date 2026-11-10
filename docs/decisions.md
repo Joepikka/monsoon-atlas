@@ -2,6 +2,22 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D150 — Background Web Push stays disabled; only detection and a refusal are built (11 Nov 2026, T184).**
+  `docs/decisions/web-push.md` records the conflict (a push endpoint plus keys is a retained,
+  pseudonymous device identifier, i.e. a subscriber database, which `AGENTS.md` forbids), the
+  default (off; in-app watch notifications from D149 stay on) and the conditional design (consent,
+  encrypted private subscriptions, 30-day expiry, delete endpoint, batch send, nothing in the
+  public repository), which is not built and needs a written owner policy revision. `web/src/push.ts`
+  detects the service worker, Push API and Notification support and always returns
+  `enabled: false` with `disabled: privacy_mode=no_personal_data`. `worker/src/push.ts` refuses every
+  method on `/api/v1/push/subscription` with 403 without reading the body (501 for any other mode
+  name, since no storage exists). The route is wired in `worker/src/index.ts` before the capability
+  gate: the change is one import and one line, and the handler touches no binding. No code creates a
+  subscription, asks for permission or registers a service worker; `tests/test_push_policy.py`
+  scans for that. `privacy_mode` has no config file yet, so it is a constant in both modules.
+  The plan's feature catalogue exists only in `docs/plan.pdf` (F051, stretch); no catalogue file
+  was invented, so the "conditional stretch" status is recorded in the decision document.
+
 - **D149 — Place watches, daily brief and Telegram message; Telegram stays blocked (11 Nov 2026, T183).**
   `web/src/components/Watches.tsx` (built, not mounted, like T165) keeps watches only in this
   browser's IndexedDB (place ID, label, the user's alert flag and rain threshold); it makes no

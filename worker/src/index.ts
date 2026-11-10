@@ -3,6 +3,7 @@ import { sha256 } from '../../web/src/data.ts';
 import { claimFeedCheck } from './feed-check.ts';
 import { reply, fallback } from './responses.ts';
 import { answer, LIMITS, type Evidence } from './ask.ts';
+import { PUSH_PATH, pushRegistration } from './push.ts';
 
 interface Result<T> { results: T[]; meta: { size_after?: number; rows_written?: number } }
 interface Statement {
@@ -107,6 +108,7 @@ async function ask(request: Request, db: Database, now: number): Promise<Respons
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+    if (url.pathname === PUSH_PATH) return pushRegistration(request); // always refused (T184, D150)
     if (!['/internal/ingest', '/internal/feed-check', '/api/v1/current', '/api/v1/ask'].includes(url.pathname)) return reply({ error: 'Not found.' }, 404);
     if (env.CAPABILITY_GATE !== 'verified_free_no_card' || !env.DB) return fallback('Free/no-card capability or database binding has not been verified.');
     try {
