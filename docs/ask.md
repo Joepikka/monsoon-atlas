@@ -186,3 +186,14 @@ this table exists.
 | T181.3 Slice by language, keep unvalidated generation off | done | the Languages table in `reports/rag.md`: English measured; kn, ml and hi 50 drafted, 0 reviewed, "not validated", generation disabled |
 | T181.3 Reviewed non-English questions (A7: at least 10 Kannada before the Kannada UI) | blocked (owner review) | 0 reviewed; needs a native-speaker review of the drafts |
 | T181 acceptance: 60 English cases, explicit language coverage, invalid answer fails | done | `tests/rag/test_eval.py` |
+
+## Plan coverage T182
+
+Audit against the repository, 11 Nov 2026 (D148).
+
+| Step | Status | Evidence |
+|---|---|---|
+| T182.1 Citation cards and evidence age | done | `web/src/pages/Ask.tsx` (deviation: the existing page, not a new component file); cards link to the file on GitHub |
+| T182.1 Four locale files, no key fallback | done; only English selectable | `web/src/i18n/*.json`, `tests/test_i18n.py`; kn, ml and hi are unreviewed drafts (A7) |
+| T182.2 Text universal, opt-in Web Speech, microphone data never stored | done | `web/src/voice.ts`, `web/src/voice.test.ts`, `web/tests/ask.spec.ts` |
+| T182.3 Permission failure keeps text; optional speech output with installed-voice check | done | `voice.ts` (`voiceOutputSupported`), read-aloud button; no automatic speech |

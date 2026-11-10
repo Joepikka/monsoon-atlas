@@ -49,6 +49,7 @@ test('the Worker answer shows citation cards with path and evidence age', async 
   const cards = page.getByRole('list', { name: 'Citations' }).getByRole('listitem');
   await expect(cards).toHaveCount(sent!.chunk_ids.length);
   await expect(cards.first()).toContainText('reports/models/m05.md');
+  await expect(cards.first().getByRole('link')).toHaveAttribute('href', /^https:\/\/github\.com\/Joepikka\/monsoon-atlas\/blob\/main\/reports\/models\/m05\.md$/);
   await expect(cards.first()).toContainText(/Committed 2026-11-05 17:48:40 UTC, \d+ days before this answer/);
   await page.getByRole('link', { name: 'Back to the map' }).focus();
   for (let step = 0; step < 4 && !(await page.getByRole('button', { name: 'Ask' }).evaluate(node => node === document.activeElement)); step++) {
@@ -79,4 +80,28 @@ test('the map header links to the Ask page', async ({ page }) => {
   await page.getByRole('link', { name: 'Ask', exact: true }).click();
   await expect(page).toHaveURL(/page=ask/);
   await expect(page.getByRole('heading', { name: 'Ask the project documents' })).toBeVisible();
+});
+
+test('the microphone is untouched until the voice button is pressed, and text input keeps working', async ({ page }) => {
+  await publish(page);
+  // Hand-built stand-in for the browser recognition: counts calls, then answers with fixed text.
+  await page.addInitScript(() => {
+    const w = window as unknown as { micCalls: number; SpeechRecognition: unknown; webkitSpeechRecognition: unknown };
+    w.micCalls = 0;
+    w.SpeechRecognition = w.webkitSpeechRecognition = class {
+      onresult: ((event: unknown) => void) | null = null;
+      onend: (() => void) | null = null;
+      constructor() { w.micCalls++; }
+      start() { w.micCalls++; this.onresult?.({ results: [[{ transcript: 'groundwater cover' }]] }); this.onend?.(); }
+      stop() {}
+    };
+  });
+  await page.goto('/?page=ask');
+  await expect(page.getByRole('status')).toHaveText('10 document sections loaded.');
+  expect(await page.evaluate(() => (window as unknown as { micCalls: number }).micCalls)).toBe(0);
+  await page.getByLabel('Question').fill('typed question');
+  await expect(page.getByLabel('Question')).toHaveValue('typed question');
+  await page.getByRole('button', { name: 'Speak your question' }).click();
+  await expect(page.getByLabel('Question')).toHaveValue('groundwater cover');
+  expect(await page.evaluate(() => (window as unknown as { micCalls: number }).micCalls)).toBe(2);
 });

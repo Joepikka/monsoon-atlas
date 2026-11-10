@@ -2,6 +2,29 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D148 — Ask: citation links, four-language strings and opt-in voice (11 Nov 2026, T182).**
+  The page stays `web/src/pages/Ask.tsx` (no `components/Ask.tsx` is added: the page already
+  held the cards and a second file would only duplicate it). Every Ask string, including the
+  corpus status and error messages in `web/src/ask.ts`, now comes from `t()` in
+  `web/src/i18n/index.ts`, a flat-key lookup with no library; a missing key or placeholder value
+  throws. `en.json` is `reviewed`; `kn.json`, `ml.json` and `hi.json` are my machine drafts,
+  `machine_draft_unreviewed`, and `SELECTABLE` is `['en']`, so no other language is offered until
+  a native review and 10 reviewed Kannada questions exist (A7, D147). The draft sentence order
+  around the "official warnings" link is a review item. Citation cards (path, heading,
+  evidence age from the chunk's own `available_at`) already existed; each path is now a link to
+  `https://github.com/Joepikka/monsoon-atlas/blob/main/<path>` (the public repository in
+  `docs/HANDOFF.md`; it shows the file at `main`, which can be newer than the cited commit).
+  Voice (`web/src/voice.ts`): recognition starts only from the "Speak your question" button;
+  the page never calls `getUserMedia`; the result fills the question box and is not submitted;
+  denial, no support, no speech or an unsupported language show a reason and leave typing
+  working; the note says the browser may send audio to its own speech service. "Read the answer
+  aloud" shows only when an installed English voice exists and speaks only on a press; nothing
+  is spoken automatically. Tests: `tests/test_i18n.py` (key and placeholder parity, status
+  metadata, English only, no literal Ask strings, voice starts only in the two handlers),
+  `web/src/voice.test.ts`, and a Playwright case that counts microphone calls (0 before the
+  press). Recognition language is fixed at `en-IN`; the Web Speech API cannot be asked which
+  languages it supports, so `language-not-supported` is handled when it fires.
+
 - **D147 — Kannada, Malayalam and Hindi question drafts; language slice in the Ask report (11 Nov 2026, T181).**
   `eval/rag/translations.jsonl` holds machine drafts of the 50 fixed questions in the three
   languages (150 rows: English ID, language, question, `language_review`). Every row is
