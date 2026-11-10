@@ -2,6 +2,31 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D149 — Place watches, daily brief and Telegram message; Telegram stays blocked (11 Nov 2026, T183).**
+  `web/src/components/Watches.tsx` (built, not mounted, like T165) keeps watches only in this
+  browser's IndexedDB (place ID, label, the user's alert flag and rain threshold); it makes no
+  network call, asks for no location and has no account. `triggered()` is a pure rule: wrong
+  place, cancelled or superseded status, an expired or unreadable end time, or a forecast with no
+  end time never triggers (an alert with no end time stays active, as in the brief). Notifications
+  appear in the page only while it is open (no Notification API, no push, see T184). Its strings
+  are English literals; they need keys in all four locale files (D148) before it is mounted.
+  `src/atlas/alerts/brief.py` builds the brief from an S09 table (`supersede()`, then dedupe by
+  sender and alert ID keeping the latest sent time, then drop alerts expired at or before the job's
+  completion time or sent after it) plus hand-passed `CurrentRecord`s that need an https source
+  link; an expired current record is dropped. Official, model and inferred lines are separate
+  sections; every line keeps its source URL and sent time. Active alerts repeat in each daily brief
+  while valid; only cancelled, superseded, duplicate and expired ones are not repeated. 06:30 IST
+  is the same instant as 01:00 UTC, so a job that starts on schedule cannot finish at 06:30:
+  `ON_TIME_GRACE` (30 minutes, my choice, change it in `brief.py`) lets a run that finished by
+  07:00 IST show "06:30 IST"; a later run shows its actual IST completion time, and a stamp before
+  01:00 UTC of the run date (yesterday's run) is refused. No job, schedule or completion stamp
+  exists in the repository yet, so the stamp is a required argument. `telegram.py` formats the
+  message (4096-character cut with a count) and `send_message` raises `SourceUnavailable` with the
+  S39 reason before any I/O; the channel, bot token and terms are owner step H08. Nothing about
+  readers is stored: no DM, subscriber list or chat ID, and the alerts package never writes a
+  file or opens a connection. Tests: `tests/test_alerts.py` (real Sachet fixtures edited as in
+  `tests/sources/test_s09.py`), `web/src/components/Watches.test.ts`.
+
 - **D148 — Ask: citation links, four-language strings and opt-in voice (11 Nov 2026, T182).**
   The page stays `web/src/pages/Ask.tsx` (no `components/Ask.tsx` is added: the page already
   held the cards and a second file would only duplicate it). Every Ask string, including the
