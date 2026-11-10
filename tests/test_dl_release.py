@@ -167,7 +167,9 @@ def test_nothing_is_published_without_data_and_no_accuracy_is_shown():
     for model in MODELS:  # no test labels, so no score of any kind exists
         record = registry(f"{model.lower()}.json")
         assert record["candidate_scores"] is None and record["prediction_rows"] == 0
-    assert not [p for p in TRACKED if p.startswith(("data/", "web/public/"))]
+    # T218 (D162): the web manifest is the one tracked file under web/public; it holds no data.
+    published = [p for p in TRACKED if p.startswith(("data/", "web/public/"))]
+    assert published in ([], ["web/public/manifest.webmanifest"])
 
 
 def test_restricted_and_unverified_sources_commit_manifests_only():

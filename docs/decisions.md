@@ -2,6 +2,37 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D163 — Monitoring checks, owner-run workflow and rollback drill (11 Nov 2026, T219).**
+  `atlas.monitoring` holds pure checks that return an `Alert` (kind, subject, evidence, action) and
+  write nothing private. Feed age uses the cadence the source record states (`schedule`, parsed
+  only when it starts with "every N minutes or hours", hourly, daily, weekly or monthly; a one-off,
+  yearly or on-demand schedule has no recurring cadence, so no age alert). Two numbers are mine, not
+  the plan's, and are owner-tunable constants: a feed is stale after **two** stated cadences without
+  a success (`STALE_FACTOR`), and missingness alerts above **10%** (`MISSING_LIMIT`); the plan
+  states no limit for either. An empty expectation (undefined denominator) is an alert with a null
+  fraction, never 0. Schema change reports added, removed and retyped fields. PSI uses fixed
+  interior-quantile bins from the training window and asks for more than 0.2 in the latest two
+  windows; residual MAE is the mean over the latest 14 labelled days against 1.2 times the frozen
+  baseline MAE (fewer than 14 days is not assessable, so no alert). The M05 frozen baseline is read
+  from `models/registry/M05/v1.json` (persistence MAE 0.808, limit 0.970); the 2025 monitor MAE of
+  0.625 passes, shown as a 12-month hindcast monitor and not as the 14-day rule. A stale feed marks
+  every model that reads it "stopped", from `configs/models/*.yaml` (M16 counts only the sources it
+  uses; M05 reads `rain_source`). Storage reuses the D24 code (`budget.check`, 80% warn, 95%
+  archive-only) and a service over its daily cap alerts; no second quota logic. `deliver` appends to
+  an owner-run JSONL log and is the only destination; the module imports no network or messaging
+  library. Rollback: `rollback_if_corrupt` verifies the current release against its manifest, checks
+  the prior release too, then calls `ManifestStore.rollback`, so only `latest.json` moves; the test
+  corrupts a published release's file and proves the prediction ledger, the report and every
+  manifest keep their hashes. A corrected label is a new ledger revision (`append_correction`)
+  and a re-score is a new `name.rN.json` (`write_report_revision`); old lines and reports are kept.
+  The ledger and report files in the drill are test inputs: no prediction ledger exists in the
+  repository yet, since no model serves live predictions. `.github/workflows/monitor.yml` is
+  `workflow_dispatch` only with read-only permissions, SHA-pinned actions copied from `ci.yml`,
+  no secrets and no notification step; it runs `python -m atlas.monitoring` on the committed state
+  and tees the table into the job summary. In a clean checkout the feed, PSI and storage rows read
+  "unavailable" because there is no feed log, no live prediction and no `data/`. It has not been
+  dispatched. `docs/runbooks/rollback.md` gives the commands and the test runs the same calls.
+
 - **D162 — Offline plan, widget and export controls built; no service worker registered (11 Nov 2026, T218).**
   Registration is deferred until H11 (retry: the owner approves a public snapshot and a host, H05,
   H06, H11; then register from `main.tsx` with `planCache` and add the offline Playwright spec). There
@@ -28,7 +59,8 @@
   record is available and open, through `require_open_source`, which `require_tile_source` (T185) now
   calls too, so there is one licence rule. S08, S30 and S34 are refused and S02 passes on its
   committed Open-Meteo fixture. The manifest carries source ID, licence, row count, a content hash
-  and a hash per shard; a shard holds at most 10,000 rows and 10 MiB. No export button is mounted.
+  and a hash per shard; a shard holds at most 10,000 rows and 10 MiB. No export button is mounted. The Kerala and Delhi gate tests that forbid tracked files under
+  `web/public/` now allow exactly `web/public/manifest.webmanifest`, which holds no data.
   Strings go through `t()` in four locales (kn, ml, hi are unreviewed machine drafts, A7).
 
 - **D161 — Four dashboards built on one generated data file; built, not mounted (11 Nov 2026, T217).**

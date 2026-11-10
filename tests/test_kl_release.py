@@ -134,7 +134,9 @@ def test_restricted_sources_commit_manifests_only():
     restricted = {s for s in KL if discovery(s).licence.status == "restricted"}
     rows = table(PAGE, "Licence audit")
     assert {r[0] for r in rows} == restricted
-    assert not [p for p in TRACKED if p.startswith(("data/", "web/public/"))]
+    # T218 (D162): the web manifest is the one tracked file under web/public; it holds no data.
+    published = [p for p in TRACKED if p.startswith(("data/", "web/public/"))]
+    assert published in ([], ["web/public/manifest.webmanifest"])
     for sid in restricted:
         n = sid.lower()
         files = [
