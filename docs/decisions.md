@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D139 — T152 readiness gate is recorded as failed (not run); no measurement is claimed (10 Nov 2026, T152).**
+  Without approved S38 access there is no real sample, so Worker CPU, memory, snapshot blob size,
+  compressed daily history and the hot to archive to replay counts are "not measured" or "not
+  run" in `docs/studies/delhi-readiness.md`, never a number. Continuous capture is unavailable,
+  live mode stays disabled (`TRANSIT_LIVE`, D138), and the first collection day and the
+  train/tune/calibration/test chronology are not frozen, with no study manifest written. The
+  plan's fallback (owner-run windows with narrower claims) applies only after H04. The one thing
+  that can be checked now is quota arithmetic from `configs/budgets.yaml`: 960 polls, 960 D1
+  writes and 960 Worker requests per day against caps of 960, 10000 and 20000, and 7 days at the
+  plan's 40 MB per day (280 MB) against the 400 MB hot database. `tests/test_dl_collection.py`
+  derives those from the configured values and checks the page against the S38 record. Retry:
+  owner completes H04, T148 re-runs with a real sample, then benchmark and fill the page.
+
 - **D138 — T151 builds no live poller; only the fail-closed rules exist (10 Nov 2026, T151).**
   With S38 blocked (D135, D137) there is no feed to poll, so no cron trigger, upstream URL, key
   binding, decoder or storage write was added to the Worker, and `worker/src/cron.ts` is untouched
