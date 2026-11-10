@@ -2,6 +2,28 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D151 — PMTiles city-layer build: clip, licence gate, shard plan and a manual workflow; no archive (11 Nov 2026, T185).**
+  `src/atlas/spatial/tiles.py` holds what runs locally: `clipped_buildings()` wraps the T105
+  `buildings_in_place()` (no second clipper) and adds the credit to the collection and to every
+  feature; `require_tile_source()` lets a source into a tile build only when its record says
+  outcome available, licence open and a credit is registered in `ATTRIBUTION` (only S19, CC BY 4.0,
+  so S08, S12, S20, S30 and the blocked S26 are refused, tested); `plan_shards()` packs features in
+  order under 20 MiB minus a 1 MiB reserve and `check_shard_sizes()` fails a built file at or over
+  20 MiB (source bytes only bound the real size, so the built-file check is the one that counts);
+  `delivery()` returns GeoJSON unless a probe saw HTTP 206 and a CORS header for the site. Not
+  built: a PMTiles v3 reader, because no archive exists to read (a header parser tested on a
+  hand-made header would only confirm itself). `.github/workflows/tiles.yml` is `workflow_dispatch`
+  only, read-only, with every action pinned as in `ci.yml`; it builds Tippecanoe from felt/tippecanoe
+  and runs the tile tests. **The commit SHA of tag 2.79.0 is not in the repository and was not
+  invented**: the workflow takes it as a required input, refuses anything that is not 40 hex
+  characters before any checkout, and checks that the tag points at it. Before the first run the
+  owner or agent must verify the tag on GitHub (the repository name `felt/tippecanoe`, the tag
+  spelling and the `tippecanoe_args()` flags are also unverified: nothing could run here). Not run:
+  tile samples against source geometry (no archive), Range 206 and CORS on a no-card host (no host
+  until H05/H06). Retry when `tiles.yml` has produced an archive and a host exists. The workflow
+  does not yet tile real data: S19 cell 3bb is a 4.8 GB download kept off CI, so a data step comes
+  with the first owner-approved run.
+
 - **D150 — Background Web Push stays disabled; only detection and a refusal are built (11 Nov 2026, T184).**
   `docs/decisions/web-push.md` records the conflict (a push endpoint plus keys is a retained,
   pseudonymous device identifier, i.e. a subscriber database, which `AGENTS.md` forbids), the
