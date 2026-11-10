@@ -34,5 +34,22 @@
   "voice.no_language": "यह ब्राउज़र अंग्रेज़ी बोली नहीं पहचान सकता। अपना प्रश्न टाइप करें।",
   "voice.no_speech": "कोई आवाज़ नहीं सुनाई दी। प्रश्न टाइप करें या फिर कोशिश करें।",
   "voice.failed": "आवाज़ से इनपुट काम नहीं किया। अपना प्रश्न टाइप करें।",
-  "read.start": "उत्तर ज़ोर से पढ़ें"
+  "read.start": "उत्तर ज़ोर से पढ़ें",
+  "wall.title": "वॉल डिस्प्ले",
+  "wall.exit": "वॉल मोड से बाहर निकलें (Esc)",
+  "wall.as_of": "स्नैपशॉट जारी होने का समय",
+  "wall.state_current": "वर्तमान स्नैपशॉट",
+  "wall.state_stale": "पुराना स्नैपशॉट: 24 घंटे से अधिक",
+  "wall.state_disconnected": "फ़ीड डिस्कनेक्ट है: आख़िरी स्नैपशॉट दिखाया जा रहा है",
+  "wall.sources": "स्रोतों की स्थिति",
+  "wall.source_success": "आख़िरी सफलता {time}",
+  "wall.source_none": "कोई सफलता दर्ज नहीं",
+  "wall.status_available": "उपलब्ध",
+  "wall.status_stale": "पुराना",
+  "wall.status_unavailable": "अनुपलब्ध",
+  "wall.status_partial": "आंशिक",
+  "wall.status_unknown": "अज्ञात",
+  "wall.status_disconnected": "डिस्कनेक्ट",
+  "wall.alerts_hidden": "स्नैपशॉट पुराना होने या फ़ीड डिस्कनेक्ट होने पर चेतावनियाँ नहीं दिखाई जातीं।",
+  "wall.not_emergency": "यह आपातकालीन सेवा नहीं है। चेतावनियों के लिए आधिकारिक स्रोतों का उपयोग करें।"
 }

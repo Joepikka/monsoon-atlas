@@ -34,5 +34,22 @@
   "voice.no_language": "This browser cannot recognise English speech. Type your question instead.",
   "voice.no_speech": "No speech was heard. Type your question or try again.",
   "voice.failed": "Voice input did not work. Type your question instead.",
-  "read.start": "Read the answer aloud"
+  "read.start": "Read the answer aloud",
+  "wall.title": "Wall display",
+  "wall.exit": "Exit wall mode (Esc)",
+  "wall.as_of": "Snapshot issued",
+  "wall.state_current": "Current snapshot",
+  "wall.state_stale": "Stale snapshot: more than 24 hours old",
+  "wall.state_disconnected": "Feed disconnected: showing the last snapshot",
+  "wall.sources": "Source health",
+  "wall.source_success": "Last success {time}",
+  "wall.source_none": "No success reported",
+  "wall.status_available": "Available",
+  "wall.status_stale": "Stale",
+  "wall.status_unavailable": "Unavailable",
+  "wall.status_partial": "Partial",
+  "wall.status_unknown": "Unknown",
+  "wall.status_disconnected": "Disconnected",
+  "wall.alerts_hidden": "Alerts are not shown while the snapshot is stale or the feed is disconnected.",
+  "wall.not_emergency": "Not an emergency service. For warnings, use the official sources."
 }

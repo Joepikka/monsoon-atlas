@@ -2,6 +2,26 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D154 — Wall mode built, not mounted; nothing stale is styled as current (11 Nov 2026, T188).**
+  `web/src/map/WallMode.tsx` shows the snapshot timestamp large, a tile per source (status text plus
+  last-success time as `<time>`) and the existing `EventTicker` unchanged: it already has a pause
+  button, starts paused under reduced motion and rotates only on a timer, so no second ticker was
+  written. The wall's state is `current` only when the feed is connected and the snapshot is at
+  most 24 hours old (`STALE_MS`, now exported from `data.ts`, the same limit the app uses; a future
+  or unreadable time counts as stale), otherwise `stale` or `disconnected`. A source tile is
+  `available` only if the source says so and its last success is within 24 hours, and every tile
+  is `disconnected` when the feed is; a stale or disconnected wall keeps its timestamps but shows no
+  alerts, because an old alert may have been cancelled. The word "live" appears nowhere. State is
+  written as text and by a dashed border, not by colour alone; there is no sound, animation,
+  transition or flashing (CSS and component are scanned for these). Escape and a focused exit
+  button leave. Strings use `t()`: 17 `wall.*` keys in all four locale files, English reviewed and
+  Kannada, Malayalam and Hindi unreviewed machine drafts (D147, D148); `EventTicker`'s own strings
+  are still English literals, to be moved before mounting. The 1920 px check is a pure rule
+  (`wallColumns`: four columns from 1920 px) plus the server-rendered markup carrying the grid; no
+  Playwright step was added because the app does not mount the wall, and so none can be flaky.
+  The wall renders as 1920 wide by default where `window` does not exist (server rendering only).
+  `connected` is an input; no code yet decides it, because nothing mounts the wall.
+
 - **D153 — Movement overlays built, not mounted; satellite propagation unavailable (11 Nov 2026, T187).**
   `src/atlas/spatial/orbits.py` and `web/src/map/Movement.tsx` draw a layer only when its source is
   enabled, available and licence-open: today only S10 aircraft qualifies. S12 and S20 are licence

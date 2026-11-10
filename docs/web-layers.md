@@ -108,3 +108,12 @@ while propagation is unavailable; earthquakes (S20) show the USGS revision time 
 link; ships (S26) stay hidden. All but aircraft are held for H11 or H12. One region key and
 poll gate serves flights and ships, so a fallback source cannot add a second poll. Not mounted
 (D153).
+
+## Wall mode (T188)
+
+`web/src/map/WallMode.tsx` is a full-screen display: a large snapshot timestamp, per-source
+health with each last-success time, and the existing pausable `EventTicker`. The snapshot is
+"current" only when the feed is connected and at most 24 hours old (the app limit); otherwise
+it is "stale" or "disconnected", styled and worded that way, with the last timestamps kept and
+no alerts shown. No sound, animation or flashing; Escape or the exit button leaves; the ticker
+starts paused under reduced motion. Strings come from `web/src/i18n`. Not mounted (D154).

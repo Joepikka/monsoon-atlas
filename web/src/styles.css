@@ -899,3 +899,21 @@ h1,h2,h3,p{
     font-size: 10px;
   }
 }
+
+/* T188: wall mode. State is always also written as text, never by colour alone. */
+.wall-mode { position: fixed; inset: 0; z-index: 50; overflow: auto; padding: 32px 48px; background: var(--paper); color: var(--teal); }
+.wall-head { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+.wall-head h1 { font-size: 28px; font-weight: 600; }
+.wall-head button { min-height: 44px; padding: 8px 16px; font-size: 16px; color: var(--teal); background: var(--paper); border: 1px solid #a6baab; }
+.wall-state { margin: 24px 0 8px; font-size: 32px; font-weight: 700; }
+.wall-time { font-size: 56px; line-height: 1.2; font-weight: 600; }
+.wall-time span { font-size: 24px; font-weight: 400; color: var(--muted); }
+.wall-mode h2 { margin: 32px 0 12px; font-size: 22px; font-weight: 600; }
+.wall-sources { display: grid; gap: 16px; list-style: none; padding: 0; }
+.wall-source { display: flex; flex-direction: column; gap: 4px; padding: 16px; font-size: 22px; border: 2px solid #a6baab; }
+.wall-source small { font-size: 16px; color: var(--muted); }
+.wall-stale .wall-state, .wall-disconnected .wall-state, .wall-source-stale, .wall-source-disconnected, .wall-source-unavailable, .wall-source-partial { color: #744824; border-style: dashed; border-color: #8d512d; }
+.wall-stale .wall-time, .wall-disconnected .wall-time { color: #744824; }
+.wall-ticker .event-ticker p { font-size: 20px; }
+.wall-ticker .event-ticker button { min-height: 44px; font-size: 16px; }
+.wall-alerts-hidden, .wall-note { margin-top: 24px; font-size: 18px; }

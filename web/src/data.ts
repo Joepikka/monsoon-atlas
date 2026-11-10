@@ -48,7 +48,7 @@ export interface ViewState {
 interface LoadOptions { fetcher?: typeof fetch; now?: number; signal?: AbortSignal; releaseHash?: string; asOf?: string }
 
 const HASH = /^[a-f0-9]{64}$/;
-const STALE_MS = 24 * 60 * 60 * 1000;
+export const STALE_MS = 24 * 60 * 60 * 1000;
 const MAX_BYTES = 1024 * 1024;
 
 function object(value: unknown): Record<string, unknown> {
