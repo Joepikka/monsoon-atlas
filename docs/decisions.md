@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D141 — M14 and M15 are recorded as blocked branches (10 Nov 2026, T159 to T164).**
+  M14 (station PM2.5 forecast) takes its labels from S24, which is blocked (D133, D134): the
+  resource ID, licence, fields, units, averaging interval and history are unread and there are
+  0 station rows. S04 CAMS is available but enabled for Karnataka only and is a model estimate
+  (its archive carries no run time), so it is a baseline input and never a label; a
+  CAMS-versus-CAMS score is not allowed. M15 (heat outlook) is blocked too: `dl.yaml` enables
+  no source, S01 keeps no issue-time forecast vintages (D07) and none exists for Delhi, S02 is
+  ERA5 reanalysis (model output, trends and exposure only, per the card's gate), S18 is blocked
+  by robots.txt (D34), and no Delhi temperature truth exists to score a forecast. Blocking IDs:
+  M14 S24; M15 S01, S02, S18. Both follow the M07 to M10 pattern with no weights, scores or
+  predictions; plan dates (2028-01-17 on) and the conditional 2021 to 2025 pollution extension
+  are recorded as planned or unavailable only. No fallback is published.
+
 - **D140 — M12 and M13 are recorded as blocked branches (10 Nov 2026, T153 to T158).**
   Both Delhi bus models take their labels from S38 only, and S38 is blocked on owner step H04
   (D135): no static GTFS, real-time sample, protobuf field list or trip linkage was read, so
