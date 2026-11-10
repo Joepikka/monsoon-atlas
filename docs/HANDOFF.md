@@ -331,6 +331,9 @@ and a YAML block `- id: T057`.
 | T166 | `dc82187` (D143) | Delhi release gate `docs/releases/dl.md`: 0 of 8 Delhi sources enabled (S24, S38 blocked); M12-M15 blocked; label windows planned, not started; nothing published or exported; KA and KL gates and the 8 frozen hashes still hold. Acceptance 9 passed |
 | T167-T178 | `9281ae3` to `8d8490a` (D144, D145) | P5 model chains, all blocked: M19 GRU reservoir challenger (M02/S28 blocked, no free GPU session), M11 Karnataka-to-Kerala flood transfer (M01 and M08 blocked), M17 Sentinel-1 U-Net (S42 needs H15; no inundation masks), M20 rain what-if explorer (card needs an approved M01 or M08 flood score; M05 is a drought model, so no explorer was built under this ID). No scores, weights or predictions. Per chain 5 (4 for M17), 3 and 3 acceptance tests passed. (Sonnet subagent) |
 | T179-T181 (P5 remainder) | `1434432`, `3c53a28` (D146, D147) | Plan-coverage table in `docs/ask.md`: English scope was already done by T252-T266; caps already in `worker/src/ask.ts` (no `quota.ts` added); Workers AI generation and live usage counters blocked on H05; e5 embeddings tested, not adopted. Added `eval/rag/translations.jsonl`: 150 kn/ml/hi question drafts, all `machine_draft_unreviewed`, unscored; report shows non-English as not validated, generation disabled. **Finding: the 8 Nov English scores in `reports/rag.md` do not reproduce.** A re-run on 11 Nov (408 chunks against 348; the indexed logs grew) gives correctness 0.84 and evidence support 0.80, failing Q02, Q12, Q23, Q26, Q33, Q43, Q45. The report keeps the dated 8 Nov numbers; C3 stays research-only either way. Ask tests 56 passed. (Sonnet subagent) |
+| T182 | `d05b2ad` (D148) | Ask page strings go through `web/src/i18n` (`t()` throws on a missing key); `en.json` reviewed, `kn`/`ml`/`hi` machine drafts unreviewed, only English selectable (A7). Citation paths link to the file on GitHub `main`. Opt-in voice input and read-aloud (`web/src/voice.ts`), never started before a button press. Existing page extended; no `components/Ask.tsx`. Acceptance 9 passed; web tests 84 passed. (Sonnet subagent) |
+| T183 | `eb51db9` (D149) | `Watches.tsx` (IndexedDB only, built, not mounted), `src/atlas/alerts/brief.py` (deterministic brief from S09 after `supersede()`, dedupe, expiry, source links; 30-minute on-time grace is an agent choice), `telegram.py` (formatter; send raises `SourceUnavailable`, S39/H08). Acceptance 11 passed |
+| T184 | `66e6202` (D150) | Web push disabled by the no-personal-data rule: `docs/decisions/web-push.md`, detection in `web/src/push.ts`, Worker route refuses every registration with 403. No feature catalogue file exists; "conditional stretch" recorded in the decision. Acceptance 5 passed; Worker tests 27 passed |
 
 T234 independent batch review and rulings: `docs/reviews/2026-11-06-p1-batch.md`.
 Both Important findings are fixed; no Critical or Minor findings remain from that
@@ -823,9 +826,12 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    indexes `docs/decisions.md` and `docs/amendments.md`, which grow with every task, so Ask
    scores drift down as the logs grow (0.86 to 0.80 evidence support in three days). Before
    any Ask release, freeze the corpus to a tagged snapshot and regenerate `reports/rag.md`
-   once; do not tune on Q41-Q50 (D101). **Next is T182 onwards** (four-language Ask UI,
-   watches and brief, web-push policy, map layers, news annotation, anomalies, dashboards,
-   final acceptance T221). New owner steps from P3: H12 (aisstream key), proposed
+   once; do not tune on Q41-Q50 (D101). T182-T184 are done (D148-D150; non-English UI off
+   until native review; Telegram waits for H08; web push disabled by policy). The Worker
+   `test:runtime` script does not run on this Windows laptop ("Could not resolve
+   /D:/.../index.ts"); rely on the Ubuntu "Worker local runtime" CI job. **Next is T185
+   onwards** (PMTiles, terrain and globe, movement overlays, wall mode, news annotation,
+   anomalies, dashboards, final acceptance T221). New owner steps from P3: H12 (aisstream key), proposed
    H15 (Copernicus account), T118 bulk OCR approval, S41 publisher permission, Power BI Desktop
    exports (D132);
    the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
