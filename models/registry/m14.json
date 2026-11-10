@@ -1,0 +1,22 @@
+{
+  "model_id": "M14",
+  "state": "dl",
+  "status": "blocked",
+  "reason": "M14 blocked: S24 CPCB station data is blocked (D133, D134): resource ID, licence, fields, units, averaging interval and history are unread and there are 0 station rows, so no PM2.5 label exists; S04 CAMS is a model estimate and baseline input, never a label (T159).",
+  "evidence": {
+    "configs/sources/s24.yaml": "c52af27ef0f8e09f0f17cec83f19fd602c1720771ee6e8a548f7d72c34960033",
+    "tests/fixtures/s24/manifest.json": "9d8d68ef449f85c92ecd1eae4b4d94d2854e72862c40645c810449e5a15bb820",
+    "configs/sources/s04.yaml": "24265a3470d3831ea8c0f88c2f0c5b9cb179af575c3fa49f28434163166ccfa5",
+    "tests/fixtures/s04/manifest.json": "22a0a2e8aa46ecca8068b4cf4414851b64179808cec0fbcc82a80c5882381928",
+    "configs/models/m14.yaml": "445980270c3e3837610401c12addea96fced902675fa0d715bd0fddf68501d52"
+  },
+  "source_gate_sha256": "4a82f8115f5b139ba6366fe204dde0c64147ca169f31a93239df540b84e4d372",
+  "dataset_sha256": null,
+  "split_sha256": null,
+  "weights": null,
+  "baseline_scores": null,
+  "candidate_scores": null,
+  "improvement": null,
+  "prediction_rows": 0,
+  "report": "reports/models/m14.md"
+}
