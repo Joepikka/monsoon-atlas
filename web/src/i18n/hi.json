@@ -71,6 +71,7 @@
   "q.col_outcome": "परिणाम",
   "q.col_licence": "लाइसेंस",
   "q.col_retry": "पुनः प्रयास की शर्त",
+  "q.no_retry": "आवश्यक नहीं",
   "q.queue_heading": "समीक्षा कतार",
   "q.queue_note": "{model}: {label}। {required} में से {adjudicated} फ़्लैग निर्णीत हैं, इसलिए सटीकता मापी नहीं गई है।",
   "q.queue_state": "{state}: {evaluated} मूल्यांकित सेल-दिनों पर {flags} फ़्लैग। केवल S08 की गिनती; वर्षा का कोई मान नहीं दिखाया गया।",

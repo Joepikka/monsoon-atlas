@@ -71,6 +71,7 @@
   "q.col_outcome": "ഫലം",
   "q.col_licence": "ലൈസൻസ്",
   "q.col_retry": "വീണ്ടും ശ്രമിക്കാനുള്ള വ്യവസ്ഥ",
+  "q.no_retry": "ആവശ്യമില്ല",
   "q.queue_heading": "അവലോകന ക്യൂ",
   "q.queue_note": "{model}: {label}. {required}-ൽ {adjudicated} ഫ്ലാഗുകൾ തീർപ്പാക്കി, അതിനാൽ കൃത്യത അളന്നിട്ടില്ല.",
   "q.queue_state": "{state}: {evaluated} വിലയിരുത്തിയ സെൽ-ദിനങ്ങളിൽ {flags} ഫ്ലാഗുകൾ. S08 എണ്ണം മാത്രം; മഴ മൂല്യം കാണിക്കുന്നില്ല.",
