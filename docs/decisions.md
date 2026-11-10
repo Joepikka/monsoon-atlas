@@ -2,6 +2,22 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D156 — M18 is recorded as a blocked branch (11 Nov 2026, T209 to T211).**
+  M18 (Malayalam/English news event extraction) needs 1000 permitted annotated texts, at least
+  100 per class, across 2 or more publishers and both languages. Actual: 0. S41 is blocked (T125,
+  T126): no publisher permission to store or classify items is on record, so there are 0 permitted
+  articles and no frozen temporal split. The twenty annotation batches T189 to T208 are recorded
+  as blocked (D155) with 0 articles selected, 0 labelled and 0 owner-reviewed, and owner step H13
+  (owner review of at least 20% of every batch and every held-out test item) has not happened, so
+  no ground truth exists for an AI extractor. M18 stops at the data gate and follows the M12 and
+  M19 pattern (config, gate JSON, no-model manifest, status record, report, disabled-state
+  tests); its gate hashes the batches record as well as the S41 record and manifest. Blocking IDs:
+  S41, H13 and the news batches record. The plan's prospective dates (collect from 2027-10-18,
+  locked test 2028-01-31 to 2028-02-14) are recorded as planned only. No embedding model was
+  downloaded, no deep-learning package was installed, and the registry holds no baseline,
+  candidate, score, weights or prediction. No fallback is published. Retry when permission is on
+  record, the batches are labelled and reviewed (H13), and the gate is met.
+
 - **D155 — The twenty news annotation batches are one recorded blocked batch (11 Nov 2026, T189 to T208).**
   The plan gives each batch its own `eval/news/batch_NN.jsonl`, report and test, accepted by
   50 labelled records. None can exist: S41 (permitted news RSS sources) is blocked (T125, T126),

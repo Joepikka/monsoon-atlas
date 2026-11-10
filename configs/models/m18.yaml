@@ -1,0 +1,47 @@
+# Planned M18 definition, not a fitted model or a claim that labels exist. T209.
+model_id: M18
+state: kl
+enabled: false
+task: classification
+unit: "permitted article"
+sources: [S41]
+target: >-
+  permitted article -> flood, landslide, fire, transport or other, plus event date and public
+  place mention; labels manually annotated, pins preliminary and human-reviewed; no personal
+  entity extraction; a news allegation is not a verified incident
+data_gate:
+  min_permitted_annotated_texts: 1000
+  min_per_class: 100
+  min_publishers: 2
+  languages: [ml, en]
+  owner_review: "H13: at least 20% of every batch (T189 to T208) and every held-out test item"
+  note: test is never augmented from training translations
+baselines:
+  - keyword rules + gazetteer
+  - TF-IDF logistic classifier
+candidates: [frozen_multilingual_e5_logistic, muril_classifier_n2_after_licence_gate]
+provisional_candidate: frozen_multilingual_e5_logistic
+release_targets:
+  event_macro_f1: baseline + 0.05
+  place_precision: 0.90
+  event_date_exact_match: 0.90
+  pin_precision_after_review: 0.95
+  interval: document-block 95% CI
+planned_splits:
+  collect_from: "2027-10-18"
+  train: ["2027-10-18", "2027-12-16"]
+  tune: ["2027-12-17", "2028-01-15"]
+  calibrate: ["2028-01-16", "2028-01-30"]
+  locked_test: ["2028-01-31", "2028-02-14"]
+  note: >-
+    Planned only. Dates assume source approval and readiness pass on schedule; if delayed the
+    whole manifest shifts before training. No earlier observation is invented. Publisher-held-out
+    temporal evaluation, syndicated duplicates removed, no training translations of test articles.
+split_manifest: null
+status: blocked
+reason: >-
+  M18 blocked: S41 is blocked (T125, no publisher permission to store or classify items), so
+  there are 0 permitted articles; the twenty annotation batches T189 to T208 are recorded as
+  blocked (D155) with 0 articles selected, 0 labelled and 0 owner-reviewed, and owner step H13
+  has not happened; the gate needs 1000 permitted annotated texts (T209).
+fallback: "none: no permitted article or reviewed label exists, so no extraction is shown"

@@ -1,0 +1,24 @@
+{
+  "model_id": "M18",
+  "status": "blocked",
+  "reason": "M18 blocked: S41 is blocked (T125, no publisher permission to store or classify items), so there are 0 permitted articles; the twenty annotation batches T189 to T208 are recorded as blocked (D155) with 0 articles selected, 0 labelled and 0 owner-reviewed, and owner step H13 has not happened; the gate needs 1000 permitted annotated texts (T209).",
+  "sources": {
+    "S41": {
+      "outcome": "blocked",
+      "licence": "restricted",
+      "units": "checked",
+      "history": "partial",
+      "earliest_date": "2026-11-08",
+      "latest_date": "2026-11-09",
+      "retry_condition": "Retry T125 when the owner obtains written permission from one publisher (Mathrubhumi English, The Hindu, Onmanorama or Times Internet) that allows storing headline, link and timestamp metadata from its RSS feed for a non-commercial public map and for a classifier (M18), or when a publisher issues an open licence or a terms update that allows this. The owner records the permission text and the permitted feed URLs; then re-verify the item fields, a quota and history, and enable only the permitted feeds."
+    }
+  },
+  "evidence": {
+    "configs/sources/s41.yaml": "837d314d67fdee0370e580a2eea328bbfe708cd9d33d85371263c67e451f5afd",
+    "tests/fixtures/s41/manifest.json": "2ca24cf142939c70b0fdc95f95dfe59ca941476d4dd8aa4ad92e525da17dd90c",
+    "configs/models/m18.yaml": "98fe174f7d8de14d1e9a049737eed55931ac856c2bfd653d6f1edee2092ec244",
+    "eval/news/blocked.json": "5d8033653cc42d6da60d085e3a53234673f82ed28cd44e36add7933566d8cd47"
+  },
+  "split_manifest": null,
+  "prediction_rows": 0
+}
