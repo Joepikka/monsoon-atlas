@@ -2,6 +2,20 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D135 — T148 S38 is blocked on owner step H04; only the public pages were read (10 Nov 2026, T148).**
+  otd.delhi.gov.in answers plain HTTP (no robots.txt, 404). Its static GTFS files and the real time
+  feed are behind forms that ask for a purpose, name and email and a tick accepting the Terms
+  (POST to `/data/static/` and `/data/realtime/`); the pages publish no direct file URL, and the
+  documented feed path `/api/realtime/VehiclePositions.pb?key=...` returns HTTP 401 without a
+  key. Submitting a form, registering and accepting terms are owner-only actions (H04), so none
+  was done and no GTFS file, key or sample was obtained. Recorded from real evidence: the file
+  list with counts and dates, the Terms PDF (restricted: DoT copyright, intent-based permission,
+  accurate reproduction with credit, no tracking or profiling of individuals), no published quota,
+  no history, and no units or timestamp semantics. No upstream field is claimed. The plain-http
+  `agency.txt` footer link was not fetched (the fetcher is https only) and not guessed at over
+  https. Dependents T149 to T153 and T156 are blocked. Retry: owner completes H04, then T148
+  re-runs.
+
 - **D134 — T147 S24 is a disabled contract with no Delhi state config (10 Nov 2026, T147).**
   Because T146 ended blocked, `src/atlas/ingest/s24.py` raises `SourceUnavailable` from `fetch` and
   `parse` before any I/O, even if force-enabled, and `schemas/s24.json` lists no fields. No

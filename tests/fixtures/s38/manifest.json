@@ -1,0 +1,104 @@
+{
+  "source_id": "S38",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://otd.delhi.gov.in/",
+      "fetched_at": "2026-11-10T13:14:31.871571Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "505594fd216aadf8ce45b4e4b62f4ce6dabcd49e5fefa94f973233f1b1236902",
+      "bytes": 9419,
+      "raw_path": "S38/2026-11-10/505594fd216aadf8ce45b4e4b62f4ce6dabcd49e5fefa94f973233f1b1236902.html",
+      "shows": "Open Transit Data home page: About text, links to data pages, documentation and terms"
+    },
+    {
+      "id": "e02",
+      "url": "https://otd.delhi.gov.in/data/static",
+      "fetched_at": "2026-11-10T13:14:33.073197Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "00b40aa8616b837f8818892d787a32242c2947a33da30e0ed10cdbe2ad31da34",
+      "bytes": 26658,
+      "raw_path": "S38/2026-11-10/00b40aa8616b837f8818892d787a32242c2947a33da30e0ed10cdbe2ad31da34.html",
+      "shows": "Bus static data page: file list with counts and last-updated dates; downloads sit behind a purpose and terms form"
+    },
+    {
+      "id": "e03",
+      "url": "https://otd.delhi.gov.in/data/staticDMRC",
+      "fetched_at": "2026-11-10T13:14:34.292049Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "f44639ad0693022724a2d315b280389fdd424f6da980fb25cb247488cb1a0891",
+      "bytes": 26697,
+      "raw_path": "S38/2026-11-10/f44639ad0693022724a2d315b280389fdd424f6da980fb25cb247488cb1a0891.html",
+      "shows": "DMRC metro static data page: file list with counts and last-updated dates; same purpose and terms form"
+    },
+    {
+      "id": "e04",
+      "url": "https://otd.delhi.gov.in/data/realtime",
+      "fetched_at": "2026-11-10T13:14:35.519259Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "52e2419aacd88152f430a7bc318ec9e73d8fa4e20c391d91cab20477586e597c",
+      "bytes": 23154,
+      "raw_path": "S38/2026-11-10/52e2419aacd88152f430a7bc318ec9e73d8fa4e20c391d91cab20477586e597c.html",
+      "shows": "Real-time data page: the API key request form (name, email, usage type, purpose, terms) and the announcements link"
+    },
+    {
+      "id": "e05",
+      "url": "https://otd.delhi.gov.in/documentation",
+      "fetched_at": "2026-11-10T13:14:36.723498Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "4e8ef4dafea6dc7804704f60e074be0f7adbeab1d8e81826d97b3d053bf43a4d",
+      "bytes": 9041,
+      "raw_path": "S38/2026-11-10/4e8ef4dafea6dc7804704f60e074be0f7adbeab1d8e81826d97b3d053bf43a4d.html",
+      "shows": "Documentation page: GTFS file list, the approximate-times warning and the VehiclePositions.pb path"
+    },
+    {
+      "id": "e06",
+      "url": "https://otd.delhi.gov.in/terms",
+      "fetched_at": "2026-11-10T13:14:38.050068Z",
+      "status": 304,
+      "media_type": "application/pdf",
+      "sha256": "095a3a13b4a8caa6f74fc1b179aeced1248e4ada727135bdecb00844a61ad50b",
+      "bytes": 48292,
+      "raw_path": "S38/2026-11-10/095a3a13b4a8caa6f74fc1b179aeced1248e4ada727135bdecb00844a61ad50b.pdf",
+      "shows": "Terms and Conditions (4-page PDF) of the Open Transit Data website"
+    },
+    {
+      "id": "e07",
+      "url": "https://otd.delhi.gov.in/about",
+      "fetched_at": "2026-11-10T13:14:39.260482Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "d09340a802acca0815f043d336c0e020d57eecc2bbbbd2d5776bb15bfef8dfdc",
+      "bytes": 8493,
+      "raw_path": "S38/2026-11-10/d09340a802acca0815f043d336c0e020d57eecc2bbbbd2d5776bb15bfef8dfdc.html",
+      "shows": "About page: publisher and the statement that dataset use constitutes acceptance of the terms"
+    },
+    {
+      "id": "e08",
+      "url": "https://otd.delhi.gov.in/announcements",
+      "fetched_at": "2026-11-10T13:14:40.490106Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "e3536f7ad444e0da947e2a5e4b9c8d0a2af8968c5d5ad38e6a82598472fa9976",
+      "bytes": 9482,
+      "raw_path": "S38/2026-11-10/e3536f7ad444e0da947e2a5e4b9c8d0a2af8968c5d5ad38e6a82598472fa9976.html",
+      "shows": "Announcements page: dated notices about API key authorisation and outages, latest April 2019"
+    },
+    {
+      "id": "e09",
+      "url": "https://otd.delhi.gov.in/contact",
+      "fetched_at": "2026-11-10T13:14:41.706483Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "a176ef712cbd17c5638df84acc842eb2faa3bd2a0b73db8a7e05ec5a2384304c",
+      "bytes": 9312,
+      "raw_path": "S38/2026-11-10/a176ef712cbd17c5638df84acc842eb2faa3bd2a0b73db8a7e05ec5a2384304c.html",
+      "shows": "Contact page: a contact form only, no address or quota information"
+    }
+  ]
+}
