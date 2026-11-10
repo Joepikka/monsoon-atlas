@@ -58,3 +58,40 @@ def test_worker_ask_contract_runs_under_pinned_node():
     )
     assert result.returncode == 0, result.stdout + result.stderr
     assert "# pass 5" in result.stdout and "# fail 0" in result.stdout
+
+
+def coverage_rows() -> dict[str, tuple[str, str]]:
+    text = (ROOT / "docs/ask.md").read_text("utf-8")
+    section = text.split("## Plan coverage T179-T181", 1)[1]
+    rows = re.findall(r"(?m)^\| (T\d{3}[^|]*)\| ([^|]+)\| ([^|]+)\|$", section)
+    return {step.strip(): (status.strip(), evidence) for step, status, evidence in rows}
+
+
+def test_plan_coverage_table_matches_the_repository():
+    rows = coverage_rows()
+    assert {step.split(" ")[0] for step in rows} >= {
+        "T179.1",
+        "T179.2",
+        "T179.3",
+        "T180.1",
+        "T180.2",
+    }
+    allowed = ("done", "not adopted", "blocked", "deviation", "FTS done")
+    assert all(status.startswith(allowed) for status, _ in rows.values())
+    for _, evidence in rows.values():
+        for path in re.findall(r"`([\w.-]+(?:/[\w.-]+)+\.\w+)`", evidence):
+            assert (ROOT / path).exists(), path
+
+
+def test_chunking_and_generation_gate_match_the_plan():
+    rag = (ROOT / "configs/rag.yaml").read_text("utf-8")
+    assert re.search(r"(?m)^chunk_tokens: 300$", rag) and re.search(
+        r"(?m)^overlap_tokens: 50$", rag
+    )
+    assert re.search(r"(?m)^rerank_method: R0\b", rag)  # e5 tested in T264, not adopted
+    model = "@cf/qwen/qwen3-30b-a3b-fp8"  # T180.1: named only after the H05 probe passes
+    for folder in ("worker/src", "web/src", "configs"):
+        for path in (ROOT / folder).rglob("*"):
+            if path.is_file() and path.suffix in {".ts", ".tsx", ".yaml", ".toml", ".json"}:
+                assert model not in path.read_text("utf-8"), path
+    assert model not in (ROOT / "worker/wrangler.toml").read_text("utf-8")

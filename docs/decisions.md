@@ -2,6 +2,17 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D146 — Plan coverage audit for T179 and T180 (11 Nov 2026).**
+  Every step of T179 and T180 was checked against the code and recorded in
+  `docs/ask.md`, section "Plan coverage T179-T181", which `tests/test_ask_config.py` reads
+  (quota caps, 300/50 chunks, the model ID absent from code and config, every named file
+  exists). Result: the English scope is done; the open items are the e5 embedding (T264,
+  tested and not adopted), the probe-gated Workers AI model and the live per-minute and
+  per-day counters, which wait for owner step H05 (no Cloudflare token). The caps stay in
+  `worker/src/ask.ts` and no `quota.ts` is added, because `ask.ts` has owned the limits since
+  D88 and a second module would only duplicate them; the Worker test stays `.mjs`. No code
+  changed, no AI binding was added and no model was downloaded.
+
 - **D145 — M11 and M20 are recorded as blocked branches (11 Nov 2026, T170 to T172, T176 to T178).**
   Both depend on a flood model that does not exist. M11 (Karnataka-to-Kerala transfer) freezes
   M01 and needs common Kerala flood labels: M01 is blocked (S43 holds no official dated

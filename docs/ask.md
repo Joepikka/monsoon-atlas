@@ -159,3 +159,23 @@ owner decides at H11 whether a research-only C3 meets T046 extra check (2).
 Revisit only with a fresh held-out question set written before tuning, or
 with reviewed generated answers after H05.
 
+## Plan coverage T179-T181
+
+Audit of each numbered plan step against the repository, 11 Nov 2026 (D146).
+Status is `done`, `not adopted` (built and tested, then rejected on the
+evidence), `blocked` (waits for an owner step) or `deviation` (done in a
+different place than the plan names). `tests/test_ask_config.py` checks the
+quota caps, the 300/50 chunking, the model gate and that every file named in
+this table exists.
+
+| Step | Status | Evidence |
+|---|---|---|
+| T179.1 Permission-filtered corpus, 300/50 chunks, no secrets or alert text | done | `src/atlas/rag/corpus.py`, `configs/rag.yaml` (`chunk_tokens: 300`, `overlap_tokens: 50`; committed project-owned documents only), `tests/rag/test_retrieval.py` |
+| T179.2 e5 embeddings, NumPy matrix, SQLite FTS | FTS done; embeddings not adopted | FTS5 index in `src/atlas/rag/index.py`; e5 vectors in `src/atlas/rag/embed.py` were tested in T264 and gave no gain (`reports/rag-rerank.md`, D99), so `rerank_method: R0` and no model is served |
+| T179.3 Browser lexical search, optional rerank, Worker reads trusted chunk IDs | done | `web/src/ask-search.ts`, `src/atlas/rag/manifest.py`, `worker/src/index.ts` (T260, D95); rerank R1 to R3 exist but are not selected |
+| T179 acceptance: as-of filters, stale and unlicensed excluded, recall >= 85% | done | `tests/rag/test_retrieval.py` (18 of 20 dev questions, 90%) |
+| T180.1 Workers AI model only after the free/no-card probe | blocked (H05) | `worker/wrangler.toml` has `CAPABILITY_GATE = "blocked"` and no AI binding; the plan's model ID appears in no code or config; no Cloudflare token exists |
+| T180.2 Caps 100/day, 6/minute, 3000 in, 350 out, 8000 neurons/day; citation check | done | `LIMITS` and `checkGenerated` in `worker/src/ask.ts` (deviation: the plan names worker/src/quota.ts, but `ask.ts` has owned the limits since D88), mirrored by `configs/budgets.yaml`, `worker/tests/ask.test.mjs` |
+| T180.2 Live usage counters per day and minute | blocked (H05) | `worker/src/index.ts` passes zero usage because generation is off (D95); counters need the AI binding and a store |
+| T180.3 Fallback to cited extractive answer; no emergency advice, tools or user URLs | done | `answer()` in `worker/src/ask.ts` (timeout, quota, failed check or no evidence); fixed system prompt; `worker/tests/ask-route.test.mjs` refuses client evidence and unknown fields |
+| T180 acceptance: quota exhaustion, hostile text, no secret in bundle | done | `tests/test_ask_config.py`, `worker/tests/ask.test.mjs` (deviation: `.mjs`, not ask.test.ts) |
