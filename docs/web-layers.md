@@ -88,3 +88,12 @@ reason, the provider page and the evidence path.
 
 Like the transit layer, the controls are not mounted in the app until a
 public snapshot carries them (D117).
+
+## Terrain and globe (T186)
+
+`web/src/map/Terrain.tsx` and `Globe.tsx` add MapLibre terrain (S14 Terrarium DEM,
+exaggeration 1 unless set) and the globe projection, with S13 imagery under the date S13
+reported (no imagery and a message when it reported none). No WebGL, a lost context or a
+device with 2 GB or less memory falls back to the flat map or to a status message that points
+to the record list; reduced motion removes camera animation; nothing is stored for later use.
+Not mounted (D152); the Python contract test is `tests/test_tiles.py`.

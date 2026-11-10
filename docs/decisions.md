@@ -2,6 +2,24 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D152 — Terrain and globe built, not mounted; globe works in the pinned MapLibre (11 Nov 2026, T186).**
+  `web/src/map/Terrain.tsx` builds the MapLibre `raster-dem` source (Terrarium encoding, the S14
+  bucket, zoom 15 as in the adapter) and `setTerrain` with exaggeration 1 by default (a zero,
+  negative or non-finite value throws). S13 imagery is added only from a row that carries a valid
+  date and an https GIBS tile address; otherwise terrain is shown without imagery and the message
+  says S13 reported none (no date is assumed from the clock, and a test forbids `Date.now`).
+  `chooseView()` returns the 2D map on low reported memory (`deviceMemory` of 2 GB or less; the
+  value is coarse and absent in some browsers, where it is not guessed) and an accessible status
+  message pointing to the record list when WebGL is missing or the context is lost. `Globe.tsx`
+  uses `setProjection({type: 'globe'})`: maplibre-gl 6.16.0 has it (the build type-checks the
+  call against the pinned `Map` through `MapLike`), so no "globe unavailable" state is needed on
+  this build, but the state exists for a map without it. Longitudes from a click are wrapped into
+  [-180, 180). Camera durations become 0 under reduced motion. No tile is stored for later use and
+  nothing is requested outside the S13 and S14 hosts; the S15 basemap and its credit stay in
+  `MapView`. Strings are English literals; they need keys in all four locale files (D148) before
+  mounting. Not run: PMTiles tile reads against source geometry (no archive, D151). Python
+  contract: `tests/test_tiles.py`; behaviour: `Terrain.test.ts`, `Globe.test.ts`.
+
 - **D151 — PMTiles city-layer build: clip, licence gate, shard plan and a manual workflow; no archive (11 Nov 2026, T185).**
   `src/atlas/spatial/tiles.py` holds what runs locally: `clipped_buildings()` wraps the T105
   `buildings_in_place()` (no second clipper) and adds the credit to the collection and to every
