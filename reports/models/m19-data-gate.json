@@ -1,0 +1,23 @@
+{
+  "model_id": "M19",
+  "status": "blocked",
+  "reason": "M19 blocked: it must beat the M02 baseline on the same reservoir level target, and M02 is blocked because S28 KWRIS has no verified daily reservoir level history (T092), so there are no reservoirs with 5 years of daily data, no M02 baseline and no target; no free GPU session exists either, as the Kaggle owner step H10 is open (T167).",
+  "sources": {
+    "S28": {
+      "outcome": "blocked",
+      "licence": "restricted",
+      "units": "unlabelled",
+      "history": "not_public",
+      "earliest_date": "2021-10-23",
+      "latest_date": "2026-11-05",
+      "retry_condition": "Re-run T008 when one of these holds: (1) the owner chooses to register a KWRIS account (a new human-only step: the form asks for personal details), and the Web API terms then allow research use and the API returns daily reservoir history with units; (2) ACIWRM answers a data request to the helpdesk address published on the site with daily history, units and a licence; or (3) the public site starts publishing a reservoir history or export."
+    }
+  },
+  "evidence": {
+    "configs/sources/s28.yaml": "04a3df19c26e99eb337b3ad0b154bc045c8db91990952c8516d7b301f6522281",
+    "tests/fixtures/s28/manifest.json": "1dac49892f5e1611e5f72d8e4922a5b7f1a41fc4d4fe58696f0d53c9f599e5b5",
+    "configs/models/m19.yaml": "4ba130cd9d6e13d0501572cfab7c1229a154abe89f86cb4813e11f3459ffd1b1"
+  },
+  "split_manifest": null,
+  "prediction_rows": 0
+}
