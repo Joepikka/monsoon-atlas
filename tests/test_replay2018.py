@@ -28,6 +28,7 @@ S08_LOCAL = [
     EDA / "05_kl_flood2018/monthly_2018.csv",
     EDA / "07_climate/s08_kerala_annual.csv",
 ]
+S08_CHARTS = {"rain_2018_vs_climatology.png", "s08_annual_rain.png"}  # plot S08 mm; untracked
 needs_replay = pytest.mark.skipif(
     not REPLAY_PATH.exists(), reason="replay2018.json holds S08 rain and is local only (D166)"
 )
@@ -78,8 +79,9 @@ def test_every_chart_has_source_and_vintage_and_event_charts_have_a_ci():
     assert charts and all(c["source"] and c["vintage"] for c in charts)
     assert all(c["ci"] for c in charts if c["kind"] == "event")
     assert all(c["ci"] is None for c in charts if c["kind"] == "projection")  # spread is not CI
-    for name, s in SUMMARIES.items():
-        assert {c["file"] for c in s["charts"]} == {p.name for p in (EDA / name).glob("*.png")}
+    for name, s in SUMMARIES.items():  # the untracked S08 charts (D167) may be absent
+        listed = {c["file"] for c in s["charts"]} - S08_CHARTS
+        assert listed == {p.name for p in (EDA / name).glob("*.png")} - S08_CHARTS
 
 
 def test_price_event_study_is_not_computable_and_association_only():

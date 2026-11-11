@@ -2,6 +2,36 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D167 — Tracked EDA outputs carry no IMD (S08) rainfall in mm (11 Nov 2026, owner answer in chat: "Strip mm, keep derived").**
+  Rule: absolute S08 rainfall in mm (area averages, differences, extremes, climatologies) is
+  removed from every committed file; percent departures, percent of the mean, ratios, shares,
+  SPI, counts, ranks and years are kept; charts that plot S08 mm are untracked and listed in
+  `.gitignore` by exact path; git history is not rewritten. Changed at the generators, then
+  regenerated (outputs byte-identical elsewhere): `notebooks/02_ka_rain.ipynb` (CSV drops `grid_mm`
+  and `bias_mm`; summary `bias_mm` becomes `ratio_grid_to_gauge` with median, mean, min, max and
+  `grid_wetter_share`; caption in ratio), `notebooks/05_kl_flood2018.ipynb` (summary drops the
+  Jun-Sep 2018 and 1981-2010 mm and the CI in mm, keeps `departure_pct`; caption in percent),
+  `notebooks/07_climate.ipynb` (summary drops mean, min and max mm, gains driest and wettest year
+  and each as a percent of the 1981-2010 mean). Regenerated: `reports/eda/02_ka_rain/
+  district_year_comparison.csv` and `summary.json`, `reports/eda/05_kl_flood2018/summary.json`,
+  `reports/eda/07_climate/summary.json`. Untracked, kept local: `gauge_vs_grid.png`,
+  `bias_by_district.png`, `rain_2018_vs_climatology.png`, `s08_annual_rain.png`. The notebooks
+  still write them (and the three files of D166) locally, so the clean-process tests still run
+  where `data/raw` exists; `tests/test_replay2018.py` lets those two summary-listed charts be
+  absent. Checked and kept: `reports/sql_insights.md` Q01 and Q02 (S29 gauge totals only, no S08),
+  `reports/powerbi/data/*.csv` and `powerbi/build_pbip.py` (only S29 `gauge_mm`; the S08 columns
+  were already dropped, D132), `reports/eda/07_climate/s06_model_change.csv` (S06 CMIP6 model
+  values), `reports/eda/08_climate_product/climate.json` (indices only), all SPI-unit reports. The
+  web app imports no S08 mm. **Known limit:** `district_year_comparison.csv` keeps S29 `gauge_mm`
+  beside the grid-to-gauge `ratio`, so grid mm can be recomputed as their product; the owner's rule
+  keeps both (S29 is public domain, the ratio is a derived index). If the owner wants that closed,
+  drop `gauge_mm` from the file and have the Power BI build read S29 directly. **Not changed:**
+  the single-cell example totals in `configs/sources/s08.yaml` and `docs/sources/s08.md` (about 990
+  mm at Bengaluru, 6,457 mm near Agumbe, 707 mm at Kalaburagi; one cell, not an area average,
+  and `s08.yaml` is hash-pinned by `m16-data-gate.json`) and the line "median bias +31.7 mm" in
+  `docs/HANDOFF.md` (not edited by this task); both are listed for the owner. Old copies stay in
+  git history.
+
 - **D166 — Owner answers to the H11 Karnataka release review (11 Nov 2026, owner answer in chat).**
   The owner answered the sheet `docs/releases/h11-ka.md` and three extra pre-deployment checks.
   (1) Publish the model accuracy table (M07, M05, M06): **approve**. (2) Count a research-only Ask

@@ -8,12 +8,6 @@
     ],
     "cells": 144,
     "missing_cell_days": 0,
-    "jun_sep_2018_mm": 1474.7,
-    "jun_sep_clim_1981_2010_mm": 1128.4,
-    "clim_ci95_mm": [
-      1059.0,
-      1203.7
-    ],
     "departure_pct": 30.7,
     "first_fetch": "2026-11-05T15:47:17.066208+00:00",
     "last_fetch": "2026-11-05T16:58:38.265894+00:00"
@@ -37,7 +31,7 @@
       "vintage": "IMD 0.25 deg grid, 2018 file fetched 2026-11-05"
     }
   ],
-  "caption": "S08 IMD 0.25 deg grid (reconstruction; IMD 0.25 deg grid, 2018 file fetched 2026-11-05), Kerala cell box (8.25, 12.75, 74.75, 77.5): daily and cumulative box-mean rain, 2018 vs 1981-2010 mean with 95% bootstrap CI (mm), 2018-06-01 to 2018-09-30; coverage 144 cells, 0 missing cell-days.",
+  "caption": "S08 IMD 0.25 deg grid (reconstruction; IMD 0.25 deg grid, 2018 file fetched 2026-11-05), Kerala cell box (8.25, 12.75, 74.75, 77.5): box-mean rain, 2018 as percent departure from the 1981-2010 mean (%), 2018-06-01 to 2018-09-30; coverage 144 cells, 0 missing cell-days.",
   "limits": [
     "Descriptive only: no forecast, no model and no accuracy claim (D29, D125).",
     "No historical forecast vintage for 2018 is held; none is reconstructed or imitated.",
@@ -45,6 +39,7 @@
     "The cell box includes Tamil Nadu and Karnataka border cells; it is not Kerala's boundary.",
     "S36 fatalities are period totals; they are not spread over days.",
     "S36 as-known dates are the memoranda submission dates; the web copies sit under a 2019 upload path, so as-known means issued by the state then, not online then.",
-    "S32 holds no 2018 dam row: the 15 Aug 2018 report is empty."
+    "S32 holds no 2018 dam row: the 15 Aug 2018 report is empty.",
+    "S08 is local only (IMD): the summary carries the percent departure only, no S08 rain in mm (D166); the replay file, monthly table and chart hold mm and are not tracked."
   ]
 }

@@ -129,6 +129,14 @@ quotes only a derived departure, not rainfall values. The notebooks `05_kl_flood
 `07_climate` regenerate the files locally from `data/raw`; the tests that read them skip when
 they are absent.
 
+Second step, the same day (D167): the tracked outputs of notebooks `02_ka_rain`, `05_kl_flood2018`
+and `07_climate` hold no S08 rain in mm either. Their summaries carry the percent departure
+(2018), the driest and wettest years as a percent of the 1981 to 2010 mean, and the ratio of the
+grid to the gauge total. `district_year_comparison.csv` no longer has `grid_mm` and `bias_mm`. The
+four charts that plot S08 mm (`gauge_vs_grid.png`, `bias_by_district.png`,
+`rain_2018_vs_climatology.png`, `s08_annual_rain.png`) are untracked and stay local. The S29
+gauge totals and the S06 model values are other sources and stay.
+
 ## Case study draft: Kerala 2018 and dams
 
 Measured results from committed reports only. No future outcome is claimed or implied.

@@ -216,7 +216,9 @@ none can reach a build. Enabled restricted sources: S08, S12, S20, S30, S36. The
   `replay2018.json`, `monthly_2018.csv` and `s08_kerala_annual.csv` under `reports/eda/` hold S08
   box-mean rain values. On 11 Nov 2026 the owner had them removed from the repository (D166): they
   are untracked and stay local, and old copies remain in git history. The replay keeps derived
-  departures only.
+  departures only. The same day (D167) the tracked EDA summaries and `district_year_comparison.csv`
+  dropped their S08 mm values (percentages and the grid-to-gauge ratio stay) and four S08 charts
+  were untracked.
 - S12 and S20 display terms wait for H11 (D109, D110); S30 is labelled unofficial and restricted
   (D115); S36 is used as district facts with document and page citations (D123).
 

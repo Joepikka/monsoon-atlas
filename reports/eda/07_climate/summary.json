@@ -4,9 +4,10 @@
       1981,
       2024
     ],
-    "mean_1981_2010_mm": 1774.6,
-    "min_mm": 1134.4,
-    "max_mm": 2353.1,
+    "driest_year": 2016,
+    "driest_pct_of_1981_2010_mean": 63.9,
+    "wettest_year": 2021,
+    "wettest_pct_of_1981_2010_mean": 132.6,
     "first_fetch": "2026-11-05T15:47:17.066208+00:00"
   },
   "s06": {
@@ -61,6 +62,7 @@
     "The API names no scenario; none is claimed (D107).",
     "Two points only (request budget); they are not area means.",
     "S08 is a gridded reconstruction; the cell box is not Kerala's boundary.",
+    "S08 is local only (IMD): the summary carries percentages of the 1981-2010 mean, no S08 rain in mm (D166); the annual table and chart hold mm and are not tracked.",
     "EC_Earth3P_HR has no 2050: its future mean uses 2021-2049."
   ]
 }
