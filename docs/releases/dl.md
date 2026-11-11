@@ -154,7 +154,7 @@ file needs a decision entry and a hash update in ka-v1.md first.
 | H04 | Completes the Delhi Open Transit Data registration (key, Terms, static GTFS) | S38, M12, M13, Delhi buses |
 | S24 browser read | Opens the data.gov.in resource page in a browser that can read page content and records the resource ID and licence (no new key needed) | S24, M14, observed air quality |
 | H05, H06 | Cloudflare token and Hugging Face token | Any hosted Worker, snapshot or archive |
-| H11 | Reviews and approves any public release | Every public Delhi layer |
+| H11 | Reviews and approves any public release (the Karnataka sheet was answered on 11 Nov 2026, D166; Delhi layers are not yet reviewed) | Every public Delhi layer |
 
 M15's retry is not an owner step: enable S01 and S02 for Delhi and collect S01 forecast vintages
 over the prospective window. Nothing here approves a public release.

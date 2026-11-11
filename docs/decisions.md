@@ -2,6 +2,32 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D166 — Owner answers to the H11 Karnataka release review (11 Nov 2026, owner answer in chat).**
+  The owner answered the sheet `docs/releases/h11-ka.md` and three extra pre-deployment checks.
+  (1) Publish the model accuracy table (M07, M05, M06): **approve**. (2) Count a research-only Ask
+  (C3) for the MVP gate: **(a) yes**, publish Ask labelled research-only (D101); before any release,
+  freeze Ask's document set and regenerate its report once. (3) IMD rainfall (S08) only through
+  derived outputs: **(a)** derived outputs only, citing Pai et al. (2014); never rainfall values.
+  (4) Attribution for the open sources: **approve**, on condition the project stays
+  non-commercial. (5) Official alerts, model outputs and inferred items stay separate ("not an
+  emergency service"): **approve**. (6) Refit M05 now that IMD 2025 is published: **(b)** refit now
+  and label v2 untested (no unused year remains to test it); a later agent builds M05 v2, and this
+  entry only records the decision. (7) OpenFreeMap terms (S15): the owner **confirms they are 18 or
+  older**. (8) India mapping: **add a disclaimer**; geoBoundaries stays the analysis source, every
+  public map carries a boundary disclaimer, and no international border is drawn. (9) The three
+  committed files holding IMD area-averaged rainfall in mm for the 2018 Kerala replay
+  (`reports/eda/05_kl_flood2018/replay2018.json`, `monthly_2018.csv`, `s08_kerala_annual.csv`) are
+  **removed from the repository** (untracked, kept local; the replay keeps derived departures only);
+  old copies stay in git history and history is not rewritten. **Conditions that now bind:**
+  non-commercial use only; S08-derived outputs only, Pai et al. (2014) cited; Ask research-only; M05
+  v2, when built, is labelled untested. **What this does not change:** nothing is deployed or
+  published (H05 and H06 are unanswered, T045 and T041 stay open), no feature becomes
+  `shipped-local` by this alone (D165 rule: reachable locally with a tracked test), and C1 stays
+  blocked (D104), so `docs/releases/ka.md` still says "not releasable". Applied in the three
+  `H11:` commits: this record and page updates, the untracked S08 files, and the boundary
+  disclaimer on the map (`map.disclaimer`). Frozen interface files (D122) are untouched; the dated
+  gate page `ka-v1.md` still lists the H11 items as owner-gated because it is a 9 Nov record.
+
 - **D165 — Final acceptance: tasks walked, product not released (11 Nov 2026, T221).**
   Result line in `docs/releases/final.md`: the plan's tasks T001 to T221 are walked as executed;
   the product is not released; 12 of 64 plan features are `shipped-local`, 20 built but not

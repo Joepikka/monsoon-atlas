@@ -713,10 +713,16 @@ M08 is a non-core descriptive 2018 replay (P3).
 - H04: Delhi Open Transit Data registration (needed in P4).
 - H10 (optional): Kaggle sign-in only if the owner wants S35 re-checked.
 - H11: review at each gate and before any public deployment (licences: S08 and S34 forbid
-  reproduction, so only derived outputs may be published).
-- Before public deployment also: confirm you are 18+ (OpenFreeMap terms), check boundary maps
-  against India's official mapping guidance (geoBoundaries has no disputed-boundary field), and
-  label WorldPop counts for Bengaluru as an undercount (about 6.0 million in the GBA wards).
+  reproduction, so only derived outputs may be published). **Answered 11 Nov 2026 (D166) for the
+  Karnataka sheet `docs/releases/h11-ka.md`:** accuracy table approved; Ask counts as research-only
+  (freeze its document set and regenerate its report once before any release); S08 derived outputs
+  only, citing Pai et al. (2014); attribution approved while the project stays non-commercial;
+  alerts, model outputs and inferred items stay separate; refit M05 now and label v2 untested; the
+  owner is 18 or older (OpenFreeMap); every public map carries a boundary disclaimer and draws no
+  international border; the three S08 box-mean files in `reports/eda/` are untracked. Still open:
+  the Malayalam strings, S12 and S20 display terms, and any public release.
+- Before public deployment also: label WorldPop counts for Bengaluru as an undercount (about 6.0
+  million in the GBA wards).
 - T025 already accessed data.gov.in with the owner's key, and the browser retry verified
   GODL. Remaining blocker: a publisher statement establishing the API price denominator;
   see `docs/sources/s23.md`. Do not request another key or repeat licence confirmation.
@@ -858,7 +864,8 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    `.\.venv\Scripts\python tests/test_final.py --manifest` after changing any of them).
    Operating runbook: `docs/runbooks/maintain.md`. **Next agent task without the owner:
    re-run T146 (S24) once a browser tool can read the data.gov.in resource page. First owner
-   step: H11** (sheet in `docs/releases/h11-ka.md`), then H05/H06 for hosting T042-T045, which
+   step: H05/H06** (the H11 Karnataka sheet `docs/releases/h11-ka.md` was answered on 11 Nov 2026,
+   D166) for hosting T042-T045, which
    T046 (the Karnataka MVP gate, first unfinished task in plan order) needs. New owner steps from P3: H12 (aisstream key), proposed
    H15 (Copernicus account), T118 bulk OCR approval, S41 publisher permission, Power BI Desktop
    exports (D132);

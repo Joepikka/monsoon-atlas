@@ -109,13 +109,13 @@ status; the note says why this one was chosen.
 | F027 | Reservoir levels and inflow forecasts | KA/KL | v1 | blocked | T008, T092, T094, T130 (plan T094) | `models/registry/m02.json`, `models/registry/m03.json`, `models/registry/m07.json`, `docs/releases/kl.md` | `tests/test_ka_v1.py`, `tests/test_kl_release.py` | M02 and M03 need S28 daily history; M07 needs datum for 8 dams and S34 bulk OCR (T118). | S32 Kerala dam levels are held locally (kl.md 'measured'), but no levels layer is mounted. |
 | F028 | Ward/taluk flood risk | KA/KL | v1 | blocked | T089, T091, T130 (plan T091) | `models/registry/m01.json`, `models/registry/m08.json` | `tests/test_ka_v1.py`, `tests/test_kl_release.py` | No dated ward flood labels (S43) and no audited Kerala history (S35, H10). Owner: H10. | none |
 | F029 | Landslide susceptibility | KL | v1 | blocked | T136, T138 (plan T138) | `models/registry/m09.json`, `reports/models/m09.md` | `tests/test_kl_release.py` | S37 has no inventory with footprint; S42 needs a Copernicus account (D126). Owner: H15. | H15 is proposed, not in amendments A5. |
-| F030 | Taluk drought outlook | KA then ALL | v1 | built-not-mounted | T101, T102, T103 (plan T103) | `models/registry/M05/v1.json`, `models/registry/M05/v1.approval.json`, `reports/models/m05.md`, `reports/models/m05-card.md` | `tests/test_ka_v1.py`, `tests/test_web_accuracy.py` | No outlook layer exists: M05 is a hindcast (D39) at district level (no taluk polygons); S08-derived publication waits for H11 item 3. Owner: H11. | Judgement call: the model is measured and owner-approved (D43) and its scores show on the local accuracy page (F036); ka-v1.md calls F030 measured in that sense. Intervals stay hidden (D42, T262). |
+| F030 | Taluk drought outlook | KA then ALL | v1 | built-not-mounted | T101, T102, T103 (plan T103) | `models/registry/M05/v1.json`, `models/registry/M05/v1.approval.json`, `reports/models/m05.md`, `reports/models/m05-card.md` | `tests/test_ka_v1.py`, `tests/test_web_accuracy.py` | No outlook layer exists: M05 is a hindcast (D39) at district level (no taluk polygons); S08-derived outputs may be published, never rainfall values (H11 item 3, D166). Owner: H11. | Judgement call: the model is measured and owner-approved (D43) and its scores show on the local accuracy page (F036); ka-v1.md calls F030 measured in that sense. Intervals stay hidden (D42, T262). |
 | F031 | 24-72h AQI/pollutant forecasts | DL | v1 | blocked | T146, T159, T161 (plan T161) | `models/registry/m14.json`, `configs/sources/s24.yaml` | `tests/test_dl_release.py` | S24 resource page could not be read by any tool (D133); 0 station rows. | Retry is a re-run of T146 with a browser that can read page content; no new key. |
 | F032 | Bus ETA/delay and bunching | DL | v1 | blocked | T153, T155, T156 (plan T155) | `models/registry/m12.json`, `models/registry/m13.json` | `tests/test_dl_release.py` | S38 blocked on H04; 0 vehicle positions (D140). Owner: H04. | none |
 | F033 | 16-day price-spike warning | KA then KL | MVP | blocked | T035, T036, T037 (plan T037) | `models/registry/m06.json`, `reports/models/m06.md` | `tests/test_ka_v1.py` | Zero price rows: S22 and S23 blocked (D55). | none |
 | F034 | Rain what-if simulator | KA/KL | stretch | blocked | T176, T178 (plan T178) | `models/registry/m20.json`, `reports/models/m20.md` | `tests/test_dashboards.py` | M20 needs an approved base model for the target; recorded as a blocked branch (D145). | none |
 | F035 | SHAP explanations and uncertainty bands | ALL | v1 | research-only | T034, T262 (plan T034) | `models/registry/M05/v1.intervals.json`, `reports/models/m05-intervals.md`, `requirements/ml.in` | `tests/test_dashboards.py` | M05 intervals cover 72.8% against an 80% gate, so they stay hidden (D42, T262). | Judgement call: the intervals are measured and fail their gate. No SHAP values exist for any model: shap is pinned in requirements/ml.in but no code calls it (see Findings). |
-| F036 | Accuracy page and daily matured backtests | ALL | MVP | shipped-local | T257, T259 (plan T046) | `web/src/pages/Accuracy.tsx`, `docs/releases/ka.md`, `web/tests/fixtures/accuracy-ka.json` | `web/tests/accuracy.spec.ts`, `web/src/accuracy.test.ts`, `tests/test_web_accuracy.py` | Owner: H11. | Judgement call: the minimal MVP table runs at ?page=accuracy locally (T257, T259); its plan task T046, the MVP gate, has not passed. No daily matured backtest exists because no model serves live predictions. H11 item 1 decides publication. |
+| F036 | Accuracy page and daily matured backtests | ALL | MVP | shipped-local | T257, T259 (plan T046) | `web/src/pages/Accuracy.tsx`, `docs/releases/ka.md`, `web/tests/fixtures/accuracy-ka.json` | `web/tests/accuracy.spec.ts`, `web/src/accuracy.test.ts`, `tests/test_web_accuracy.py` | Owner: H11. | Judgement call: the minimal MVP table runs at ?page=accuracy locally (T257, T259); its plan task T046, the MVP gate, has not passed. No daily matured backtest exists because no model serves live predictions. H11 item 1 approved publishing the table on 11 Nov 2026 (D166); nothing is deployed. |
 | F037 | Anomaly feed | ALL | v1 | research-only | T212-T216 (plan T216) | `models/registry/m16.json`, `reports/models/m16.md`, `reports/models/m16-flag-counts.json`, `eval/anomalies/blocked.json`, `web/src/pages/Quality.tsx` | `tests/labels/test_anomaly_blocked.py`, `tests/test_dashboards.py` | 0 of 100 flags adjudicated, so precision is not measured (D159, D160). | Proposed owner step: adjudicate 100 M16 flags with independent evidence. |
 | F038 | Population exposed to risk | ALL | v1 | blocked | T143 (plan T143) | `src/atlas/spatial/exposure.py`, `configs/sources/s16.yaml` | none | No verified hazard polygon exists (S37, S43); the exposure code is tested on an H3 cell only (D128). | none |
 | F039 | Experimental route avoiding flagged roads | KA/KL | v1 | blocked | T143 (plan T143) | `src/atlas/spatial/routes.py`, `web/src/components/RouteComparison.tsx` | `web/src/components/RouteComparison.test.ts` | No road network (S18) and no official shelter record (S43); every result says not a safe route (D128). | none |
@@ -125,7 +125,7 @@ status; the note says why this one was chosen.
 | F043 | CMIP6 outlook to 2050 | ALL | v1 | built-not-mounted | T145 (plan T145) | `web/src/pages/Climate.tsx`, `reports/eda/07_climate/summary.json` | `web/src/pages/Climate.test.ts`, `tests/test_climate_product.py` | Climate page not mounted pending H11 (D130). Owner: H11. | S06 has no named scenario; labelled climate projection, not a forecast. |
 | F044 | Monsoon progress tracker | ALL | v1 | built-not-mounted | T145 (plan T145) | `web/src/pages/Climate.tsx`, `reports/eda/08_climate_product/climate.json` | `tests/test_climate_product.py` | Climate page not mounted pending H11; no source publishes an official onset date (D130). Owner: H11. | The tracked year is 2025, a past year; onset is labelled inferred. |
 | F045 | Past-disaster replay | KL then ALL | v1 | built-not-mounted | T142 (plan T142) | `web/src/components/Replay.tsx`, `reports/eda/05_kl_flood2018/replay2018.json`, `docs/releases/kl.md` | `tests/test_replay2018.py`, `web/src/components/Replay.test.ts` | Not mounted; the 122 S08 records need the H11 decision; S35 blocked (D127, D129). Owner: H11, H10. | none |
-| F046 | Cited RAG Ask by text | ALL | v1 | research-only | T179, T180, T181, T252-T266 (plan T180) | `web/src/pages/Ask.tsx`, `reports/rag.md`, `docs/ask.md`, `configs/rag.yaml` | `web/tests/ask.spec.ts`, `tests/test_web_ask.py`, `tests/test_ask_config.py` | Evidence support below the 0.95 gate (0.86 on 8 Nov, 0.80 on 11 Nov); extractive only; Workers AI waits for H05 (D101, D147). Owner: H05, H11. | The page runs at ?page=ask locally, labelled research-only. |
+| F046 | Cited RAG Ask by text | ALL | v1 | research-only | T179, T180, T181, T252-T266 (plan T180) | `web/src/pages/Ask.tsx`, `reports/rag.md`, `docs/ask.md`, `configs/rag.yaml` | `web/tests/ask.spec.ts`, `tests/test_web_ask.py`, `tests/test_ask_config.py` | Evidence support below the 0.95 gate (0.86 on 8 Nov, 0.80 on 11 Nov); extractive only; Workers AI waits for H05 (D101, D147). Owner: H05, H11. | The page runs at ?page=ask locally, labelled research-only; the owner counts it for the MVP gate as research-only (H11 item 2, D166). |
 | F047 | Voice input and read-aloud | ALL | stretch | research-only | T182 (plan T182) | `web/src/voice.ts`, `web/src/pages/Ask.tsx` | `web/src/voice.test.ts`, `tests/test_i18n.py` | It is an input to Ask, which is research-only (D148). | Judgement call: the voice controls run on the local Ask page; they inherit Ask's research-only status. |
 | F048 | Kannada/Malayalam/Hindi/English | ALL | v1 | blocked | T181, T182 (plan T182) | `web/src/i18n/kn.json`, `web/src/i18n/ml.json`, `web/src/i18n/hi.json`, `eval/rag/translations.jsonl` | `tests/test_i18n.py` | kn, ml and hi strings and questions are unreviewed machine drafts; only English is selectable (A7, D147, D148). Owner: H11. | Needs a native-speaker review (A7). |
 | F049 | Place watches | ALL | v1 | built-not-mounted | T183 (plan T183) | `web/src/components/Watches.tsx` | `web/src/components/Watches.test.ts` | Not mounted; strings need locale keys before mounting (D149). Owner: H11. | Device-local IndexedDB only. |
@@ -209,8 +209,9 @@ none can reach a build. Enabled restricted sources: S08, S12, S20, S30, S36. The
 `data/raw`, which git does not track; only derived outputs may be published, after H11.
 
 - The web build bundles `web/src/dashboards.json`, which holds M05 scores derived from S08 and no
-  S08 rainfall value or interval (`tests/test_dashboards.py`). H11 item 3 (publish S08-derived
-  outputs or not) is still open ([h11-ka.md](h11-ka.md)).
+  S08 rainfall value or interval (`tests/test_dashboards.py`). The owner answered H11 item 3 on
+  11 Nov 2026 (D166): derived outputs only, citing Pai et al. (2014), never rainfall values
+  ([h11-ka.md](h11-ka.md)).
 - As [kl.md](kl.md) records under "Finding to settle at H11": the T142 files `replay2018.json`,
   `monthly_2018.csv` and `s08_kerala_annual.csv` under `reports/eda/` hold S08 box-mean rain values.
   They are committed in the repository for analysis, not mounted on any page, and no public snapshot
@@ -262,7 +263,7 @@ Open steps with an H number, from [ka.md](ka.md), [ka-v1.md](ka-v1.md), [kl.md](
 | H08 | Creates the Telegram bot and public channel, stores the token | S39, T083, T084, F050 | ka-v1.md, HANDOFF section 8 |
 | H09 | Gets a NASA FIRMS MAP_KEY | S25, T075, T076, F015 | ka-v1.md, HANDOFF section 8 |
 | H10 | Kaggle sign-in (optional) | S35 re-check, M08, free GPU for M17 and M19 | kl.md, HANDOFF section 8 |
-| H11 | Answers the six items in h11-ka.md; reviews S08 publication, the Malayalam strings, S12 and S20 display terms, boundary guidance, the 18+ OpenFreeMap terms and the WorldPop undercount label | T046, publication of any layer, mounting the 19 built-not-mounted rows that list H11 | h11-ka.md, ka.md, kl.md, dl.md |
+| H11 | Karnataka sheet answered on 11 Nov 2026 (D166): six items, 18+ OpenFreeMap terms, boundary disclaimer, S08 files. Still open: the Malayalam strings, S12 and S20 display terms, the WorldPop undercount label, and the review of the Kerala and Delhi layers | T046, publication of any layer, mounting the 19 built-not-mounted rows that list H11 | h11-ka.md, ka.md, kl.md, dl.md |
 | H12 | Gets an aisstream key | S26, T111, T112, ships in F014 | kl.md |
 | H13 | Reviews at least 20% of every news batch and every held-out item | T189 to T211, M18, F017 | amendments.md, D155, D156 |
 | H14 | Reads each core case study and rewrites its summary | Portfolio case studies (M05, M07, Ask) | ka.md, README.md |
@@ -282,7 +283,7 @@ Other open owner items without an H number (from the same pages):
 | Power BI | Opens `powerbi/MonsoonAtlas.pbip` in Power BI Desktop and exports PNG and PDF (D132) | Report images |
 | Demo video | Records the demo from `docs/portfolio/video.md` | Portfolio |
 | M16 flags | (proposed) Adjudicates 100 M16 flags with independent evidence (D159) | M16 precision |
-| M05 refit | Decides H11 item 6 (keep v1 or refit with 2025) | M05 v2 |
+| M05 refit | Nothing: the owner chose to refit now and label v2 untested (H11 item 6, D166); an agent builds M05 v2 | M05 v2 |
 | Language review | Native-speaker review of the kn, ml and hi drafts (A7) | F048 |
 
 ### Done owner steps
@@ -300,9 +301,10 @@ Other open owner items without an H number (from the same pages):
   needs only a browser tool that can read the data.gov.in resource page and its API tab (no new
   key, D133); a pass would let T147 enable the adapter and reopen M14 (T159 to T161) and F031. It
   needs network access, which T221 did not have.
-- **First owner step: H11.** The decision sheet [h11-ka.md](h11-ka.md) is ready (six items), and
-  H11 is named by 30 of the 64 feature rows, more than any other step. H05 comes next: the hosting
-  chain T042 to T045, and with it T046, cannot start without it.
+- **First owner step: H05** (then H06). The Karnataka H11 sheet [h11-ka.md](h11-ka.md) was
+  answered on 11 Nov 2026 (D166); H11 is still named by 30 of the 64 feature rows (public release,
+  Kerala and Delhi layers). The hosting chain T042 to T045, and with it T046, cannot start
+  without H05.
 
 T046 (the Karnataka MVP gate) stays the first unfinished task in plan order: it waits for T045
 (H05, H06), T041 (S18) and H11.

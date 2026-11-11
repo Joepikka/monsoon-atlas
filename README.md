@@ -214,7 +214,7 @@ One row per source record in `configs/sources/`. "Available" means the discovery
 ## Owner steps still pending
 
 - H05 and H06: free Cloudflare and Hugging Face accounts and tokens, before any hosting or language-model use.
-- H11: the release review for the Karnataka MVP ([h11-ka.md](docs/releases/h11-ka.md)).
+- H11: the Karnataka MVP sheet was answered on 11 Nov 2026 ([h11-ka.md](docs/releases/h11-ka.md), D166). Still open: the Malayalam strings, S12 and S20 display terms, the WorldPop undercount label, and any public release (nothing is deployed).
 - H14: read each core case study and rewrite its summary in your own words.
 - Record the demo video ([video.md](docs/portfolio/video.md)).
 - Data retries listed per model in the index and in [ka-v1.md](docs/releases/ka-v1.md), for example adjudicating 100 M16 flags.

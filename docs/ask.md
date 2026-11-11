@@ -155,7 +155,8 @@ With the owner's approval (D101), C3 is research-only under A3: the gate
 fails on evidence support (0.86 against 0.95) and the two dev-only retrieval
 changes gave no gain. The Ask page carries a research-only note, the release
 checklist shows the C3 check as research-only rather than pass, and the
-owner decides at H11 whether a research-only C3 meets T046 extra check (2).
+owner decided at H11 on 11 Nov 2026 (D166) that a research-only C3 counts for T046 extra
+check (2). Before any release, freeze Ask's document set and regenerate this report once.
 Revisit only with a fresh held-out question set written before tuning, or
 with reviewed generated answers after H05.
 

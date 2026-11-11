@@ -102,7 +102,8 @@ def release_checks() -> list[dict]:
             "pass" if ask_passed else "research-only",
             "reports/rag.md gate passed"
             if ask_passed
-            else "reports/rag.md gate not passed; research-only (D101), owner decides at H11",
+            else "reports/rag.md gate not passed; research-only (D101); owner counts it for the "
+            "MVP gate, labelled research-only (H11, D166)",
         ),
         (
             "Case study per core model (H14 review)",
@@ -112,12 +113,18 @@ def release_checks() -> list[dict]:
         (
             "Accuracy page shows C1, C2 and M06",
             "local" if _exists("web/src/pages/Accuracy.tsx") else "missing",
-            "T259 page shows the rows locally; no approved release published (H11)",
+            "T259 page shows the rows locally; owner approved publishing the table (H11, D166); "
+            "nothing is deployed",
         ),
         ("Working real-data map, sources and Place Lens", "local", "T038-T040 pass locally"),
         ("Priced data and reproducible price baseline", "blocked", "S23 denominator; M06 blocked"),
         ("Free-tier deployment on pages.dev", "blocked", "H05 token and capability probe"),
-        ("Legal, boundary and licence audit", "pending", "H11 review before public layers"),
+        (
+            "Legal, boundary and licence audit",
+            "pending",
+            "H11 answers recorded (D166); boundary disclaimer on the map; S08 files untracked; "
+            "licence check repeats at deployment",
+        ),
         ("Dependencies T045 and T041", "blocked", "T045 needs H05/H06; T041 needs S18"),
     ]
     return [{"check": c, "status": s, "evidence": e} for c, s, e in checks]

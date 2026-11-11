@@ -1,11 +1,31 @@
 # H11 release review: Karnataka MVP decision sheet
 
 Prepared 8 Nov 2026 for the owner. Each item is one decision. Evidence is
-linked; nothing here is approved until the owner answers. The release
-checklist is [ka.md](ka.md); it stays "not releasable" while any item is open.
+linked; nothing here is approved until the owner answers (answered 11 Nov 2026, see below).
+The release checklist is [ka.md](ka.md); it stays "not releasable" while any gate check is not
+a pass.
 
 Reply with the item number and your answer, for example `1 approve`,
 `3 option b`.
+
+## Owner answers, 11 Nov 2026
+
+Given in chat and recorded in [D166](../decisions.md). The items below are kept as asked.
+
+| Item | Answer |
+|---|---|
+| 1 Publish the accuracy table | approve |
+| 2 Count a research-only Ask (C3) for the MVP gate | (a) yes, publish Ask labelled research-only; before any release, freeze Ask's document set and regenerate its report once |
+| 3 S08 only through derived outputs | (a) derived outputs only, citing Pai et al. (2014); never rainfall values |
+| 4 Attribution for the open sources | approve, provided the project stays non-commercial |
+| 5 Official alerts, model outputs and inferred items separate | approve |
+| 6 Refit M05 with IMD 2025 | (b) refit now and label v2 untested |
+| 7 OpenFreeMap terms (S15), 18 or older | confirmed by the owner |
+| 8 India mapping guidance | add a disclaimer: keep geoBoundaries for analysis, every public map carries a boundary disclaimer, no international border is drawn |
+| 9 S08 area-averaged files in `reports/eda/` | remove from the repository (untracked, kept local); old copies stay in git history |
+
+Nothing is deployed by these answers: H05 and H06 are unanswered, and the checklist
+[ka.md](ka.md) stays "not releasable" (C1 blocked, T045 and T041 open).
 
 ## 1. Publish the model accuracy table
 
@@ -69,6 +89,33 @@ Reply with the item number and your answer, for example `1 approve`,
 - **Options:** (a) keep v1 until the 2026 file is published, then refit and
   test on 2026; (b) refit now and label v2 untested.
 - **Recommended:** (a).
+
+## 7. Confirm the OpenFreeMap terms (S15)
+
+- **Decision:** the OpenFreeMap terms of use require users to be 18 or older;
+  confirm that you are.
+- **Evidence:** [docs/sources/s15.md](../sources/s15.md).
+- **Answer (11 Nov 2026):** confirmed.
+
+## 8. India mapping guidance
+
+- **Decision:** geoBoundaries has no disputed-boundary field; how should public
+  maps follow India's official mapping guidance?
+- **Evidence:** [docs/sources/s17.md](../sources/s17.md); ADM2 gives districts only.
+- **Answer (11 Nov 2026):** add a disclaimer. Keep geoBoundaries for analysis;
+  every public map carries a boundary disclaimer; no international border is
+  drawn. Done in the web app (`map.disclaimer`).
+
+## 9. S08 area-averaged rainfall files in the repository
+
+- **Decision:** three committed files hold IMD area-averaged rainfall in mm for
+  the 2018 Kerala replay: `reports/eda/05_kl_flood2018/replay2018.json`,
+  `monthly_2018.csv` and `s08_kerala_annual.csv`. Keep, or remove?
+- **Evidence:** [kl.md](kl.md) ("Finding to settle at H11"); the S08 licence
+  forbids reproduction without permission.
+- **Answer (11 Nov 2026):** remove them from the repository. They stay on local
+  disk, the replay keeps derived departures only, and old copies stay in git
+  history (history is not rewritten).
 
 ## Still blocking the gate after H11
 

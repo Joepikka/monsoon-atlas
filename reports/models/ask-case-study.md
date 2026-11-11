@@ -81,8 +81,9 @@ calls.
 Research-only (D101, owner approval). The gate fails on evidence support,
 and two retrieval changes chosen on development questions (T264, T265) did
 not help, so Ask is not tuned further on this question set. It stays
-extractive and labelled research-only; the owner decides at H11 whether it
-is published. The AI binding waits for H05.
+extractive and labelled research-only; on 11 Nov 2026 the owner
+decided (H11, D166) that Ask counts for the MVP gate as research-only; its document set is
+to be frozen and its report regenerated once before any release. The AI binding waits for H05.
 
 ## Monitoring and retraining
 

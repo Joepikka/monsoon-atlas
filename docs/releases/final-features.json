@@ -752,7 +752,7 @@
         "tests/test_ka_v1.py",
         "tests/test_web_accuracy.py"
       ],
-      "blocker": "No outlook layer exists: M05 is a hindcast (D39) at district level (no taluk polygons); S08-derived publication waits for H11 item 3.",
+      "blocker": "No outlook layer exists: M05 is a hindcast (D39) at district level (no taluk polygons); S08-derived outputs may be published, never rainfall values (H11 item 3, D166).",
       "owner_steps": [
         "H11"
       ],
@@ -899,7 +899,7 @@
       "owner_steps": [
         "H11"
       ],
-      "notes": "Judgement call: the minimal MVP table runs at ?page=accuracy locally (T257, T259); its plan task T046, the MVP gate, has not passed. No daily matured backtest exists because no model serves live predictions. H11 item 1 decides publication."
+      "notes": "Judgement call: the minimal MVP table runs at ?page=accuracy locally (T257, T259); its plan task T046, the MVP gate, has not passed. No daily matured backtest exists because no model serves live predictions. H11 item 1 approved publishing the table on 11 Nov 2026 (D166); nothing is deployed."
     },
     {
       "id": "F037",
@@ -1138,7 +1138,7 @@
         "H05",
         "H11"
       ],
-      "notes": "The page runs at ?page=ask locally, labelled research-only."
+      "notes": "The page runs at ?page=ask locally, labelled research-only; the owner counts it for the MVP gate as research-only (H11 item 2, D166)."
     },
     {
       "id": "F047",

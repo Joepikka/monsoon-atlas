@@ -165,7 +165,7 @@ frozen file needs a decision entry and a hash update in ka-v1.md first.
 
 | Item | What the owner does | Blocks |
 |---|---|---|
-| H11 | Reviews and approves any public release, the Malayalam strings, and the S08 licence finding | Every public Kerala layer |
+| H11 | Reviews and approves any public release and the Malayalam strings. The S08 licence finding was answered on 11 Nov 2026 (D166): derived outputs only, files untracked | Every public Kerala layer |
 | H12 | Creates an aisstream key | S26, T111 |
 | H15 | Registers a Copernicus Data Space account (proposed in T127) | S42, M09 |
 | T118 | Approves bulk OCR of the S34 dam-level reports | S34, M07 |
