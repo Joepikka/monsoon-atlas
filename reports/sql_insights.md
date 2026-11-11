@@ -48,11 +48,11 @@ Query: `sql/insights/q02_rain_year_to_year_swing.sql`
 
 ## Q03. In which Karnataka districts does the IMD grid most often read more than 10 percent wetter or drier than the district gauges?
 
-- **Source:** S29 KSNDMC gauge totals (public domain) compared with the S08 IMD 0.25 degree grid (restricted, local only); only the grid-to-gauge ratio is used, from reports/eda/02_ka_rain/district_year_comparison.csv
+- **Source:** S29 KSNDMC gauge totals (public domain) compared with the S08 IMD 0.25 degree grid (restricted, local only); only the per-district mean grid-to-gauge ratio over several years is used, from reports/eda/02_ka_rain/district_ratio_summary.csv
 - **Unit:** ratio of the grid annual total to the gauge annual total (index; 1.00 means equal)
 - **Range:** 2020, 2021, 2022 and 2024
 - **Denominator:** 117 compared district-years in 30 districts; 6 district-years (Ballari 2021 and later, Vijayanagara) are excluded as not like for like
-- **Caveat:** The grid is itself interpolated from gauges, so this is not an independent test; the S08 licence forbids showing area rainfall in millimetres, so only the ratio is shown and H11 item 3 decides on any wider use; 8 districts shown.
+- **Caveat:** The grid is itself interpolated from gauges, so this is not an independent test; the S08 licence forbids showing area rainfall in millimetres, so only the ratio is shown and H11 item 3 decides on any wider use; Ballari has one compared year, so no mean is published; 8 districts shown.
 
 Query: `sql/insights/q03_gauge_grid_disagreement.sql`
 

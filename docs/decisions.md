@@ -2,6 +2,30 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D169 — The last IMD (S08) rainfall values in mm are removed (11 Nov 2026, follows D167).**
+  (1) The per-district-year `ratio` leaves `reports/eda/02_ka_rain/district_year_comparison.csv`
+  (it keeps `gauge_mm`, `status` and the district and year), because the published S29 totals
+  times that ratio gave exact grid mm. Published instead: the summary statistics already in
+  `summary.json` (median, mean, min, max, wetter share) and the new
+  `reports/eda/02_ka_rain/district_ratio_summary.csv`, one row per district with years compared,
+  counts of years more than 10 percent wetter or drier, and the mean ratio over those years.
+  Both come from `notebooks/02_ka_rain.ipynb`. Four yearly ratios are not recoverable from their mean and two counts, so yearly
+  grid mm cannot be inverted; Ballari has one compared year, where the mean would be that year's
+  ratio, so its row is left out. SQL Q03 (`sql/insights/q03_gauge_grid_disagreement.sql`) reads
+  the summary through the `s08_ratio_by_district` view; its table is unchanged, and the Power BI
+  files carry no ratio and are unchanged. (2) The single-cell 2024 totals in
+  `configs/sources/s08.yaml` and `docs/sources/s08.md` become a plausibility statement without
+  values, citing the same evidence e04. Because `s08.yaml` is hashed, the files that record its
+  sha256 were regenerated with their own generators: `reports/models/m16-data-gate.json` and
+  `models/registry/m16.json` (`atlas.models.m16.write_status`), `docs/releases/final-manifest.json`
+  (`tests/test_final.py --manifest`); `atlas.models.accuracy` was re-run and left
+  `web/src/dashboards.json` unchanged (it carries no s08.yaml hash).
+  `eval/anomalies/blocked.json` is a hand-written record with no generator; its one hash field,
+  for `configs/sources/s08.yaml`, was updated by a computed sha256 (a one-off script, nothing
+  typed). (3) `docs/HANDOFF.md` T107 gives the median
+  grid-to-gauge ratio instead of the bias in mm. D167 no longer repeats the values. Evidence
+  content is otherwise unchanged.
+
 - **D168 — The public map hides the basemap's international borders (11 Nov 2026, owner answer in chat: "Hide basemap borders").**
   At `style.load`, `MapView.tsx` calls `hideInternationalBorders` (`web/src/map/Borders.ts`), which
   sets `visibility: none` on every style layer whose `source-layer` is the OpenMapTiles `boundary`
@@ -40,15 +64,10 @@
   `reports/powerbi/data/*.csv` and `powerbi/build_pbip.py` (only S29 `gauge_mm`; the S08 columns
   were already dropped, D132), `reports/eda/07_climate/s06_model_change.csv` (S06 CMIP6 model
   values), `reports/eda/08_climate_product/climate.json` (indices only), all SPI-unit reports. The
-  web app imports no S08 mm. **Known limit:** `district_year_comparison.csv` keeps S29 `gauge_mm`
-  beside the grid-to-gauge `ratio`, so grid mm can be recomputed as their product; the owner's rule
-  keeps both (S29 is public domain, the ratio is a derived index). If the owner wants that closed,
-  drop `gauge_mm` from the file and have the Power BI build read S29 directly. **Not changed:**
-  the single-cell example totals in `configs/sources/s08.yaml` and `docs/sources/s08.md` (about 990
-  mm at Bengaluru, 6,457 mm near Agumbe, 707 mm at Kalaburagi; one cell, not an area average,
-  and `s08.yaml` is hash-pinned by `m16-data-gate.json`) and the line "median bias +31.7 mm" in
-  `docs/HANDOFF.md` (not edited by this task); both are listed for the owner. Old copies stay in
-  git history.
+  web app imports no S08 mm. **Left open then, closed by D169:** `district_year_comparison.csv`
+  kept a per-district-year grid-to-gauge `ratio` beside S29 `gauge_mm`; the single-cell example totals in
+  `configs/sources/s08.yaml` and `docs/sources/s08.md`; one S08 bias figure in
+  `docs/HANDOFF.md`. Old copies stay in git history.
 
 - **D166 — Owner answers to the H11 Karnataka release review (11 Nov 2026, owner answer in chat).**
   The owner answered the sheet `docs/releases/h11-ka.md` and three extra pre-deployment checks.

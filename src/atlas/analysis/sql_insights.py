@@ -4,8 +4,8 @@ Queries live in `sql/insights/qNN_<slug>.sql`; each starts with a comment header
 unit, range, denominator, caveat, inputs) that becomes the caption in `reports/sql_insights.md`.
 Inputs are DuckDB views: `committed` ones read files tracked in git (they run in CI), `local` ones
 are built by the existing adapters from `data/raw` (never committed). Restricted sources (S08 IMD)
-enter only as an index (grid/gauge ratio), never as millimetres (D129, D131). No query reads a
-blocked source (D105); those questions are listed under "Not answerable".
+enter only as an index (per-district mean grid/gauge ratio), never as millimetres (D129, D131). No
+query reads a blocked source (D105); those questions are listed under "Not answerable".
 
 Run from the repository root: .venv/Scripts/python -m atlas.analysis.sql_insights
 """
@@ -65,11 +65,18 @@ def artifact(source: str, eid: str, mapping: str) -> RawArtifact:
 
 def committed_views(con: duckdb.DuckDBPyConnection) -> None:
     eda = (ROOT / "reports/eda").as_posix()
-    # S08 enters only as the index `ratio` (grid / gauge); grid_mm and bias_mm are not selected.
     con.execute(
         f"""CREATE VIEW s29_gauge AS
-        SELECT district, year::INTEGER AS year, gauge_mm, ratio AS grid_to_gauge_ratio, status
+        SELECT district, year::INTEGER AS year, gauge_mm, status
         FROM read_csv('{eda}/02_ka_rain/district_year_comparison.csv', header=true)"""
+    )
+    # S08 enters only as the index grid / gauge, as a per-district mean over several years (D169).
+    con.execute(
+        f"""CREATE VIEW s08_ratio_by_district AS
+        SELECT district, years_compared::INTEGER AS years_compared,
+               grid_wetter_years::INTEGER AS grid_wetter_years,
+               grid_drier_years::INTEGER AS grid_drier_years, mean_ratio
+        FROM read_csv('{eda}/02_ka_rain/district_ratio_summary.csv', header=true)"""
     )
     con.execute(
         f"""CREATE VIEW s29_stations_2023 AS

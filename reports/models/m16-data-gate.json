@@ -41,7 +41,7 @@
     }
   },
   "evidence": {
-    "configs/sources/s08.yaml": "dc6ce8b91c193cb3e29b82990f45fab5d71ae490a25b1e3215866bc3518235e2",
+    "configs/sources/s08.yaml": "f0b7e8d61d0a47111857da441bb9759a56cb05bd404760a3006e3fa0ea43a269",
     "tests/fixtures/s08/manifest.json": "4b3d8e53b77c0e37b5341edd00ed065632a82f39c81cbff640fdbb4f1230a4b7",
     "configs/sources/s22.yaml": "9d17a637c742ee4c5a4742c063efa7e3ee35ba864f9920138564b523304f4ee7",
     "tests/fixtures/s22/manifest.json": "5af6a2af8b22ef168abe8c68728c66271367231e46c6e0a5b3d288b7ef967f09",
@@ -51,7 +51,7 @@
     "tests/fixtures/s32/manifest.json": "59aca083b7a2d6bdb11f1835e350d324661402b0258052edda7691066c631b73",
     "configs/models/m16.yaml": "6f290cc4da8d5e642b8eea0c8d3640620ee268f48f9ddb107298ceb518d1e704",
     "reports/models/m16-flag-counts.json": "551175dae5a13d45c75fc54fc755db602f5af6ad4dfd5928ca9d32411727f3e6",
-    "eval/anomalies/blocked.json": "e506462370bdd2d4a492c8aaa7d0dba304279f0999e78af64339c2cbc07fc745"
+    "eval/anomalies/blocked.json": "d6b0070b2aefe600a74407860e1b6c8768d6aca0184a121db46b2a0aedb63bc4"
   },
   "split_manifest": null,
   "prediction_rows": 0,
