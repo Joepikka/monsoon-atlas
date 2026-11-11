@@ -2,6 +2,37 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D164 — Portfolio and interview evidence pack (11 Nov 2026, T220).**
+  `README.md` is restructured to the plan's section 17 outline only as far as the evidence allows:
+  status first (1 measured, 1 research-only, 18 blocked; 44 source records), then the one measured
+  M05 result, a model index and a licence table copied from `web/src/dashboards.json` and
+  `configs/sources/`, a Mermaid architecture diagram, failed-model lessons, reproduction commands
+  and owner-pending steps. `docs/case-studies/template.md`, `docs/portfolio/video.md`,
+  `docs/portfolio/resume.md` and `docs/glossary.md` are new. **Demo not recorded:** the video page
+  is a script and shot list marked "not recorded: owner step", and each shot says whether it can be
+  shown on the local dev server today (yes, partly, no) and why; no narration claims a hidden,
+  blocked or unmounted item is shown. I did not run the dev server, so the "partly" rows are
+  unchecked. **Resume:** the four plan lines stay as bracket placeholders (`[N]`, `[X]%`,
+  `[metric]`, `[baseline]`, `[L,U]`, `[dates / independent events]`, `[coverage]%`, `[latency]`)
+  under "Not usable until measured", each with the reason; four usable lines carry only counts
+  and numbers recomputed by `tests/test_portfolio.py` (sources, models by status, M05 MAE and
+  bootstrap CI, M16 cell-day counts, the 8 and 11 Nov Ask scores, corpus size). Time split only:
+  the usable data-science line says no spatial holdout was run. **Not included, on purpose:** a
+  tasks-completed or tests-passing count (not computable from a record and dated at once), badges,
+  screenshots, a demo or hosting link, any accuracy number for a model other than M05, interval
+  coverage as a result (it does not pass), the 2025 interval coverage, external links (none are
+  fetched), and any edit to the three existing case studies (H14 is the owner's rewrite), the gate
+  pages or a hash-frozen file. `tests/test_portfolio.py` is the guard: relative links resolve to
+  tracked files, every model is indexed with its registry status and reason, counts and M05
+  numbers are recomputed, and a scan rejects deployed, live or demo claims without a negation, a
+  metric on any model but M05, interval coverage shown as passing, and a KW Live mention outside
+  the no-reuse sentence. **Ask corpus:** `configs/rag.yaml` indexes `README.md` as
+  `project/readme` and this log as `project/decisions`, so this commit changes the corpus. The
+  README keeps the sentences the fixed questions rely on (Karnataka then Kerala then Delhi; free;
+  not an emergency service). `reports/rag.md` is not regenerated, so its committed numbers stay
+  the 8 Nov measurement (D147); a re-run after the commit is reported in the task hand-back, not
+  written here, because writing it here would change the corpus again.
+
 - **D163 — Monitoring checks, owner-run workflow and rollback drill (11 Nov 2026, T219).**
   `atlas.monitoring` holds pure checks that return an `Alert` (kind, subject, evidence, action) and
   write nothing private. Feed age uses the cadence the source record states (`schedule`, parsed
