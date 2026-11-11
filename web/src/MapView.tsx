@@ -4,6 +4,7 @@ import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { hasCoordinates, type MapRecord } from './data';
 import type { Coordinates } from './map/Layers';
+import { hideInternationalBorders } from './map/Borders';
 
 setWorkerUrl(workerUrl);
 
@@ -21,6 +22,7 @@ export default function MapView({ records, selected, onSelect, center, onCenter 
         style: 'https://tiles.openfreemap.org/styles/liberty',
         center: [76.2, 14.5], zoom: 6, attributionControl: { compact: true } });
       instance.addControl(new NavigationControl({ showCompass: false }), 'top-right');
+      instance.on('style.load', () => hideInternationalBorders(instance));
       instance.on('error', () => setFailed(true));
       instance.on('load', () => setFailed(false));
       instance.getCanvas().setAttribute('aria-label', 'Karnataka basemap; records are also listed');

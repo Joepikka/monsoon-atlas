@@ -52,6 +52,7 @@ describe('layer contracts', () => {
     for (const locale of Object.values(LOCALES)) expect(locale['map.disclaimer']).toBeTruthy();
     const read = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8');
     expect(read('../App.tsx')).toMatch(/className="map-disclaimer">\{t\('map\.disclaimer'\)\}/);
-    expect(read('../MapView.tsx')).not.toMatch(/addLayer|addSource|boundar|border/i);
+    // hiding the basemap's own country lines (D168) is the only border-related code allowed here
+    expect(read('../MapView.tsx').replace(/hideInternationalBorders|map\/Borders/g, '')).not.toMatch(/addLayer|addSource|boundar|border/i);
   });
 });

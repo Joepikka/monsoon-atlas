@@ -104,7 +104,8 @@ Nothing is deployed by these answers: H05 and H06 are unanswered, and the checkl
 - **Evidence:** [docs/sources/s17.md](../sources/s17.md); ADM2 gives districts only.
 - **Answer (11 Nov 2026):** add a disclaimer. Keep geoBoundaries for analysis;
   every public map carries a boundary disclaimer; no international border is
-  drawn. Done in the web app (`map.disclaimer`).
+  drawn. Done in the web app (`map.disclaimer`); the basemap's own country boundary layers are
+  hidden at style load (`web/src/map/Borders.ts`, D168).
 
 ## 9. S08 area-averaged rainfall files in the repository
 

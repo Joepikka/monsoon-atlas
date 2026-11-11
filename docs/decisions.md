@@ -2,6 +2,24 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D168 — The public map hides the basemap's international borders (11 Nov 2026, owner answer in chat: "Hide basemap borders").**
+  At `style.load`, `MapView.tsx` calls `hideInternationalBorders` (`web/src/map/Borders.ts`), which
+  sets `visibility: none` on every style layer whose `source-layer` is the OpenMapTiles `boundary`
+  layer and whose filter can admit `admin_level` 1 or 2 (disputed and maritime variants included).
+  Layers are found by source layer and filter, not by id, because the live "liberty" style cannot
+  be fetched offline (no network in this task) and its layer ids are unverified. The filter is read
+  with a small three-valued evaluator for the legacy and expression syntaxes; a filter it cannot
+  evaluate (another operator, a property it does not model) counts as "may draw" and the layer is
+  hidden, so an unknown shape errs towards no border. State lines of the basemap
+  (`admin_level` 4 and above) stay. Our own geoBoundaries layers have no `source-layer` and are
+  never selected; `MapView.tsx` still adds no layer of its own. The OSM and OpenFreeMap
+  attribution and the boundary disclaimer (`map.disclaimer`, `e808bbc`) are unchanged. Tested by
+  `web/src/map/Borders.test.ts` against a hand-built style fixture marked as a test input (nine
+  country-line filter shapes hidden; state lines, a water layer and a source-less layer kept);
+  `web/src/map/Layers.test.ts` now allows exactly this border-related code in `MapView.tsx`.
+  **Not verified:** the rule has not run against the live style in a browser (offline); that check
+  belongs to the first connected run before any deployment. No new dependency.
+
 - **D167 — Tracked EDA outputs carry no IMD (S08) rainfall in mm (11 Nov 2026, owner answer in chat: "Strip mm, keep derived").**
   Rule: absolute S08 rainfall in mm (area averages, differences, extremes, climatologies) is
   removed from every committed file; percent departures, percent of the mean, ratios, shares,
