@@ -2,7 +2,7 @@
 
 Fields follow the plan's M05 card. Results come from [the evaluation
 report](m05.md), the release `models/registry/M05/v1.json` and decisions
-D39-D43.
+D39-D43. The untested v2 refit (`models/registry/M05/v2.json`, D170) has its own row.
 
 | Card field | This release (v1, approved 5 Nov 2026) |
 |---|---|
@@ -20,4 +20,5 @@ D39-D43.
 | Data licence | IMD rain may not be reproduced; only derived SPI and model outputs may be published. |
 | Limits | Meteorological drought only: not groundwater, crop yield or household water. Ballari includes Vijayanagara. |
 | Status | Champion by owner approval (D43); served outputs say hindcast. |
-| Retraining | Refit when a new IMD year file is published; a change of target, unit or boundary is a new version with an untouched test period. |
+| Retraining | Refit when a new IMD year file is published; a change of target, unit or boundary is a new version with an untouched test period. Paused for M05 until v2's 2026-2027 test is scored (D170). |
+| Version v2 (D170) | Refit with IMD 2025: v1's pipeline, ridge and alpha on 1981-07-01 to 2025-09-30, no new tune. research_only and untested: no test scores, not served. Tested once on 2026-2027 against persistence (2026 alone is a monitoring check, below the 24-month minimum); serving then needs a new release record and owner approval (D38). Intervals stay hidden. |

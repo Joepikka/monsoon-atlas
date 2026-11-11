@@ -1,0 +1,22 @@
+{
+  "model_id": "M05",
+  "version": "v2",
+  "created_at": "2026-11-11T08:33:41.292345Z",
+  "dataset_sha256": "36d9b5a05691cddcfc34446642094e56c052d5376e31142db869768d05848701",
+  "git_sha": "fe906df2301a46808e2ad89662a9a11dc129472f",
+  "cutoffs": {
+    "train": "1981-07-01/2025-09-30",
+    "alpha_selected_on_v1_tune": "2017-01-01/2018-12-31",
+    "test": "2026-01-01/2027-12-31",
+    "split_manifest_sha256": "b3da869cd70bd7ec197ee092a8ae90250b115dc7f1d475b8de7a3e96a77f7d9e",
+    "source_sha256": "09d3c89a084f13f3,0b8f4b5884f6e9e5,0c5cd53892cbea7e,1023548bcc409d95,1db12d8eb5a471d3,1e89531d9772acbd,1f656dc6498b8bcb,23119ee55f78cd4b,28ddc49f8af38bd9,2f2b20a58c883e11,34445bd00b098c85,3f007292029a212e,405e89cc3c835b39,5542e3441278325c,5b8f542bd1ae1792,6056e795aaa11f26,72a9c97f58fb12d8,73eb61027f0373e4,78060465e12dacbf,78ae74184b0ece2a,79d1d9acb4da5614,7d47dd937eb68d3e,7f5128e82aa6d362,81bbab9f686bcd0c,83185ebbab190a95,8c22bbde0d4753cd,8d671a7b4eeeb218,8e22a50a30c92d9c,9cd1654631ed918f,a13672034666d04b,a3cf9d4dd08ac504,acf30d074c16b440,ae11b700154013b3,b138efce173261e6,b1cb4b43da4434b8,b41b0c095335638f,b4fa5ffb389496c0,bd24f975f5d2c64f,dc9109fc3c4c2dbc,dfb714184e16624c,e19532760221e687,ea431a0940e329e7,eaed86f9bfd2e65f,f308b916a4a2a57a,f481d8619e164381"
+  },
+  "baseline": "persistence",
+  "baseline_scores": {},
+  "candidate": "ridge",
+  "candidate_scores": null,
+  "improvement": null,
+  "status": "research_only",
+  "reason": "untested refit with IMD 2025 (D166, D170): no held-out year until the IMD 2026 and 2027 files exist; v1 stays the evaluated, approved release and the source of every accuracy number",
+  "approval": "pending"
+}

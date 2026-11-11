@@ -2,6 +2,38 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D170 — M05 v2: refit with IMD 2025, published as untested; v1 keeps serving (11 Nov 2026, builds D166 item 6).**
+  (1) Window: the v1 pipeline unchanged (features, SPI reference 1981-2010, 92-day purge), train
+  1981-07-01 to 2025-09-30 (15930 district-months), purged before an untouched test from
+  2026-01-01. No tune step: v2 keeps v1's model choice (ridge) and alpha 0.1, chosen on the
+  2017-2018 tune (D41); LightGBM is not searched again. A new tune would need a held-out year in
+  2019-2025, and each of those was already used (2019 calibration, 2020-2024 test, 2025 monitor),
+  so it would use a year twice for selection; keeping v1's choice changes no decision. Scaler,
+  climatology and ridge weights are refitted (`atlas.models.m05.refit`, `scripts/m05_v2.py`,
+  deterministic); the script stops unless the 1981-2024 rows match v1's dataset hash. Weights are
+  in `data/models/m05/v2/` (git-ignored). (2) Status: `models/registry/M05/v2.json`, written once
+  with the v1 schema: `research_only`, reason "untested refit", empty baseline scores, null
+  candidate scores and improvement (no in-sample number is reported). `decide()`, `approve()` and
+  `champion()` are unchanged: `approve()` refuses v2 and `champion()` still returns v1's ridge.
+  v1 stays the approved, evaluated release and the source of every accuracy number, and v1 is
+  what serves once hosting exists. A page that names v2 says "M05 v2 (refit with IMD 2025) is
+  untested and not served; accuracy shown is v1's on 2020-2024 (hindcast)". The owner's answer
+  built v2; it approved no serving, so no approval file is written. (3) Retest: the record fixes
+  the test as 2026-01-01 to 2027-12-31. One year is 12 monthly blocks, below the 24-block minimum
+  of the T103 gate (`m05.evaluate`), so 2026 alone cannot make v2 eligible under the unchanged
+  rules; this differs from "evaluated once on 2026". When IMD 2026 is published, v2 gets a
+  monitoring check on 2026 against persistence with the paired block bootstrap (as T263 did for
+  v1, D98); it is reported only and changes neither status nor weights. With 2027 published, v2
+  is scored once on the 24 months against persistence with the T103 gates; the drought spread is
+  fixed beforehand from pre-2026 rows. Release files are immutable, so a pass is carried by a new
+  release record with those scores, and serving still needs a separate owner approval (D38). The
+  card's yearly retraining rule is paused for M05 until that test is scored, so no version trains
+  on 2026-2027 first. (4) Intervals: v2 inherits the hidden-interval rule (D42, T262) and is not
+  recalibrated on any year. Updated: the M05 report and card (v2 sections; v1 text kept),
+  `atlas.models.accuracy` (M05 card reason) and its outputs, the README model index and
+  measured-result limits, `docs/releases/final.md` (M05 v2 row) and `final-manifest.json`. All
+  `v1*.json` files are byte-unchanged (tested). The case study is unchanged (H14 pending).
+
 - **D169 — The last IMD (S08) rainfall values in mm are removed (11 Nov 2026, follows D167).**
   (1) The per-district-year `ratio` leaves `reports/eda/02_ka_rain/district_year_comparison.csv`
   (it keeps `gauge_mm`, `status` and the district and year), because the published S29 totals

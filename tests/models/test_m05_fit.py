@@ -122,6 +122,16 @@ def test_all_models_share_rows_and_spi_units():
     assert set(fitted().tune_mae) == {"ridge", "lightgbm", "persistence"}
 
 
+def test_v2_refit_is_deterministic_keeps_v1_choice_and_respects_the_purge():
+    (split,) = features.splits_v2()
+    train = m05.rows_in(rows(), split.train_start, split.train_end)
+    first, again = m05.refit(train, 0.1, split), m05.refit(train, 0.1, split)
+    assert (first.ridge_coef, first.climatology) == (again.ridge_coef, again.climatology)
+    assert (first.choice, first.lgbm_model, first.tune_mae) == ("ridge", None, {})
+    with pytest.raises(LeakageError, match="purge"):
+        m05.refit(rows(), 0.1, TEST)  # rows after the v1 train end
+
+
 def test_artifacts_and_mlflow_run_are_saved(tmp_path):
     split_sha = features.write_split_manifest(tmp_path / "splits.json")
     data_sha = m05.table_sha256(rows())

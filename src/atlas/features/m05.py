@@ -242,5 +242,19 @@ def splits() -> list[DatasetSplit]:
     ]
 
 
-def write_split_manifest(path: Path) -> str:
-    return write_manifest(splits(), path)
+def splits_v2() -> list[DatasetSplit]:
+    """v2 (D170): train to 2025-09-30, purged before the untouched 2026-2027 test (24 months)."""
+    return [
+        DatasetSplit(
+            name="test",
+            train_start=date(1981, 7, 1),
+            train_end=date(2025, 9, 30),
+            test_start=date(2026, 1, 1),
+            test_end=date(2027, 12, 31),
+            purge_days=PURGE_DAYS,
+        )
+    ]
+
+
+def write_split_manifest(path: Path, version: str = "v1") -> str:
+    return write_manifest(splits() if version == "v1" else splits_v2(), path)

@@ -61,6 +61,7 @@
     "models/registry/M05/v1.intervals.json": "4ab187f51c540731ae67323a245c52a5576f7203a72aa3a44c2bf266fecf0368",
     "models/registry/M05/v1.json": "177bb2a51d887b13ac4b98219f0d1425f1419e7d61f2ea2fb42905fb20460071",
     "models/registry/M05/v1.monitor-2025.json": "7bbd3de51c9414ed67acfca5f3fdab0a749c79c3763bfcea9b63afe3ab8eade5",
+    "models/registry/M05/v2.json": "fcefbd40f42451cf3e66b32b6f10b0887ddf2a46723e2806ac6f19b98888c841",
     "models/registry/m01.json": "5b9d4296caf1c351af323f76f077a123bd4683f715caf739205df7ad3ce55702",
     "models/registry/m02.json": "f9e8c875bdebc1a0f1ed9b46a353d8514cd2f77823c5549f2febceea9bee94d5",
     "models/registry/m03.json": "b409cbd130d1518e7c67ca9b3e98379c78efb39c290f11d223ec12f147e3afcd",
@@ -88,7 +89,7 @@
     "requirements/ml.txt": "22a317b5300acb1021743361e2603c824ae732c20d71a12fce1e067d1d57e2c8",
     "requirements/ocr.txt": "19230f824c71927581645a058b1709d7369e3528347c9dd82bca02f958b7274e",
     "web/package-lock.json": "813c4b4c2be7692ddfe640931a2c39210df0dd41c2b03a3a535998e59b928985",
-    "web/src/dashboards.json": "ff25ed6486506378c286b8caa6deb2659d6b6e66245dd406dbe4aedc5a68af7c",
+    "web/src/dashboards.json": "ac925e0ae91b9ddcf277bc8e07be73bcb7b151eab1e04d5a856121023f6a1881",
     "worker/package-lock.json": "20092c14417fc9467b5bf495b599cddc3e47fc46909ac3bc82df0f0965636e2f"
   }
 }

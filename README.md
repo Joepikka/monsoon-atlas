@@ -40,7 +40,7 @@ Ridge regression forecasts district SPI-3 (a standardized three-month rainfall i
 | Unused 2025 check, provisional | MAE 0.625 against 0.744; the flag is "holds" | [m05-2025.md](reports/models/m05-2025.md) |
 | 80% prediction intervals | Do not pass the 75% to 85% coverage gate (65% in v1, 72.8% after recalibration), so they are hidden | [m05-intervals.md](reports/models/m05-intervals.md) |
 
-Limits: meteorological drought only, not groundwater or crop loss; drought probabilities run slightly high; the 2025 check covers 12 months, below the 24-month minimum for a release decision. The model card is [m05-card.md](reports/models/m05-card.md); the case study is [m05-case-study.md](reports/models/m05-case-study.md) (the owner's H14 rewrite is pending).
+Limits: meteorological drought only, not groundwater or crop loss; drought probabilities run slightly high; the 2025 check covers 12 months, below the 24-month minimum for a release decision. Every number here is v1's; M05 v2, a refit with IMD 2025, is untested and not served ([v2.json](models/registry/M05/v2.json), D170). The model card is [m05-card.md](reports/models/m05-card.md); the case study is [m05-case-study.md](reports/models/m05-case-study.md) (the owner's H14 rewrite is pending).
 
 ## Model index
 
@@ -52,7 +52,7 @@ Generated from the model registry and checked by `tests/test_portfolio.py` again
 | M02 | ka | regression | blocked | M02 blocked: no verified daily reservoir level or storage history (S28 KWRIS, T008), so labels, features and forecasts cannot be built (T092). | [m02](reports/models/m02.md) |
 | M03 | ka | regression | blocked | M03 blocked: no verified daily reported reservoir inflow with units (S28 KWRIS, T008); inflow is never inferred from levels (T095). | [m03](reports/models/m03.md) |
 | M04 | ka | regression | blocked | M04 blocked: no daily gauge rainfall with coordinates (S27 blocked, T077; S29 annual totals only, D113), so no gauge-day can be withheld (T098). | [m04](reports/models/m04.md) |
-| M05 | ka | regression | champion, hindcast (D43) | Ridge beats persistence on the locked 2020 to 2024 test; hindcast. | [m05](reports/models/m05.md), [m05-card](reports/models/m05-card.md) |
+| M05 | ka | regression | champion, hindcast (D43) | Ridge v1 beats persistence on the locked 2020 to 2024 test; hindcast. v2 (refit with IMD 2025) is untested and not served (D170). | [m05](reports/models/m05.md), [m05-card](reports/models/m05-card.md) |
 | M06 | ka | classification | blocked | M06 blocked: verified Karnataka price history, price units and publication timing are required before implementing labels, features or predictions (T035). | [m06](reports/models/m06.md) |
 | M07 | kl | regression | blocked | M07 blocked: a known vertical datum exists for 4 of the 8 dams the gate needs (D103, T129), S32 daily history is sampled dates only and S34 awaits the unapproved T118 bulk OCR, so labels, features and forecasts cannot be built (T130). | [m07](reports/models/m07.md) |
 | M08 | kl | classification | blocked | M08 blocked: S35 is blocked and S36 holds 2018 district labels only, with no audited pre-2018 positives or negatives, so a forecasting classifier cannot be trained (T133). | [m08](reports/models/m08.md) |

@@ -285,7 +285,7 @@ Other open owner items without an H number (from the same pages):
 | Power BI | Opens `powerbi/MonsoonAtlas.pbip` in Power BI Desktop and exports PNG and PDF (D132) | Report images |
 | Demo video | Records the demo from `docs/portfolio/video.md` | Portfolio |
 | M16 flags | (proposed) Adjudicates 100 M16 flags with independent evidence (D159) | M16 precision |
-| M05 refit | Nothing: the owner chose to refit now and label v2 untested (H11 item 6, D166); an agent builds M05 v2 | M05 v2 |
+| M05 v2 | Nothing now: v2 is built and published as untested (H11 item 6, D166, D170) and v1 serves. Once IMD 2026 and 2027 are published and v2 passes its one test, the owner approves or rejects serving it (D38) | Serving M05 v2 |
 | Language review | Native-speaker review of the kn, ml and hi drafts (A7) | F048 |
 
 ### Done owner steps

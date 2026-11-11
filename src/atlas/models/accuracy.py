@@ -233,7 +233,8 @@ def _registry() -> list[dict]:
                     "id": mid,
                     "state": "ka",
                     "status": row["status"],
-                    "reason": "Ridge beats persistence on the locked 2020 to 2024 test; hindcast.",
+                    "reason": "Ridge v1 beats persistence on the locked 2020 to 2024 test; "
+                    "hindcast. v2 (refit with IMD 2025) is untested and not served (D170).",
                     "links": ["reports/models/m05.md", "reports/models/m05-card.md"],
                     "score": {
                         "label": "hindcast",

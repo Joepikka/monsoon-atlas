@@ -82,6 +82,36 @@ class Fit:
         return out
 
 
+def _climatology(train: pa.Table, y_train: np.ndarray) -> dict[tuple[str, int], float]:
+    sums: dict[tuple[str, int], list[float]] = {}
+    for p, m, y in zip(
+        train["place_id"].to_pylist(), train["month_of_year"].to_pylist(), y_train, strict=True
+    ):
+        sums.setdefault((p, m), []).append(y)
+    return {k: float(np.mean(v)) for k, v in sums.items()}
+
+
+def refit(train: pa.Table, alpha: float, test_split: DatasetSplit) -> Fit:
+    """M05 v2 (D170): v1's selected ridge alpha on a longer train window; no tune, no new choice."""
+    from sklearn.linear_model import Ridge
+
+    if any(m > test_split.train_end for m in train["target_month"].to_pylist()):
+        raise LeakageError(f"train rows run past {test_split.train_end} (purge before the test)")
+    y_train = np.asarray(train[TARGET].to_pylist(), dtype=float)
+    x_train, mean, std = _design(train)
+    ridge = Ridge(alpha=alpha).fit(x_train, y_train)
+    return Fit(
+        climatology=_climatology(train, y_train),
+        scaler=(mean.tolist(), std.tolist()),
+        ridge_alpha=alpha,
+        ridge_coef=ridge.coef_.tolist(),
+        ridge_intercept=float(ridge.intercept_),
+        lgbm_params=None,
+        lgbm_model=None,
+        choice="ridge",
+    )
+
+
 def fit(train: pa.Table, tune: pa.Table, test_split: DatasetSplit, *, lgbm_trials: int = 30) -> Fit:
     """Fit baselines and candidates on train, select on tune. Test rows are refused."""
     import lightgbm as lgb
@@ -96,12 +126,7 @@ def fit(train: pa.Table, tune: pa.Table, test_split: DatasetSplit, *, lgbm_trial
 
     y_train = np.asarray(train[TARGET].to_pylist(), dtype=float)
     y_tune = np.asarray(tune[TARGET].to_pylist(), dtype=float)
-    sums: dict[tuple[str, int], list[float]] = {}
-    for p, m, y in zip(
-        train["place_id"].to_pylist(), train["month_of_year"].to_pylist(), y_train, strict=True
-    ):
-        sums.setdefault((p, m), []).append(y)
-    climatology = {k: float(np.mean(v)) for k, v in sums.items()}
+    climatology = _climatology(train, y_train)
 
     x_train, mean, std = _design(train)
     x_tune, _, _ = _design(tune, mean, std)
