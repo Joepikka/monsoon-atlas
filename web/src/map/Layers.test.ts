@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { distanceKm, visibleRecords, layerHealth } from './Layers';
 import { parseSnapshot } from '../data';
+import { LOCALES, t } from '../i18n';
 
 const cap = JSON.parse(readFileSync(new URL('../../tests/fixtures/sachet-ka-point.json', import.meta.url), 'utf8'));
 const weather = JSON.parse(readFileSync(new URL('../../tests/fixtures/openmeteo-temperature-point.json', import.meta.url), 'utf8'));
@@ -44,5 +45,13 @@ describe('layer contracts', () => {
   });
   it('rejects a record not yet available at the snapshot cutoff', () => {
     expect(() => parseSnapshot({ ...metadata, as_of: '2026-11-05T00:00:00Z' }, 'ka')).toThrow(/available|cutoff/i);
+  });
+  it('puts the boundary disclaimer on the map panel and adds no border layer of its own (H11, D166)', () => {
+    const text = 'District boundaries are approximate and not authoritative. For official boundaries see the Survey of India.';
+    expect(t('map.disclaimer')).toBe(text);
+    for (const locale of Object.values(LOCALES)) expect(locale['map.disclaimer']).toBeTruthy();
+    const read = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8');
+    expect(read('../App.tsx')).toMatch(/className="map-disclaimer">\{t\('map\.disclaimer'\)\}/);
+    expect(read('../MapView.tsx')).not.toMatch(/addLayer|addSource|boundar|border/i);
   });
 });

@@ -5,6 +5,7 @@ import Layers, { layerConfigs, visibleRecords, type Coordinates } from './map/La
 import SourceBadge from './components/SourceBadge';
 import EventTicker from './components/EventTicker';
 import PlaceLens from './components/PlaceLens';
+import { t } from './i18n';
 import { readShare, sourceNames } from './report';
 import { localTime } from './time';
 import './styles.css';
@@ -162,7 +163,8 @@ export default function App() {
           <Suspense fallback={<p className="map-message">Loading map…</p>}>
             <MapView records={records} selected={selected} onSelect={setSelected} center={center} onCenter={setCenter} />
           </Suspense>
-          <div className="map-note">{snapshot ? hasCurrent ? 'Active source updates and dated daily records' : 'Records belong to the dated snapshot' : 'Basemap only · no released observations'}</div>
+          <div className="map-note">{snapshot ? hasCurrent ? 'Active source updates and dated daily records' : 'Records belong to the dated snapshot' : 'Basemap only · no released observations'}
+            <small className="map-disclaimer">{t('map.disclaimer')}</small></div>
         </section>
       </div>
     </main>

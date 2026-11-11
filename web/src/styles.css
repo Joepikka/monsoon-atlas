@@ -510,6 +510,10 @@ h1,h2,h3,p{
   max-width:calc(100% - 40px);
   pointer-events:none
 }
+.map-disclaimer{
+  display:block;
+  margin-top:4px
+}
 .map-message{
   position:absolute;
   top:48%;

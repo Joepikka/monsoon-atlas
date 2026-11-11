@@ -105,5 +105,6 @@
   "offline.age_hours": "{n} hours",
   "widget.heading": "{state}: source and model catalogue",
   "widget.summary": "Of {sources} sources, {enabled} are enabled (coverage {coverage}). Of {models} state models, {models_blocked} are blocked.",
-  "widget.note": "A summary of the catalogue at build time. It is not current conditions, a forecast or an emergency service; use the official warnings."
+  "widget.note": "A summary of the catalogue at build time. It is not current conditions, a forecast or an emergency service; use the official warnings.",
+  "map.disclaimer": "District boundaries are approximate and not authoritative. For official boundaries see the Survey of India."
 }

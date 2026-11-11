@@ -91,3 +91,14 @@ def test_microphone_and_speech_start_only_from_a_button_press():
 def test_json_is_valid_utf8_with_lf_endings(locale):
     raw = (WEB / f"i18n/{locale}.json").read_bytes()
     assert b"\r" not in raw and raw.endswith(b"}\n")
+
+
+def test_map_carries_the_boundary_disclaimer_in_all_locales():
+    # H11 item 8 (D166): every public map shows it; the app footer area is App.tsx's map panel.
+    assert load("en")["map.disclaimer"] == (
+        "District boundaries are approximate and not authoritative. "
+        "For official boundaries see the Survey of India."
+    )
+    for locale in LOCALES:
+        assert load(locale)["map.disclaimer"].strip()
+    assert "t('map.disclaimer')" in (WEB / "App.tsx").read_text(encoding="utf-8")
