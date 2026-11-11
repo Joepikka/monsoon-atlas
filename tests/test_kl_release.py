@@ -11,6 +11,8 @@ import re
 import subprocess
 from pathlib import Path
 
+import pytest
+
 from atlas.config import load_state, load_yaml
 from atlas.ingest.discovery import Discovery, check, load_manifest
 
@@ -112,7 +114,10 @@ def test_layers_follow_their_dependencies():
 
 
 def test_2018_chronology_matches_the_replay_file():
-    replay = json.loads((ROOT / "reports/eda/05_kl_flood2018/replay2018.json").read_text("utf-8"))
+    path = ROOT / "reports/eda/05_kl_flood2018/replay2018.json"
+    if not path.exists():  # untracked since the H11 answer (D166): holds S08 rain, local only
+        pytest.skip("replay2018.json holds S08 rainfall and is local only (D166)")
+    replay = json.loads(path.read_text("utf-8"))
     end = replay["window"]["end"]
     assert replay["forecast_vintages"] == [] and "**0 forecast vintages**" in PAGE
     for r in replay["records"]:

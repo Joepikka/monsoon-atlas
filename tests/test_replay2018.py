@@ -21,7 +21,17 @@ from atlas.analysis.replay import LABEL, as_known, mode, validate  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 EDA = ROOT / "reports/eda"
 RAW = ROOT / "data/raw"
-REPLAY = json.loads((EDA / "05_kl_flood2018/replay2018.json").read_text("utf-8"))
+REPLAY_PATH = EDA / "05_kl_flood2018/replay2018.json"
+# S08 area-averaged rain in mm: untracked since the H11 answer (D166), so absent in CI.
+S08_LOCAL = [
+    REPLAY_PATH,
+    EDA / "05_kl_flood2018/monthly_2018.csv",
+    EDA / "07_climate/s08_kerala_annual.csv",
+]
+needs_replay = pytest.mark.skipif(
+    not REPLAY_PATH.exists(), reason="replay2018.json holds S08 rain and is local only (D166)"
+)
+REPLAY = json.loads(REPLAY_PATH.read_text("utf-8")) if REPLAY_PATH.exists() else None
 SUMMARIES = {n: json.loads((EDA / n / "summary.json").read_text("utf-8")) for n in (
     "05_kl_flood2018", "06_rain_price", "07_climate")}  # fmt: skip
 END = date(2018, 9, 30)
@@ -32,6 +42,7 @@ def test_mode_needs_a_publication_date_inside_the_window():
     assert mode(date(2019, 8, 1), END) == mode(None, END) == "reconstructed"
 
 
+@needs_replay
 def test_reconstructed_records_never_appear_in_as_known_mode():
     records = REPLAY["records"]
     for cursor in (date(2018, 6, 1), date(2018, 8, 7), date(2018, 8, 20), END, date(2030, 1, 1)):
@@ -51,6 +62,7 @@ def test_reconstructed_records_never_appear_in_as_known_mode():
     )
 
 
+@needs_replay
 def test_exported_replay_has_labels_and_no_forecast_vintage():
     validate(REPLAY)
     assert REPLAY["label"] == LABEL and REPLAY["forecast_vintages"] == []
@@ -139,6 +151,8 @@ def _local(*sources):
 def test_notebook_reproduces_from_a_clean_process(tmp_path, name, sources):
     if not _local(*sources):
         pytest.skip("raw files are local only")
+    if not all(p.exists() for p in S08_LOCAL if p.parent.name == name):
+        pytest.skip("S08 outputs are untracked (D166) and absent here")
     nb = json.loads((ROOT / f"notebooks/{name}.ipynb").read_text("utf-8"))
     code = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
     env = os.environ | {"ATLAS_EDA_OUT": str(tmp_path), "MPLBACKEND": "Agg"}

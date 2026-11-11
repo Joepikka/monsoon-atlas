@@ -85,7 +85,8 @@ routing is disabled. Every route result carries "not a safe route".
 
 ## 2018 chronology audit
 
-Source: `reports/eda/05_kl_flood2018/replay2018.json` (T142). 157 records, window 1 Jun to
+Source: `reports/eda/05_kl_flood2018/replay2018.json` (T142; local only since 11 Nov 2026, so
+the audit below is re-checked only where that file exists). 157 records, window 1 Jun to
 30 Sep 2018, **0 forecast vintages**. A record is `as_known` only when the publisher's own dated
 issue is on or before 30 Sep 2018 and it shows only from that date; everything else is
 `reconstructed` and never shown as known at the time (D127).
@@ -118,12 +119,15 @@ Sources whose licence forbids redistribution (status `restricted`) keep raw file
 | S37 | restricted | manifest only | None; the state-level counts stay in the evidence notes |
 | S41 | restricted | manifest only | None; no publisher permission is on record |
 
-Finding to settle at H11: the T142 files `replay2018.json`, `monthly_2018.csv` and
-`s08_kerala_annual.csv` under `reports/eda/` hold S08 box-mean rain values. They are committed
-in the repository for analysis, not mounted on any page, and no public snapshot exists. The S08
-licence does not allow publishing area-averaged rainfall without permission, so the public
-replay must drop the 122 S08 records, or the owner must obtain IMD permission, before any
-release. This page therefore quotes only a derived departure, not rainfall values.
+Licence finding, settled at H11: the T142 files `replay2018.json`, `monthly_2018.csv` and
+`s08_kerala_annual.csv` under `reports/eda/` hold S08 box-mean rain values. The S08 licence does
+not allow publishing area-averaged rainfall without permission, so on 11 Nov 2026 the owner
+decided (H11 item 9, D166) to remove them from the repository: they were removed from tracking
+that day, are listed in `.gitignore` and stay on local disk only. Old copies remain in git
+history, which is not rewritten. The replay keeps derived departures only. This page therefore
+quotes only a derived departure, not rainfall values. The notebooks `05_kl_flood2018` and
+`07_climate` regenerate the files locally from `data/raw`; the tests that read them skip when
+they are absent.
 
 ## Case study draft: Kerala 2018 and dams
 

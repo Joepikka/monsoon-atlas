@@ -73,14 +73,14 @@
       ],
       "evidence": [
         "web/src/components/Replay.tsx",
-        "reports/eda/05_kl_flood2018/replay2018.json",
+        "notebooks/05_kl_flood2018.ipynb",
         "docs/releases/kl.md"
       ],
       "tests": [
         "web/src/components/Replay.test.ts",
         "tests/test_replay2018.py"
       ],
-      "blocker": "No published snapshots exist to slide over (T045); the 2018 replay holds S08 values that need the H11 decision.",
+      "blocker": "No published snapshots exist to slide over (T045); the 2018 replay's S08 export is untracked and local only (H11 item 9, D166).",
       "owner_steps": [
         "H11",
         "H05",
@@ -1095,14 +1095,14 @@
       ],
       "evidence": [
         "web/src/components/Replay.tsx",
-        "reports/eda/05_kl_flood2018/replay2018.json",
+        "notebooks/05_kl_flood2018.ipynb",
         "docs/releases/kl.md"
       ],
       "tests": [
         "tests/test_replay2018.py",
         "web/src/components/Replay.test.ts"
       ],
-      "blocker": "Not mounted; the 122 S08 records need the H11 decision; S35 blocked (D127, D129).",
+      "blocker": "Not mounted; the 122 S08 records exist only in a local, untracked export (H11 item 9, D166); S35 blocked (D127, D129).",
       "owner_steps": [
         "H11",
         "H10"

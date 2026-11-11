@@ -44,3 +44,8 @@ Thumbs.db
 # Handoff bundle copies (the combined .md is committed; zip and pdf copies are local)
 handoff/*.zip
 handoff/*.pdf
+
+# IMD S08 area-averaged rainfall (mm): local only, not tracked (H11 item 9, D166)
+reports/eda/05_kl_flood2018/replay2018.json
+reports/eda/05_kl_flood2018/monthly_2018.csv
+reports/eda/07_climate/s08_kerala_annual.csv
