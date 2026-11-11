@@ -227,6 +227,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s01.yaml"
     },
     {
@@ -237,6 +238,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s02.yaml"
     },
     {
@@ -247,6 +249,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s03.yaml"
     },
     {
@@ -257,6 +260,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s04.yaml"
     },
     {
@@ -267,6 +271,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s05.yaml"
     },
     {
@@ -277,6 +282,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s06.yaml"
     },
     {
@@ -287,6 +293,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s07.yaml"
     },
     {
@@ -297,6 +304,7 @@
       "outcome": "available",
       "licence": "restricted",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s08.yaml"
     },
     {
@@ -307,6 +315,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s09.yaml"
     },
     {
@@ -317,6 +326,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s10.yaml"
     },
     {
@@ -327,6 +337,7 @@
       "outcome": "blocked",
       "licence": "unverified",
       "retry": "The owner reads https://opensky-network.org/about/terms-of-use in a browser and decides whether the project accepts the terms for a non-commercial fallback (citation of the OpenSky paper, the data licence model, any limit on public display), and records that decision; then re-run T061. If accepted, anonymous use stays within 400 credits a day; an account and API client (OAuth2) would be a further owner step.",
+      "owner_step": false,
       "link": "configs/sources/s11.yaml"
     },
     {
@@ -337,6 +348,7 @@
       "outcome": "available",
       "licence": "restricted",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s12.yaml"
     },
     {
@@ -347,6 +359,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s13.yaml"
     },
     {
@@ -357,6 +370,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s14.yaml"
     },
     {
@@ -367,6 +381,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s15.yaml"
     },
     {
@@ -377,6 +392,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s16.yaml"
     },
     {
@@ -387,6 +403,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s17.yaml"
     },
     {
@@ -397,6 +414,7 @@
       "outcome": "blocked",
       "licence": "open",
       "retry": "Any one of: (1) the owner downloads southern-zone-latest.osm.pbf in a browser and saves it in data/raw/S18 (a manual download is not a robot), then T021 checks it and T022 parses the local file; (2) Geofabrik states that scripted downloads are allowed; (3) a separate source task verifies the OpenStreetMap Overpass API for the few Karnataka feature types the map needs.",
+      "owner_step": false,
       "link": "configs/sources/s18.yaml"
     },
     {
@@ -407,6 +425,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s19.yaml"
     },
     {
@@ -417,6 +436,7 @@
       "outcome": "available",
       "licence": "restricted",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s20.yaml"
     },
     {
@@ -427,6 +447,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s21.yaml"
     },
     {
@@ -437,6 +458,7 @@
       "outcome": "blocked",
       "licence": "unverified",
       "retry": "Re-run T023 with a working browser render of https://indiadataportal.com/p/agmarknet (or the owner opens it and notes the download button, file format and licence shown). If downloads need a sign-in, that is an owner step. Meanwhile T025 (data.gov.in mandi prices, free API key) is the other route to the same Agmarknet prices.",
+      "owner_step": false,
       "link": "configs/sources/s22.yaml"
     },
     {
@@ -446,7 +468,8 @@
       "enabled": false,
       "outcome": "blocked",
       "licence": "open",
-      "retry": "Capture a publisher statement tied to resource 9ef84268-d588-465a-a308-a864a43d0070 establishing the denominator of min_price, max_price and modal_price (including commodity-specific exceptions if units vary). Then re-run T025 and validate the mapping before enabling S23 or implementing ingestion in T026. GODL is verified; no new API key or licence confirmation is needed.",
+      "retry": null,
+      "owner_step": true,
       "link": "configs/sources/s23.yaml"
     },
     {
@@ -456,7 +479,8 @@
       "enabled": false,
       "outcome": "blocked",
       "licence": "open",
-      "retry": "The owner gets a FIRMS MAP_KEY (H09) and stores it as NASA_FIRMS_MAP_KEY in .env, then T075 is re-run against the documented area API; or a key-free FIRMS download link is read from a rendered FIRMS page (browser) and recorded with its terms.",
+      "retry": null,
+      "owner_step": true,
       "link": "configs/sources/s25.yaml"
     },
     {
@@ -467,6 +491,7 @@
       "outcome": "blocked",
       "licence": "unverified",
       "retry": "KSNDMC serves its gauge data over HTTPS with a published station list, units and terms (on ksndmc.org or the Varunamitra portal), or publishes an equivalent open dataset; then re-run T077. Historical hobli rainfall is covered separately by S29 (T079).",
+      "owner_step": false,
       "link": "configs/sources/s27.yaml"
     },
     {
@@ -476,7 +501,8 @@
       "enabled": false,
       "outcome": "blocked",
       "licence": "restricted",
-      "retry": "Re-run T008 when one of these holds: (1) the owner chooses to register a KWRIS account (a new human-only step: the form asks for personal details), and the Web API terms then allow research use and the API returns daily reservoir history with units; (2) ACIWRM answers a data request to the helpdesk address published on the site with daily history, units and a licence; or (3) the public site starts publishing a reservoir history or export.",
+      "retry": null,
+      "owner_step": true,
       "link": "configs/sources/s28.yaml"
     },
     {
@@ -487,6 +513,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s29.yaml"
     },
     {
@@ -497,6 +524,7 @@
       "outcome": "available",
       "licence": "restricted",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s30.yaml"
     },
     {
@@ -507,6 +535,7 @@
       "outcome": "blocked",
       "licence": "restricted",
       "retry": "The owner asks K-RERA for permission to reproduce the project list (copyright policy, by email) and records the reply; then T081 is re-run. Promoter names stay excluded either way.",
+      "owner_step": false,
       "link": "configs/sources/s31.yaml"
     },
     {
@@ -516,7 +545,8 @@
       "enabled": false,
       "outcome": "blocked",
       "licence": "restricted",
-      "retry": "The owner creates the bot with BotFather and a public channel (H08), accepts Telegram's developer terms, and stores TELEGRAM_BOT_TOKEN in .env; then T083 runs again.",
+      "retry": null,
+      "owner_step": true,
       "link": "configs/sources/s39.yaml"
     },
     {
@@ -527,6 +557,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": "Taluk polygons: run a separate discovery for an official Karnataka taluk boundary source before any taluk-level map; until then taluk outputs use district or H3 views. BBMP 2015/2022/2023 maps: re-check licence before any public use.",
+      "owner_step": false,
       "link": "configs/sources/s40.yaml"
     },
     {
@@ -537,6 +568,7 @@
       "outcome": "blocked",
       "licence": "unverified",
       "retry": "Re-run T085 when one of these holds: (1) GBA, BBMP, KSNDMC or KSDMA publish dated ward-level flood incident records, for example control-room logs released on OpenCity; (2) the BBMP and GBA websites pass TLS verification, so their releases can be checked; or (3) at T222 the owner decides to accept the I Change My City complaints as non-official, citizen-reported labels with a written coverage rule for negatives, recorded in the decisions log. Without one of these, the C2 fallback applies.",
+      "owner_step": false,
       "link": "configs/sources/s43.yaml"
     },
     {
@@ -547,6 +579,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s44.yaml"
     },
     {
@@ -557,6 +590,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s01.yaml"
     },
     {
@@ -567,6 +601,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s02.yaml"
     },
     {
@@ -577,6 +612,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s06.yaml"
     },
     {
@@ -587,6 +623,7 @@
       "outcome": "available",
       "licence": "restricted",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s08.yaml"
     },
     {
@@ -597,6 +634,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s09.yaml"
     },
     {
@@ -607,6 +645,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s15.yaml"
     },
     {
@@ -617,6 +656,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s16.yaml"
     },
     {
@@ -627,6 +667,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s17.yaml"
     },
     {
@@ -636,7 +677,8 @@
       "enabled": false,
       "outcome": "blocked",
       "licence": "unverified",
-      "retry": "The owner signs in and creates an aisstream API key (H12), stores AISSTREAM_API_KEY in .env, and the terms shown at sign-in allow reuse of the AIS data; then T111 runs again.",
+      "retry": null,
+      "owner_step": true,
       "link": "configs/sources/s26.yaml"
     },
     {
@@ -647,6 +689,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": "Before T130: check the other Kerala dam sources for 2017 to 2023 daily history, S34 KSDMA dam level reports (T118) and S33 KSEB monthly statistics (T116), and confirm the Aug 2024 to Jul 2026\n  gap against the completed T227 census (docs/sources/s32-history.md). It must not be\n  interpolated or treated as zero readings. T130 still requires known datum and verified history.",
+      "owner_step": false,
       "link": "configs/sources/s32.yaml"
     },
     {
@@ -657,6 +700,7 @@
       "outcome": "blocked",
       "licence": "unverified",
       "retry": "Re-run T115 when the KSEB Dam Safety Organisation restores its Monthly Statistics/Statistics pages or supplies a directly linked monthly reservoir PDF/spreadsheet with dates, units, datum and licence. Verify actual within-file resolution; keep monthly aggregates EDA-only and never interpolate daily observations. Owner OCR review of S34 remains independently required.",
+      "owner_step": false,
       "link": "configs/sources/s33.yaml"
     },
     {
@@ -667,6 +711,7 @@
       "outcome": "available",
       "licence": "restricted",
       "retry": "Not blocked. To avoid OCR, the owner could ask KSDMA or KSEB for the daily tables as spreadsheets with a licence; if granted, record it and re-run T117.",
+      "owner_step": false,
       "link": "configs/sources/s34.yaml"
     },
     {
@@ -676,7 +721,8 @@
       "enabled": false,
       "outcome": "blocked",
       "licence": "unverified",
-      "retry": "Run T121 (S36 KSDMA post-disaster assessment) next: the official memorandum is public (e06) and may give dated district-level flood labels for August 2018. M08 then uses district resolution only and, without labels before 2018, a descriptive 2018 replay with no predictive accuracy claim. Re-run T119 only if the owner signs in to Kaggle (H10) and \"Kerala Floods 2018\" turns out to have dated rows and a stated licence.",
+      "retry": null,
+      "owner_step": true,
       "link": "configs/sources/s35.yaml"
     },
     {
@@ -687,6 +733,7 @@
       "outcome": "available",
       "licence": "restricted",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s36.yaml"
     },
     {
@@ -697,6 +744,7 @@
       "outcome": "blocked",
       "licence": "restricted",
       "retry": "Retry T123 when NRSC links a downloadable landslide inventory (shapefile, GeoJSON or CSV, or a documented Bhuvan data service) from the pages in e02, e03 or e05, with its terms stated. If the owner obtains the Kerala 2018 inventory from NRSC or Bhuvan (an owner step if it needs a sign-in or request form), re-verify its licence, a landslide ID per row, coordinates, the survey footprint and the event date before enabling S37.",
+      "owner_step": false,
       "link": "configs/sources/s37.yaml"
     },
     {
@@ -707,6 +755,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": "Taluk polygons: run a separate discovery for an official Karnataka taluk boundary source before any taluk-level map; until then taluk outputs use district or H3 views. BBMP 2015/2022/2023 maps: re-check licence before any public use.",
+      "owner_step": false,
       "link": "configs/sources/s40.yaml"
     },
     {
@@ -717,6 +766,7 @@
       "outcome": "blocked",
       "licence": "restricted",
       "retry": "Retry T125 when the owner obtains written permission from one publisher (Mathrubhumi English, The Hindu, Onmanorama or Times Internet) that allows storing headline, link and timestamp metadata from its RSS feed for a non-commercial public map and for a classifier (M18), or when a publisher issues an open licence or a terms update that allows this. The owner records the permission text and the permitted feed URLs; then re-verify the item fields, a quota and history, and enable only the permitted feeds.",
+      "owner_step": false,
       "link": "configs/sources/s41.yaml"
     },
     {
@@ -726,7 +776,8 @@
       "enabled": false,
       "outcome": "blocked",
       "licence": "open",
-      "retry": "Retry T127 when the owner registers a free Copernicus Data Space Ecosystem account (no card; accepts the terms and verifies the e-mail; a new owner step, proposed H15) and puts the login in the ignored .env as CDSE_USERNAME and CDSE_PASSWORD (read only by variable name; the docs warn against hard-coding them). Then re-verify with a short-lived access token that one small Sentinel-2 L2A band (B04 or B08 of a selected scene) downloads, check the quota against the account, and enable T128 for selected scenes only. If imagery is needed sooner, the owner may approve a keyless open-data mirror in decisions.md, after its own discovery task.",
+      "retry": null,
+      "owner_step": true,
       "link": "configs/sources/s42.yaml"
     },
     {
@@ -737,6 +788,7 @@
       "outcome": "blocked",
       "licence": "unverified",
       "retry": "Re-run T085 when one of these holds: (1) GBA, BBMP, KSNDMC or KSDMA publish dated ward-level flood incident records, for example control-room logs released on OpenCity; (2) the BBMP and GBA websites pass TLS verification, so their releases can be checked; or (3) at T222 the owner decides to accept the I Change My City complaints as non-official, citizen-reported labels with a written coverage rule for negatives, recorded in the decisions log. Without one of these, the C2 fallback applies.",
+      "owner_step": false,
       "link": "configs/sources/s43.yaml"
     },
     {
@@ -747,6 +799,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s01.yaml"
     },
     {
@@ -757,6 +810,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s02.yaml"
     },
     {
@@ -767,6 +821,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s09.yaml"
     },
     {
@@ -777,6 +832,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s15.yaml"
     },
     {
@@ -787,6 +843,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s16.yaml"
     },
     {
@@ -797,6 +854,7 @@
       "outcome": "available",
       "licence": "open",
       "retry": null,
+      "owner_step": false,
       "link": "configs/sources/s17.yaml"
     },
     {
@@ -806,7 +864,8 @@
       "enabled": false,
       "outcome": "blocked",
       "licence": "unverified",
-      "retry": "In a browser that can read page content (the Browser pane read tools or the owner's Chrome), open the data.gov.in resource page for \"Real time Air Quality Index from various locations\", read the resource ID from its API tab and the licence text from the page, then re-run T146 with that ID: record one keyed sample (Delhi stations), fields, units, the averaging interval, last_update semantics and any history. Enable S24 only if the licence is verified and the units and averaging interval are stated by the publisher. The key already exists; no new key is needed.",
+      "retry": null,
+      "owner_step": true,
       "link": "configs/sources/s24.yaml"
     },
     {
@@ -816,7 +875,8 @@
       "enabled": false,
       "outcome": "blocked",
       "licence": "restricted",
-      "retry": "The owner completes H04 in a browser: submits the real time key request and the static data forms at otd.delhi.gov.in with an honest purpose (non-commercial research), accepts the Terms, keeps the key in .env as OTD_API_KEY (variable name only in code), and downloads the static GTFS ZIP into data/raw/S38. Then T148 is re-run to record one VehiclePositions sample, its protobuf fields, units, timestamp meaning, trip and calendar match against the static files, the key quota and whether the Terms allow the project's use; the source is enabled only if the licence allows it and the field map is verified. Approval may take time (e08).",
+      "retry": null,
+      "owner_step": true,
       "link": "configs/sources/s38.yaml"
     }
   ],

@@ -23,7 +23,7 @@ export default function Quality() {
             <td>{source.state.toUpperCase()}</td>
             <th scope="row"><a href={href(source.link)} rel="noopener noreferrer">{source.id}</a> {source.name}</th>
             <td>{yesNo(source.enabled)}</td><td>{source.outcome}</td><td>{source.licence}</td>
-            <td>{source.retry ?? t('q.no_retry')}</td>
+            <td>{source.owner_step ? t('q.owner_step') : source.retry ?? t('q.no_retry')}</td>
           </tr>)}</tbody>
         </table>
       </div>

@@ -274,7 +274,10 @@ def _sources() -> list[dict]:
                     "enabled": s.enabled,
                     "outcome": d["outcome"],
                     "licence": d["licence"]["status"],
-                    "retry": d.get("retry_condition"),
+                    # Account-gated retry text names secret variables and upstream endpoints;
+                    # the client gets a flag and the record link instead (tests/test_dl_poll.py).
+                    "retry": None if d.get("account_required") else d.get("retry_condition"),
+                    "owner_step": bool(d.get("account_required")) and d["outcome"] == "blocked",
                     "link": record,
                 }
             )

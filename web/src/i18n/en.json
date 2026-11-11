@@ -72,6 +72,7 @@
   "q.col_licence": "Licence",
   "q.col_retry": "Retry condition",
   "q.no_retry": "None needed",
+  "q.owner_step": "Owner account step; see the source record",
   "q.queue_heading": "Review queue",
   "q.queue_note": "{model}: {label}. Of {required} flags needed, {adjudicated} are adjudicated, so precision is not measured.",
   "q.queue_state": "{state}: on {evaluated} evaluated cell-days, {flags} flags. S08 counts only; no rainfall value is shown.",
