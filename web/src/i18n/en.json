@@ -163,7 +163,7 @@
   "globe.on_reduced": "Globe view. Camera moves last {ms} ms (reduced motion on).",
   "watches.heading": "Place watches",
   "watches.intro": "Watches are stored only in this browser. They are never sent anywhere, and there is no account. Notifications here appear only while this page is open. This is not an emergency service.",
-  "watches.place": "Place",
+  "watches.place": "Place to watch",
   "watches.alerts": "Official alerts",
   "watches.rain": "Forecast rain at or above (mm, optional)",
   "watches.add": "Add watch",

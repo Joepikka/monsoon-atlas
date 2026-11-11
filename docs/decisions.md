@@ -29,7 +29,10 @@
   Place watches sit in the record panel (IndexedDB only); signals are official alerts and mm
   forecasts that name a place; only expiry stops a signal, because records carry no cancelled flag.
   Strings moved to 60 keys per locale (kn, ml, hi are unreviewed machine drafts). Checked in the
-  in-app browser: climate page, view select, wall page, no script errors. Not run: Playwright.
+  in-app browser: climate page, view select, wall page, no script errors. The full suite's
+  Playwright contracts then found two regressions, both fixed: the toolbar overflowed at 768 px
+  (it now wraps below 900 px), and the watches select repeated the place lens label "Place" (now
+  "Place to watch").
 
 - **D171 — T221 findings fixed (11 Nov 2026).**
   (1) `docs/releases/ka-v1.md` no longer lists F035 among later tasks; a note says T034 measured

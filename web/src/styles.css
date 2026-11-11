@@ -569,7 +569,8 @@ h1,h2,h3,p{
   }
   .toolbar{
     padding:16px 22px;
-    gap:16px
+    gap:16px;
+    flex-wrap:wrap
   }
   .toolbar label:first-child select{
     min-width:160px
