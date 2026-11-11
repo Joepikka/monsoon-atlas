@@ -106,5 +106,11 @@
   "widget.heading": "{state}: source and model catalogue",
   "widget.summary": "Of {sources} sources, {enabled} are enabled (coverage {coverage}). Of {models} state models, {models_blocked} are blocked.",
   "widget.note": "A summary of the catalogue at build time. It is not current conditions, a forecast or an emergency service; use the official warnings.",
-  "map.disclaimer": "District boundaries are approximate and not authoritative. For official boundaries see the Survey of India."
+  "map.disclaimer": "District boundaries are approximate and not authoritative. For official boundaries see the Survey of India.",
+  "ticker.region": "Alerts in this snapshot",
+  "ticker.label": "Snapshot alert",
+  "ticker.expired": "Expired",
+  "ticker.expires": "Expires",
+  "ticker.pause": "Pause alerts",
+  "ticker.resume": "Resume alerts"
 }

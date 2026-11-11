@@ -853,8 +853,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    built and not mounted. Follow-ups: verify the Tippecanoe 2.79.0 tag SHA on GitHub before
    any `tiles.yml` run; add `sgp4` to `requirements/geo.in` with pip-tools, then write and
    test `predict()`; move `Terrain` and `Movement` strings into the locale files before
-   mounting them, and `EventTicker` strings now (it is mounted on the local map since T039,
-   so its English literals already show; T221 finding 2). T189-T211 are recorded as blocked (D155, D156).
+   mounting them (`EventTicker` strings moved to `ticker.*` keys, D171). T189-T211 are recorded as blocked (D155, D156).
    T212-T216 are done (M16 research-only, D157-D160; proposed owner step: adjudicate 100
    anomaly flags with independent evidence). T217-T219 are done (D161-D163). `.claude/launch.json` has a `web-dev`
    entry for the local preview. T220 is done (D164). Run `tests/test_dl_poll.py` with any change

@@ -111,9 +111,13 @@ the Kerala dam model (C1), which is blocked separately.
 
 Other KA v1 rows of the catalogue belong to later tasks and are not gated here:
 F003 (T142); F018, F038, F039 (T143; F018 and F039 need blocked S18 and S43);
-F035 (T034); F037 (T216); F040 (T164); F042, F043, F044 (T145); F046 (T180);
+F037 (T216); F040 (T164); F042, F043, F044 (T145); F046 (T180);
 F048 (T182); F049, F050, F052 (T183); F053 (T045); F054, F055, F059 (T217);
 F056, F057 (T218); F064 (T219).
+
+F035 is not a later task: T034 measured the M05 intervals, which cover 72.8%
+against an 80% gate, so they stay hidden and F035 is research-only (D42, T262).
+No task produces SHAP values; `shap` is pinned in `requirements/ml.in` and unused (D171).
 
 ## Frozen shared interfaces
 

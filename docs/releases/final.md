@@ -313,8 +313,8 @@ T046 (the Karnataka MVP gate) stays the first unfinished task in plan order: it 
 
 ## Findings
 
-Defects found by this audit. None was fixed, because each sits in a gate page or the handoff, which
-T221 may not edit.
+Defects found by this audit. T221 did not fix them, because each sits in a gate page or the handoff,
+which T221 may not edit. All three were fixed afterwards (D171).
 
 1. `docs/releases/ka-v1.md` line 114 lists F035 (T034) among rows that "belong to later tasks", but
    T034 is a P1 task done before T110. No task produced SHAP values: `shap` is pinned in

@@ -30,7 +30,7 @@ def test_no_sound_no_flashing_and_no_motion():
 def test_it_reuses_the_existing_ticker_and_source_pause_and_does_not_write_a_second():
     assert "import EventTicker from '../components/EventTicker'" in WALL
     ticker = (WEB / "components/EventTicker.tsx").read_text(encoding="utf-8")
-    assert "Pause alerts" in ticker and "prefers-reduced-motion: reduce" in ticker
+    assert "t('ticker.pause')" in ticker and "prefers-reduced-motion: reduce" in ticker
     assert "setInterval" in ticker and "aria-pressed={paused}" in ticker
     assert "wall-ticker" in WALL and not (WEB / "map/WallTicker.tsx").exists()
 

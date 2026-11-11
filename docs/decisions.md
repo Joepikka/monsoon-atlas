@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D171 — T221 findings fixed (11 Nov 2026).**
+  (1) `docs/releases/ka-v1.md` no longer lists F035 among later tasks; a note says T034 measured
+  the M05 intervals, they fail their 80% gate, F035 is research-only, and no task produces SHAP
+  values (`shap` stays pinned but unused; adding SHAP would be new scope, not a plan task).
+  `final-manifest.json` is regenerated for the new page hash. (2) `EventTicker` strings go
+  through `t()` as six `ticker.*` keys; kn, ml and hi values are unreviewed machine drafts (A7).
+  (3) D161's title now says the dashboards are reachable locally and in no public snapshot.
+  (4) SPI invertibility (open after D167), checked: SPI back to mm needs each district and
+  calendar month's gamma fit, which is computed at run time from local S08 files. No tracked file
+  holds those parameters, a per-district SPI series or a fitted model file (`git ls-files` finds no
+  joblib, pickle, parquet, npy or duckdb; the M05 registry files are summaries under 2.3 kB), so
+  committed SPI cannot be inverted to IMD mm. Re-check if a model file or SPI table is ever tracked.
+
 - **D170 — M05 v2: refit with IMD 2025, published as untested; v1 keeps serving (11 Nov 2026, builds D166 item 6).**
   (1) Window: the v1 pipeline unchanged (features, SPI reference 1981-2010, 92-day purge), train
   1981-07-01 to 2025-09-30 (15930 district-months), purged before an untouched test from
@@ -245,7 +258,7 @@
   `web/public/` now allow exactly `web/public/manifest.webmanifest`, which holds no data.
   Strings go through `t()` in four locales (kn, ml, hi are unreviewed machine drafts, A7).
 
-- **D161 — Four dashboards built on one generated data file; built, not mounted (11 Nov 2026, T217).**
+- **D161 — Four dashboards built on one generated data file; reachable locally at `?page=`, in no public snapshot (11 Nov 2026, T217; title reworded D171).**
   `atlas.models.accuracy.dashboard_data()` (beside `accuracy_rows`, no new package) writes
   `web/src/dashboards.json` from files that already exist: per model the registry status and reason;
   scores only where the registry has them (M05: MAE 0.732 against persistence 0.808, improvement
