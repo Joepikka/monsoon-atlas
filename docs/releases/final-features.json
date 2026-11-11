@@ -1,0 +1,1575 @@
+{
+  "source": "Plan section 8, feature catalogue (docs/plan.pdf, 4 Nov 2026), F001 to F064",
+  "statuses": [
+    "shipped-local",
+    "built-not-mounted",
+    "research-only",
+    "blocked",
+    "deferred"
+  ],
+  "rule": "shipped-local only when the code is reachable in the local app (App.tsx or a ?page= route in main.tsx) or run by a local pipeline command, and at least one tracked test exercises it; nothing is deployed, so nothing is shipped publicly",
+  "features": [
+    {
+      "id": "F001",
+      "name": "Live state map with freshness labels",
+      "states": "ALL",
+      "tier": "MVP",
+      "plan_task": "T039",
+      "status": "shipped-local",
+      "tasks": [
+        "T038",
+        "T039"
+      ],
+      "evidence": [
+        "web/src/App.tsx",
+        "web/src/MapView.tsx",
+        "web/src/components/SourceBadge.tsx",
+        "docs/web-shell.md"
+      ],
+      "tests": [
+        "web/tests/layers.spec.ts",
+        "web/tests/live-data.spec.ts",
+        "web/src/data.test.ts",
+        "tests/test_web_manifest.py"
+      ],
+      "blocker": "",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Judgement call: the map and its freshness labels run locally and their tests use committed S09 and Open-Meteo fixtures. No approved snapshot exists, so a fresh local run shows the empty state and the basemap only."
+    },
+    {
+      "id": "F002",
+      "name": "Radius filter and nearby list",
+      "states": "ALL",
+      "tier": "MVP",
+      "plan_task": "T040",
+      "status": "shipped-local",
+      "tasks": [
+        "T039",
+        "T040"
+      ],
+      "evidence": [
+        "web/src/map/Layers.tsx",
+        "web/src/App.tsx"
+      ],
+      "tests": [
+        "web/src/area.test.ts",
+        "web/tests/area.spec.ts"
+      ],
+      "blocker": "",
+      "owner_steps": [],
+      "notes": "Point records use great-circle distance; area warnings stay in the list with a label (D58). Same snapshot caveat as F001."
+    },
+    {
+      "id": "F003",
+      "name": "Time slider and replay",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T142",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T142"
+      ],
+      "evidence": [
+        "web/src/components/Replay.tsx",
+        "reports/eda/05_kl_flood2018/replay2018.json",
+        "docs/releases/kl.md"
+      ],
+      "tests": [
+        "web/src/components/Replay.test.ts",
+        "tests/test_replay2018.py"
+      ],
+      "blocker": "No published snapshots exist to slide over (T045); the 2018 replay holds S08 values that need the H11 decision.",
+      "owner_steps": [
+        "H11",
+        "H05",
+        "H06"
+      ],
+      "notes": "Judgement call: only the 2018 replay with its reconstructed mode is built (D127); a slider over immutable published snapshots has nothing to read."
+    },
+    {
+      "id": "F004",
+      "name": "3D terrain",
+      "states": "ALL",
+      "tier": "stretch",
+      "plan_task": "T186",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T186"
+      ],
+      "evidence": [
+        "web/src/map/Terrain.tsx"
+      ],
+      "tests": [
+        "web/src/map/Terrain.test.ts",
+        "tests/test_tiles.py"
+      ],
+      "blocker": "Not mounted; strings need locale keys before mounting (D152).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "S14 raster-dem source and WebGL fallback are tested; no tile is stored."
+    },
+    {
+      "id": "F005",
+      "name": "Globe view",
+      "states": "ALL",
+      "tier": "stretch",
+      "plan_task": "T186",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T186"
+      ],
+      "evidence": [
+        "web/src/map/Globe.tsx"
+      ],
+      "tests": [
+        "web/src/map/Globe.test.ts"
+      ],
+      "blocker": "Not mounted; strings need locale keys before mounting (D152).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Globe projection type-checks against the pinned MapLibre; 2D fallback exists."
+    },
+    {
+      "id": "F006",
+      "name": "Wall mode",
+      "states": "ALL",
+      "tier": "stretch",
+      "plan_task": "T186",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T186",
+        "T188"
+      ],
+      "evidence": [
+        "web/src/map/WallMode.tsx"
+      ],
+      "tests": [
+        "web/src/map/WallMode.test.ts",
+        "tests/test_wall.py"
+      ],
+      "blocker": "Not mounted; no code decides the connected input yet (D154).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Stale or disconnected walls show no alerts."
+    },
+    {
+      "id": "F007",
+      "name": "Feed health badges",
+      "states": "ALL",
+      "tier": "MVP",
+      "plan_task": "T039",
+      "status": "shipped-local",
+      "tasks": [
+        "T039"
+      ],
+      "evidence": [
+        "web/src/components/SourceBadge.tsx",
+        "web/src/map/Layers.tsx"
+      ],
+      "tests": [
+        "web/src/map/Layers.test.ts",
+        "web/tests/layers.spec.ts"
+      ],
+      "blocker": "",
+      "owner_steps": [],
+      "notes": "Missing health metadata reads unknown, never no hazard (D58). Same snapshot caveat as F001."
+    },
+    {
+      "id": "F008",
+      "name": "Event log and ticker",
+      "states": "ALL",
+      "tier": "MVP",
+      "plan_task": "T039",
+      "status": "shipped-local",
+      "tasks": [
+        "T039"
+      ],
+      "evidence": [
+        "web/src/components/EventTicker.tsx",
+        "web/src/App.tsx"
+      ],
+      "tests": [
+        "web/tests/layers.spec.ts"
+      ],
+      "blocker": "",
+      "owner_steps": [],
+      "notes": "The ticker is mounted in App.tsx; its strings are English literals (D154). Same snapshot caveat as F001."
+    },
+    {
+      "id": "F009",
+      "name": "Daily satellite image layer",
+      "states": "ALL",
+      "tier": "stretch",
+      "plan_task": "T186",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T186"
+      ],
+      "evidence": [
+        "web/src/map/Terrain.tsx",
+        "configs/sources/s13.yaml"
+      ],
+      "tests": [
+        "web/src/map/Terrain.test.ts"
+      ],
+      "blocker": "Not mounted with the terrain view (D152).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "S13 imagery is added only from a row with a valid date and a GIBS tile address."
+    },
+    {
+      "id": "F010",
+      "name": "Satellites overhead",
+      "states": "ALL",
+      "tier": "stretch",
+      "plan_task": "T187",
+      "status": "blocked",
+      "tasks": [
+        "T187"
+      ],
+      "evidence": [
+        "src/atlas/spatial/orbits.py",
+        "web/src/map/Movement.tsx",
+        "configs/sources/s12.yaml"
+      ],
+      "tests": [
+        "tests/test_movement.py"
+      ],
+      "blocker": "sgp4 is in no lock, so predict() raises SourceUnavailable; S12 display terms wait for H11 (D109, D153).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Adding sgp4 to requirements/geo.in is an agent follow-up that needs network access."
+    },
+    {
+      "id": "F011",
+      "name": "Transit stations and scheduled positions",
+      "states": "KA/KL",
+      "tier": "v1",
+      "plan_task": "T104",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T028",
+        "T029",
+        "T104"
+      ],
+      "evidence": [
+        "src/atlas/transit/schedule.py",
+        "web/src/map/ScheduledTransit.tsx",
+        "docs/releases/ka-v1.md"
+      ],
+      "tests": [
+        "tests/test_schedule.py",
+        "web/src/map/ScheduledTransit.test.ts"
+      ],
+      "blocker": "S30 is licence restricted; no public transit snapshot until H11 (D115, D116).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Kerala schedules are not verified."
+    },
+    {
+      "id": "F012",
+      "name": "Live buses",
+      "states": "DL",
+      "tier": "v1",
+      "plan_task": "T165",
+      "status": "blocked",
+      "tasks": [
+        "T148",
+        "T151",
+        "T165"
+      ],
+      "evidence": [
+        "configs/sources/s38.yaml",
+        "web/src/components/Transit.tsx",
+        "worker/src/transit.ts",
+        "docs/releases/dl.md"
+      ],
+      "tests": [
+        "tests/test_dl_poll.py",
+        "web/src/components/Transit.test.ts"
+      ],
+      "blocker": "S38 blocked on owner step H04; live mode unavailable (D135, D138).",
+      "owner_steps": [
+        "H04"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "F013",
+      "name": "Historical train routes/stations",
+      "states": "ALL",
+      "tier": "stretch",
+      "plan_task": "T104",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T073",
+        "T074",
+        "T104"
+      ],
+      "evidence": [
+        "src/atlas/transit/schedule.py",
+        "configs/sources/s21.yaml"
+      ],
+      "tests": [
+        "tests/test_schedule.py",
+        "tests/sources/test_s21.py"
+      ],
+      "blocker": "Not mounted with the transit layer (D116).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "S21 is a 2016 reference: clock text only, no position or ETA."
+    },
+    {
+      "id": "F014",
+      "name": "Flights and optional coastal ships",
+      "states": "ALL/KL",
+      "tier": "stretch",
+      "plan_task": "T187",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T059",
+        "T060",
+        "T187"
+      ],
+      "evidence": [
+        "web/src/map/Movement.tsx",
+        "web/tests/fixtures/movement-layers.json",
+        "configs/sources/s10.yaml"
+      ],
+      "tests": [
+        "web/src/map/Movement.test.ts",
+        "tests/test_movement.py"
+      ],
+      "blocker": "Not mounted (D153); ships need S26, blocked on H12.",
+      "owner_steps": [
+        "H12",
+        "H11"
+      ],
+      "notes": "Aircraft (S10) is the only layer that qualifies; S11 is blocked on terms."
+    },
+    {
+      "id": "F015",
+      "name": "Fire hotspots",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T105",
+      "status": "blocked",
+      "tasks": [
+        "T075",
+        "T076",
+        "T105"
+      ],
+      "evidence": [
+        "configs/sources/s25.yaml",
+        "docs/sources/s25.md"
+      ],
+      "tests": [
+        "tests/test_context_layers.py"
+      ],
+      "blocker": "S25 needs a FIRMS MAP_KEY (H09).",
+      "owner_steps": [
+        "H09"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "F016",
+      "name": "Sachet alerts including provider-issued lightning",
+      "states": "ALL",
+      "tier": "MVP",
+      "plan_task": "T039",
+      "status": "shipped-local",
+      "tasks": [
+        "T013",
+        "T014",
+        "T039"
+      ],
+      "evidence": [
+        "configs/sources/s09.yaml",
+        "web/src/App.tsx",
+        "docs/feeds.md"
+      ],
+      "tests": [
+        "tests/sources/test_s09.py",
+        "web/tests/area.spec.ts",
+        "web/tests/live-data.spec.ts"
+      ],
+      "blocker": "",
+      "owner_steps": [],
+      "notes": "Judgement call: local capture and display only; partial CAP coverage, no hosted feed. Lightning shows only when Sachet issues it; none is inferred from rain."
+    },
+    {
+      "id": "F017",
+      "name": "News-derived preliminary event pins",
+      "states": "KL then ALL",
+      "tier": "stretch",
+      "plan_task": "T211",
+      "status": "blocked",
+      "tasks": [
+        "T125",
+        "T189-T208",
+        "T209",
+        "T211"
+      ],
+      "evidence": [
+        "configs/sources/s41.yaml",
+        "eval/news/blocked.json",
+        "reports/models/m18.md"
+      ],
+      "tests": [
+        "tests/labels/test_news_blocked.py"
+      ],
+      "blocker": "S41 has no publisher permission; 0 labelled texts; H13 review not done (D155, D156).",
+      "owner_steps": [
+        "H13"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "F018",
+      "name": "Flood-exposed roads",
+      "states": "KA/KL",
+      "tier": "v1",
+      "plan_task": "T143",
+      "status": "blocked",
+      "tasks": [
+        "T143"
+      ],
+      "evidence": [
+        "src/atlas/spatial/exposure.py",
+        "configs/sources/s18.yaml",
+        "configs/sources/s43.yaml"
+      ],
+      "tests": [],
+      "blocker": "No road network (S18, robots.txt) and no flood labels or polygons (S43) (D34, D128).",
+      "owner_steps": [],
+      "notes": "Owner may download the Geofabrik extract in a browser (S18 retry condition)."
+    },
+    {
+      "id": "F019",
+      "name": "Public RERA projects",
+      "states": "KA",
+      "tier": "v1",
+      "plan_task": "T105",
+      "status": "blocked",
+      "tasks": [
+        "T081",
+        "T082",
+        "T105"
+      ],
+      "evidence": [
+        "configs/sources/s31.yaml",
+        "docs/sources/s31.md"
+      ],
+      "tests": [
+        "tests/test_context_layers.py"
+      ],
+      "blocker": "Reproduction needs written K-RERA permission.",
+      "owner_steps": [],
+      "notes": "Owner item: email K-RERA (not a numbered H-step)."
+    },
+    {
+      "id": "F020",
+      "name": "Building outlines",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T105",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T069",
+        "T070",
+        "T105",
+        "T185"
+      ],
+      "evidence": [
+        "web/src/map/ContextLayers.tsx",
+        "src/atlas/spatial/tiles.py",
+        "docs/releases/ka-v1.md"
+      ],
+      "tests": [
+        "tests/test_context_layers.py",
+        "web/src/map/ContextLayers.test.ts"
+      ],
+      "blocker": "Not mounted until a public snapshot carries it; no PMTiles archive built (D117, D151).",
+      "owner_steps": [
+        "H11",
+        "H05"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "F021",
+      "name": "Mandi price ticker",
+      "states": "ALL",
+      "tier": "MVP",
+      "plan_task": "T039",
+      "status": "blocked",
+      "tasks": [
+        "T023",
+        "T025",
+        "T039"
+      ],
+      "evidence": [
+        "configs/sources/s22.yaml",
+        "configs/sources/s23.yaml",
+        "docs/sources/s23.md"
+      ],
+      "tests": [
+        "tests/sources/test_s23.py"
+      ],
+      "blocker": "S22 needs a browser render; S23 has no publisher statement of its price denominator.",
+      "owner_steps": [],
+      "notes": "Unknown price units cannot be rendered as prices (D58)."
+    },
+    {
+      "id": "F022",
+      "name": "District crime totals if source exists",
+      "states": "ALL",
+      "tier": "stretch",
+      "plan_task": "T105",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T087",
+        "T088",
+        "T105"
+      ],
+      "evidence": [
+        "web/src/map/ContextLayers.tsx",
+        "configs/sources/s44.yaml",
+        "docs/releases/ka-v1.md"
+      ],
+      "tests": [
+        "tests/test_context_layers.py"
+      ],
+      "blocker": "Not mounted until a public snapshot carries it (D114, D117).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Lists the published district totals per year; maps nothing."
+    },
+    {
+      "id": "F023",
+      "name": "Place Lens: now/risk/forecast/history/nearby/sources",
+      "states": "ALL",
+      "tier": "MVP",
+      "plan_task": "T040",
+      "status": "shipped-local",
+      "tasks": [
+        "T040"
+      ],
+      "evidence": [
+        "web/src/components/PlaceLens.tsx",
+        "docs/web-lens.md"
+      ],
+      "tests": [
+        "web/tests/lens.spec.ts",
+        "tests/test_lens.py"
+      ],
+      "blocker": "",
+      "owner_steps": [],
+      "notes": "Judgement call: the Lens runs locally, but risk and forecast show no model output and Nearby states that facilities cannot be verified (S18 blocked, D59). Same snapshot caveat as F001."
+    },
+    {
+      "id": "F024",
+      "name": "Official/model/inferred provenance",
+      "states": "ALL",
+      "tier": "MVP",
+      "plan_task": "T039",
+      "status": "shipped-local",
+      "tasks": [
+        "T038",
+        "T039"
+      ],
+      "evidence": [
+        "web/src/data.ts",
+        "web/src/components/SourceBadge.tsx",
+        "schemas/common.json"
+      ],
+      "tests": [
+        "tests/test_web_manifest.py",
+        "web/src/data.test.ts",
+        "tests/test_layers.py"
+      ],
+      "blocker": "",
+      "owner_steps": [],
+      "notes": "Same snapshot caveat as F001."
+    },
+    {
+      "id": "F025",
+      "name": "Nearest hospitals/shelters/police/fire stations",
+      "states": "ALL",
+      "tier": "MVP",
+      "plan_task": "T040",
+      "status": "blocked",
+      "tasks": [
+        "T021",
+        "T022",
+        "T040"
+      ],
+      "evidence": [
+        "configs/sources/s18.yaml",
+        "configs/sources/s43.yaml",
+        "docs/web-lens.md"
+      ],
+      "tests": [
+        "tests/test_lens.py"
+      ],
+      "blocker": "S18 blocked by robots.txt (D34); no verified shelter record (S43).",
+      "owner_steps": [],
+      "notes": "Owner may download the Geofabrik extract in a browser (S18 retry condition)."
+    },
+    {
+      "id": "F026",
+      "name": "Shareable place URL and printable PDF",
+      "states": "ALL",
+      "tier": "MVP",
+      "plan_task": "T040",
+      "status": "shipped-local",
+      "tasks": [
+        "T040"
+      ],
+      "evidence": [
+        "web/src/report.ts",
+        "web/src/components/PlaceLens.tsx",
+        "docs/web-lens.md"
+      ],
+      "tests": [
+        "web/src/report.test.ts",
+        "web/tests/lens.spec.ts",
+        "tests/test_lens.py"
+      ],
+      "blocker": "",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Judgement call: print and link parsing run locally; a shared link resolves only through an approval file, and none is published until T045 and H11 (D59)."
+    },
+    {
+      "id": "F027",
+      "name": "Reservoir levels and inflow forecasts",
+      "states": "KA/KL",
+      "tier": "v1",
+      "plan_task": "T094",
+      "status": "blocked",
+      "tasks": [
+        "T008",
+        "T092",
+        "T094",
+        "T130"
+      ],
+      "evidence": [
+        "models/registry/m02.json",
+        "models/registry/m03.json",
+        "models/registry/m07.json",
+        "docs/releases/kl.md"
+      ],
+      "tests": [
+        "tests/test_ka_v1.py",
+        "tests/test_kl_release.py"
+      ],
+      "blocker": "M02 and M03 need S28 daily history; M07 needs datum for 8 dams and S34 bulk OCR (T118).",
+      "owner_steps": [],
+      "notes": "S32 Kerala dam levels are held locally (kl.md 'measured'), but no levels layer is mounted."
+    },
+    {
+      "id": "F028",
+      "name": "Ward/taluk flood risk",
+      "states": "KA/KL",
+      "tier": "v1",
+      "plan_task": "T091",
+      "status": "blocked",
+      "tasks": [
+        "T089",
+        "T091",
+        "T130"
+      ],
+      "evidence": [
+        "models/registry/m01.json",
+        "models/registry/m08.json"
+      ],
+      "tests": [
+        "tests/test_ka_v1.py",
+        "tests/test_kl_release.py"
+      ],
+      "blocker": "No dated ward flood labels (S43) and no audited Kerala history (S35, H10).",
+      "owner_steps": [
+        "H10"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "F029",
+      "name": "Landslide susceptibility",
+      "states": "KL",
+      "tier": "v1",
+      "plan_task": "T138",
+      "status": "blocked",
+      "tasks": [
+        "T136",
+        "T138"
+      ],
+      "evidence": [
+        "models/registry/m09.json",
+        "reports/models/m09.md"
+      ],
+      "tests": [
+        "tests/test_kl_release.py"
+      ],
+      "blocker": "S37 has no inventory with footprint; S42 needs a Copernicus account (D126).",
+      "owner_steps": [
+        "H15"
+      ],
+      "notes": "H15 is proposed, not in amendments A5."
+    },
+    {
+      "id": "F030",
+      "name": "Taluk drought outlook",
+      "states": "KA then ALL",
+      "tier": "v1",
+      "plan_task": "T103",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T101",
+        "T102",
+        "T103"
+      ],
+      "evidence": [
+        "models/registry/M05/v1.json",
+        "models/registry/M05/v1.approval.json",
+        "reports/models/m05.md",
+        "reports/models/m05-card.md"
+      ],
+      "tests": [
+        "tests/test_ka_v1.py",
+        "tests/test_web_accuracy.py"
+      ],
+      "blocker": "No outlook layer exists: M05 is a hindcast (D39) at district level (no taluk polygons); S08-derived publication waits for H11 item 3.",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Judgement call: the model is measured and owner-approved (D43) and its scores show on the local accuracy page (F036); ka-v1.md calls F030 measured in that sense. Intervals stay hidden (D42, T262)."
+    },
+    {
+      "id": "F031",
+      "name": "24-72h AQI/pollutant forecasts",
+      "states": "DL",
+      "tier": "v1",
+      "plan_task": "T161",
+      "status": "blocked",
+      "tasks": [
+        "T146",
+        "T159",
+        "T161"
+      ],
+      "evidence": [
+        "models/registry/m14.json",
+        "configs/sources/s24.yaml"
+      ],
+      "tests": [
+        "tests/test_dl_release.py"
+      ],
+      "blocker": "S24 resource page could not be read by any tool (D133); 0 station rows.",
+      "owner_steps": [],
+      "notes": "Retry is a re-run of T146 with a browser that can read page content; no new key."
+    },
+    {
+      "id": "F032",
+      "name": "Bus ETA/delay and bunching",
+      "states": "DL",
+      "tier": "v1",
+      "plan_task": "T155",
+      "status": "blocked",
+      "tasks": [
+        "T153",
+        "T155",
+        "T156"
+      ],
+      "evidence": [
+        "models/registry/m12.json",
+        "models/registry/m13.json"
+      ],
+      "tests": [
+        "tests/test_dl_release.py"
+      ],
+      "blocker": "S38 blocked on H04; 0 vehicle positions (D140).",
+      "owner_steps": [
+        "H04"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "F033",
+      "name": "16-day price-spike warning",
+      "states": "KA then KL",
+      "tier": "MVP",
+      "plan_task": "T037",
+      "status": "blocked",
+      "tasks": [
+        "T035",
+        "T036",
+        "T037"
+      ],
+      "evidence": [
+        "models/registry/m06.json",
+        "reports/models/m06.md"
+      ],
+      "tests": [
+        "tests/test_ka_v1.py"
+      ],
+      "blocker": "Zero price rows: S22 and S23 blocked (D55).",
+      "owner_steps": [],
+      "notes": ""
+    },
+    {
+      "id": "F034",
+      "name": "Rain what-if simulator",
+      "states": "KA/KL",
+      "tier": "stretch",
+      "plan_task": "T178",
+      "status": "blocked",
+      "tasks": [
+        "T176",
+        "T178"
+      ],
+      "evidence": [
+        "models/registry/m20.json",
+        "reports/models/m20.md"
+      ],
+      "tests": [
+        "tests/test_dashboards.py"
+      ],
+      "blocker": "M20 needs an approved base model for the target; recorded as a blocked branch (D145).",
+      "owner_steps": [],
+      "notes": ""
+    },
+    {
+      "id": "F035",
+      "name": "SHAP explanations and uncertainty bands",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T034",
+      "status": "research-only",
+      "tasks": [
+        "T034",
+        "T262"
+      ],
+      "evidence": [
+        "models/registry/M05/v1.intervals.json",
+        "reports/models/m05-intervals.md",
+        "requirements/ml.in"
+      ],
+      "tests": [
+        "tests/test_dashboards.py"
+      ],
+      "blocker": "M05 intervals cover 72.8% against an 80% gate, so they stay hidden (D42, T262).",
+      "owner_steps": [],
+      "notes": "Judgement call: the intervals are measured and fail their gate. No SHAP values exist for any model: shap is pinned in requirements/ml.in but no code calls it (see Findings)."
+    },
+    {
+      "id": "F036",
+      "name": "Accuracy page and daily matured backtests",
+      "states": "ALL",
+      "tier": "MVP",
+      "plan_task": "T046",
+      "status": "shipped-local",
+      "tasks": [
+        "T257",
+        "T259"
+      ],
+      "evidence": [
+        "web/src/pages/Accuracy.tsx",
+        "docs/releases/ka.md",
+        "web/tests/fixtures/accuracy-ka.json"
+      ],
+      "tests": [
+        "web/tests/accuracy.spec.ts",
+        "web/src/accuracy.test.ts",
+        "tests/test_web_accuracy.py"
+      ],
+      "blocker": "",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Judgement call: the minimal MVP table runs at ?page=accuracy locally (T257, T259); its plan task T046, the MVP gate, has not passed. No daily matured backtest exists because no model serves live predictions. H11 item 1 decides publication."
+    },
+    {
+      "id": "F037",
+      "name": "Anomaly feed",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T216",
+      "status": "research-only",
+      "tasks": [
+        "T212-T216"
+      ],
+      "evidence": [
+        "models/registry/m16.json",
+        "reports/models/m16.md",
+        "reports/models/m16-flag-counts.json",
+        "eval/anomalies/blocked.json",
+        "web/src/pages/Quality.tsx"
+      ],
+      "tests": [
+        "tests/labels/test_anomaly_blocked.py",
+        "tests/test_dashboards.py"
+      ],
+      "blocker": "0 of 100 flags adjudicated, so precision is not measured (D159, D160).",
+      "owner_steps": [],
+      "notes": "Proposed owner step: adjudicate 100 M16 flags with independent evidence."
+    },
+    {
+      "id": "F038",
+      "name": "Population exposed to risk",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T143",
+      "status": "blocked",
+      "tasks": [
+        "T143"
+      ],
+      "evidence": [
+        "src/atlas/spatial/exposure.py",
+        "configs/sources/s16.yaml"
+      ],
+      "tests": [],
+      "blocker": "No verified hazard polygon exists (S37, S43); the exposure code is tested on an H3 cell only (D128).",
+      "owner_steps": [],
+      "notes": ""
+    },
+    {
+      "id": "F039",
+      "name": "Experimental route avoiding flagged roads",
+      "states": "KA/KL",
+      "tier": "v1",
+      "plan_task": "T143",
+      "status": "blocked",
+      "tasks": [
+        "T143"
+      ],
+      "evidence": [
+        "src/atlas/spatial/routes.py",
+        "web/src/components/RouteComparison.tsx"
+      ],
+      "tests": [
+        "web/src/components/RouteComparison.test.ts"
+      ],
+      "blocker": "No road network (S18) and no official shelter record (S43); every result says not a safe route (D128).",
+      "owner_steps": [],
+      "notes": ""
+    },
+    {
+      "id": "F040",
+      "name": "Heatwave/heat exposure layer",
+      "states": "ALL/DL",
+      "tier": "v1",
+      "plan_task": "T164",
+      "status": "blocked",
+      "tasks": [
+        "T162",
+        "T164"
+      ],
+      "evidence": [
+        "models/registry/m15.json",
+        "reports/models/m15.md"
+      ],
+      "tests": [
+        "tests/test_dl_release.py"
+      ],
+      "blocker": "No Delhi source enabled; S01 keeps no issue-time vintages; S18 blocked (D141).",
+      "owner_steps": [],
+      "notes": "Not owner-gated: enable S01 and S02 for Delhi and collect forecast vintages."
+    },
+    {
+      "id": "F041",
+      "name": "Crop health / NDVI",
+      "states": "ALL",
+      "tier": "stretch",
+      "plan_task": "T145",
+      "status": "blocked",
+      "tasks": [
+        "T127",
+        "T145"
+      ],
+      "evidence": [
+        "configs/sources/s42.yaml",
+        "src/atlas/analysis/vegetation.py"
+      ],
+      "tests": [
+        "tests/test_climate_product.py"
+      ],
+      "blocker": "S42 needs a Copernicus account (proposed H15); no crop mask (D130).",
+      "owner_steps": [
+        "H15"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "F042",
+      "name": "Rainfall trend since 1901",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T145",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T145"
+      ],
+      "evidence": [
+        "web/src/pages/Climate.tsx",
+        "reports/eda/08_climate_product/climate.json"
+      ],
+      "tests": [
+        "web/src/pages/Climate.test.ts",
+        "tests/test_climate_product.py"
+      ],
+      "blocker": "Climate page not mounted pending H11; S08 is held for 1981-2025 only (D130).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Indices only, never millimetres (S08 licence)."
+    },
+    {
+      "id": "F043",
+      "name": "CMIP6 outlook to 2050",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T145",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T145"
+      ],
+      "evidence": [
+        "web/src/pages/Climate.tsx",
+        "reports/eda/07_climate/summary.json"
+      ],
+      "tests": [
+        "web/src/pages/Climate.test.ts",
+        "tests/test_climate_product.py"
+      ],
+      "blocker": "Climate page not mounted pending H11 (D130).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "S06 has no named scenario; labelled climate projection, not a forecast."
+    },
+    {
+      "id": "F044",
+      "name": "Monsoon progress tracker",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T145",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T145"
+      ],
+      "evidence": [
+        "web/src/pages/Climate.tsx",
+        "reports/eda/08_climate_product/climate.json"
+      ],
+      "tests": [
+        "tests/test_climate_product.py"
+      ],
+      "blocker": "Climate page not mounted pending H11; no source publishes an official onset date (D130).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "The tracked year is 2025, a past year; onset is labelled inferred."
+    },
+    {
+      "id": "F045",
+      "name": "Past-disaster replay",
+      "states": "KL then ALL",
+      "tier": "v1",
+      "plan_task": "T142",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T142"
+      ],
+      "evidence": [
+        "web/src/components/Replay.tsx",
+        "reports/eda/05_kl_flood2018/replay2018.json",
+        "docs/releases/kl.md"
+      ],
+      "tests": [
+        "tests/test_replay2018.py",
+        "web/src/components/Replay.test.ts"
+      ],
+      "blocker": "Not mounted; the 122 S08 records need the H11 decision; S35 blocked (D127, D129).",
+      "owner_steps": [
+        "H11",
+        "H10"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "F046",
+      "name": "Cited RAG Ask by text",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T180",
+      "status": "research-only",
+      "tasks": [
+        "T179",
+        "T180",
+        "T181",
+        "T252-T266"
+      ],
+      "evidence": [
+        "web/src/pages/Ask.tsx",
+        "reports/rag.md",
+        "docs/ask.md",
+        "configs/rag.yaml"
+      ],
+      "tests": [
+        "web/tests/ask.spec.ts",
+        "tests/test_web_ask.py",
+        "tests/test_ask_config.py"
+      ],
+      "blocker": "Evidence support below the 0.95 gate (0.86 on 8 Nov, 0.80 on 11 Nov); extractive only; Workers AI waits for H05 (D101, D147).",
+      "owner_steps": [
+        "H05",
+        "H11"
+      ],
+      "notes": "The page runs at ?page=ask locally, labelled research-only."
+    },
+    {
+      "id": "F047",
+      "name": "Voice input and read-aloud",
+      "states": "ALL",
+      "tier": "stretch",
+      "plan_task": "T182",
+      "status": "research-only",
+      "tasks": [
+        "T182"
+      ],
+      "evidence": [
+        "web/src/voice.ts",
+        "web/src/pages/Ask.tsx"
+      ],
+      "tests": [
+        "web/src/voice.test.ts",
+        "tests/test_i18n.py"
+      ],
+      "blocker": "It is an input to Ask, which is research-only (D148).",
+      "owner_steps": [],
+      "notes": "Judgement call: the voice controls run on the local Ask page; they inherit Ask's research-only status."
+    },
+    {
+      "id": "F048",
+      "name": "Kannada/Malayalam/Hindi/English",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T182",
+      "status": "blocked",
+      "tasks": [
+        "T181",
+        "T182"
+      ],
+      "evidence": [
+        "web/src/i18n/kn.json",
+        "web/src/i18n/ml.json",
+        "web/src/i18n/hi.json",
+        "eval/rag/translations.jsonl"
+      ],
+      "tests": [
+        "tests/test_i18n.py"
+      ],
+      "blocker": "kn, ml and hi strings and questions are unreviewed machine drafts; only English is selectable (A7, D147, D148).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Needs a native-speaker review (A7)."
+    },
+    {
+      "id": "F049",
+      "name": "Place watches",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T183",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T183"
+      ],
+      "evidence": [
+        "web/src/components/Watches.tsx"
+      ],
+      "tests": [
+        "web/src/components/Watches.test.ts"
+      ],
+      "blocker": "Not mounted; strings need locale keys before mounting (D149).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Device-local IndexedDB only."
+    },
+    {
+      "id": "F050",
+      "name": "Telegram bot delivery to public state channels",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T183",
+      "status": "blocked",
+      "tasks": [
+        "T083",
+        "T084",
+        "T183"
+      ],
+      "evidence": [
+        "configs/sources/s39.yaml",
+        "src/atlas/alerts/telegram.py"
+      ],
+      "tests": [
+        "tests/test_alerts.py"
+      ],
+      "blocker": "S39 needs the bot, channel and token (H08).",
+      "owner_steps": [
+        "H08"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "F051",
+      "name": "Background Web Push",
+      "states": "ALL",
+      "tier": "stretch",
+      "plan_task": "T184",
+      "status": "deferred",
+      "tasks": [
+        "T184"
+      ],
+      "evidence": [
+        "docs/decisions/web-push.md",
+        "web/src/push.ts",
+        "worker/src/push.ts"
+      ],
+      "tests": [
+        "tests/test_push_policy.py",
+        "web/src/push.test.ts"
+      ],
+      "blocker": "Disabled by the no-personal-data policy; needs a written owner policy revision (D150).",
+      "owner_steps": [],
+      "notes": ""
+    },
+    {
+      "id": "F052",
+      "name": "Daily cited brief",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T183",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T183"
+      ],
+      "evidence": [
+        "src/atlas/alerts/brief.py"
+      ],
+      "tests": [
+        "tests/test_alerts.py"
+      ],
+      "blocker": "No job or schedule runs the brief and no completion stamp exists (D149).",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Judgement call: the brief builder is tested on real Sachet fixtures but no command or workflow produces a brief."
+    },
+    {
+      "id": "F053",
+      "name": "City Memory: every published snapshot",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T045",
+      "status": "blocked",
+      "tasks": [
+        "T045"
+      ],
+      "evidence": [
+        "docs/account-setup.md",
+        "docs/releases/ka.md"
+      ],
+      "tests": [
+        "tests/test_hosted_archive.py"
+      ],
+      "blocker": "T045 needs the H05 and H06 tokens; no snapshot is published.",
+      "owner_steps": [
+        "H05",
+        "H06",
+        "H11"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "F054",
+      "name": "Analysis dashboards",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T217",
+      "status": "shipped-local",
+      "tasks": [
+        "T217"
+      ],
+      "evidence": [
+        "web/src/pages/Analysis.tsx",
+        "web/src/dashboards.json",
+        "web/src/main.tsx"
+      ],
+      "tests": [
+        "tests/test_dashboards.py",
+        "web/src/dashboards.test.ts"
+      ],
+      "blocker": "",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Judgement call: D161 calls the dashboards built, not mounted, meaning no public snapshot; they are reachable locally at ?page=analysis."
+    },
+    {
+      "id": "F055",
+      "name": "Data-quality dashboard",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T217",
+      "status": "shipped-local",
+      "tasks": [
+        "T217"
+      ],
+      "evidence": [
+        "web/src/pages/Quality.tsx",
+        "web/src/dashboards.json",
+        "web/src/main.tsx"
+      ],
+      "tests": [
+        "tests/test_dashboards.py",
+        "web/src/dashboards.test.ts"
+      ],
+      "blocker": "",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Reachable locally at ?page=quality; same D161 wording as F054."
+    },
+    {
+      "id": "F056",
+      "name": "Open downloads and public static API",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T218",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T218"
+      ],
+      "evidence": [
+        "src/atlas/export.py",
+        "web/src/export.ts"
+      ],
+      "tests": [
+        "tests/test_offline.py"
+      ],
+      "blocker": "No export button is mounted and there is no host (D162).",
+      "owner_steps": [
+        "H05",
+        "H11"
+      ],
+      "notes": "Only open, available sources pass the licence rule; S08, S30 and S34 are refused."
+    },
+    {
+      "id": "F057",
+      "name": "Offline PWA",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T218",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T218"
+      ],
+      "evidence": [
+        "web/src/sw.ts",
+        "web/public/manifest.webmanifest"
+      ],
+      "tests": [
+        "web/src/offline.test.ts",
+        "tests/test_offline.py"
+      ],
+      "blocker": "No service worker is registered until an approved snapshot and host exist (D162).",
+      "owner_steps": [
+        "H05",
+        "H06",
+        "H11"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "F058",
+      "name": "Embeddable read-only widgets",
+      "states": "ALL",
+      "tier": "stretch",
+      "plan_task": "T218",
+      "status": "blocked",
+      "tasks": [
+        "T218"
+      ],
+      "evidence": [
+        "web/src/pages/Widget.tsx"
+      ],
+      "tests": [
+        "tests/test_offline.py"
+      ],
+      "blocker": "Embedding needs its own path with frame-ancestors headers on a host; no host and no partner origin (D162).",
+      "owner_steps": [
+        "H05",
+        "H11"
+      ],
+      "notes": "Judgement call: the read-only summary renders locally at ?page=widget, but it cannot be embedded anywhere."
+    },
+    {
+      "id": "F059",
+      "name": "State comparison",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T217",
+      "status": "shipped-local",
+      "tasks": [
+        "T217"
+      ],
+      "evidence": [
+        "web/src/pages/Compare.tsx",
+        "web/src/dashboards.json"
+      ],
+      "tests": [
+        "tests/test_dashboards.py",
+        "web/src/dashboards.test.ts"
+      ],
+      "blocker": "",
+      "owner_steps": [
+        "H11"
+      ],
+      "notes": "Judgement call: reachable locally at ?page=compare; it compares status counts and coverage only, and every metric pair reads unavailable (D161)."
+    },
+    {
+      "id": "F060",
+      "name": "Gauge interpolation / gaps study",
+      "states": "KA",
+      "tier": "v1",
+      "plan_task": "T100",
+      "status": "blocked",
+      "tasks": [
+        "T077",
+        "T098",
+        "T100"
+      ],
+      "evidence": [
+        "models/registry/m04.json",
+        "reports/models/m04.md"
+      ],
+      "tests": [
+        "tests/test_ka_v1.py"
+      ],
+      "blocker": "No daily gauge data with coordinates (S27; S29 annual only).",
+      "owner_steps": [],
+      "notes": ""
+    },
+    {
+      "id": "F061",
+      "name": "Rain-price effect study",
+      "states": "KL",
+      "tier": "v1",
+      "plan_task": "T141",
+      "status": "blocked",
+      "tasks": [
+        "T139",
+        "T141",
+        "T142"
+      ],
+      "evidence": [
+        "models/registry/m10.json",
+        "reports/models/m10.md"
+      ],
+      "tests": [
+        "tests/test_kl_release.py"
+      ],
+      "blocker": "Zero price rows (S22, S23) (D126, D127).",
+      "owner_steps": [],
+      "notes": ""
+    },
+    {
+      "id": "F062",
+      "name": "Cross-state transfer and drift",
+      "states": "ALL",
+      "tier": "stretch",
+      "plan_task": "T172",
+      "status": "blocked",
+      "tasks": [
+        "T170",
+        "T172"
+      ],
+      "evidence": [
+        "models/registry/m11.json",
+        "reports/models/m11.md"
+      ],
+      "tests": [
+        "tests/test_dashboards.py"
+      ],
+      "blocker": "No shared labels across states (D145).",
+      "owner_steps": [],
+      "notes": ""
+    },
+    {
+      "id": "F063",
+      "name": "U-Net flood mapping and GRU challenger",
+      "states": "KL/KA",
+      "tier": "stretch",
+      "plan_task": "T175",
+      "status": "blocked",
+      "tasks": [
+        "T167",
+        "T173",
+        "T175"
+      ],
+      "evidence": [
+        "models/registry/m17.json",
+        "models/registry/m19.json",
+        "reports/models/m17.md",
+        "reports/models/m19.md"
+      ],
+      "tests": [
+        "tests/test_dashboards.py"
+      ],
+      "blocker": "M17 needs S42 (proposed H15) and labelled events; M19 needs the blocked M02 baseline and a free GPU (H10) (D144).",
+      "owner_steps": [
+        "H15",
+        "H10"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "F064",
+      "name": "Downloadable evidence and correction ledger",
+      "states": "ALL",
+      "tier": "v1",
+      "plan_task": "T219",
+      "status": "built-not-mounted",
+      "tasks": [
+        "T219"
+      ],
+      "evidence": [
+        "src/atlas/monitoring.py",
+        "docs/runbooks/rollback.md"
+      ],
+      "tests": [
+        "tests/test_monitor.py"
+      ],
+      "blocker": "No prediction ledger exists (no model serves live predictions) and there is no host for downloads (D163).",
+      "owner_steps": [
+        "H05"
+      ],
+      "notes": "Correction and re-score functions are tested on temporary stores."
+    }
+  ]
+}

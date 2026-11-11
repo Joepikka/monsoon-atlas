@@ -2,6 +2,32 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D165 — Final acceptance: tasks walked, product not released (11 Nov 2026, T221).**
+  Result line in `docs/releases/final.md`: the plan's tasks T001 to T221 are walked as executed;
+  the product is not released; 12 of 64 plan features are `shipped-local`, 20 built but not
+  mounted, 4 research-only, 27 blocked and 1 deferred (F051, web push, by policy). Of the 12 MVP
+  features 9 run locally and 3 are blocked (F021, F025, F033). The feature list, names and tiers
+  come from the plan's section 8 catalogue; `docs/releases/final-features.json` is the source of
+  truth and `tests/test_final.py` checks the page row by row (D150 noted that no catalogue file
+  existed; this one is copied from the plan, not invented). Classification rule: `shipped-local`
+  only when the code is reachable in the local app (`App.tsx` or a `?page=` route) or runs as a
+  local pipeline command, and a tracked test exercises it; anything else is not shipped. Rows that
+  needed judgement say so in their notes (for example F030: M05 is approved, but no outlook layer
+  exists, so it is `built-not-mounted`; F054, F055 and F059 count as `shipped-local` because
+  `main.tsx` routes them, though D161's title says "not mounted"). No approved snapshot exists, so
+  the local map shows its empty state; its tests use committed real fixtures. **Manual checks not
+  performed:** keyboard, NVDA, zoom, the manual accessibility checklist, network smoke tests and
+  Worker resource measurement are listed as "not performed: owner step"; none is marked as done.
+  The "20 sections" in the acceptance line are the plan's own numbered sections 1 to 20 (its
+  summary promises "20 ordered sections"; the table of contents ends at Appendix B), each mapped to
+  tracked files. `docs/releases/final-manifest.json` pins SHA-256 hashes of the registry, gate
+  pages, dashboard data, source records, state configs and lock files; regenerate it with
+  `python tests/test_final.py --manifest`. **Next task:** re-run T146 (S24), which needs only a
+  browser tool that can read the data.gov.in page and network access, no owner step; first owner
+  step: H11 (named by 30 of 64 feature rows), then H05 for the hosting chain T042 to T045. T046
+  stays the first unfinished task in plan order. Three findings are recorded in the page and not
+  fixed (ka-v1.md F035 task wording, HANDOFF's EventTicker mounting note, D161's title).
+
 - **D164 — Portfolio and interview evidence pack (11 Nov 2026, T220).**
   `README.md` is restructured to the plan's section 17 outline only as far as the evidence allows:
   status first (1 measured, 1 research-only, 18 blocked; 44 source records), then the one measured
