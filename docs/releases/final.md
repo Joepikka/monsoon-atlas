@@ -25,7 +25,7 @@ Open-Meteo fixtures.
 
 | Suite | Command | Result | Who ran it, when |
 |---|---|---|---|
-| Python, full | `.\.venv\Scripts\python -m pytest -q` | 1850 passed, 3 skipped, 1 warning in 972.74 s | Reported by the coordinator for commit `4b6e84d`; the brief dates it 12 Nov 2026, but the commit and this machine's clock read 11 Nov 2026. Not re-run here (16 minutes). |
+| Python, full | `.\.venv\Scripts\python -m pytest -q` | 1850 passed, 3 skipped, 1 warning in 972.74 s | Run by the coordinator on 11 Nov 2026 for commit `4b6e84d` (an earlier brief misdated it 12 Nov). Not re-run here (16 minutes). |
 | Python, targeted gates | `tests/test_portfolio.py tests/test_dashboards.py tests/test_dl_poll.py tests/test_ka_v1.py tests/test_ka_release.py tests/test_kl_release.py tests/test_dl_release.py tests/test_case_studies.py tests/rag` | before the commit: 133 passed, 1 failed, 11 errors, all in `tests/rag`, because the corpus loader refuses the uncommitted `docs/decisions.md` by design; the re-run after the commit is in the T221 hand-back, not here | Agent, 11 Nov 2026 |
 | Python, this page | `.\.venv\Scripts\python -m pytest tests/test_final.py -q` | 14 passed; fails when a feature status or a manifest hash is changed (two mutation checks) | Agent, 11 Nov 2026 |
 | Web unit (vitest) | `scripts/web.ps1 test` | 23 files, 123 tests passed | Agent, 11 Nov 2026 |
