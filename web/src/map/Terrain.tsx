@@ -2,8 +2,9 @@
 // (NASA GIBS) records. Terrain exaggeration defaults to 1. The imagery date is the date S13 reported
 // for the newest non-blank tile, never "today". WebGL loss or low memory falls back to the 2D map,
 // or to the accessible record list. Tiles are only requested by the viewer's map; nothing is stored
-// for later use. Built, not mounted: no public snapshot exists (D152).
+// for later use. Mounted as an opt-in map view, off by default (D172); no S13 row is fed yet, so imagery says so.
 import { useEffect } from 'react';
+import { t } from '../i18n';
 
 export const TERRAIN_EXAGGERATION = 1;
 export const TERRAIN_SOURCE_ID = 'atlas-terrain-dem';
@@ -63,28 +64,28 @@ export const motionMs = (env: ViewEnv, ms: number): number => (env.reducedMotion
 
 export function chooseView(env: ViewEnv, want: Want, globeInBuild = true): View {
   if (!env.webgl || env.contextLost) {
-    return { mode: 'list', reason: 'WebGL is unavailable or was lost, so the map is not drawn.' };
+    return { mode: 'list', reason: t('terrain.no_webgl') };
   }
   if (want === 'flat') return { mode: 'flat', reason: null };
   if (env.deviceMemoryGb !== null && env.deviceMemoryGb <= LOW_MEMORY_GB) {
-    return { mode: 'flat', reason: 'This device reports low memory, so the flat 2D map is shown.' };
+    return { mode: 'flat', reason: t('terrain.low_memory') };
   }
-  if (want === 'globe' && !globeInBuild) return { mode: 'terrain', reason: 'Globe unavailable in this build; terrain is shown.' };
+  if (want === 'globe' && !globeInBuild) return { mode: 'terrain', reason: t('terrain.globe_fallback') };
   return { mode: want, reason: null };
 }
 
 /** S13 row to a MapLibre raster source. A missing or malformed date shows no imagery and says so. */
 export function imageryFor(row: ImageryRow | null): Imagery {
   const none = (reason: string): Imagery => ({ state: 'unavailable', reason });
-  if (!row) return none('No satellite imagery date was reported by NASA GIBS (S13); terrain is shown without imagery.');
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(row.imagery_date)) return none('The S13 imagery date is not a valid date; imagery is not shown.');
+  if (!row) return none(t('terrain.imagery_none'));
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(row.imagery_date)) return none(t('terrain.imagery_bad_date'));
   let url: URL;
-  try { url = new URL(row.tile_template.replace(/\{(\w+)\}/g, 'x')); } catch { return none('The S13 tile address is not valid; imagery is not shown.'); }
-  if (url.protocol !== 'https:' || url.hostname !== IMAGERY_HOST) return none('The S13 tile address is not on the GIBS host; imagery is not shown.');
+  try { url = new URL(row.tile_template.replace(/\{(\w+)\}/g, 'x')); } catch { return none(t('terrain.imagery_bad_tile')); }
+  if (url.protocol !== 'https:' || url.hostname !== IMAGERY_HOST) return none(t('terrain.imagery_bad_host'));
   const tiles = row.tile_template.replace('{Time}', row.imagery_date).replace('{TileMatrixSet}', IMAGERY_MATRIX_SET)
     .replace('{TileMatrix}', '{z}').replace('{TileRow}', '{y}').replace('{TileCol}', '{x}');
   return { state: 'available', date: row.imagery_date, tiles, maxzoom: Number(/Level(\d+)$/.exec(IMAGERY_MATRIX_SET)![1]),
-    attribution: IMAGERY_ATTRIBUTION, label: `Satellite imagery dated ${row.imagery_date} (newest non-blank day reported)` };
+    attribution: IMAGERY_ATTRIBUTION, label: t('terrain.imagery_label', { date: row.imagery_date }) };
 }
 
 export function terrainSpec(value?: number) {
@@ -115,7 +116,7 @@ export function removeTerrain(map: MapLike): void {
 
 export function ViewFallback({ view }: { view: View }) {
   if (!view.reason) return null;
-  return <p className="map-message" role="status">{view.reason}{view.mode === 'list' && ' Dated records stay available in the list.'}</p>;
+  return <p className="map-message" role="status">{view.reason}{view.mode === 'list' && ` ${t('terrain.list_suffix')}`}</p>;
 }
 
 export default function Terrain({ map, view, imagery, value }: { map: MapLike | null; view: View; imagery: Imagery; value?: number }) {
@@ -126,7 +127,7 @@ export default function Terrain({ map, view, imagery, value }: { map: MapLike | 
   }, [map, view, imagery, value]);
   return <div className="terrain-note"><ViewFallback view={view} />
     {(view.mode === 'terrain' || view.mode === 'globe') && <>
-      <p>{TERRAIN_ATTRIBUTION}. Vertical exaggeration {exaggeration(value)}×.</p>
+      <p>{t('terrain.exaggeration', { credit: TERRAIN_ATTRIBUTION, value: exaggeration(value) })}</p>
       {imagery.state === 'available' ? <p>{imagery.attribution}. {imagery.label}.</p> : <p role="status">{imagery.reason}</p>}
     </>}
   </div>;

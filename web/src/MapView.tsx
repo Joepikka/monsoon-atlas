@@ -1,20 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Map, Marker, NavigationControl, setWorkerUrl } from 'maplibre-gl';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { hasCoordinates, type MapRecord } from './data';
 import type { Coordinates } from './map/Layers';
 import { hideInternationalBorders } from './map/Borders';
+import Terrain, { browserEnv, chooseView, imageryFor, type MapLike, type Want } from './map/Terrain';
+import Globe from './map/Globe';
 
 setWorkerUrl(workerUrl);
 
 interface Props { records: MapRecord[]; selected: string | null; onSelect: (id: string) => void;
-  center: Coordinates | null; onCenter: (center: Coordinates) => void }
+  center: Coordinates | null; onCenter: (center: Coordinates) => void; want?: Want }
 
-export default function MapView({ records, selected, onSelect, center, onCenter }: Props) {
+export default function MapView({ records, selected, onSelect, center, onCenter, want = 'flat' }: Props) {
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<Map | null>(null);
   const [failed, setFailed] = useState(false);
+  const [loaded, setLoaded] = useState<Map | null>(null);
+  const env = useMemo(browserEnv, []);
+  const view = chooseView(env, want);
   useEffect(() => {
     if (!container.current) return;
     try {
@@ -24,7 +29,7 @@ export default function MapView({ records, selected, onSelect, center, onCenter 
       instance.addControl(new NavigationControl({ showCompass: false }), 'top-right');
       instance.on('style.load', () => hideInternationalBorders(instance));
       instance.on('error', () => setFailed(true));
-      instance.on('load', () => setFailed(false));
+      instance.on('load', () => { setFailed(false); setLoaded(instance); });
       instance.getCanvas().setAttribute('aria-label', 'Karnataka basemap; records are also listed');
       instance.getCanvas().setAttribute('role', 'img');
       instance.getCanvas().setAttribute('aria-description', 'Use arrow keys to pan. Press Enter to set the radius centre.');
@@ -37,7 +42,7 @@ export default function MapView({ records, selected, onSelect, center, onCenter 
         }
       });
       map.current = instance;
-      return () => { map.current = null; instance.remove(); };
+      return () => { map.current = null; setLoaded(null); instance.remove(); };
     } catch { setFailed(true); }
   }, [onCenter]);
   useEffect(() => {
@@ -67,7 +72,13 @@ export default function MapView({ records, selected, onSelect, center, onCenter 
     const marker = new Marker({ element }).setLngLat(center).addTo(map.current);
     return () => { marker.remove(); };
   }, [center]);
+  // S13 imagery stays off until a row with a reported date is fed in; no date is assumed.
+  const imagery = useMemo(() => imageryFor(null), []);
   return <><div className="map-container" ref={container} />
+    {want !== 'flat' && <>
+      <Terrain map={loaded as MapLike | null} view={view} imagery={imagery} />
+      <Globe map={loaded as MapLike | null} view={view} env={env} />
+    </>}
     {failed && <p className="map-message">Map tiles unavailable. Dated records remain available in the list.</p>}
   </>;
 }

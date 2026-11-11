@@ -2,6 +2,35 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D173 — Karnataka first; S22 and S23 price retries stay blocked (11 Nov 2026).**
+  Owner, in chat: "is it wise to do just one state for now and do rest some other time"; the
+  agent recommended Karnataka first, as A8 already orders, and the owner did not object. Kerala and
+  Delhi work waits until the Karnataka MVP gate (T046) passes; the S24 (Delhi AQI) retry and the
+  `sgp4` lock (S12 display still waits on its terms) are set aside. S22 retry: the in-app browser
+  renders https://indiadataportal.com/p/agmarknet, which now shows the portal's not-found page
+  ("doorway to the great nothing"); no new address was found, so S22 stays blocked. S23 retry:
+  the data.gov.in resource page and its catalogue and API tabs now render, and its swagger file
+  (`backend/dataapi/v1/swagger/9ef84268-...`) loads, but none states the unit of min_price,
+  max_price or modal_price; the Agmarknet 2.0 dashboard needs a captcha, which the agent does not
+  solve. S23 stays blocked (D58). Owner route: ask the dataset's Chief Data Officer (named on the
+  resource page) for the price unit, or note the unit Agmarknet shows after a manual search.
+  Source records are unchanged.
+
+- **D172 — Climate, wall, terrain, globe and place watches mounted (11 Nov 2026).**
+  After H11 (D166, D167) `?page=climate` is mounted: its data, bundled as `web/src/climate.json` (like `dashboards.json`; `web/public/` holds no data, D162)
+  (a vitest checks it is byte-identical to `reports/eda/08_climate_product/climate.json`; refresh
+  the copy when the export changes), holds percent of median, percentile, rank and percent per
+  decade only, no S08 value in mm; the only "mm" is the inferred-onset rule text "at least 2.5 mm".
+  `?page=wall` is mounted with `wallConnected(status, online)`: online and the last snapshot load
+  did not fail; the page reloads every 5 minutes and a failed reload shows the last snapshot as
+  disconnected with alerts hidden (D154 unchanged). Terrain and globe are an opt-in "Map view"
+  select, Flat 2D by default; `chooseView()` fallbacks and reduced motion still apply. No snapshot
+  carries a dated S13 row, so imagery reports none (no date is guessed; F009 is a judgement call).
+  Place watches sit in the record panel (IndexedDB only); signals are official alerts and mm
+  forecasts that name a place; only expiry stops a signal, because records carry no cancelled flag.
+  Strings moved to 60 keys per locale (kn, ml, hi are unreviewed machine drafts). Checked in the
+  in-app browser: climate page, view select, wall page, no script errors. Not run: Playwright.
+
 - **D171 — T221 findings fixed (11 Nov 2026).**
   (1) `docs/releases/ka-v1.md` no longer lists F035 among later tasks; a note says T034 measured
   the M05 intervals, they fail their 80% gate, F035 is research-only, and no task produces SHAP

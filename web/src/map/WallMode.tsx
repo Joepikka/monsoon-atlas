@@ -3,9 +3,9 @@
 // same limit as the app), stale, or the feed is disconnected, and a disconnected or stale wall
 // shows the last timestamps it has, styled as stale, with no alerts. No sound, no animation, no
 // flashing; Escape or the exit button leaves. The ticker pauses with its own button and starts
-// paused under reduced motion. Strings come from the i18n lookup (D148). Built, not mounted (D154).
+// paused under reduced motion. Strings come from the i18n lookup (D148). Mounted at ?page=wall (D154, D172).
 import { useEffect, useRef, useState } from 'react';
-import { type Health, type MapRecord, type Snapshot, type SourceHealth, STALE_MS } from '../data';
+import { type Health, type MapRecord, type Snapshot, type SourceHealth, STALE_MS, type ViewState } from '../data';
 import EventTicker from '../components/EventTicker';
 import { t } from '../i18n';
 import { localTime } from '../time';
@@ -26,6 +26,9 @@ export function sourceState(source: SourceHealth, nowMs: number, connected: bool
   const age = source.last_success_at ? nowMs - Date.parse(source.last_success_at) : Number.NaN;
   return age >= 0 && age <= STALE_MS ? 'available' : 'stale';
 }
+
+/** Connected only if the last snapshot load did not fail and the browser reports it is online. */
+export const wallConnected = (status: ViewState['status'], online: boolean): boolean => online && status !== 'error';
 
 export const wallKey = (key: string): 'exit' | null => (key === 'Escape' ? 'exit' : null);
 

@@ -27,3 +27,16 @@ describe('climate product contract', () => {
     expect(parseClimate(real).onset.official_onset).toBeNull();
   });
 });
+
+describe('mounted page data (D166, D167)', () => {
+  const file = (p: string) => readFileSync(new URL(p, import.meta.url), 'utf8');
+  it('serves the exported product unchanged', () => {
+    expect(file('../climate.json')).toBe(file('../../../reports/eda/08_climate_product/climate.json'));
+  });
+  it('shows no rainfall in mm: every number is a percent, a rank, a year or a model change', () => {
+    const real = parseClimate(JSON.parse(file('../climate.json')));
+    const keys = [...Object.keys(real.trend[0]), ...Object.keys(real.tracker.checkpoints[0])];
+    expect(keys.filter(k => /mm|cumulative|total/.test(k))).toEqual([]);
+    expect(real.limits.join(' ')).toContain('not as mm');
+  });
+});

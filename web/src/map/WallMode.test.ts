@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import type { MapRecord, SourceHealth } from '../data';
 import { LOCALES } from '../i18n';
-import WallMode, { sourceState, stateText, wallColumns, wallKey, wallState } from './WallMode';
+import WallMode, { sourceState, stateText, wallColumns, wallConnected, wallKey, wallState } from './WallMode';
 
 const alert = JSON.parse(readFileSync(new URL('../../tests/fixtures/sachet-ka-point.json', import.meta.url), 'utf8')) as MapRecord;
 const asOf = '2026-11-11T05:00:00Z';
@@ -98,5 +98,14 @@ describe('wall strings', () => {
       }
     }
     expect(stateText('disconnected')).toBe('Disconnected');
+  });
+});
+
+describe('wall connected rule', () => {
+  it('is connected only when online and the last snapshot load did not fail', () => {
+    expect(wallConnected('ready', true)).toBe(true);
+    expect(wallConnected('stale', true)).toBe(true); // loaded fine; wallState marks it stale by age
+    expect(wallConnected('error', true)).toBe(false);
+    expect(wallConnected('ready', false)).toBe(false);
   });
 });

@@ -1,7 +1,9 @@
 // T183: place watches kept only in this browser's IndexedDB (D149). No account, no network call, no
 // location lookup: the page passes in the place list and the signals, and a watch never leaves the
-// device. A cancelled, superseded or expired signal never triggers. Built, not mounted.
+// device. A cancelled, superseded or expired signal never triggers. Mounted in the main app (D172).
 import { useEffect, useState, type FormEvent } from 'react';
+import type { MapRecord } from '../data';
+import { t } from '../i18n';
 
 export interface Watch { id: string; placeId: string; label: string; alerts: boolean; rainMm: number | null }
 export interface Signal {
@@ -54,7 +56,7 @@ export default function Watches({ places, signals }: { places: { id: string; lab
   const [alerts, setAlerts] = useState(true);
   const [rain, setRain] = useState('');
   const [error, setError] = useState('');
-  const refresh = () => listWatches().then(setWatches, () => setError('Watches could not be read in this browser.'));
+  const refresh = () => listWatches().then(setWatches, () => setError(t('watches.err_read')));
   useEffect(() => { refresh(); }, []);
 
   async function add(event: FormEvent) {
@@ -65,33 +67,43 @@ export default function Watches({ places, signals }: { places: { id: string; lab
       await saveWatch({ id: crypto.randomUUID(), placeId, label: place.label, alerts, rainMm: rain === '' ? null : Number(rain) });
       setError('');
       await refresh();
-    } catch { setError('The watch could not be saved in this browser.'); }
+    } catch { setError(t('watches.err_save')); }
   }
   const now = Date.now();
   const hits = watches.flatMap(watch => signals.filter(signal => triggered(watch, signal, now)).map(signal => ({ watch, signal })));
 
   return <section aria-labelledby="watch-heading">
-    <h2 id="watch-heading">Place watches</h2>
-    <p>Watches are stored only in this browser. They are never sent anywhere, and there is no account.
-      Notifications here appear only while this page is open. This is not an emergency service.</p>
+    <h2 id="watch-heading">{t('watches.heading')}</h2>
+    <p>{t('watches.intro')}</p>
     {error && <p role="alert">{error}</p>}
     <form onSubmit={add}>
-      <label htmlFor="watch-place">Place</label>
+      <label htmlFor="watch-place">{t('watches.place')}</label>
       <select id="watch-place" value={placeId} onChange={event => setPlaceId(event.target.value)}>
         {places.map(place => <option key={place.id} value={place.id}>{place.label}</option>)}
       </select>
-      <label><input type="checkbox" checked={alerts} onChange={event => setAlerts(event.target.checked)} /> Official alerts</label>
-      <label htmlFor="watch-rain">Forecast rain at or above (mm, optional)</label>
+      <label><input type="checkbox" checked={alerts} onChange={event => setAlerts(event.target.checked)} /> {t('watches.alerts')}</label>
+      <label htmlFor="watch-rain">{t('watches.rain')}</label>
       <input id="watch-rain" type="number" min="0" step="any" value={rain} onChange={event => setRain(event.target.value)} />
-      <button type="submit" disabled={!places.length}>Add watch</button>
+      <button type="submit" disabled={!places.length}>{t('watches.add')}</button>
     </form>
-    <ul aria-label="Your watches">
+    <ul aria-label={t('watches.list')}>
       {watches.map(watch => <li key={watch.id}>{watch.label}
-        <button type="button" onClick={() => deleteWatch(watch.id).then(refresh)}>Remove</button></li>)}
+        <button type="button" onClick={() => deleteWatch(watch.id).then(refresh)}>{t('watches.remove')}</button></li>)}
     </ul>
-    <ul aria-label="Watch notifications">
+    <ul aria-label={t('watches.notifications')}>
       {hits.map(({ watch, signal }) => <li key={`${watch.id}|${signal.sourceUrl}|${signal.kind}`}>
-        {watch.label}: {signal.text} <a href={signal.sourceUrl} target="_blank" rel="noopener noreferrer">Source</a></li>)}
+        {watch.label}: {signal.text} <a href={signal.sourceUrl} target="_blank" rel="noopener noreferrer">{t('watches.source')}</a></li>)}
     </ul>
   </section>;
+}
+
+/** Live signals from snapshot records that name a place: official alerts, and mm forecasts. Nothing is inferred. */
+export function signalsFrom(records: MapRecord[]): Signal[] {
+  return records.flatMap((r): Signal[] => {
+    if (!r.place_id) return [];
+    const base = { placeId: r.place_id, status: 'actual' as const, validUntil: r.expires_at, sourceUrl: r.source_url, text: r.title };
+    if (r.kind === 'alert' && r.provenance === 'official') return [{ ...base, kind: 'alert' as const, rainMm: null }];
+    if (r.kind === 'weather' && r.evidence === 'forecast' && r.unit === 'mm' && r.value !== null) return [{ ...base, kind: 'forecast' as const, rainMm: r.value }];
+    return [];
+  });
 }

@@ -859,11 +859,14 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    entry for the local preview. T220 is done (D164). Run `tests/test_dl_poll.py` with any change
    that adds text under `web/` or `worker/`. **T221 is done (D165): every plan task T001-T221
    is walked; the product is not released.** `docs/releases/final.md` audits all 64 plan
-   features (12 shipped-local, 20 built not mounted, 4 research-only, 27 blocked, 1 deferred)
+   features (now 20 shipped-local, 12 built not mounted, 4 research-only, 27 blocked, 1 deferred
+   after D172 mounted climate, wall, terrain, globe and place watches)
    and pins 88 evidence files in `final-manifest.json` (regenerate with
    `.\.venv\Scripts\python tests/test_final.py --manifest` after changing any of them).
-   Operating runbook: `docs/runbooks/maintain.md`. **Next agent task without the owner:
-   re-run T146 (S24) once a browser tool can read the data.gov.in resource page. First owner
+   Operating runbook: `docs/runbooks/maintain.md`. **Karnataka first (owner, 11 Nov 2026): Kerala and Delhi work waits until Karnataka is
+   live.** Next agent task without the owner: none for Karnataka; S22 and S23 prices were retried
+   in the in-app browser and stay blocked (D173). Later, for Delhi: re-run T146 (S24); the
+   data.gov.in resource page now renders in the in-app browser. First owner
    step: H05/H06** (the H11 Karnataka sheet `docs/releases/h11-ka.md` was answered on 11 Nov 2026,
    D166) for hosting T042-T045, which
    T046 (the Karnataka MVP gate, first unfinished task in plan order) needs. New owner steps from P3: H12 (aisstream key), proposed

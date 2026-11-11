@@ -5,6 +5,8 @@ import Layers, { layerConfigs, visibleRecords, type Coordinates } from './map/La
 import SourceBadge from './components/SourceBadge';
 import EventTicker from './components/EventTicker';
 import PlaceLens from './components/PlaceLens';
+import Watches, { signalsFrom } from './components/Watches';
+import type { Want } from './map/Terrain';
 import { t } from './i18n';
 import { readShare, sourceNames } from './report';
 import { localTime } from './time';
@@ -44,6 +46,7 @@ export default function App() {
   });
   const [state, setState] = useState<StateId>('ka');
   const [radius, setRadius] = useState('25');
+  const [want, setWant] = useState<Want>('flat'); // 2D stays the default; terrain and globe are opt-in
   const [attempt, setAttempt] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [active, setActive] = useState<Set<LayerKind>>(() => new Set(layerConfigs.map(layer => layer.kind)));
@@ -100,6 +103,8 @@ export default function App() {
       <nav className="masthead-links" aria-label="Site">
         <a className="official-link" href="?page=ask">Ask</a>
         <a className="official-link" href="?page=accuracy">Model accuracy</a>
+        <a className="official-link" href="?page=climate">{t('nav.climate')}</a>
+        <a className="official-link" href="?page=wall">{t('wall.title')}</a>
         <a className="official-link" href="https://sachet.ndma.gov.in/" target="_blank" rel="noopener noreferrer">
           Official warnings <span aria-hidden="true">↗</span>
         </a>
@@ -114,6 +119,10 @@ export default function App() {
         </select></label>
         <label>Radius<select aria-label="Radius" value={radius} onChange={e => setRadius(e.target.value)}>
           <option value="5">5 km</option><option value="10">10 km</option><option value="25">25 km</option><option value="50">50 km</option>
+        </select></label>
+        <label>{t('map.view')}<select aria-label={t('map.view')} value={want} onChange={e => setWant(e.target.value as Want)}>
+          <option value="flat">{t('map.view_flat')}</option><option value="terrain">{t('map.view_terrain')}</option>
+          <option value="globe">{t('map.view_globe')}</option>
         </select></label>
         <label className="snapshot-select">Snapshot<select aria-label="Snapshot" value={snapshot?.as_of ?? ''} disabled>
           <option value={snapshot?.as_of ?? ''}>{snapshot ? localTime(snapshot.as_of) : 'No release available'}</option>
@@ -155,13 +164,14 @@ export default function App() {
             </li>)}</ol>}
           </section>
           <PlaceLens snapshot={snapshot} shared={share.identity} now={clock} />
+          {snapshot && <Watches places={snapshot.places.map(p => ({ id: p.place_id, label: p.name }))} signals={signalsFrom(display.records)} />}
           <div className="reading-key"><h3>How to read the atlas</h3><p>Official reports, model outputs, inferred and reconstructed items stay separately labelled. Dates belong to the source snapshot.</p></div>
         </section>
 
         <section className="map-panel" aria-label="Karnataka map">
           <div className="map-caption"><span className="map-cross" aria-hidden="true">⊕</span><span>{stateNames[state]}<small>{records.some(record => !hasCoordinates(record)) ? 'Mapped points & area warning list' : 'Map & matching record list'}</small></span></div>
           <Suspense fallback={<p className="map-message">Loading map…</p>}>
-            <MapView records={records} selected={selected} onSelect={setSelected} center={center} onCenter={setCenter} />
+            <MapView records={records} selected={selected} onSelect={setSelected} center={center} onCenter={setCenter} want={want} />
           </Suspense>
           <div className="map-note">{snapshot ? hasCurrent ? 'Active source updates and dated daily records' : 'Records belong to the dated snapshot' : 'Basemap only · no released observations'}
             <small className="map-disclaimer">{t('map.disclaimer')}</small></div>

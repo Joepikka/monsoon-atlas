@@ -71,10 +71,11 @@ def test_only_the_recorded_hosts_are_requested_and_nothing_is_stored_for_later()
 
 
 def test_a_webgl_failure_shows_a_status_message_that_points_to_the_list():
-    assert 'role="status"' in TERRAIN and "Dated records stay available in the list" in TERRAIN
-    assert (
-        "Globe unavailable in this build" in GLOBE and "Globe unavailable in this build" in TERRAIN
-    )
+    en = (MAP.parent / "i18n/en.json").read_text(encoding="utf-8")  # strings are locale keys (D172)
+    assert 'role="status"' in TERRAIN and "terrain.list_suffix" in TERRAIN
+    assert "Dated records stay available in the list" in en
+    assert "t('globe.unavailable')" in GLOBE and "t('terrain.globe_fallback')" in TERRAIN
+    assert "Globe unavailable in this build" in en
     assert "prefers-reduced-motion: reduce" in TERRAIN
 
 

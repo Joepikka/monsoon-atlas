@@ -94,22 +94,24 @@
       "states": "ALL",
       "tier": "stretch",
       "plan_task": "T186",
-      "status": "built-not-mounted",
+      "status": "shipped-local",
       "tasks": [
         "T186"
       ],
       "evidence": [
-        "web/src/map/Terrain.tsx"
+        "web/src/map/Terrain.tsx",
+        "web/src/MapView.tsx",
+        "web/src/App.tsx"
       ],
       "tests": [
         "web/src/map/Terrain.test.ts",
         "tests/test_tiles.py"
       ],
-      "blocker": "Not mounted; strings need locale keys before mounting (D152).",
+      "blocker": "",
       "owner_steps": [
         "H11"
       ],
-      "notes": "S14 raster-dem source and WebGL fallback are tested; no tile is stored."
+      "notes": "Mounted 11 Nov 2026 (D172): opt-in Map view select, Flat 2D stays the default; chooseView() fallbacks apply. No tile is stored."
     },
     {
       "id": "F005",
@@ -117,21 +119,23 @@
       "states": "ALL",
       "tier": "stretch",
       "plan_task": "T186",
-      "status": "built-not-mounted",
+      "status": "shipped-local",
       "tasks": [
         "T186"
       ],
       "evidence": [
-        "web/src/map/Globe.tsx"
+        "web/src/map/Globe.tsx",
+        "web/src/MapView.tsx",
+        "web/src/App.tsx"
       ],
       "tests": [
         "web/src/map/Globe.test.ts"
       ],
-      "blocker": "Not mounted; strings need locale keys before mounting (D152).",
+      "blocker": "",
       "owner_steps": [
         "H11"
       ],
-      "notes": "Globe projection type-checks against the pinned MapLibre; 2D fallback exists."
+      "notes": "Mounted 11 Nov 2026 (D172): Globe option of the Map view select; reduced motion sets camera durations to 0."
     },
     {
       "id": "F006",
@@ -139,23 +143,25 @@
       "states": "ALL",
       "tier": "stretch",
       "plan_task": "T186",
-      "status": "built-not-mounted",
+      "status": "shipped-local",
       "tasks": [
         "T186",
         "T188"
       ],
       "evidence": [
-        "web/src/map/WallMode.tsx"
+        "web/src/map/WallMode.tsx",
+        "web/src/pages/Wall.tsx",
+        "web/src/main.tsx"
       ],
       "tests": [
         "web/src/map/WallMode.test.ts",
         "tests/test_wall.py"
       ],
-      "blocker": "Not mounted; no code decides the connected input yet (D154).",
+      "blocker": "",
       "owner_steps": [
         "H11"
       ],
-      "notes": "Stale or disconnected walls show no alerts."
+      "notes": "Mounted 11 Nov 2026 (D172) at ?page=wall: connected means online and the last snapshot load did not fail; stale or disconnected walls show no alerts. With no approved snapshot it shows its empty state."
     },
     {
       "id": "F007",
@@ -206,22 +212,23 @@
       "states": "ALL",
       "tier": "stretch",
       "plan_task": "T186",
-      "status": "built-not-mounted",
+      "status": "shipped-local",
       "tasks": [
         "T186"
       ],
       "evidence": [
         "web/src/map/Terrain.tsx",
+        "web/src/MapView.tsx",
         "configs/sources/s13.yaml"
       ],
       "tests": [
         "web/src/map/Terrain.test.ts"
       ],
-      "blocker": "Not mounted with the terrain view (D152).",
+      "blocker": "",
       "owner_steps": [
         "H11"
       ],
-      "notes": "S13 imagery is added only from a row with a valid date and a GIBS tile address."
+      "notes": "Judgement call: Mounted 11 Nov 2026 (D172) with the terrain view, but no snapshot carries a dated S13 row, so the page says no imagery date was reported and shows none (no date is guessed)."
     },
     {
       "id": "F010",
@@ -1018,23 +1025,25 @@
       "states": "ALL",
       "tier": "v1",
       "plan_task": "T145",
-      "status": "built-not-mounted",
+      "status": "shipped-local",
       "tasks": [
         "T145"
       ],
       "evidence": [
         "web/src/pages/Climate.tsx",
-        "reports/eda/08_climate_product/climate.json"
+        "web/src/climate.json",
+        "reports/eda/08_climate_product/climate.json",
+        "web/src/main.tsx"
       ],
       "tests": [
         "web/src/pages/Climate.test.ts",
         "tests/test_climate_product.py"
       ],
-      "blocker": "Climate page not mounted pending H11; S08 is held for 1981-2025 only (D130).",
+      "blocker": "",
       "owner_steps": [
         "H11"
       ],
-      "notes": "Indices only, never millimetres (S08 licence)."
+      "notes": "Mounted 11 Nov 2026 (D172) at ?page=climate after H11 item 3 (derived outputs only). Indices only, never millimetres (S08 licence); trends cover 1981-2025."
     },
     {
       "id": "F043",
@@ -1042,23 +1051,24 @@
       "states": "ALL",
       "tier": "v1",
       "plan_task": "T145",
-      "status": "built-not-mounted",
+      "status": "shipped-local",
       "tasks": [
         "T145"
       ],
       "evidence": [
         "web/src/pages/Climate.tsx",
-        "reports/eda/07_climate/summary.json"
+        "web/src/climate.json",
+        "web/src/main.tsx"
       ],
       "tests": [
         "web/src/pages/Climate.test.ts",
         "tests/test_climate_product.py"
       ],
-      "blocker": "Climate page not mounted pending H11 (D130).",
+      "blocker": "",
       "owner_steps": [
         "H11"
       ],
-      "notes": "S06 has no named scenario; labelled climate projection, not a forecast."
+      "notes": "Mounted 11 Nov 2026 (D172) at ?page=climate. Labelled climate projection, not a forecast; S06 has no named scenario."
     },
     {
       "id": "F044",
@@ -1066,22 +1076,23 @@
       "states": "ALL",
       "tier": "v1",
       "plan_task": "T145",
-      "status": "built-not-mounted",
+      "status": "shipped-local",
       "tasks": [
         "T145"
       ],
       "evidence": [
         "web/src/pages/Climate.tsx",
-        "reports/eda/08_climate_product/climate.json"
+        "web/src/climate.json",
+        "web/src/main.tsx"
       ],
       "tests": [
         "tests/test_climate_product.py"
       ],
-      "blocker": "Climate page not mounted pending H11; no source publishes an official onset date (D130).",
+      "blocker": "",
       "owner_steps": [
         "H11"
       ],
-      "notes": "The tracked year is 2025, a past year; onset is labelled inferred."
+      "notes": "Mounted 11 Nov 2026 (D172) at ?page=climate. The tracked year is 2025, a past year; onset is labelled inferred."
     },
     {
       "id": "F045",
@@ -1194,21 +1205,22 @@
       "states": "ALL",
       "tier": "v1",
       "plan_task": "T183",
-      "status": "built-not-mounted",
+      "status": "shipped-local",
       "tasks": [
         "T183"
       ],
       "evidence": [
-        "web/src/components/Watches.tsx"
+        "web/src/components/Watches.tsx",
+        "web/src/App.tsx"
       ],
       "tests": [
         "web/src/components/Watches.test.ts"
       ],
-      "blocker": "Not mounted; strings need locale keys before mounting (D149).",
+      "blocker": "",
       "owner_steps": [
         "H11"
       ],
-      "notes": "Device-local IndexedDB only."
+      "notes": "Mounted 11 Nov 2026 (D172) in the record panel; device-local IndexedDB only. It appears once a snapshot exists; only expiry stops a signal (records carry no cancelled flag)."
     },
     {
       "id": "F050",

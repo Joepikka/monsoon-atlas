@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseWatch, triggered, type Signal, type Watch } from './Watches';
+import { parseWatch, signalsFrom, triggered, type Signal, type Watch } from './Watches';
 
 // Hand-built UI contract values (test inputs, not real alerts or forecasts).
 const now = Date.parse('2026-11-10T06:00:00Z');
@@ -33,5 +33,16 @@ describe('watch evaluation', () => {
     for (const bad of [null, { ...watch, id: '' }, { ...watch, rainMm: -1 }, { ...watch, alerts: 'yes' }, { ...watch, rainMm: NaN }]) {
       expect(() => parseWatch(bad)).toThrow('Invalid watch');
     }
+  });
+});
+
+describe('signals from records', () => {
+  const rec = (over: object) => ({ id: 'r', title: 'T', source_url: 'https://example.test/r', provenance: 'official', kind: 'alert',
+    place_id: 'p1', expires_at: null, evidence: null, unit: null, value: null, ...over }) as unknown as Parameters<typeof signalsFrom>[0][number];
+  it('keeps official alerts and mm forecasts that name a place, and nothing else', () => {
+    const out = signalsFrom([rec({}), rec({ kind: 'weather', provenance: 'model', evidence: 'forecast', unit: 'mm', value: 12 }),
+      rec({ place_id: null }), rec({ kind: 'weather', provenance: 'model', evidence: 'reanalysis', unit: 'mm', value: 5 }),
+      rec({ kind: 'weather', provenance: 'model', evidence: 'forecast', unit: 'C', value: 30 })]);
+    expect(out.map(s => [s.kind, s.rainMm])).toEqual([['alert', null], ['forecast', 12]]);
   });
 });

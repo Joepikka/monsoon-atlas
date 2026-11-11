@@ -2,11 +2,11 @@
 // 6.16.0; the build type-checks the call). A build or browser without it reports "Globe unavailable
 // in this build" and keeps the flat map. The globe has no world copies, so any longitude read from
 // a click is wrapped into [-180, 180) before it is used. Reduced motion removes animation.
-// Built, not mounted (D152).
+// Mounted as an opt-in map view (D172).
 import { useEffect } from 'react';
+import { t } from '../i18n';
 import { type MapLike, motionMs, type View, type ViewEnv } from './Terrain';
 
-export const GLOBE_UNAVAILABLE = 'Globe unavailable in this build';
 export const GLOBE_FLY_MS = 800;
 
 export const wrapLongitude = (lon: number): number => ((((lon + 180) % 360) + 360) % 360) - 180;
@@ -30,6 +30,7 @@ export default function Globe({ map, view, env }: { map: MapLike | null; view: V
   }, [map, wanted]);
   const missing = wanted && map !== null && typeof map.setProjection !== 'function';
   return <p className="globe-note" role="status">
-    {missing ? GLOBE_UNAVAILABLE : wanted ? `Globe view. Camera moves last ${flyDuration(env)} ms${env.reducedMotion ? ' (reduced motion on)' : ''}.` : ''}
+    {missing ? t('globe.unavailable') : wanted ? (env.reducedMotion ? t('globe.on_reduced', { ms: flyDuration(env) })
+      : t('globe.on', { ms: flyDuration(env) })) : ''}
   </p>;
 }
