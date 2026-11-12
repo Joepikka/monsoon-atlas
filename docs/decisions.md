@@ -2,6 +2,16 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D186 — T045 on main; first hosted feeds hop and daily release (12 Nov 2026).**
+  Owner, in chat: "Merge PR 2" and "Merge PR 3". PRs Joepikka/monsoon-atlas#6 (T044) and
+  Joepikka/monsoon-atlas#7 (T045) merged (`a1bf81a`, `0ec34af`). Manual runs on `main`: feeds
+  run 43229709170 selected the bootstrap run as its predecessor, imported its checkpoint,
+  stored a new S09 snapshot (S01 `not_due`) and offered a 546,710-byte checkpoint; daily run
+  43229714892 built release `0434e32c` (approval pending) and archived it privately. No
+  scheduled feeds run had fired by 13:39 UTC, about three hours after the workflow reached
+  `main`; manual dispatch works and continues the chain. Watch `gh run list --workflow
+  feeds.yml --event schedule`.
+
 - **D185 — T045 static releases, project API and replay; no public deploy (12 Nov 2026).**
   Owner, in chat: "continue the work and tell me when 1 state is done". `atlas.publish` builds a
   Karnataka release from the Worker's verified S09/S01 snapshots (wire digests checked), 30 S17
