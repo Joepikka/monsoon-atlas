@@ -51,3 +51,16 @@ def test_m05_card_uses_only_numbers_from_its_sources():
 
 def test_committed_checklist_matches_current_evidence():
     assert OUTPUT.read_text("utf-8") == render()
+
+
+def test_h14_passes_only_with_the_owners_own_words_in_all_three_sections():
+    from atlas.models.accuracy import OWNER_REVIEW, owner_review_done
+
+    template = (ROOT / OWNER_REVIEW).read_text("utf-8")
+    assert not owner_review_done(template)  # guidance comments do not count
+    words = " ".join(["word"] * 40)
+    parts = template.split("## ")
+    filled = parts[0] + "".join(f"## {p.rstrip()}\n\n{words}\n\n" for p in parts[1:])
+    assert owner_review_done(filled)
+    short = filled.replace(words, "too short", 1)
+    assert not owner_review_done(short)

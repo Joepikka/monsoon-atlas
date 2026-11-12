@@ -2,6 +2,15 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D200 — H14 owner review file and gate check (12 Nov 2026).**
+  Owner, in chat: "ok continue with thise work". `reports/models/owner-review.md` holds three
+  sections (M05, M07, Ask) for the owner's own summaries, with guidance comments only; the agent
+  writes nothing under the headings. `release_checks()` turns "Case study per core model (H14
+  review)" from pending to pass only when each section has at least 40 words outside comments
+  (tested). Also: Data findings page deployed by a manual `daily` run (D199 live), and the ERA5
+  backfill reached 20 of 25 reference years (2018-2020 added); 2021-2025 wait for the next daily
+  API allowance.
+
 - **D199 — Karnataka data findings page on the site (12 Nov 2026).**
   Owner, in chat: "continue the work", after asking for the data, science and ML work to be shown.
   `?page=findings` ("Data findings", linked in the masthead) presents six analyses: hospital
