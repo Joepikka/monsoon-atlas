@@ -2,6 +2,25 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D185 — T045 static releases, project API and replay; no public deploy (12 Nov 2026).**
+  Owner, in chat: "continue the work and tell me when 1 state is done". `atlas.publish` builds a
+  Karnataka release from the Worker's verified S09/S01 snapshots (wire digests checked), 30 S17
+  district places and 433 S18 facilities, as canonical JSON named by its SHA-256 (140,690 bytes,
+  under the browser's 1 MiB limit). Pointers `data/ka/latest.json` and `api/v1/current.json`
+  carry `approval: pending`, which the browser refuses, until the owner approves public release
+  (H11). `api/v1/snapshots/<id>.json` copies the release; `atlas.replay` reopens a release by ID,
+  checks its hash and refuses anything fetched after the cutoff. A failed or empty hot fetch
+  raises before any pointer is written. Deviations: (1) the API description is
+  `docs/api/openapi.json`, copied into each release, because `web/public` holds no data (D162);
+  (2) CI has no raw files, so derived inputs are committed in `configs/static/ka/` (S17 district
+  points and S18 facilities, both ODbL, credited); (3) `daily.yml` (02:17 UTC) builds the release
+  and archives it to the private Hugging Face dataset with read-back, and does **not** deploy:
+  Pages waits for H11 and the T046 gate; (4) no live model predictions are published (M05 stays
+  off public pages, H11), so "score only matured predictions" has nothing to score yet. A
+  Python-built release passes the browser's own `parseSnapshot` (vitest) and its Place Lens finds
+  the facilities. F025 and F053 move to built-not-mounted (owner H11); the gate check for T045
+  and T041 now passes.
+
 - **D184 — T044 verified daily archive, without purge (12 Nov 2026).**
   Owner, in chat: "continue" (after the agent proposed T044). The Worker gains a signed, read-only
   `POST /internal/export` (cursor pages, exact stored gzip bytes, capacity figures).

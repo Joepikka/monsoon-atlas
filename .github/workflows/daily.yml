@@ -1,0 +1,49 @@
+# T045 (D185): daily Karnataka release from the hot Worker plus committed static inputs, archived
+# to the owner's private Hugging Face dataset and read back. Deployment to Pages is not here: it
+# waits for the owner's public-release approval (H11) and the T046 gate. The repository name is
+# masked because Actions logs are public.
+name: daily
+
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ka-daily
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONUTF8: "1"
+      HF_HUB_DISABLE_PROGRESS_BARS: "1"
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Install hash-locked core and archive requirements
+        run: |
+          python -m pip install --require-hashes -r requirements/core.txt -r requirements/archive.txt
+          python -m pip install --no-deps -e .
+      - name: Build the release and archive it privately
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          ATLAS_HOT_ORIGIN: ${{ vars.ATLAS_HOT_ORIGIN }}
+          HF_ARCHIVE_REPO: ${{ vars.HF_ARCHIVE_REPO }}
+        run: |
+          echo "::add-mask::$HF_ARCHIVE_REPO"
+          python -m atlas.publish --origin "$ATLAS_HOT_ORIGIN" --out "$RUNNER_TEMP/publish" \
+            --approval pending --hf-repo "$HF_ARCHIVE_REPO"
