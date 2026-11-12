@@ -870,7 +870,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    and pins 88 evidence files in `final-manifest.json` (regenerate with
    `.\.venv\Scripts\python tests/test_final.py --manifest` after changing any of them).
    Operating runbook: `docs/runbooks/maintain.md`. **Karnataka first (owner, 11 Nov 2026): Kerala and Delhi work waits until Karnataka is
-   live.** Next agent tasks without the owner: export S18 facilities into the snapshot (F025 Nearby), then T041 (BMTC coverage, now unblocked by S18, D174); S22 and S23 prices were retried
+   live.** Next agent task without the owner: T041 (BMTC coverage, now unblocked by S18, D174). S18 facilities are exported for Nearby (D175, `python -m atlas.ingest.s18_prepare`, 433 for Karnataka) and reach users only when T045 builds an approved release; S22 and S23 prices were retried
    in the in-app browser and stay blocked (D173). Later, for Delhi: re-run T146 (S24); the
    data.gov.in resource page now renders in the in-app browser. First owner
    step: H05/H06** (H05 Cloudflare token saved and verified 12 Nov 2026; H06 waits; the H11 Karnataka sheet `docs/releases/h11-ka.md` was answered on 11 Nov 2026,
