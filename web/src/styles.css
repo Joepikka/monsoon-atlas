@@ -966,3 +966,8 @@ h1,h2,h3,p{
 .monsoon-table { border-collapse: collapse; width: 100%; margin-top: 12px; font-size: .92rem; }
 .monsoon-table th, .monsoon-table td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: left; }
 .band-chip { color: white; padding: 2px 8px; border-radius: 10px; white-space: nowrap; font-size: .82rem; }
+
+/* D194: opt-in bus-access squares */
+.layer-toggle { padding: 8px 14px; border-radius: 6px; border: 1px solid #216b54; background: white; color: #216b54; font-weight: 600; cursor: pointer; }
+.layer-toggle[aria-pressed=true] { background: #216b54; color: white; }
+.hint { font-size: .85rem; }

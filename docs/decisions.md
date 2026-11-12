@@ -2,6 +2,13 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D194 — Bus-access squares on request (12 Nov 2026).**
+  Owner, in chat: "make it as a option so user click a button and only then it shows stuff like
+  that". The bus-access map now opens as a plain map; a "Show bus access" button (aria-pressed)
+  turns the coloured 1 km squares and their legend on and off, and tapping a square opens a popup
+  with its people count and covered share. Tile or glyph errors after the map has loaded no longer
+  show "the map could not load".
+
 - **D193 — Feeds schedule without `queue: max` (12 Nov 2026).**
   No scheduled run of any workflow fired between the first merge to `main` (10:45 UTC) and 14:48
   UTC, while manual dispatches of the same files passed. The one unusual key is

@@ -211,5 +211,9 @@
   "monsoon.status": "Compared with usual",
   "monsoon.complete": "season complete",
   "monsoon.empty": "No district has reached a weekly checkpoint in this season yet.",
-  "monsoon.unavailable": "The monsoon tracker could not be loaded."
+  "monsoon.unavailable": "The monsoon tracker could not be loaded.",
+  "transit.show": "Show bus access",
+  "transit.hide": "Hide bus access",
+  "transit.tap": "Tap a square to see its numbers.",
+  "transit.cell": "About {people} people live in this 1 km square; {share} of them are within a 500 m walk of a served bus stop."
 }
