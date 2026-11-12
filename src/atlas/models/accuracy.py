@@ -112,23 +112,27 @@ def release_checks() -> list[dict]:
         ),
         (
             "Accuracy page shows C1, C2 and M06",
-            "local" if _exists("web/src/pages/Accuracy.tsx") else "missing",
-            "T259 page shows the rows locally; owner approved publishing the table (H11, D166); "
-            "nothing is deployed",
+            "pass" if _exists("web/src/pages/Accuracy.tsx") else "missing",
+            "T259 page shows the rows; owner approved publishing the table (H11, D166); "
+            "deployed with the site (D187)",
         ),
-        ("Working real-data map, sources and Place Lens", "local", "T038-T040 pass locally"),
+        (
+            "Working real-data map, sources and Place Lens",
+            "pass",
+            "T038-T040 pass; live on monsoon-atlas.pages.dev (D187)",
+        ),
         ("Priced data and reproducible price baseline", "blocked", "S23 denominator; M06 blocked"),
         (
             "Free-tier deployment on pages.dev",
-            "pending",
-            "free plan, no card, confirmed (D180); Worker live; Pages deploy waits for release "
-            "approval (H11)",
+            "pass",
+            "deployed 12 Nov 2026 to monsoon-atlas.pages.dev on the free plan with no card "
+            "(D180, D187); rollback: redeploy the previous release with scripts/deploy_site.py",
         ),
         (
             "Legal, boundary and licence audit",
-            "pending",
-            "H11 answers recorded (D166); boundary disclaimer on the map; S08 files untracked; "
-            "licence check repeats at deployment",
+            "pass",
+            "H11 answers (D166) and public-release approval (D187); boundary disclaimer on the "
+            "map; licence check at deployment found only open or derived-permitted data (D187)",
         ),
         (
             "Dependencies T045 and T041",
@@ -175,8 +179,8 @@ def render() -> str:
         lines.append(f"| {check['check']} | {check['status']} | {check['evidence']} |")
     lines += [
         "",
-        "Fallback: the dated static daily view stays the advertised fallback; nothing is "
-        "deployed, so no rollback is needed yet.",
+        "Fallback: the dated static daily view stays the advertised fallback; every release "
+        "stays in the private archive, so rollback is a redeploy of the previous one (D187).",
         "",
     ]
     return "\n".join(lines)

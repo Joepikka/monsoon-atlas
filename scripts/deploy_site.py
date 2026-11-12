@@ -36,6 +36,8 @@ def main() -> int:
     env = os.environ | {
         "CLOUDFLARE_API_TOKEN": pairs["CLOUDFLARE_API_TOKEN"],
         "CLOUDFLARE_ACCOUNT_ID": pairs["CLOUDFLARE_ACCOUNT_ID"],
+        "HF_TOKEN": pairs["HF_TOKEN"],
+        "HF_HUB_DISABLE_PROGRESS_BARS": "1",
         "WRANGLER_SEND_METRICS": "false",
         "FORCE_COLOR": "0",
         "TEMP": str(ROOT / ".cache/tmp"),
@@ -60,6 +62,8 @@ def main() -> int:
             str(data),
             "--approval",
             "approved",
+            "--hf-repo",  # every public release is archived privately first (rollback, D187)
+            pairs["HF_ARCHIVE_REPO"],
         ],
         ROOT,
         env,
