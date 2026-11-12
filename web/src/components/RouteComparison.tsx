@@ -1,6 +1,6 @@
 // T143: experimental route comparison. Not an emergency service and never a safe route: a route is
 // shown only with the label below and the official guidance link. No road network or shelter record
-// is verified (S18 and S43 blocked), so real data shows the unavailable state (D128).
+// is verified (no S18 road graph yet, D174; S43 blocked), so real data shows the unavailable state (D128).
 export const ROUTE_LABEL = 'Experimental route, not a safe route; road closures and flood depth unknown.';
 
 type Leg = { length_m: number; path: string[] };

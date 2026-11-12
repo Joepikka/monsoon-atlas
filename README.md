@@ -22,7 +22,7 @@ M05 is the only model with an evaluated, owner-approved result. The other 19 hav
 
 | Area | State |
 |---|---|
-| Source records | 44 (26 available, 18 blocked); see [data licences](#data-licences) |
+| Source records | 44 (27 available, 17 blocked); see [data licences](#data-licences) |
 | Ask (cited answers) | Research-only (D101). Extractive answers with citations; no language model is connected (owner step H05). Its scores do not reproduce, see the lessons below. |
 | Karnataka, Kerala, Delhi gate pages | [ka-v1.md](docs/releases/ka-v1.md), [kl.md](docs/releases/kl.md), [dl.md](docs/releases/dl.md) |
 | Hosted service worker, offline cache | Not registered (D162) |
@@ -62,7 +62,7 @@ Generated from the model registry and checked by `tests/test_portfolio.py` again
 | M12 | dl | regression | blocked | M12 blocked: S38 is blocked on owner step H04 (D135), so no static GTFS, real-time sample or trip linkage was read and there are 0 vehicle positions and 0 service days; a scheduled-delay label cannot be built and no arrival or delay can be predicted (T153). | [m12](reports/models/m12.md) |
 | M13 | dl | classification | blocked | M13 blocked: S38 is blocked on owner step H04 (D135), so there are 0 completed trajectories, 0 service days and no verified scheduled headways; bunching cannot be labelled and no flag or persistence forecast can be made (T156). | [m13](reports/models/m13.md) |
 | M14 | dl | regression | blocked | M14 blocked: S24 CPCB station data is blocked (D133, D134): resource ID, licence, fields, units, averaging interval and history are unread and there are 0 station rows, so no PM2.5 label exists; S04 CAMS is a model estimate and baseline input, never a label (T159). | [m14](reports/models/m14.md) |
-| M15 | dl | regression | blocked | M15 blocked: no Delhi source is enabled, S01 keeps no issue-time forecast vintages (D07) so no forecast is matched to observed truth, S02 is ERA5 reanalysis, which supports trends and exposure only, and S18 impervious inputs are blocked by robots.txt; calibration skill cannot be claimed (T162). | [m15](reports/models/m15.md) |
+| M15 | dl | regression | blocked | M15 blocked: no Delhi source is enabled, S01 keeps no issue-time forecast vintages (D07) so no forecast is matched to observed truth, S02 is ERA5 reanalysis, which supports trends and exposure only, and S18 holds only the owner's Southern Zone extract (D174), so no Delhi impervious input exists; calibration skill cannot be claimed (T162). | [m15](reports/models/m15.md) |
 | M16 | all | anomaly | research_only | M16 is research-only: the rule runs on the held S08 daily grids and flag counts are reported (reports/models/m16-flag-counts.json), but 0 of 100 flags are adjudicated (T212, T213 blocked, D159), so precision is not measured and no quality claim is made. S22 and S23 hold zero price rows and S32 has no 28-day window. No IsolationForest challenger was run. | [m16](reports/models/m16.md) |
 | M17 | kl | segmentation | blocked | M17 blocked: S42 Sentinel-1 imagery needs a Copernicus account (proposed owner step H15), so no scene was read, and no independent inundation masks exist (S35 is blocked, S36 holds 2018 district tables and S43 has no official impact labels), so there are not 5 distinct labelled events; training would also need a Kaggle or Colab GPU, not the 2 GB local card (T173). | [m17](reports/models/m17.md) |
 | M18 | kl | classification | blocked | M18 blocked: S41 is blocked (T125, no publisher permission to store or classify items), so there are 0 permitted articles; the twenty annotation batches T189 to T208 are recorded as blocked (D155) with 0 articles selected, 0 labelled and 0 owner-reviewed, and owner step H13 has not happened; the gate needs 1000 permitted annotated texts (T209). | [m18](reports/models/m18.md) |
@@ -173,7 +173,7 @@ One row per source record in `configs/sources/`. "Available" means the discovery
 | S15 | OpenFreeMap basemap | ka | open | available | [s15.yaml](configs/sources/s15.yaml) |
 | S16 | WorldPop India population | ka | open | available | [s16.yaml](configs/sources/s16.yaml) |
 | S17 | geoBoundaries administrative boundaries | ka | open | available | [s17.yaml](configs/sources/s17.yaml) |
-| S18 | Geofabrik OSM extracts | ka | open | blocked | [s18.yaml](configs/sources/s18.yaml) |
+| S18 | Geofabrik OSM extracts | ka | open | available | [s18.yaml](configs/sources/s18.yaml) |
 | S19 | Google Open Buildings | ka | open | available | [s19.yaml](configs/sources/s19.yaml) |
 | S20 | USGS earthquakes | ka | restricted | available | [s20.yaml](configs/sources/s20.yaml) |
 | S21 | Datameet railway schedules | ka | open | available | [s21.yaml](configs/sources/s21.yaml) |
