@@ -140,7 +140,7 @@ def test_m05_v1_release_is_present_and_approved():
     checks = {c["check"]: c["status"] for c in release_checks()}
     slots = {r[0]: r[2] for r in table("Models", after="Core slots")}
     assert slots == {"C1": "blocked", "C2": "approved", "C3": "research-only"}
-    assert checks["C1 evaluation report and model card"] == "blocked"
+    assert checks["C1 evaluation report and model card"] == "waived"  # owner, D190; model blocked
     assert checks["C2 evaluation report and model card"] == "pass"
     assert checks["C3 passes T181 English thresholds"] == "research-only"
 

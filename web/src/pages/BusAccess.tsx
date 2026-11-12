@@ -35,7 +35,7 @@ export function cellsGeoJson(data: Coverage) {
 
 const loadCoverage = () => import('../transit-coverage.json').then(m => m.default as unknown as Coverage);
 
-export default function Transit({ load = loadCoverage }: { load?: () => Promise<Coverage> }) {
+export default function BusAccess({ load = loadCoverage }: { load?: () => Promise<Coverage> }) {
   const [data, setData] = useState<Coverage | null>(null);
   const [failed, setFailed] = useState(false);
   const [shown, setShown] = useState(false); // D194: the squares appear only when asked for

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import data from '../transit-coverage.json';
-import { BANDS, cellsGeoJson, type Coverage } from './Transit';
+import { BANDS, cellsGeoJson, type Coverage } from './BusAccess';
 
 describe('Bengaluru bus access cells (D191)', () => {
   it('draws each populated cell as a square in the right colour band', () => {
