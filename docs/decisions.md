@@ -2,6 +2,14 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D181 — GitHub Actions secrets for hosted feeds and the archive (12 Nov 2026).**
+  Owner, in chat: "Yes, add secrets". Set with `gh` from `.env` over stdin (no value printed or
+  typed into a web form): secrets `ATLAS_INGEST_HMAC_KEY` and `HF_TOKEN`; repository variables
+  `ATLAS_HOT_ORIGIN` (the Worker origin) and `HF_ARCHIVE_REPO` (variables are visible to
+  collaborators, not the public). No workflow reads them yet: `feeds.yml` is manual-only and
+  `atlas.ingest.upload` still accepts only a loopback origin, so hosted capture and upload to the
+  Worker remain T043 work, and the archive export is T044. The Cloudflare token stays local only.
+
 - **D180 — T042 cloud step: Worker and D1 deployed, empty (12 Nov 2026).**
   Owner, in chat: "Start hosting"; the owner confirmed the Cloudflare free plan with no card
   (the token cannot read billing, by design) and chose the workers.dev subdomain
