@@ -2,6 +2,21 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D182 — T043 hosted capture and upload to the Worker (12 Nov 2026).**
+  Owner, in chat: "Build T043". `atlas.ingest.upload.signing_key` now also trusts the hosted
+  origin, but only when it equals `ATLAS_HOT_ORIGIN` exactly and is an https workers.dev origin
+  with no path (tested against lookalike hosts, paths and http). Uploads send a fixed user agent
+  (Cloudflare's bot filter returned error 1010 to Python's default). `runner_cycle` gains
+  `--deadline-seconds` (30 to 150). `feeds.yml` runs at minutes 7, 22, 37 and 52 (plan T043)
+  with `queue: max` (GitHub docs: up to 100 pending runs, none cancelled), which settles the D86
+  concern; it runs one S09 and one S01 cycle (60 s and 45 s), each continuing on error so a
+  provider outage keeps the chain, and the secret reaches only those two steps. Deviation: the
+  job limit is 6 minutes, not the plan's 3, because install and relay time are not yet measured.
+  Live check from this PC on a fresh chain: S09 admitted, 19 CAP documents validated (11 failed,
+  79 pending), 0 current Karnataka warnings, stored; S01 captured and stored; the public current
+  API returned both, labelled partial, 2 and 36 seconds old. Activation needs the workflow on
+  `main` (GitHub schedules run only from the default branch) and a manual bootstrap dispatch.
+
 - **D181 — GitHub Actions secrets for hosted feeds and the archive (12 Nov 2026).**
   Owner, in chat: "Yes, add secrets". Set with `gh` from `.env` over stdin (no value printed or
   typed into a web form): secrets `ATLAS_INGEST_HMAC_KEY` and `HF_TOKEN`; repository variables

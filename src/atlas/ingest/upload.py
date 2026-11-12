@@ -28,10 +28,19 @@ DEADLINE_S = 15
 DIGEST = re.compile(r"[0-9a-f]{64}")
 
 
+HOSTED = re.compile(r"https://[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev")
+
+
 def signing_key(origin: str) -> str:
+    """The key, for a loopback test Worker or the one configured hosted Worker (D182).
+
+    A hosted origin must equal ATLAS_HOT_ORIGIN exactly and be an https workers.dev origin with no
+    path, so a command-line or upstream value cannot redirect signed uploads elsewhere."""
     match = re.fullmatch(r"http://127\.0\.0\.1:([0-9]{1,5})", origin)
-    if match is None or not 1 <= int(match[1]) <= 65535:
-        raise ValueError("An explicit loopback origin is required")
+    local = match is not None and 1 <= int(match[1]) <= 65535
+    hosted = HOSTED.fullmatch(origin) is not None and origin == os.environ.get("ATLAS_HOT_ORIGIN")
+    if not (local or hosted):
+        raise ValueError("A loopback origin or the configured hosted Worker origin is required")
     key = os.environ.get("ATLAS_INGEST_HMAC_KEY", "")
     if len(key) < 32:
         raise ValueError("Local signing key is unavailable")
@@ -56,7 +65,7 @@ def post_local_signed(
         trust_env=False,
         follow_redirects=False,
         timeout=httpx.Timeout(5.0, connect=2.0),
-        headers={"Accept-Encoding": "identity"},
+        headers={"Accept-Encoding": "identity", "User-Agent": "monsoon-atlas-feeds/1"},
     ) as client:
         with client.stream(
             "POST",

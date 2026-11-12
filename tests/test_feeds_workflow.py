@@ -148,11 +148,12 @@ def identity(archive: Path) -> dict:
     return {"archive_sha256": hashlib.sha256(data).hexdigest(), "archive_bytes": len(data)}
 
 
-def test_relay_is_manual_serial_bounded_and_read_only():
+def test_relay_is_scheduled_serial_queued_bounded_and_read_only():
+    """D182: every 15 minutes plus manual bootstrap; queue max keeps the predecessor chain."""
     flow = workflow()
-    text = WORKFLOW.read_text("utf-8")
     triggers = flow[True]  # PyYAML reads the bare `on` key as a boolean.
-    assert set(triggers) == {"workflow_dispatch"}
+    assert set(triggers) == {"schedule", "workflow_dispatch"}
+    assert triggers["schedule"] == [{"cron": "7,22,37,52 * * * *"}]
     assert triggers["workflow_dispatch"]["inputs"] == {
         "bootstrap": {
             "description": triggers["workflow_dispatch"]["inputs"]["bootstrap"]["description"],
@@ -161,15 +162,31 @@ def test_relay_is_manual_serial_bounded_and_read_only():
         }
     }
     assert flow["permissions"] == {"contents": "read", "actions": "read"}
-    assert flow["concurrency"] == {"group": "ka-feeds", "cancel-in-progress": False}
+    assert flow["concurrency"] == {"group": "ka-feeds", "cancel-in-progress": False, "queue": "max"}
     job = flow["jobs"]["relay"]
-    assert (job["runs-on"], job["timeout-minutes"]) == ("ubuntu-24.04", 3)
+    assert (job["runs-on"], job["timeout-minutes"]) == ("ubuntu-24.04", 6)
     assert job["env"]["MODE"] == "${{ inputs.bootstrap && '--bootstrap' || '--discover' }}"
-    assert "secrets." not in text and "atlas.ingest.runner_cycle" not in text
     for step in job["steps"]:
         if "uses" in step:
             name, pin = step["uses"].split("@")
             assert PINS[name] == pin
+
+
+def test_signing_key_reaches_only_the_two_bounded_cycles():
+    steps = relay_steps()
+    with_secret = [s for s in steps if "secrets." in json.dumps(s)]
+    assert [s["id"] for s in with_secret] == ["s09", "s01"]
+    for step, source, deadline in zip(with_secret, ("S09", "S01"), (60, 45), strict=True):
+        assert step["continue-on-error"] is True  # an outage warns, never breaks the chain
+        assert step["env"] == {
+            "ATLAS_INGEST_HMAC_KEY": "${{ secrets.ATLAS_INGEST_HMAC_KEY }}",
+            "ATLAS_HOT_ORIGIN": "${{ vars.ATLAS_HOT_ORIGIN }}",
+        }
+        run = step["run"]
+        assert f"--source {source}" in run and f"--deadline-seconds {deadline}" in run
+        assert "--upload-local" in run and f"held-{source}" in run
+    names = [s.get("id") for s in steps]
+    assert names.index("s01") < names.index("offer")  # checkpoint is offered after both cycles
 
 
 def test_artifact_transport_is_pinned_raw_and_cannot_overwrite():

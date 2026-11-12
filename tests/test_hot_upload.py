@@ -557,3 +557,48 @@ def test_python_signature_and_gzip_pass_actual_worker_authenticate_and_decode(up
         ]
     )
     assert decoded["status"] == "partial"
+
+
+HOSTED = "https://monsoon-atlas-hot.monsoon-atlas.workers.dev"
+
+
+def test_configured_hosted_origin_is_signed_and_reached(uploader, tmp_path, monkeypatch):
+    """D182: the one configured https workers.dev Worker is a trusted destination."""
+    monkeypatch.setenv("ATLAS_HOT_ORIGIN", HOSTED)
+    prepared(tmp_path)
+    seen = []
+
+    def response(request):
+        seen.append(str(request.url))
+        assert request.headers["User-Agent"] == "monsoon-atlas-feeds/1"
+        return httpx.Response(201, json={"status": "stored", "snapshot_id": "a" * 64, "as_of": ""})
+
+    send(uploader, tmp_path, response, origin=HOSTED)
+    assert seen == [HOSTED + "/internal/ingest"]
+
+
+@pytest.mark.parametrize(
+    "origin",
+    [
+        HOSTED + "/",
+        HOSTED + "/internal",
+        "http://monsoon-atlas-hot.monsoon-atlas.workers.dev",
+        "https://evil-hot.monsoon-atlas.workers.dev",
+        "https://monsoon-atlas-hot.monsoon-atlas.workers.dev.evil.example",
+        "https://monsoon-atlas.workers.dev",
+    ],
+)
+def test_other_hosted_origins_fail_before_network(uploader, tmp_path, monkeypatch, origin):
+    monkeypatch.setenv("ATLAS_HOT_ORIGIN", HOSTED)
+    assert (
+        send(uploader, tmp_path, lambda _: pytest.fail("reached network"), origin=origin)["status"]
+        == "failed"
+    )
+
+
+def test_hosted_origin_needs_the_configured_variable(uploader, tmp_path, monkeypatch):
+    monkeypatch.delenv("ATLAS_HOT_ORIGIN", raising=False)
+    assert (
+        send(uploader, tmp_path, lambda _: pytest.fail("reached network"), origin=HOSTED)["status"]
+        == "failed"
+    )

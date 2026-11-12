@@ -1,11 +1,15 @@
-# T251 (child of plan T043): relay the Karnataka feed checkpoint between hosted runs.
-# Manual dispatch only. There is no schedule: GitHub cancels a pending run in a busy
-# concurrency group, and that cancelled run would break the immediate-predecessor chain
-# (D86). Capture and upload to the Worker stay out of this job until gate H05 passes.
-# Actions are pinned to audited commit SHAs; the token can only read.
+# T043 (T251 relay + D182 capture): every 15 minutes, restore the Karnataka feed checkpoint,
+# run one server-admitted S09 cycle and one S01 cycle against the hosted Worker, and relay the
+# committed checkpoint to the next run. `queue: max` keeps up to 100 pending runs, so no pending
+# run is cancelled and the immediate-predecessor chain (D86) holds. A failed source cycle warns
+# but does not fail the job, so one provider outage cannot break the chain. The Worker's D1
+# admission sets the real cadence (S09 15 minutes, S01 6 hours). Actions are pinned to audited
+# commit SHAs; the token can only read; the signing key reaches only the two cycle steps.
 name: feeds
 
 on:
+  schedule:
+    - cron: "7,22,37,52 * * * *"
   workflow_dispatch:
     inputs:
       bootstrap:
@@ -20,11 +24,12 @@ permissions:
 concurrency:
   group: ka-feeds
   cancel-in-progress: false
+  queue: max
 
 jobs:
   relay:
     runs-on: ubuntu-24.04
-    timeout-minutes: 3
+    timeout-minutes: 6
     defaults:
       run:
         shell: bash
@@ -87,7 +92,37 @@ jobs:
             --expected-sha256 "$MANIFEST_SHA256"
       - name: Start the explicitly requested empty chain
         if: ${{ inputs.bootstrap }}
-        run: python -m atlas.ingest.runner_checkpoint runner-bootstrap --store "$STORE"
+        run: |
+          python -m atlas.ingest.runner_checkpoint runner-bootstrap --store "$STORE"
+          mv "$GITHUB_WORKSPACE/.cache/feeds" "$RUNNER_TEMP/held-bootstrap"
+      - name: Capture and upload official CAP alerts (S09)
+        id: s09
+        continue-on-error: true
+        env:
+          ATLAS_INGEST_HMAC_KEY: ${{ secrets.ATLAS_INGEST_HMAC_KEY }}
+          ATLAS_HOT_ORIGIN: ${{ vars.ATLAS_HOT_ORIGIN }}
+        run: |
+          status=0
+          python -m atlas.ingest.runner_cycle --store "$STORE" --source S09             --origin "$ATLAS_HOT_ORIGIN" --upload-local --deadline-seconds 60 || status=$?
+          if [ -d "$GITHUB_WORKSPACE/.cache/feeds" ]; then
+            mv "$GITHUB_WORKSPACE/.cache/feeds" "$RUNNER_TEMP/held-S09"
+          fi
+          [ "$status" -eq 0 ] || echo "::warning::S09 cycle failed; the checkpoint chain continues"
+          exit "$status"
+      - name: Capture and upload the Bengaluru weather point (S01)
+        id: s01
+        continue-on-error: true
+        env:
+          ATLAS_INGEST_HMAC_KEY: ${{ secrets.ATLAS_INGEST_HMAC_KEY }}
+          ATLAS_HOT_ORIGIN: ${{ vars.ATLAS_HOT_ORIGIN }}
+        run: |
+          status=0
+          python -m atlas.ingest.runner_cycle --store "$STORE" --source S01             --origin "$ATLAS_HOT_ORIGIN" --upload-local --deadline-seconds 45 || status=$?
+          if [ -d "$GITHUB_WORKSPACE/.cache/feeds" ]; then
+            mv "$GITHUB_WORKSPACE/.cache/feeds" "$RUNNER_TEMP/held-S01"
+          fi
+          [ "$status" -eq 0 ] || echo "::warning::S01 cycle failed; the checkpoint chain continues"
+          exit "$status"
       - name: Offer the committed checkpoint
         id: offer
         env:

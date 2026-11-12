@@ -505,11 +505,20 @@ rtk proxy powershell -NoProfile -File scripts/feeds.ps1 runner-bootstrap --store
 rtk proxy powershell -NoProfile -File scripts/feeds.ps1 runner-import-zip --download-dir $downloadDir --store .cache/next-run-checkpoints --archive-sha256 $archiveSha256 --archive-bytes $artifactBytes --expected-sha256 $savedManifestSha256
 ```
 
-The hosted job does not capture or upload to the Worker; that waits for the
-H05 capability gate. It has no schedule. GitHub cancels a pending run in a
-busy concurrency group, and a cancelled predecessor stops the next discovery.
-The documented `queue: max` option keeps up to 100 pending runs; test it
-before any schedule is added.
+**Hosted capture and upload (D182, 12 Nov 2026).** The job now runs at minutes
+7, 22, 37 and 52 of every hour and on manual dispatch. After restore it runs one
+S09 cycle (60-second deadline) and one S01 cycle (45 seconds) with
+`runner-cycle --upload-local` against `ATLAS_HOT_ORIGIN`, holding the working
+root aside after each, then offers the committed checkpoint. The Worker's D1
+admission decides what is due (S09 every 15 minutes, S01 every 6 hours); a
+`not_due` cycle resends the retained prepared head. Each cycle step continues
+on error with a warning, so a provider outage cannot fail the job and break the
+predecessor chain. `queue: max` keeps up to 100 pending runs instead of
+cancelling them. The uploader trusts only a loopback origin or the exact
+configured https workers.dev origin. The job limit is 6 minutes (plan: 3)
+because setup and relay are measured separately from the bounded cycles.
+GitHub runs schedules only from the default branch, so nothing runs until this
+workflow is on `main`; the first hosted run must be a manual bootstrap.
 The job keeps the 20 GB free-space reserve and prints runner free space, so a
 small runner disk stops before writing. The first dispatch measures the setup
 time inside the three-minute limit. [GitHub concurrency](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency) · [GitHub upload action](https://github.com/actions/upload-artifact)

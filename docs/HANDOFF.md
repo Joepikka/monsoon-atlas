@@ -707,7 +707,9 @@ M08 is a non-core descriptive 2018 replay (P3).
   one account) and saved `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in
   `.env`. A read-only check passed: `/user/tokens/verify` active, and account,
   Workers scripts, D1 and Pages list calls succeed (0 items each). Nothing was
-  created remotely. **Actions secrets set 12 Nov 2026 (D181):** `ATLAS_INGEST_HMAC_KEY`, `HF_TOKEN`; variables
+  created remotely. **T043 hosted feeds built 12 Nov 2026 (D182):** `feeds.yml` schedule + S09/S01 cycles to the
+  Worker; verified live from this PC. Not running until the workflow is on `main` and a
+  bootstrap dispatch starts the chain. **Actions secrets set 12 Nov 2026 (D181):** `ATLAS_INGEST_HMAC_KEY`, `HF_TOKEN`; variables
   `ATLAS_HOT_ORIGIN`, `HF_ARCHIVE_REPO`; no workflow uses them yet (T043, T044).
   **T042 cloud step done 12 Nov 2026 (D180):** Worker
   `monsoon-atlas-hot.monsoon-atlas.workers.dev` and D1 deployed, empty; redeploy with

@@ -103,6 +103,14 @@ def main() -> None:
     parser.add_argument("--source", required=True, choices=SOURCES)
     parser.add_argument("--max-documents", type=int, choices=range(1, 31), default=30)
     parser.add_argument("--upload-local", action="store_true", help="Prepare and send after save")
+    parser.add_argument(
+        "--deadline-seconds",
+        type=int,
+        choices=range(30, DEADLINE_S + 1),
+        default=DEADLINE_S,
+        metavar="30-150",
+        help="Whole-cycle deadline; the hosted job gives each source a share (D182)",
+    )
     parser.add_argument("--child", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.child:
@@ -134,7 +142,7 @@ def main() -> None:
         if args.upload_local:
             command.append("--upload-local")
         try:
-            result = run_bounded(command, timeout=DEADLINE_S)
+            result = run_bounded(command, timeout=args.deadline_seconds)
         except (OSError, ValueError) as error:
             result = {"status": "failed", "error_type": type(error).__name__}
         result.setdefault("stage", "cycle")
