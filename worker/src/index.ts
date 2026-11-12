@@ -4,6 +4,7 @@ import { claimFeedCheck } from './feed-check.ts';
 import { reply, fallback } from './responses.ts';
 import { answer, LIMITS, type Evidence } from './ask.ts';
 import { PUSH_PATH, pushRegistration } from './push.ts';
+import { EXPORT_PATH, exportSnapshots } from './export.ts';
 
 interface Result<T> { results: T[]; meta: { size_after?: number; rows_written?: number } }
 interface Statement {
@@ -109,11 +110,12 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname === PUSH_PATH) return pushRegistration(request); // always refused (T184, D150)
-    if (!['/internal/ingest', '/internal/feed-check', '/api/v1/current', '/api/v1/ask'].includes(url.pathname)) return reply({ error: 'Not found.' }, 404);
+    if (!['/internal/ingest', '/internal/feed-check', EXPORT_PATH, '/api/v1/current', '/api/v1/ask'].includes(url.pathname)) return reply({ error: 'Not found.' }, 404);
     if (env.CAPABILITY_GATE !== 'verified_free_no_card' || !env.DB) return fallback('Free/no-card capability or database binding has not been verified.');
     try {
       if (url.pathname === '/internal/ingest' && request.method === 'POST' && !url.search) return await ingest(request, env, Date.now());
       if (url.pathname === '/internal/feed-check' && request.method === 'POST' && !url.search) return await claimFeedCheck(request, env, Date.now());
+      if (url.pathname === EXPORT_PATH && request.method === 'POST' && !url.search) return await exportSnapshots(request, env, Date.now());
       if (url.pathname === '/api/v1/current' && request.method === 'GET') return await current(url, env.DB, Date.now());
       if (url.pathname === '/api/v1/ask' && request.method === 'POST' && !url.search) return await ask(request, env.DB, Date.now());
       return reply({ error: 'Unsupported method or query.' }, 405);

@@ -157,3 +157,28 @@ test('source age uses the actual successful fetch, not a later report cutoff',as
   assert.equal(source.wire_sha256,packet.sha256);
   assert.ok(Math.abs(source.age_seconds-Math.floor((before-Date.parse(weather.fetched_at))/1000))<=1);
 });
+
+test('export is signed, read-only, cursor-ordered and returns exact stored bytes',async()=>{
+  const bytes=payload(); const stored=[{id:'b'.repeat(64),source_id:'S09',as_of_ms:5,sha256:'b'.repeat(64),payload:Array.from(bytes)}];
+  const seen=[];
+  const env={CAPABILITY_GATE:'verified_free_no_card',ATLAS_INGEST_HMAC_KEY:key,DB:{prepare(sql){
+    seen.push(sql); if(/INSERT|UPDATE|DELETE/i.test(sql)) throw Error('export must not write');
+    return {bind(...args){this.args=args;return this;},async all(){
+      return sql.includes('capacity')?{results:[{allocated_bytes:123}],meta:{size_after:456}}:{results:stored,meta:{}};
+    }};
+  }}};
+  const path='/internal/export';
+  assert.equal((await worker.fetch(new Request('https://atlas.invalid'+path,{method:'POST',body:'{}'}),env)).status,401);
+  const body=new TextEncoder().encode(JSON.stringify({after_ms:-1,after_id:''}));
+  const response=await worker.fetch(await signed(body,String(Math.floor(Date.now()/1000)),path,'application/json'),env);
+  assert.equal(response.status,200);
+  const value=await response.json();
+  assert.equal(value.rows.length,1); assert.equal(value.more,false);
+  assert.deepEqual(Buffer.from(value.rows[0].payload_gzip_base64,'base64'),bytes);
+  assert.deepEqual(value.next,{after_ms:5,after_id:'b'.repeat(64)});
+  assert.deepEqual(value.capacity,{allocated_bytes:123,size_after:456,cap_bytes:400000000});
+  for(const bad of [{after_ms:-2,after_id:''},{after_ms:0,after_id:'x'},{after_ms:0,after_id:'',limit:5}]){
+    const b=new TextEncoder().encode(JSON.stringify(bad));
+    assert.equal((await worker.fetch(await signed(b,String(Math.floor(Date.now()/1000)),path,'application/json'),env)).status,400);
+  }
+});

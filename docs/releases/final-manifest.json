@@ -82,6 +82,7 @@
     "models/registry/m19.json": "fec91d0f9cf17bf28ef0239e49e4b674e3f6ffd99411942d3846bba4b0596153",
     "models/registry/m20.json": "76dfd0132e62cdf6acff7081801dac2a923c339f3da5ff4989f122b9653cc2bf",
     "reports/rag.md": "0be7c6218f374d586fab8df84571eb96644d6cd87edcb8d23e686ec0c00a3721",
+    "requirements/archive.txt": "a3b51af9717390eadc000d84e6491c99013e071380618d4fc7f3229a175ba1e4",
     "requirements/core.txt": "7c18b4544db087ea67dd4cd1c236e766e4fcd6a8512e9efe6008b4d04b41647c",
     "requirements/dev.txt": "0d97cdfd66d8dee0584c684f4453d242cf35c4778ca029541188bb563a1364bc",
     "requirements/dl.txt": "0e4ea37229316e00945eaf491e9051726be177ae2ffda02556e8b2ca6295326c",

@@ -1,0 +1,3 @@
+# T044 archive upload only (D184): Hugging Face client for the daily hot-snapshot archive.
+-c core.txt
+huggingface-hub==2.4.0

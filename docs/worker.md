@@ -8,7 +8,13 @@ from `.env` (database ID, workers.dev on, `CAPABILITY_GATE = "verified_free_no_c
 and deploys with the pinned Wrangler; the committed `wrangler.toml` stays disabled
 (no database ID, workers.dev off, gate blocked). The store is empty: GET current
 returns 503 with `fallback: static_daily`, and unsigned uploads get 401.
-No snapshot has been uploaded and no schedule is active (T043).
+Feeds run from `.github/workflows/feeds.yml` (T043, D182, D183).
+
+**Export (T044, D184):** signed, read-only `POST /internal/export` with JSON
+`{"after_ms": -1, "after_id": ""}` returns stored rows after that cursor in
+`(as_of_ms, id)` order: exact gzip payload (base64), stored SHA-256, at most 200
+rows or about 2.8 MB of payload per page, plus `capacity` (reserved bytes, D1
+`size_after`, the 400 MB cap). It writes nothing. No purge or delete exists.
 An unavailable capability/binding returns HTTP 503 with `fallback: static_daily`;
 it does not advertise a working current feed. The browser retains the dated
 approved static snapshot or shows the unavailable view.

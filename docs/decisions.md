@@ -2,6 +2,33 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D184 — T044 verified daily archive, without purge (12 Nov 2026).**
+  Owner, in chat: "continue" (after the agent proposed T044). The Worker gains a signed, read-only
+  `POST /internal/export` (cursor pages, exact stored gzip bytes, capacity figures).
+  `atlas.data.hot_export` checks that every payload gunzips to bytes whose SHA-256 equals the row
+  ID and stored digest, writes one immutable zstd Parquet per source per run (named by its
+  SHA-256), commits the files and `hot/manifest.json` (cursor, file hashes, snapshot IDs, licence
+  notes, capacity history and days-to-cap forecast) in one commit to the owner's private Hugging
+  Face dataset, then downloads each file at that commit and checks its hash. `archive.yml` runs
+  daily at 02:47 UTC; it masks the repository name, because Actions logs are public, and the CLI
+  prints only its own error text. `huggingface-hub` 2.4.0 (plan section 5 pin) comes from a new
+  hash-locked `requirements/archive.txt` (constrained to core; no torch). First real run: 3
+  snapshots (2 S09, 1 S01) archived and read back. **Purge is not built.** The Worker's cap guard
+  takes the larger of reserved bytes and D1's file size, and SQLite does not shrink the file
+  after deletes, so deleting rows would not restore headroom without a guard change. The
+  manifest's forecast shows when the 400 MB cap nears; at the cap, writes stop and nothing is
+  lost (T229). A purge with a matching guard change is a separate decision.
+
+- **D183 — PR 5 merged to main; hosted feeds started (12 Nov 2026).**
+  Owner, in chat: "Merge and start it". Before merging, only `feeds.yml` had a schedule; `ci.yml`,
+  `web.yml` and `worker.yml` run on push or pull request, `monitor.yml` and `tiles.yml` only by
+  hand. PR Joepikka/monsoon-atlas#5 was marked ready and merged at 10:45 UTC (merge commit
+  `fae8260`). Bootstrap dispatch run 43203183286 passed in 1 min 8 s: bootstrapped an empty
+  chain, S09 captured and stored on the Worker, S01 `not_due` (the 09:27 UTC check from this PC
+  used the six-hour slot), checkpoint 292,744 bytes offered for the next run. No scheduled run
+  had started by 11:33 UTC; GitHub registers a new workflow's schedule with delay. The public
+  website stays off until the T046 gate and release approval.
+
 - **D182 — T043 hosted capture and upload to the Worker (12 Nov 2026).**
   Owner, in chat: "Build T043". `atlas.ingest.upload.signing_key` now also trusts the hosted
   origin, but only when it equals `ATLAS_HOT_ORIGIN` exactly and is an https workers.dev origin
