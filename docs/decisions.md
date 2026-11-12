@@ -12,7 +12,7 @@
   checks its hash and refuses anything fetched after the cutoff. A failed or empty hot fetch
   raises before any pointer is written. Deviations: (1) the API description is
   `docs/api/openapi.json`, copied into each release, because `web/public` holds no data (D162);
-  (2) CI has no raw files, so derived inputs are committed in `data/static/ka/` (S17 district
+  (2) CI has no raw files, so derived inputs are committed in `configs/static/ka/` (S17 district
   points and S18 facilities, both ODbL, credited); (3) `daily.yml` (02:17 UTC) builds the release
   and archives it to the private Hugging Face dataset with read-back, and does **not** deploy:
   Pages waits for H11 and the T046 gate; (4) no live model predictions are published (M05 stays

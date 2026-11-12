@@ -138,7 +138,7 @@ def test_replay_refuses_data_from_after_the_cutoff(tmp_path):
 
 
 def test_static_inputs_and_api_description_are_committed():
-    static = ROOT / "data/static/ka"
+    static = ROOT / "configs/static/ka"
     rows = json.loads((static / "places.json").read_text("utf-8"))["rows"]
     assert len(rows) == 30 and all(
         r["kind"] == "district" and r["source_id"] == "S17" for r in rows

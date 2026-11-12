@@ -153,7 +153,7 @@ def write_release(out: Path, release: dict, approval: str) -> dict:
     return pointer
 
 
-STATIC = ROOT / "data/static/ka"
+STATIC = ROOT / "configs/static/ka"
 
 
 def write_static_inputs(facilities: Path) -> None:  # pragma: no cover - needs data/raw
