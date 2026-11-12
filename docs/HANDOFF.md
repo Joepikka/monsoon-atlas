@@ -707,7 +707,9 @@ M08 is a non-core descriptive 2018 replay (P3).
   one account) and saved `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in
   `.env`. A read-only check passed: `/user/tokens/verify` active, and account,
   Workers scripts, D1 and Pages list calls succeed (0 items each). Nothing was
-  created remotely. H06 (`HF_TOKEN`) still waits for the archive repository.
+  created remotely. **H06 done 12 Nov 2026 (D179):** the owner created a private Hugging Face
+  dataset (id in `.env` as `HF_ARCHIVE_REPO`) and a fine-grained `HF_TOKEN` scoped to it only
+  (read and write; no global scopes), checked read-only with `whoami-v2`.
 
 - **S34 OCR sample reviewed (D102, 8 Nov 2026):** the owner delegated the review;
   the agent read all eight crops with their full rows and headers. Records are

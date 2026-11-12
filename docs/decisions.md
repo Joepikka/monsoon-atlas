@@ -2,6 +2,14 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D179 — H06: private Hugging Face archive repository and a scoped token (12 Nov 2026).**
+  The owner created a **private** dataset repository for the T045 archive (private until H11
+  approves any public subset) and a fine-grained token limited to that repository: read and
+  write contents, no user-wide or other scopes. Read-only check (`/api/whoami-v2`): role
+  fineGrained, no global scopes, one scoped repository; the repository reports `private: true`.
+  The token is `HF_TOKEN` and the repository id `HF_ARCHIVE_REPO` in `.env`; neither is committed,
+  so the owner's account name stays out of the public repository. Nothing was uploaded.
+
 - **D178 — Owner skips the S23 publisher email (12 Nov 2026).**
   Owner, in chat: "lets skip email i do not think any one is going to respnd". The data.gov.in
   CDO request for the price denominator is not sent. S23 stays blocked (D58, D173), and with it

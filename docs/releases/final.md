@@ -264,7 +264,7 @@ Open steps with an H number, from [ka.md](ka.md), [ka-v1.md](ka-v1.md), [kl.md](
 |---|---|---|---|
 | H04 | Completes the Delhi Open Transit Data registration (key, Terms, static GTFS) | S38, T148 re-run, M12, M13, F012, F032 | dl.md, HANDOFF section 8 |
 | H05 | Creates the Cloudflare API token and records free, no-card status | T042 to T045, Workers AI for Ask, F053, F056, F057, F058, F064 | ka.md, account-setup.md |
-| H06 | Creates a Hugging Face write token for the archive repository | T045 (archive), F053, F057 | ka.md, account-setup.md |
+| H06 | Done 12 Nov 2026 (D179): private archive dataset and a token scoped to it | T045 (archive), F053, F057 | ka.md, account-setup.md |
 | H08 | Creates the Telegram bot and public channel, stores the token | S39, T083, T084, F050 | ka-v1.md, HANDOFF section 8 |
 | H09 | Done 12 Nov 2026 (D176): NASA FIRMS MAP_KEY saved in `.env` | S25, T075, T076, F015 | ka-v1.md, HANDOFF section 8 |
 | H10 | Kaggle sign-in (optional) | S35 re-check, M08, free GPU for M17 and M19 | kl.md, HANDOFF section 8 |

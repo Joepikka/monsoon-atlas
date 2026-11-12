@@ -15,7 +15,8 @@ without a card. There is no domain purchase or transfer step.
    entry. Add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` using the names in
    `.env.example`. Save the actual token here, not in chat. The file is ignored
    by Git. Account ID is available from your Cloudflare account dashboard.
-3. H06 can wait until the archive repository is defined. In [Hugging Face token
+3. Done 12 Nov 2026 (D179): a private dataset repository and a fine-grained token scoped to it.
+   For a new owner: H06 can wait until the archive repository is defined. In [Hugging Face token
    settings](https://huggingface.co/settings/tokens), use a fine-grained write
    token restricted to that repository and save it as `HF_TOKEN` in `.env`.
    [HF's official guidance](https://huggingface.co/docs/hub/security-tokens)
