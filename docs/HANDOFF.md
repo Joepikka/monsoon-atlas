@@ -707,7 +707,14 @@ M08 is a non-core descriptive 2018 replay (P3).
   one account) and saved `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in
   `.env`. A read-only check passed: `/user/tokens/verify` active, and account,
   Workers scripts, D1 and Pages list calls succeed (0 items each). Nothing was
-  created remotely. **T045 releases built 12 Nov 2026 (D185):** `python -m atlas.publish` (daily.yml 02:17 UTC)
+  created remotely. **Karnataka live 12 Nov 2026 (D187-D194):** https://monsoon-atlas.pages.dev (owner-approved).
+  Pages: map + Place Lens (Nearby: 4 per kind, H/P/F map pins, Google Maps links), warning
+  archive, bus access (opt-in squares), monsoon tracker (ERA5; normals pending the backfill:
+  `python -m atlas.analysis.district_monsoon backfill`, then `normals`), Ask, Accuracy, Climate.
+  Redeploy: `scripts/deploy_site.py`; `daily.yml` deploys daily once on `main`. Gate: only H14
+  (case-study review) open; C1 and prices waived (D190). Feeds schedule: `queue: max` removed
+  (D193) after no scheduled run fired.
+  **T045 releases built 12 Nov 2026 (D185):** `python -m atlas.publish` (daily.yml 02:17 UTC)
   builds pending-approval releases and archives them privately; replay with `atlas.replay`.
   **T044 archive built 12 Nov 2026 (D184):** daily `archive.yml` exports verified snapshots to
   the private HF dataset (first run: 3 archived, read back); no purge yet (cap-guard note in D184).
