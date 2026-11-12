@@ -1,0 +1,34 @@
+table Lorenz
+	lineageTag: 5e1af203-610a-523e-88ba-dc665d4081f0
+
+	measure 'Share of Total Distance' = AVERAGE('Lorenz'[distance_share])
+		formatString: 0%
+		lineageTag: 14e12742-4ad0-528f-b3b5-173d7f2eeb3c
+
+	measure 'Equal Access Line' = AVERAGE('Lorenz'[people_share])
+		formatString: 0%
+		lineageTag: be682fa0-1107-507e-87db-a31081ba7313
+
+	column people_share
+		dataType: double
+		formatString: 0.000
+		lineageTag: 29b154be-9b51-560e-b462-1a1072cdd1d8
+		summarizeBy: none
+		sourceColumn: people_share
+
+	column distance_share
+		dataType: double
+		formatString: 0.000
+		lineageTag: 0df56959-89a9-58a5-9652-7bf2d399b4b4
+		summarizeBy: none
+		sourceColumn: distance_share
+
+	partition Lorenz = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "lorenz.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"people_share", type number}, {"distance_share", type number}}, "en-US")
+				in
+				    Typed

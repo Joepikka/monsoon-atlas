@@ -1,0 +1,128 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "selection",
+  "position": {
+    "x": 24,
+    "y": 410,
+    "z": 4000,
+    "width": 600,
+    "height": 298,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Interval Selection"
+                    }
+                  },
+                  "Property": "window_years"
+                }
+              },
+              "queryRef": "Interval Selection.window_years",
+              "nativeQueryRef": "window_years",
+              "displayName": "Window, years"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Interval Selection"
+                    }
+                  },
+                  "Property": "by_season"
+                }
+              },
+              "queryRef": "Interval Selection.by_season",
+              "nativeQueryRef": "by_season",
+              "displayName": "By season"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Interval Selection"
+                    }
+                  },
+                  "Property": "coverage_2010_2019"
+                }
+              },
+              "queryRef": "Interval Selection.coverage_2010_2019",
+              "nativeQueryRef": "coverage_2010_2019",
+              "displayName": "Coverage 2010-2019"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Interval Selection"
+                    }
+                  },
+                  "Property": "mean_width"
+                }
+              },
+              "queryRef": "Interval Selection.mean_width",
+              "nativeQueryRef": "mean_width",
+              "displayName": "Mean width, SPI"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Interval Selection"
+                    }
+                  },
+                  "Property": "chosen"
+                }
+              },
+              "queryRef": "Interval Selection.chosen",
+              "nativeQueryRef": "chosen",
+              "displayName": "Chosen"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Interval rule chosen on 2010-2019 only, before any test year'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

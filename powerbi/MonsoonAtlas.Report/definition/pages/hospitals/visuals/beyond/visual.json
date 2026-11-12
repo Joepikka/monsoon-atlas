@@ -3,11 +3,11 @@
   "name": "beyond",
   "position": {
     "x": 24,
-    "y": 110,
-    "z": 2000,
-    "width": 700,
-    "height": 600,
-    "tabOrder": 2000
+    "y": 220,
+    "z": 7000,
+    "width": 400,
+    "height": 488,
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -51,6 +51,21 @@
           ]
         }
       }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     "visualContainerObjects": {
       "title": [

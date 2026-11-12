@@ -1,0 +1,88 @@
+table 'Statewide Access'
+	lineageTag: bea645cb-ef55-5f9d-9186-5f48c31ff283
+
+	measure 'Hospitals Mapped' = MAX('Statewide Access'[hospitals])
+		formatString: #,0
+		lineageTag: b37b2f75-906c-53a5-992d-e3eeeda9a4d7
+
+	measure 'Statewide Median km' = MAX('Statewide Access'[state_median_km])
+		formatString: 0.0
+		lineageTag: 1621468b-620b-5b05-82a7-5dd5ca489702
+
+	measure 'Statewide 90th Percentile km' = MAX('Statewide Access'[state_p90_km])
+		formatString: 0.0
+		lineageTag: 504c382a-1a1f-55cc-bad7-16e08de13293
+
+	measure 'Statewide Beyond 10 km' = MAX('Statewide Access'[state_share_10km])
+		formatString: 0.0%
+		lineageTag: 633b7f5f-2a66-5931-aa3f-2cb01af1a6ea
+
+	measure 'Access Gini' = MAX('Statewide Access'[gini])
+		formatString: 0.000
+		lineageTag: 2f4b689d-6819-5779-b761-60cd85e21cc6
+
+	column hospitals
+		dataType: int64
+		formatString: 0
+		lineageTag: 5fcb4da0-edbd-515b-b951-7dfdbe52e666
+		summarizeBy: none
+		sourceColumn: hospitals
+
+	column state_people
+		dataType: int64
+		formatString: 0
+		lineageTag: a8760c6a-bc6f-57d1-ad4a-9f64247be8a2
+		summarizeBy: none
+		sourceColumn: state_people
+
+	column state_mean_km
+		dataType: double
+		formatString: 0.000
+		lineageTag: 23d96508-1d20-54f7-a98e-6a175b2c9b4c
+		summarizeBy: none
+		sourceColumn: state_mean_km
+
+	column state_median_km
+		dataType: double
+		formatString: 0.000
+		lineageTag: 59203ea4-5e8c-50c6-af75-f162c5201328
+		summarizeBy: none
+		sourceColumn: state_median_km
+
+	column state_p90_km
+		dataType: double
+		formatString: 0.000
+		lineageTag: 977aaa16-9036-582e-9bd1-50b33fd26f8e
+		summarizeBy: none
+		sourceColumn: state_p90_km
+
+	column state_share_5km
+		dataType: double
+		formatString: 0.000
+		lineageTag: 936160a9-382f-5f47-b76b-842573adee52
+		summarizeBy: none
+		sourceColumn: state_share_5km
+
+	column state_share_10km
+		dataType: double
+		formatString: 0.000
+		lineageTag: 4e878613-ca28-5ddd-a453-1f0f6c8df20a
+		summarizeBy: none
+		sourceColumn: state_share_10km
+
+	column gini
+		dataType: double
+		formatString: 0.000
+		lineageTag: 3313dc55-81fe-5e18-bc71-a485ca77e67c
+		summarizeBy: none
+		sourceColumn: gini
+
+	partition 'Statewide Access' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "statewide_access.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"hospitals", Int64.Type}, {"state_people", Int64.Type}, {"state_mean_km", type number}, {"state_median_km", type number}, {"state_p90_km", type number}, {"state_share_5km", type number}, {"state_share_10km", type number}, {"gini", type number}}, "en-US")
+				in
+				    Typed

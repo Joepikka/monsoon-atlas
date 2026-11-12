@@ -1,0 +1,121 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "evidence",
+  "position": {
+    "x": 876,
+    "y": 108,
+    "z": 6000,
+    "width": 380,
+    "height": 380,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "scatterChart",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rain Trend"
+                    }
+                  },
+                  "Property": "district"
+                }
+              },
+              "queryRef": "Rain Trend.district",
+              "nativeQueryRef": "district"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rain Trend"
+                    }
+                  },
+                  "Property": "significance"
+                }
+              },
+              "queryRef": "Rain Trend.significance",
+              "nativeQueryRef": "significance"
+            }
+          ]
+        },
+        "X": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rain Trend"
+                    }
+                  },
+                  "Property": "Sen Slope"
+                }
+              },
+              "queryRef": "Rain Trend.Sen Slope",
+              "nativeQueryRef": "Sen Slope"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rain Trend"
+                    }
+                  },
+                  "Property": "BH q Value"
+                }
+              },
+              "queryRef": "Rain Trend.BH q Value",
+              "nativeQueryRef": "BH q Value"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Effect size against evidence (q below 0.05 is significant)'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

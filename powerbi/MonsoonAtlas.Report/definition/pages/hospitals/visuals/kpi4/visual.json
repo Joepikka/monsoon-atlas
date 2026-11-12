@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "kpi4",
+  "position": {
+    "x": 1022,
+    "y": 108,
+    "z": 6000,
+    "width": 234,
+    "height": 96,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Statewide Access"
+                    }
+                  },
+                  "Property": "Access Gini"
+                }
+              },
+              "queryRef": "Statewide Access.Access Gini",
+              "nativeQueryRef": "Access Gini",
+              "displayName": "Gini of distance"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

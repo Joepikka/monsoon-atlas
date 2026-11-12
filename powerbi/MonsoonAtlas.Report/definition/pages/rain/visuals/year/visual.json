@@ -3,10 +3,10 @@
   "name": "year",
   "position": {
     "x": 24,
-    "y": 110,
+    "y": 108,
     "z": 2000,
-    "width": 200,
-    "height": 200,
+    "width": 180,
+    "height": 150,
     "tabOrder": 2000
   },
   "visual": {

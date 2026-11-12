@@ -9,6 +9,10 @@ table 'Rain Trend'
 		formatString: 0
 		lineageTag: e26944ed-2f98-5f7d-9c4c-1e1809f1e044
 
+	measure 'BH q Value' = AVERAGE('Rain Trend'[fdr_q])
+		formatString: 0.000
+		lineageTag: 9aded1d4-c5a0-51e7-b8b1-ee5e5e3a4d30
+
 	column district
 		dataType: string
 		lineageTag: 06ce5c09-e9b0-586f-bb12-d53e1169a28b

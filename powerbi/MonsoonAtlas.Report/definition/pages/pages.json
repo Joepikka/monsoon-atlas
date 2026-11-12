@@ -3,10 +3,13 @@
   "pageOrder": [
     "overview",
     "trends",
+    "rain",
     "hospitals",
     "bus",
     "accuracy",
-    "rain",
+    "reliability",
+    "spatial",
+    "quality",
     "limits"
   ],
   "activePageName": "overview"

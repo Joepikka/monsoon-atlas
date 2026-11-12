@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
   "name": "access",
   "position": {
-    "x": 740,
-    "y": 110,
-    "z": 3000,
-    "width": 516,
-    "height": 600,
-    "tabOrder": 3000
+    "x": 876,
+    "y": 220,
+    "z": 10000,
+    "width": 380,
+    "height": 488,
+    "tabOrder": 10000
   },
   "visual": {
     "visualType": "tableEx",
@@ -69,12 +69,27 @@
                       "Entity": "Hospital Access"
                     }
                   },
+                  "Property": "share_beyond_5km"
+                }
+              },
+              "queryRef": "Hospital Access.share_beyond_5km",
+              "nativeQueryRef": "share_beyond_5km",
+              "displayName": "Over 5 km"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hospital Access"
+                    }
+                  },
                   "Property": "share_beyond_10km"
                 }
               },
               "queryRef": "Hospital Access.share_beyond_10km",
               "nativeQueryRef": "share_beyond_10km",
-              "displayName": "Share > 10 km"
+              "displayName": "Over 10 km"
             }
           ]
         }

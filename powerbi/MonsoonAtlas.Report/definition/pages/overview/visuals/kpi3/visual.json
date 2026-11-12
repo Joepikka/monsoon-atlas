@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "kpi3",
+  "position": {
+    "x": 648,
+    "y": 108,
+    "z": 5000,
+    "width": 192,
+    "height": 104,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rain Trend"
+                    }
+                  },
+                  "Property": "Significant Districts"
+                }
+              },
+              "queryRef": "Rain Trend.Significant Districts",
+              "nativeQueryRef": "Significant Districts",
+              "displayName": "Districts with a rain rise"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -3,10 +3,10 @@
   "name": "sig",
   "position": {
     "x": 24,
-    "y": 110,
+    "y": 108,
     "z": 2000,
-    "width": 220,
-    "height": 200,
+    "width": 200,
+    "height": 140,
     "tabOrder": 2000
   },
   "visual": {

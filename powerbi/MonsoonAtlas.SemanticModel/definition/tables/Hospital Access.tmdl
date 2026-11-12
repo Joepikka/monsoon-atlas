@@ -9,6 +9,22 @@ table 'Hospital Access'
 		formatString: #,0
 		lineageTag: a1aeaf89-5075-5e1c-ac4c-59cdbe192f30
 
+	measure 'Median Distance' = AVERAGE('Hospital Access'[median_km])
+		formatString: 0.0
+		lineageTag: d287bbcd-6a4d-59de-8679-31f5ac0b00b4
+
+	measure 'Share Beyond 5 km' = AVERAGE('Hospital Access'[share_beyond_5km])
+		formatString: 0.0%
+		lineageTag: 23ddee13-df65-537e-a286-a0349c19dc62
+
+	measure 'Share Beyond 10 km' = AVERAGE('Hospital Access'[share_beyond_10km])
+		formatString: 0.0%
+		lineageTag: 1cfab484-f5b5-560e-969f-f1020200d0f6
+
+	measure 'District People' = SUM('Hospital Access'[people])
+		formatString: #,0
+		lineageTag: 69720efc-12ea-5b9c-ab10-1ba64bf6e6a5
+
 	column district
 		dataType: string
 		lineageTag: ce214494-b4d4-5d5e-b7ce-0f24419efe41

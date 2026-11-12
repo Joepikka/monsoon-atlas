@@ -1,0 +1,36 @@
+table 'Gauge Stations'
+	lineageTag: 9bfb043b-c9a9-5e84-96c5-d9128b66d630
+
+	measure 'Gauge Count' = SUM('Gauge Stations'[stations])
+		formatString: #,0
+		lineageTag: 837828dc-49ce-5631-9059-d034b0b5145b
+
+	column district
+		dataType: string
+		lineageTag: 2a95ffb6-15bf-5595-896c-bafd8ea03789
+		summarizeBy: none
+		sourceColumn: district
+
+	column stations
+		dataType: int64
+		formatString: 0
+		lineageTag: c179cfa7-f7cd-50ba-8bfe-c506d47e2dde
+		summarizeBy: none
+		sourceColumn: stations
+
+	column with_value
+		dataType: int64
+		formatString: 0
+		lineageTag: 27e8538e-7e15-5c65-89c7-95d79593b869
+		summarizeBy: none
+		sourceColumn: with_value
+
+	partition 'Gauge Stations' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "gauge_stations.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"district", type text}, {"stations", Int64.Type}, {"with_value", Int64.Type}}, "en-US")
+				in
+				    Typed

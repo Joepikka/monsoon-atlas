@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "kpi2",
+  "position": {
+    "x": 523,
+    "y": 108,
+    "z": 4000,
+    "width": 234,
+    "height": 96,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Statewide Access"
+                    }
+                  },
+                  "Property": "Statewide 90th Percentile km"
+                }
+              },
+              "queryRef": "Statewide Access.Statewide 90th Percentile km",
+              "nativeQueryRef": "Statewide 90th Percentile km",
+              "displayName": "90th percentile km"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

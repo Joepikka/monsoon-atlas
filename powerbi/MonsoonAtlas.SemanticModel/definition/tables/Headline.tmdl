@@ -10,6 +10,7 @@ table Headline
 
 	column metric
 		dataType: string
+		sortByColumn: order
 		lineageTag: 514e028e-2009-5d54-baa4-6b6e14db6fba
 		summarizeBy: none
 		sourceColumn: metric

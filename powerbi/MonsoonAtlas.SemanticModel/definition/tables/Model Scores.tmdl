@@ -1,0 +1,35 @@
+table 'Model Scores'
+	lineageTag: 033eda6c-1db1-55a3-8ff8-71b23906c150
+
+	measure 'Score Value' = AVERAGE('Model Scores'[value])
+		formatString: 0.000
+		lineageTag: 543c1054-3cbb-57b0-97d9-fcbda979be1f
+
+	column score
+		dataType: string
+		lineageTag: 614a5bea-5e2e-5508-aef4-1c94b55f5f14
+		summarizeBy: none
+		sourceColumn: score
+
+	column model
+		dataType: string
+		lineageTag: 9d76b5a2-ac62-51d9-9624-b6ccbb377474
+		summarizeBy: none
+		sourceColumn: model
+
+	column value
+		dataType: double
+		formatString: 0.000
+		lineageTag: 6d03dc37-6f9e-5f4c-8001-a1afb1bfc97a
+		summarizeBy: none
+		sourceColumn: value
+
+	partition 'Model Scores' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "model_scores.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"score", type text}, {"model", type text}, {"value", type number}}, "en-US")
+				in
+				    Typed

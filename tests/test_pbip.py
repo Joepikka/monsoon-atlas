@@ -60,12 +60,12 @@ def test_every_project_json_parses():
         json.loads(p.read_text("utf-8"))
 
 
-def test_seven_karnataka_pages_in_order():
+def test_ten_karnataka_pages_in_order():
     pages = json.loads(
         (PROJECT / "MonsoonAtlas.Report/definition/pages/pages.json").read_text("utf-8")
     )
-    order = ["overview", "trends", "hospitals", "bus", "accuracy", "rain", "limits"]
-    assert pages["pageOrder"] == order  # D197
+    order = ["overview", "trends", "rain", "hospitals", "bus", "accuracy", "reliability"]
+    assert pages["pageOrder"] == [*order, "spatial", "quality", "limits"]  # D197, D198
 
 
 def visuals():
@@ -159,3 +159,55 @@ def test_no_measure_shares_a_name_with_any_column():
     measures = [m.lower() for _, _, _, ms in bp.TABLES.values() for m, *_ in ms]
     assert len(measures) == len(set(measures))
     assert not set(measures) & columns, set(measures) & columns
+
+
+def test_d198_tables_are_copies_of_committed_results():
+    def rows(name):
+        return list(csv.DictReader((bp.DATA / name).open(encoding="utf-8")))
+
+    cells = rows("bus_cells.csv")
+    share = sum(float(r["covered_population"]) for r in cells) / sum(
+        float(r["population"]) for r in cells
+    )
+    assert round(share, 4) == 0.6534 and len(cells) <= 2450
+    assert set(cells[0]) == {
+        "cell_id",
+        "lon",
+        "lat",
+        "population",
+        "covered_population",
+        "band",
+        "band_order",
+    }
+    lorenz = rows("lorenz.csv")
+    assert lorenz[0] == {"people_share": "0.0", "distance_share": "0.0"}
+    assert lorenz[-1] == {"people_share": "1.0", "distance_share": "1.0"}
+    assert rows("statewide_access.csv")[0]["gini"] == "0.4798"
+    mae = {r["model"]: r["mae"] for r in rows("model_error.csv") if r["period"].startswith("2020")}
+    assert mae == {
+        "persistence (baseline)": "0.808",
+        "climatology": "1.053",
+        "M05 ridge": "0.732",
+        "LightGBM challenger": "0.722",
+    }
+    assert [r["passed"] for r in rows("model_gates.csv")] == ["yes"] * 5
+    looks = rows("interval_check.csv")
+    assert [r["result"] for r in looks].count("inside 75-85%") == 1  # only persistence, never M05
+    assert [r["chosen"] for r in rows("interval_selection.csv")].count("yes") == 1
+    moran = rows("moran.csv")
+    assert len(moran) == 60 and sum(r["significant"] == "yes" for r in moran) == 57
+    assert sum(int(r["stations"]) for r in rows("gauge_stations.csv")) == 5266
+
+
+def test_cards_and_sorts_point_at_real_fields():
+    for page, v in visuals():
+        sort = v["visual"].get("query", {}).get("sortDefinition")
+        if v["visual"]["visualType"] == "card":
+            assert len(v["visual"]["query"]["queryState"]["Values"]["projections"]) == 1
+        if sort:
+            field = next(iter(sort["sort"][0]["field"].values()))
+            entity, prop = field["Expression"]["SourceRef"]["Entity"], field["Property"]
+            assert prop in {c for c, _ in bp.TABLES[entity][2]}, (page, entity, prop)
+    for (table, col), by in bp.SORT_BY.items():
+        cols = {c for c, _ in bp.TABLES[table][2]}
+        assert {col, by} <= cols, (table, col, by)

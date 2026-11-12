@@ -1,0 +1,45 @@
+table 'Interval Selection'
+	lineageTag: 0ca78439-e46a-5d6a-a025-df676650dcf3
+
+	column window_years
+		dataType: int64
+		formatString: 0
+		lineageTag: 075e184f-dc7c-5f08-8350-c368df4fab08
+		summarizeBy: none
+		sourceColumn: window_years
+
+	column by_season
+		dataType: string
+		lineageTag: c5173429-bf0f-556e-a76f-620b9ae6a931
+		summarizeBy: none
+		sourceColumn: by_season
+
+	column coverage_2010_2019
+		dataType: double
+		formatString: 0.000
+		lineageTag: 7d364eeb-ac67-50eb-8009-24185ec0d6ab
+		summarizeBy: none
+		sourceColumn: coverage_2010_2019
+
+	column mean_width
+		dataType: double
+		formatString: 0.000
+		lineageTag: 1a67f9b1-5731-546e-be76-d12f466f051b
+		summarizeBy: none
+		sourceColumn: mean_width
+
+	column chosen
+		dataType: string
+		lineageTag: 4c20697c-8063-56e0-b867-c3f32c8eb0b6
+		summarizeBy: none
+		sourceColumn: chosen
+
+	partition 'Interval Selection' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "interval_selection.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"window_years", Int64.Type}, {"by_season", type text}, {"coverage_2010_2019", type number}, {"mean_width", type number}, {"chosen", type text}}, "en-US")
+				in
+				    Typed

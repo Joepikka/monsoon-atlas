@@ -1,0 +1,46 @@
+table 'Model Gates'
+	lineageTag: 448f92b6-642d-5d06-855f-e3dd4a078e0c
+
+	column order
+		dataType: int64
+		formatString: 0
+		lineageTag: fdf4b896-f84a-5f0f-ac88-c74db619b8fa
+		summarizeBy: none
+		sourceColumn: order
+
+	column check
+		dataType: string
+		sortByColumn: order
+		lineageTag: ef72953d-587e-5ecc-9feb-509f3f6fb21d
+		summarizeBy: none
+		sourceColumn: check
+
+	column value
+		dataType: double
+		formatString: 0.000
+		lineageTag: be62b9c3-42ff-543f-a0e5-7b55a6de376a
+		summarizeBy: none
+		sourceColumn: value
+
+	column reference
+		dataType: double
+		formatString: 0.000
+		lineageTag: 006310c9-db25-5056-95d9-fdef0c885549
+		summarizeBy: none
+		sourceColumn: reference
+
+	column passed
+		dataType: string
+		lineageTag: 041d37b2-5c6a-549b-b5ea-d56eca71dcac
+		summarizeBy: none
+		sourceColumn: passed
+
+	partition 'Model Gates' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "model_gates.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"order", Int64.Type}, {"check", type text}, {"value", type number}, {"reference", type number}, {"passed", type text}}, "en-US")
+				in
+				    Typed

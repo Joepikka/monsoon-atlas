@@ -20,7 +20,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Monsoon Atlas, a Rs 0 open-data project. Every figure is derived from committed, licensed data with its limits stated; blocked sources are shown as blocked, never as zero.",
+                    "value": "Monsoon Atlas, a Rs 0 open-data project. Every figure comes from committed, licensed data; blocked sources are shown as blocked, never as zero. Use the tabs below for each analysis.",
                     "textStyle": {
                       "fontSize": "11pt",
                       "fontWeight": "normal",

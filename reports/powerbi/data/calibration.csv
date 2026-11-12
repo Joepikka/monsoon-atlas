@@ -1,0 +1,3 @@
+season,district_months,observed_drought,mean_probability
+monsoon (Jun-Sep),600,0.045,0.0707
+rest of year,1200,0.0625,0.0898

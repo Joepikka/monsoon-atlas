@@ -2,6 +2,22 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D198 — Power BI report expanded to ten pages (12 Nov 2026).**
+  Owner, in chat: "make it better more graphs ... a whole good big dashboard". The report now has
+  ten pages and 79 visuals: KPI cards on Overview, Hospital access, Bus access, Spatial errors and
+  Data quality; a Sen slope against BH q scatter; a district-by-year gauge rain matrix and a
+  coefficient-of-variation bar; a Lorenz curve; a 1 km cell scatter of Bengaluru bus access
+  (lon, lat, people and share only, as D191 allows); M05 against persistence, climatology and the
+  LightGBM challenger (not promoted, D41) with its bootstrap interval, promotion gates and Brier and
+  CRPS scores; a Forecast reliability page (calibration by season, every 80% interval look against
+  the 75-85% gate, and the D97 rule search); a Spatial errors page (Moran's I by month, variogram);
+  and a Data quality page (S08 completeness, S29 gauges per district). Twelve new CSVs are copied
+  from committed reports and the M05 registry; tests check them against their sources. No trips
+  per hour are shown (D191 allows no times). The 2025 tracker in `climate.json` is the Kerala box,
+  so it is left out of this Karnataka report. A sort column orders the bands, gates and interval
+  looks; a light theme adds card borders and a grey page. All 93 report JSON files pass the
+  published PBIR schemas (checked offline with jsonschema, not committed as a dependency).
+
 - **D197 — Karnataka Power BI report rebuilt around the analyses (12 Nov 2026).**
   Owner, in chat: Power BI Desktop is installed and open; "this is mainly a data project".
   `powerbi/build_pbip.py` now writes seven Karnataka pages: Overview (headline table), Rain trends

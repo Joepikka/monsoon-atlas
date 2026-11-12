@@ -7,6 +7,7 @@ table 'Bus Access'
 
 	column band
 		dataType: string
+		sortByColumn: band_order
 		lineageTag: 667724bc-f42a-518a-9b04-166190d41f4c
 		summarizeBy: none
 		sourceColumn: band

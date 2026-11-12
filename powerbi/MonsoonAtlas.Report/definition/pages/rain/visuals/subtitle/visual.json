@@ -20,7 +20,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "KSNDMC rain-gauge annual district totals (S29, public domain), 29 districts with like-for-like years. Gauge totals only.",
+                    "value": "KSNDMC rain-gauge annual district totals (S29, public domain), 29 districts, the four years with like-for-like coverage (2020, 2021, 2022, 2024). Gauge totals only.",
                     "textStyle": {
                       "fontSize": "11pt",
                       "fontWeight": "normal",

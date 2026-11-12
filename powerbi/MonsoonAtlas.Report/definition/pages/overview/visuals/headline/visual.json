@@ -3,11 +3,11 @@
   "name": "headline",
   "position": {
     "x": 24,
-    "y": 110,
-    "z": 2000,
-    "width": 1232,
-    "height": 260,
-    "tabOrder": 2000
+    "y": 224,
+    "z": 8000,
+    "width": 600,
+    "height": 196,
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "tableEx",
@@ -63,6 +63,24 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Headline"
+                  }
+                },
+                "Property": "order"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
       }
     },
     "visualContainerObjects": {

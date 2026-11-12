@@ -1,0 +1,51 @@
+table Variogram
+	lineageTag: 62a282cd-faf8-5ec2-894a-af4dea002df3
+
+	measure Semivariance = AVERAGE('Variogram'[gamma])
+		formatString: 0.000
+		lineageTag: c4b8ef46-ac04-5358-b114-a2d91914d2fd
+
+	column lo_km
+		dataType: double
+		formatString: 0.000
+		lineageTag: 4ca0d12e-40e8-5ee3-b2b4-cf29710f3f50
+		summarizeBy: none
+		sourceColumn: lo_km
+
+	column hi_km
+		dataType: double
+		formatString: 0.000
+		lineageTag: 81e2870a-fcfc-56e4-aefa-408ae4bdff46
+		summarizeBy: none
+		sourceColumn: hi_km
+
+	column lag_km
+		dataType: double
+		formatString: 0.000
+		lineageTag: fda3410c-8102-583b-bb25-719d710538b7
+		summarizeBy: none
+		sourceColumn: lag_km
+
+	column site_pairs
+		dataType: int64
+		formatString: 0
+		lineageTag: 2fb9ce14-5904-5c01-be54-bb4afc784ac4
+		summarizeBy: none
+		sourceColumn: site_pairs
+
+	column gamma
+		dataType: double
+		formatString: 0.000
+		lineageTag: 3f5d1342-9d62-5a00-9a9b-c54c390000fe
+		summarizeBy: none
+		sourceColumn: gamma
+
+	partition Variogram = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "variogram.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"lo_km", type number}, {"hi_km", type number}, {"lag_km", type number}, {"site_pairs", Int64.Type}, {"gamma", type number}}, "en-US")
+				in
+				    Typed

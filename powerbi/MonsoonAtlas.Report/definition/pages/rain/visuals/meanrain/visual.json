@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "meanrain",
+  "position": {
+    "x": 24,
+    "y": 270,
+    "z": 3000,
+    "width": 180,
+    "height": 100,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "District Rain"
+                    }
+                  },
+                  "Property": "Mean Annual Rain"
+                }
+              },
+              "queryRef": "District Rain.Mean Annual Rain",
+              "nativeQueryRef": "Mean Annual Rain",
+              "displayName": "Mean annual rain, mm"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

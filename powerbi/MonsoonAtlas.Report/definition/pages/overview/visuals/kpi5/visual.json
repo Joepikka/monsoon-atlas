@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "kpi5",
+  "position": {
+    "x": 1064,
+    "y": 108,
+    "z": 7000,
+    "width": 192,
+    "height": 104,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Statewide Access"
+                    }
+                  },
+                  "Property": "Hospitals Mapped"
+                }
+              },
+              "queryRef": "Statewide Access.Hospitals Mapped",
+              "nativeQueryRef": "Hospitals Mapped",
+              "displayName": "Hospitals mapped (OSM)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

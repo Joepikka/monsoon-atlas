@@ -1,6 +1,22 @@
 table 'Model Gain'
 	lineageTag: f692aa9d-087c-5d59-bbb0-ab1cfc2e3d8a
 
+	measure 'Mean Gain' = AVERAGE('Model Gain'[improvement])
+		formatString: 0.000
+		lineageTag: abad2c8e-74ba-51e7-b65e-2b58a5192c99
+
+	measure 'Gain Lower 95' = AVERAGE('Model Gain'[lower95])
+		formatString: 0.000
+		lineageTag: 8729e3c2-8e03-5002-835a-4ea197e295f4
+
+	measure 'Gain Upper 95' = AVERAGE('Model Gain'[upper95])
+		formatString: 0.000
+		lineageTag: bb9719b6-2c64-59ad-9ff3-33343df9451a
+
+	measure 'Gain 2020-2024' = CALCULATE(MAX('Model Gain'[improvement]), 'Model Gain'[period] = "2020-2024 locked test")
+		formatString: +0.000
+		lineageTag: 44431c94-f7e4-5f1c-9ef8-e345427df755
+
 	column period
 		dataType: string
 		lineageTag: fc4c11bb-6a78-5a74-a56e-e80cfe49b0db

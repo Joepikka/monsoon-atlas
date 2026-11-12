@@ -2,19 +2,98 @@
   "name": "Monsoon Atlas",
   "dataColors": [
     "#1F6F8B",
+    "#E07A3F",
+    "#4FA3C0",
     "#8A94A0",
     "#2C3A4A",
-    "#4FA3C0",
-    "#B8BFC7",
-    "#5B6470"
+    "#9BC53D",
+    "#B23A3A",
+    "#6C5B7B"
   ],
   "background": "#FFFFFF",
   "foreground": "#1B1F24",
   "tableAccent": "#1F6F8B",
+  "good": "#2E7D4F",
+  "neutral": "#8A94A0",
+  "bad": "#B23A3A",
   "textClasses": {
     "title": {
       "fontFace": "Segoe UI Semibold",
       "color": "#1B1F24"
+    },
+    "callout": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 26,
+      "color": "#1F6F8B"
+    },
+    "label": {
+      "fontFace": "Segoe UI",
+      "color": "#5B6470"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#DDE3E8"
+              }
+            },
+            "radius": 8
+          }
+        ]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [
+          {
+            "color": {
+              "solid": {
+                "color": "#F3F5F7"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "outspace": [
+          {
+            "color": {
+              "solid": {
+                "color": "#F3F5F7"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "textbox": {
+      "*": {
+        "background": [
+          {
+            "show": false
+          }
+        ],
+        "border": [
+          {
+            "show": false
+          }
+        ]
+      }
     }
   }
 }

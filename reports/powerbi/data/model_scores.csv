@@ -1,0 +1,5 @@
+score,model,value
+Brier score,persistence (baseline),0.0668
+Brier score,M05 ridge,0.0591
+CRPS,persistence (baseline),0.5862
+CRPS,M05 ridge,0.5296

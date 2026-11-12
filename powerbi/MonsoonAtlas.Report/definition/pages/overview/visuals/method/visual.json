@@ -3,11 +3,11 @@
   "name": "method",
   "position": {
     "x": 24,
-    "y": 390,
-    "z": 3000,
+    "y": 624,
+    "z": 12000,
     "width": 1232,
-    "height": 160,
-    "tabOrder": 3000
+    "height": 84,
+    "tabOrder": 12000
   },
   "visual": {
     "visualType": "textbox",
@@ -20,9 +20,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "Methods: exact great-circle nearest-site search (hospitals), network walking catchments (buses), Mann-Kendall with Benjamini-Hochberg correction (rain trends), ridge regression against persistence with a paired block bootstrap (drought model). Notebooks 02, 04, 08, 11.",
+                    "value": "Methods: exact great-circle nearest-site search and a people-weighted Gini (hospitals); network walking catchments (buses); Mann-Kendall, Sen slope and Benjamini-Hochberg (rain trends); ridge regression against persistence, climatology and a LightGBM challenger, with a paired block bootstrap (drought model); Moran's I and a variogram (spatial errors). Notebooks 02, 04, 08, 10, 11.",
                     "textStyle": {
-                      "fontSize": "11pt",
+                      "fontSize": "10pt",
                       "fontWeight": "normal",
                       "color": "#5B6470"
                     }

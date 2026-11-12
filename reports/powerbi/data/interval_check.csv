@@ -1,0 +1,5 @@
+order,stage,coverage,result
+1,"v1 intervals, 2020-2024 (first look)",0.6522,outside 75-85%
+2,"D97 rule, 2020-2024 (second look)",0.7283,outside 75-85%
+3,"Persistence, same rule, 2020-2024",0.7722,inside 75-85%
+4,"D97 rule, 2025 hindcast",0.8694,outside 75-85%

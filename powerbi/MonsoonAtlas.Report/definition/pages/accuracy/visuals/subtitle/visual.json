@@ -20,7 +20,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "District SPI-3 forecast, mean absolute error (lower is better), against the strongest simple baseline. Hindcast, because IMD publishes the grid yearly (D39). Promoted only if the lower 95% bound of the improvement is above 0.",
+                    "value": "District SPI-3 forecast against the strongest simple baseline, climatology and a LightGBM challenger. Hindcast, because IMD publishes the grid yearly (D39). Promoted only if every gate passes.",
                     "textStyle": {
                       "fontSize": "11pt",
                       "fontWeight": "normal",

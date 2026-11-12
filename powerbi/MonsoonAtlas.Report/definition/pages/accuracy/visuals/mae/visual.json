@@ -3,10 +3,10 @@
   "name": "mae",
   "position": {
     "x": 24,
-    "y": 110,
+    "y": 108,
     "z": 2000,
     "width": 620,
-    "height": 330,
+    "height": 300,
     "tabOrder": 2000
   },
   "visual": {
@@ -70,6 +70,21 @@
         }
       }
     },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -84,7 +99,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Mean absolute error, SPI units'"
+                  "Value": "'Mean absolute error, SPI units (lower is better)'"
                 }
               }
             },

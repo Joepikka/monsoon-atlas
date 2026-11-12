@@ -3,18 +3,18 @@
   "name": "gain",
   "position": {
     "x": 660,
-    "y": 110,
+    "y": 108,
     "z": 3000,
     "width": 596,
-    "height": 330,
+    "height": 300,
     "tabOrder": 3000
   },
   "visual": {
-    "visualType": "tableEx",
+    "visualType": "clusteredColumnChart",
     "drillFilterOtherVisuals": true,
     "query": {
       "queryState": {
-        "Values": {
+        "Category": {
           "projections": [
             {
               "field": {
@@ -28,87 +28,75 @@
                 }
               },
               "queryRef": "Model Gain.period",
-              "nativeQueryRef": "period",
-              "displayName": "Period"
-            },
+              "nativeQueryRef": "period"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
                       "Entity": "Model Gain"
                     }
                   },
-                  "Property": "district_months"
+                  "Property": "Gain Lower 95"
                 }
               },
-              "queryRef": "Model Gain.district_months",
-              "nativeQueryRef": "district_months",
-              "displayName": "District-months"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Model Gain"
-                    }
-                  },
-                  "Property": "improvement"
-                }
-              },
-              "queryRef": "Model Gain.improvement",
-              "nativeQueryRef": "improvement",
-              "displayName": "Improvement"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Model Gain"
-                    }
-                  },
-                  "Property": "lower95"
-                }
-              },
-              "queryRef": "Model Gain.lower95",
-              "nativeQueryRef": "lower95",
+              "queryRef": "Model Gain.Gain Lower 95",
+              "nativeQueryRef": "Gain Lower 95",
               "displayName": "Lower 95%"
             },
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
                       "Entity": "Model Gain"
                     }
                   },
-                  "Property": "upper95"
+                  "Property": "Mean Gain"
                 }
               },
-              "queryRef": "Model Gain.upper95",
-              "nativeQueryRef": "upper95",
-              "displayName": "Upper 95%"
+              "queryRef": "Model Gain.Mean Gain",
+              "nativeQueryRef": "Mean Gain",
+              "displayName": "Mean gain"
             },
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
                       "Entity": "Model Gain"
                     }
                   },
-                  "Property": "promoted"
+                  "Property": "Gain Upper 95"
                 }
               },
-              "queryRef": "Model Gain.promoted",
-              "nativeQueryRef": "promoted",
-              "displayName": "Lower bound above 0"
+              "queryRef": "Model Gain.Gain Upper 95",
+              "nativeQueryRef": "Gain Upper 95",
+              "displayName": "Upper 95%"
             }
           ]
         }
       }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     "visualContainerObjects": {
       "title": [
@@ -124,7 +112,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Improvement over persistence (paired block bootstrap)'"
+                  "Value": "'MAE gain over persistence with its 95% paired block bootstrap interval'"
                 }
               }
             },

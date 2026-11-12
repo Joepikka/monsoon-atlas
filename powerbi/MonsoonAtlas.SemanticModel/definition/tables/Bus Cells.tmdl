@@ -1,0 +1,80 @@
+table 'Bus Cells'
+	lineageTag: ab94c3d7-eada-5612-8177-2ec459d9c691
+
+	measure 'Cell Longitude' = AVERAGE('Bus Cells'[lon])
+		formatString: 0.000
+		lineageTag: f772d1bb-43d4-5dc2-af14-4a574a0e8541
+
+	measure 'Cell Latitude' = AVERAGE('Bus Cells'[lat])
+		formatString: 0.000
+		lineageTag: d2afc0be-42c3-56ec-b8ab-cd2c0e1bdf6c
+
+	measure 'Cell People' = SUM('Bus Cells'[population])
+		formatString: #,0
+		lineageTag: 588c0eae-d614-57e5-843f-fafda0dbf2ad
+
+	measure 'People Within Walk' = SUM('Bus Cells'[covered_population])
+		formatString: #,0
+		lineageTag: b20b51e1-b3ba-5826-a275-ceb4481a09b9
+
+	measure 'Bengaluru Covered Share' = DIVIDE(SUM('Bus Cells'[covered_population]), SUM('Bus Cells'[population]))
+		formatString: 0.0%
+		lineageTag: 01296543-6501-51fa-a526-c01f4f9f1d56
+
+	column cell_id
+		dataType: string
+		lineageTag: 218478de-b1f1-5f04-bb69-28c60209b432
+		summarizeBy: none
+		sourceColumn: cell_id
+
+	column lon
+		dataType: double
+		formatString: 0.000
+		lineageTag: d3807ed0-f2ac-57e8-ba5b-a2bbf428114a
+		summarizeBy: none
+		sourceColumn: lon
+
+	column lat
+		dataType: double
+		formatString: 0.000
+		lineageTag: 44f5e866-6236-5bd3-aef7-e47f277ec5eb
+		summarizeBy: none
+		sourceColumn: lat
+
+	column population
+		dataType: double
+		formatString: 0.000
+		lineageTag: a19c95e4-1b17-53ec-bf6b-74530c395b9a
+		summarizeBy: none
+		sourceColumn: population
+
+	column covered_population
+		dataType: double
+		formatString: 0.000
+		lineageTag: ed95f75e-ffd9-5138-9d2a-ad56361a05ba
+		summarizeBy: none
+		sourceColumn: covered_population
+
+	column band
+		dataType: string
+		sortByColumn: band_order
+		lineageTag: a16f6757-741c-5aab-a298-63b1ff53ca47
+		summarizeBy: none
+		sourceColumn: band
+
+	column band_order
+		dataType: int64
+		formatString: 0
+		lineageTag: e695a1b7-2a89-5294-89e2-a888508d237d
+		summarizeBy: none
+		sourceColumn: band_order
+
+	partition 'Bus Cells' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "bus_cells.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"cell_id", type text}, {"lon", type number}, {"lat", type number}, {"population", type number}, {"covered_population", type number}, {"band", type text}, {"band_order", Int64.Type}}, "en-US")
+				in
+				    Typed

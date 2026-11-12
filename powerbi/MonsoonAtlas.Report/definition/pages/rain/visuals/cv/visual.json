@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "cv",
+  "position": {
+    "x": 24,
+    "y": 382,
+    "z": 4000,
+    "width": 180,
+    "height": 100,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "District Rain"
+                    }
+                  },
+                  "Property": "Rain Variability"
+                }
+              },
+              "queryRef": "District Rain.Rain Variability",
+              "nativeQueryRef": "Rain Variability",
+              "displayName": "Year-to-year variation"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
