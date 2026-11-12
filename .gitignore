@@ -55,3 +55,4 @@ reports/eda/02_ka_rain/gauge_vs_grid.png
 reports/eda/02_ka_rain/bias_by_district.png
 reports/eda/05_kl_flood2018/rain_2018_vs_climatology.png
 reports/eda/07_climate/s08_annual_rain.png
+worker/wrangler.deploy.toml

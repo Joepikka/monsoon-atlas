@@ -707,7 +707,9 @@ M08 is a non-core descriptive 2018 replay (P3).
   one account) and saved `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in
   `.env`. A read-only check passed: `/user/tokens/verify` active, and account,
   Workers scripts, D1 and Pages list calls succeed (0 items each). Nothing was
-  created remotely. **H06 done 12 Nov 2026 (D179):** the owner created a private Hugging Face
+  created remotely. **T042 cloud step done 12 Nov 2026 (D180):** Worker
+  `monsoon-atlas-hot.monsoon-atlas.workers.dev` and D1 deployed, empty; redeploy with
+  `scripts/deploy_worker.py`. **H06 done 12 Nov 2026 (D179):** the owner created a private Hugging Face
   dataset (id in `.env` as `HF_ARCHIVE_REPO`) and a fine-grained `HF_TOKEN` scoped to it only
   (read and write; no global scopes), checked read-only with `whoami-v2`.
 

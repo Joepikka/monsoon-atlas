@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D180 — T042 cloud step: Worker and D1 deployed, empty (12 Nov 2026).**
+  Owner, in chat: "Start hosting"; the owner confirmed the Cloudflare free plan with no card
+  (the token cannot read billing, by design) and chose the workers.dev subdomain
+  `monsoon-atlas`, which keeps the owner's name out of public URLs. Read-only probe: account
+  standard, no Worker, D1 or Pages project before. Created: subdomain, D1 `monsoon-atlas-hot`
+  with the committed schema (tables, caps and triggers), and Worker `monsoon-atlas-hot`; a
+  random 64-hex `ATLAS_INGEST_HMAC_KEY` (agent-generated project secret) is in `.env` and is the
+  Worker secret. The committed `wrangler.toml` stays disabled; `scripts/deploy_worker.py` writes
+  the git-ignored deploy config from `.env`. Live checks: current KA 503 unavailable with the
+  static fallback, unknown state 400, unsigned or wrongly signed upload 401. Nothing is uploaded:
+  scheduled feeds need GitHub Actions secrets (T043) and the public site waits for the T046 gate
+  and the owner's release approval.
+
 - **D179 — H06: private Hugging Face archive repository and a scoped token (12 Nov 2026).**
   The owner created a **private** dataset repository for the T045 archive (private until H11
   approves any public subset) and a fine-grained token limited to that repository: read and

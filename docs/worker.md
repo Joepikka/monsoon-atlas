@@ -1,9 +1,14 @@
-# T229: local hot-data Worker (child of T042)
+# T229: hot-data Worker (child of T042)
 
-Full T042 is pending H05 and an actual free/no-card capability probe. The owner
-has signed into Cloudflare in regular Chrome, but no cloud token, remote D1
-binding or service probe is configured here. No Worker or database was deployed.
-`wrangler.toml` disables workers.dev and keeps `CAPABILITY_GATE = "blocked"`.
+**Deployed 12 Nov 2026 (D180):** `https://monsoon-atlas-hot.monsoon-atlas.workers.dev`
+with D1 `monsoon-atlas-hot` (schema from `worker/schema.sql`) and the server-side
+`ATLAS_INGEST_HMAC_KEY` secret. The owner confirmed the free plan with no card.
+`scripts/deploy_worker.py` builds the git-ignored `worker/wrangler.deploy.toml`
+from `.env` (database ID, workers.dev on, `CAPABILITY_GATE = "verified_free_no_card"`)
+and deploys with the pinned Wrangler; the committed `wrangler.toml` stays disabled
+(no database ID, workers.dev off, gate blocked). The store is empty: GET current
+returns 503 with `fallback: static_daily`, and unsigned uploads get 401.
+No snapshot has been uploaded and no schedule is active (T043).
 An unavailable capability/binding returns HTTP 503 with `fallback: static_daily`;
 it does not advertise a working current feed. The browser retains the dated
 approved static snapshot or shows the unavailable view.
