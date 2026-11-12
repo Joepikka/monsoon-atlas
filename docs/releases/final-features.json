@@ -619,7 +619,7 @@
       "states": "ALL",
       "tier": "MVP",
       "plan_task": "T040",
-      "status": "blocked",
+      "status": "built-not-mounted",
       "tasks": [
         "T021",
         "T022",
@@ -629,15 +629,16 @@
         "configs/sources/s18.yaml",
         "src/atlas/ingest/s18_prepare.py",
         "configs/sources/s43.yaml",
-        "docs/web-lens.md"
+        "docs/web-lens.md",
+        "src/atlas/publish.py"
       ],
       "tests": [
         "tests/test_lens.py",
-        "tests/sources/test_s18_prepare.py"
+        "tests/sources/test_s18_prepare.py",
+        "tests/test_publish.py"
       ],
-      "blocker": "Facility export and the Nearby kind display are built (D175); facilities appear only in an approved release snapshot, which T045 publishes; no verified shelter record (S43).",
+      "blocker": "Facilities ship in every T045 release (D175, D185); shown once the owner approves public release.",
       "owner_steps": [
-        "H06",
         "H11"
       ],
       "notes": "Hospitals, police and fire stations only; OSM shelters are mostly bus shelters and stay out (D175)."
@@ -1306,21 +1307,22 @@
       "states": "ALL",
       "tier": "v1",
       "plan_task": "T045",
-      "status": "blocked",
+      "status": "built-not-mounted",
       "tasks": [
         "T045"
       ],
       "evidence": [
         "docs/account-setup.md",
-        "docs/releases/ka.md"
+        "docs/releases/ka.md",
+        "src/atlas/publish.py",
+        "src/atlas/replay.py"
       ],
       "tests": [
-        "tests/test_hosted_archive.py"
+        "tests/test_hosted_archive.py",
+        "tests/test_publish.py"
       ],
-      "blocker": "T045 needs the H05 and H06 tokens; no snapshot is published.",
+      "blocker": "Releases are built daily from the Worker and archived privately (D185); public publication waits for the owner's approval.",
       "owner_steps": [
-        "H05",
-        "H06",
         "H11"
       ],
       "notes": ""

@@ -1,0 +1,37 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Monsoon Atlas project API",
+    "version": "1.0.0",
+    "description": "Project-owned contracts (T045, D185). Not an emergency service: official alerts, model outputs and inferred items stay separate. Static files are published only after the owner's release approval (H11); the hot endpoint is the Worker."
+  },
+  "paths": {
+    "/api/v1/current.json": {
+      "get": {
+        "summary": "Pointer to the newest release with its source health",
+        "responses": {"200": {"description": "schema_version, state, approval (pending or approved), sha256, manifest_url, as_of, sources"}}
+      }
+    },
+    "/api/v1/snapshots/{id}.json": {
+      "get": {
+        "summary": "Release bytes by snapshot ID (SHA-256 of the bytes); immutable",
+        "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}],
+        "responses": {"200": {"description": "Snapshot as validated by web/src/data.ts parseSnapshot"}, "404": {"description": "Unknown snapshot ID"}}
+      }
+    },
+    "/data/{state}/latest.json": {
+      "get": {
+        "summary": "Release pointer read by the browser; approval must be approved",
+        "parameters": [{"name": "state", "in": "path", "required": true, "schema": {"enum": ["ka"]}}],
+        "responses": {"200": {"description": "Pointer"}}
+      }
+    },
+    "/api/v1/current": {
+      "get": {
+        "summary": "Hot Worker: current S01 and S09 snapshots (state=ka)",
+        "parameters": [{"name": "state", "in": "query", "required": true, "schema": {"enum": ["ka"]}}, {"name": "source", "in": "query", "schema": {"enum": ["S01", "S09"]}}],
+        "responses": {"200": {"description": "sources with sha256, wire_sha256, age_seconds"}, "503": {"description": "unavailable; fallback static_daily"}}
+      }
+    }
+  }
+}

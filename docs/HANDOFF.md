@@ -707,7 +707,9 @@ M08 is a non-core descriptive 2018 replay (P3).
   one account) and saved `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in
   `.env`. A read-only check passed: `/user/tokens/verify` active, and account,
   Workers scripts, D1 and Pages list calls succeed (0 items each). Nothing was
-  created remotely. **T044 archive built 12 Nov 2026 (D184):** daily `archive.yml` exports verified snapshots to
+  created remotely. **T045 releases built 12 Nov 2026 (D185):** `python -m atlas.publish` (daily.yml 02:17 UTC)
+  builds pending-approval releases and archives them privately; replay with `atlas.replay`.
+  **T044 archive built 12 Nov 2026 (D184):** daily `archive.yml` exports verified snapshots to
   the private HF dataset (first run: 3 archived, read back); no purge yet (cap-guard note in D184).
   **Hosted feeds started 12 Nov 2026 (D183):** PR 5 merged to `main`; bootstrap run passed.
   Check `gh run list --workflow feeds.yml` that scheduled runs follow and succeed.
@@ -877,7 +879,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    entry for the local preview. T220 is done (D164). Run `tests/test_dl_poll.py` with any change
    that adds text under `web/` or `worker/`. **T221 is done (D165): every plan task T001-T221
    is walked; the product is not released.** `docs/releases/final.md` audits all 64 plan
-   features (now 20 shipped-local, 13 built not mounted, 4 research-only, 26 blocked, 1 deferred
+   features (now 20 shipped-local, 15 built not mounted, 4 research-only, 24 blocked, 1 deferred
    after D172 mounted climate, wall, terrain, globe and place watches)
    and pins 88 evidence files in `final-manifest.json` (regenerate with
    `.\.venv\Scripts\python tests/test_final.py --manifest` after changing any of them).

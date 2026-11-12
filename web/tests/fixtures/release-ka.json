@@ -1,0 +1,153 @@
+{
+ "schema_version": 1,
+ "state": "ka",
+ "as_of": "2026-11-12T06:00:00.000Z",
+ "published_at": "2026-11-12T06:00:00.000Z",
+ "records": [
+  {
+   "id": "329a94cc856abbe9374b0287ea83cad24aeb32f395bd940540c2f09c57765ff1",
+   "title": "ECMWF IFS temperature — Bengaluru grid cell",
+   "longitude": 77.5,
+   "latitude": 13.0,
+   "source_id": "S01",
+   "source_url": "https://api.open-meteo.com/v1/forecast?latitude=12.97&longitude=77.59&hourly=temperature_2m,precipitation,relative_humidity_2m,wind_speed_10m&temperature_unit=celsius&wind_speed_unit=ms&precipitation_unit=mm&timezone=GMT&forecast_days=16&models=ecmwf_ifs025",
+   "provenance": "model",
+   "valid_at": "2026-11-05T13:00:00Z",
+   "fetched_at": "2026-11-05T12:55:01.914727Z",
+   "kind": "weather",
+   "spatial_scope": "point",
+   "issued_at": "2026-11-05T00:00:00Z",
+   "available_at": "2026-11-05T12:55:01.914727Z",
+   "expires_at": null,
+   "severity": null,
+   "unit": "°C",
+   "value": 21.3,
+   "missing_reason": null,
+   "evidence": "forecast",
+   "location_note": "ECMWF IFS 0.25-degree grid-cell centre; not a station observation."
+  },
+  {
+   "id": "2569f3e66e628e3d6b63cebe17c6ebf496a80956d301ebfe8cb98eca2a7fba89",
+   "title": "Thunderstorm with Lightning — 5 districts of Karnataka",
+   "warning_text": "Thunderstorm with Lightning is likely to occur at isolated places over Bengaluru Rural, Bengaluru Urban, Chikkaballapura, Kolar, Mandya in next 3 hours. Source :- IMD Bengaluru",
+   "instruction": "Please follow SDMA guidelines.",
+   "longitude": 77.781758,
+   "latitude": 13.588923,
+   "source_id": "S09",
+   "source_url": "https://sachet.ndma.gov.in/cap_public_website/FetchXMLFile?identifier=1793881986295019",
+   "provenance": "official",
+   "valid_at": "2026-11-05T12:30:00Z",
+   "fetched_at": "2026-11-05T13:05:40.408124Z",
+   "kind": "alert",
+   "issued_at": "2026-11-05T12:35:10Z",
+   "available_at": "2026-11-05T13:05:40.408124Z",
+   "expires_at": "2026-11-05T15:30:00Z",
+   "severity": "Moderate",
+   "unit": null,
+   "value": null,
+   "missing_reason": null,
+   "location_note": "Representative point within the official alert area; not an incident location.",
+   "area_text": "5 districts of Karnataka",
+   "spatial_scope": "area"
+  }
+ ],
+ "sources": [
+  {
+   "source_id": "S01",
+   "status": "partial",
+   "last_success_at": "2026-11-05T12:55:01.914727Z",
+   "detail": "test"
+  },
+  {
+   "source_id": "S09",
+   "status": "partial",
+   "last_success_at": "2026-11-05T13:05:40.408124Z",
+   "detail": "test"
+  }
+ ],
+ "places": [
+  {
+   "place_id": "gb-IND-ADM2-76128533B76927648517269",
+   "name": "Bangalore",
+   "kind": "district",
+   "state": "ka",
+   "boundary_version": "geoboundaries-IND-ADM2-9469f09",
+   "longitude": 77.532483,
+   "latitude": 12.94451,
+   "source_id": "S17",
+   "source_url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/IND/ADM2/geoBoundaries-IND-ADM2.geojson",
+   "licence_id": "odbl-1.0-geoboundaries-pathways",
+   "location_note": "Representative point within the source district boundary; not a street address."
+  }
+ ],
+ "facilities": [
+  {
+   "facility_id": "osm:node:266740082",
+   "kind": "hospital",
+   "name": "Swamy Hospital",
+   "longitude": 77.664273,
+   "latitude": 12.855063,
+   "source_id": "S18",
+   "source_url": "https://www.openstreetmap.org/node/266740082",
+   "fetched_at": "2026-11-12T05:20:10Z",
+   "verification_status": "source_checked"
+  },
+  {
+   "facility_id": "osm:node:267214379",
+   "kind": "hospital",
+   "name": "Clinic",
+   "longitude": 77.677485,
+   "latitude": 12.913418,
+   "source_id": "S18",
+   "source_url": "https://www.openstreetmap.org/node/267214379",
+   "fetched_at": "2026-11-12T05:20:10Z",
+   "verification_status": "source_checked"
+  },
+  {
+   "facility_id": "osm:node:295766640",
+   "kind": "police",
+   "name": "DCP Bangalore North Traffic Police",
+   "longitude": 77.558167,
+   "latitude": 13.018197,
+   "source_id": "S18",
+   "source_url": "https://www.openstreetmap.org/node/295766640",
+   "fetched_at": "2026-11-12T05:20:10Z",
+   "verification_status": "source_checked"
+  },
+  {
+   "facility_id": "osm:node:303924572",
+   "kind": "hospital",
+   "name": "Shanti Hospital",
+   "longitude": 77.585752,
+   "latitude": 12.923504,
+   "source_id": "S18",
+   "source_url": "https://www.openstreetmap.org/node/303924572",
+   "fetched_at": "2026-11-12T05:20:10Z",
+   "verification_status": "source_checked"
+  },
+  {
+   "facility_id": "osm:node:303925790",
+   "kind": "police",
+   "name": "Jayanagar 4th Block Police Station",
+   "longitude": 77.581366,
+   "latitude": 12.928565,
+   "source_id": "S18",
+   "source_url": "https://www.openstreetmap.org/node/303925790",
+   "fetched_at": "2026-11-12T05:20:10Z",
+   "verification_status": "source_checked"
+  },
+  {
+   "facility_id": "osm:node:928264962",
+   "kind": "fire_station",
+   "name": "Hebbal Fire Station",
+   "longitude": 77.618528,
+   "latitude": 13.048249,
+   "source_id": "S18",
+   "source_url": "https://www.openstreetmap.org/node/928264962",
+   "fetched_at": "2026-11-12T05:20:10Z",
+   "verification_status": "source_checked"
+  }
+ ],
+ "release_id": "ka-bf8392c649237ec3bc27",
+ "data_revision": "bf8392c649237ec3bc27e0db62f80033bc810bd64dd0807b8b7ce302ac59ae40"
+}

@@ -118,7 +118,12 @@ def release_checks() -> list[dict]:
         ),
         ("Working real-data map, sources and Place Lens", "local", "T038-T040 pass locally"),
         ("Priced data and reproducible price baseline", "blocked", "S23 denominator; M06 blocked"),
-        ("Free-tier deployment on pages.dev", "blocked", "H05 token and capability probe"),
+        (
+            "Free-tier deployment on pages.dev",
+            "pending",
+            "free plan, no card, confirmed (D180); Worker live; Pages deploy waits for release "
+            "approval (H11)",
+        ),
         (
             "Legal, boundary and licence audit",
             "pending",
@@ -127,9 +132,8 @@ def release_checks() -> list[dict]:
         ),
         (
             "Dependencies T045 and T041",
-            "blocked",
-            "T045 needs H06 and the capability probe (H05 token saved 12 Nov 2026); "
-            "T041 done (D177)",
+            "pass",
+            "T045 releases built daily and archived privately (D185); T041 done (D177)",
         ),
     ]
     return [{"check": c, "status": s, "evidence": e} for c, s, e in checks]
