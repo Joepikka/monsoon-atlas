@@ -1,0 +1,116 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "looks",
+  "position": {
+    "x": 640,
+    "y": 410,
+    "z": 5000,
+    "width": 616,
+    "height": 298,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Interval Check"
+                    }
+                  },
+                  "Property": "stage"
+                }
+              },
+              "queryRef": "Interval Check.stage",
+              "nativeQueryRef": "stage",
+              "displayName": "Look"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Interval Check"
+                    }
+                  },
+                  "Property": "coverage"
+                }
+              },
+              "queryRef": "Interval Check.coverage",
+              "nativeQueryRef": "coverage",
+              "displayName": "Coverage"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Interval Check"
+                    }
+                  },
+                  "Property": "result"
+                }
+              },
+              "queryRef": "Interval Check.result",
+              "nativeQueryRef": "result",
+              "displayName": "Result"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Interval Check"
+                  }
+                },
+                "Property": "stage"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Every look at the test years, in order'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

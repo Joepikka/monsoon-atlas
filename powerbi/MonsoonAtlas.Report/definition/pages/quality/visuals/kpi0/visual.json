@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "kpi0",
+  "position": {
+    "x": 24,
+    "y": 108,
+    "z": 2000,
+    "width": 608,
+    "height": 96,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Grid Coverage"
+                    }
+                  },
+                  "Property": "Grid Completeness"
+                }
+              },
+              "queryRef": "Grid Coverage.Grid Completeness",
+              "nativeQueryRef": "Grid Completeness",
+              "displayName": "IMD grid cell-days present, 1981-2025"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "buslimits",
+  "position": {
+    "x": 640,
+    "y": 384,
+    "z": 6000,
+    "width": 616,
+    "height": 324,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Bus access limits: Scheduled supply only: the BMTC GTFS is unofficial (Vonter, scraped from the Namma BMTC app, known timetable errors, only routes with live tracking), as of 8 Sep 2026. OSM walking network completeness is unknown: unmapped footpaths shorten catchments, and population in cells with no mapped walkway counts as uncovered. WorldPop 2025 is a modelled estimate at 1 km; coverage inside a cell is assumed proportional to covered walkable length. Stops outside the district boundary are not used, which can under-count coverage near the edge. Access only: no frequency threshold, crowding, fares or safety is assessed.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "fontWeight": "normal",
+                      "color": "#5B6470"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

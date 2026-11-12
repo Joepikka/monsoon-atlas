@@ -28,11 +28,13 @@ def test_accuracy_rows_show_c1_c2_and_m06_with_unavailable_not_zero():
     assert "unavailable" in m06_line and "0.000" not in m06_line
 
 
-def test_release_is_not_ready_while_any_check_is_not_pass():
+def test_release_waits_for_every_check_that_is_not_pass_waived_or_counted():
     checks = {c["check"]: c["status"] for c in release_checks()}
-    assert checks["C3 passes T181 English thresholds"] == "research-only"  # D101
-    assert checks["C1 evaluation report and model card"] == "blocked"
-    assert "**Release status: not releasable.**" in render()
+    assert checks["C3 passes T181 English thresholds"] == "research-only"  # D101, counted D166
+    assert checks["C1 evaluation report and model card"] == "waived"  # owner, D190; not passed
+    assert checks["Priced data and reproducible price baseline"] == "waived"  # owner, D190
+    assert checks["Case study per core model (H14 review)"] == "pending"
+    assert "**Release status: not releasable.**" in render()  # H14 is still open
 
 
 def test_m05_card_uses_only_numbers_from_its_sources():

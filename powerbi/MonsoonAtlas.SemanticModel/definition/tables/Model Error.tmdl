@@ -1,9 +1,9 @@
 table 'Model Error'
 	lineageTag: 37de426a-bc90-579a-89ee-b70555f40b29
 
-	measure MAE = AVERAGE('Model Error'[mae])
+	measure 'Mean Absolute Error' = AVERAGE('Model Error'[mae])
 		formatString: 0.000
-		lineageTag: bbcce19b-f4ee-5098-a02c-201e08516d2a
+		lineageTag: bd116128-148c-5255-8284-b18a538b1079
 
 	column period
 		dataType: string

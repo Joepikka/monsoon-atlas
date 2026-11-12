@@ -206,15 +206,19 @@ def test_state_configs_load_and_enable_only_available_licensed_sources():
     assert listed and set(listed[1].replace(" ", "").split(",")) == restricted
 
 
-def test_pages_make_no_deployment_claim_and_link_no_live_site():
+def test_pages_claim_only_the_approved_karnataka_deployment():
+    """Before D187 nothing was deployed; now the one live site is Karnataka on pages.dev, and every
+    unnegated deployment claim must cite D187 (owner-approved public release)."""
     negation = re.compile(r"\b(no|not|never|nothing|none|until|before|without|unless)\b", re.I)
     claim = re.compile(r"\b(deployed|deployment|hosted|live site|released|publicly)\b", re.I)
     for name, text in [(PAGE_PATH, PAGE), (RUNBOOK_PATH, RUNBOOK)]:
         for url in re.findall(r"https?://[^\s)>`]+", text):
-            assert re.match(r"https?://(127\.0\.0\.1|localhost)[:/]", url), f"{name}: {url}"
+            assert re.match(
+                r"https?://((127\.0\.0\.1|localhost)[:/]|monsoon-atlas\.pages\.dev/?$)", url
+            ), f"{name}: {url}"
         for line in text.splitlines():
             if claim.search(line):
-                assert negation.search(line), f"{name}: unnegated claim: {line}"
+                assert negation.search(line) or "D187" in line, f"{name}: unnegated claim: {line}"
 
 
 def test_owner_tasks_name_every_open_h_step():

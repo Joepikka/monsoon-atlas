@@ -1,5 +1,7 @@
 period,model,mae
 2020-2024 locked test,persistence (baseline),0.808
+2020-2024 locked test,climatology,1.053
 2020-2024 locked test,M05 ridge,0.732
+2020-2024 locked test,LightGBM challenger,0.722
 2025 hindcast,persistence (baseline),0.744
 2025 hindcast,M05 ridge,0.625

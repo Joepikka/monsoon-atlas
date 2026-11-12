@@ -1,0 +1,44 @@
+table 'Bus Access'
+	lineageTag: 5b4358b5-5072-5aa8-88cb-57c0eee0f304
+
+	measure 'Total People' = SUM('Bus Access'[people])
+		formatString: #,0
+		lineageTag: 58aaeb14-18f3-528d-9dcf-5135f682d4e1
+
+	column band
+		dataType: string
+		sortByColumn: band_order
+		lineageTag: 667724bc-f42a-518a-9b04-166190d41f4c
+		summarizeBy: none
+		sourceColumn: band
+
+	column band_order
+		dataType: int64
+		formatString: 0
+		lineageTag: df91f9f6-f776-5aa2-be36-f7b6e5ea0833
+		summarizeBy: none
+		sourceColumn: band_order
+
+	column cells
+		dataType: int64
+		formatString: 0
+		lineageTag: cd29f31e-a460-5675-9244-4b5dff8113a5
+		summarizeBy: none
+		sourceColumn: cells
+
+	column people
+		dataType: int64
+		formatString: 0
+		lineageTag: 73039efb-f29c-5d35-8e03-28670346d56b
+		summarizeBy: none
+		sourceColumn: people
+
+	partition 'Bus Access' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "bus_access.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"band", type text}, {"band_order", Int64.Type}, {"cells", Int64.Type}, {"people", Int64.Type}}, "en-US")
+				in
+				    Typed

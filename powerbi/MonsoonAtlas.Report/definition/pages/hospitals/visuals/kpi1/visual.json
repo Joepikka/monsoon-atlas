@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "kpi1",
+  "position": {
+    "x": 274,
+    "y": 108,
+    "z": 3000,
+    "width": 234,
+    "height": 96,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Statewide Access"
+                    }
+                  },
+                  "Property": "Statewide Median km"
+                }
+              },
+              "queryRef": "Statewide Access.Statewide Median km",
+              "nativeQueryRef": "Statewide Median km",
+              "displayName": "Median km"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

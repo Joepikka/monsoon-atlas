@@ -1,0 +1,6 @@
+order,check,value,reference,passed
+1,MAE ratio to persistence (below 1),0.9057,1.0,yes
+2,PR-AUC above drought prevalence,0.2174,0.0567,yes
+3,Brier skill above 0,0.1163,0.0,yes
+4,CRPS below persistence,0.5296,0.5862,yes
+5,Lower 95% bound of the MAE gain above 0,0.0026,0.0,yes

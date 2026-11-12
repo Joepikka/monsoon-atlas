@@ -1,0 +1,85 @@
+table 'Rain Trend'
+	lineageTag: a837569c-d2e3-5a61-bd05-2012b9f9fb98
+
+	measure 'Sen Slope' = AVERAGE('Rain Trend'[sen_pct_per_decade])
+		formatString: +0.0;-0.0;0.0
+		lineageTag: 676cd8bd-c682-5434-a01e-9ac569343200
+
+	measure 'Significant Districts' = CALCULATE(COUNTROWS('Rain Trend'), 'Rain Trend'[fdr_q] < 0.05)
+		formatString: 0
+		lineageTag: e26944ed-2f98-5f7d-9c4c-1e1809f1e044
+
+	measure 'BH q Value' = AVERAGE('Rain Trend'[fdr_q])
+		formatString: 0.000
+		lineageTag: 9aded1d4-c5a0-51e7-b8b1-ee5e5e3a4d30
+
+	column district
+		dataType: string
+		lineageTag: 06ce5c09-e9b0-586f-bb12-d53e1169a28b
+		summarizeBy: none
+		sourceColumn: district
+
+	column first_year
+		dataType: int64
+		formatString: 0
+		lineageTag: 565a428f-4ab5-53bb-b9f2-1232f030c6d7
+		summarizeBy: none
+		sourceColumn: first_year
+
+	column last_year
+		dataType: int64
+		formatString: 0
+		lineageTag: 17494bcd-6487-5b00-9f5a-74f2945df2da
+		summarizeBy: none
+		sourceColumn: last_year
+
+	column sen_pct_per_decade
+		dataType: double
+		formatString: 0.000
+		lineageTag: 7e9a723d-fc9d-5448-8ad8-250b19dbd01c
+		summarizeBy: none
+		sourceColumn: sen_pct_per_decade
+
+	column ols_pct_per_decade
+		dataType: double
+		formatString: 0.000
+		lineageTag: 779aba14-377f-53fe-9832-554ec362edf2
+		summarizeBy: none
+		sourceColumn: ols_pct_per_decade
+
+	column mk_p
+		dataType: double
+		formatString: 0.000
+		lineageTag: e1aba058-fa5b-5434-be79-e9664bd73b61
+		summarizeBy: none
+		sourceColumn: mk_p
+
+	column fdr_q
+		dataType: double
+		formatString: 0.000
+		lineageTag: e73138ee-87d5-5b46-9261-6d81e9c7625e
+		summarizeBy: none
+		sourceColumn: fdr_q
+
+	column lag1_autocorrelation
+		dataType: double
+		formatString: 0.000
+		lineageTag: 2110377a-b2f7-5f52-b569-9229b6b31b13
+		summarizeBy: none
+		sourceColumn: lag1_autocorrelation
+
+	column significance
+		dataType: string
+		lineageTag: 63a52cbc-e7dc-5af2-af46-9a7d89555c9a
+		summarizeBy: none
+		sourceColumn: significance
+
+	partition 'Rain Trend' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "rain_trend.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"district", type text}, {"first_year", Int64.Type}, {"last_year", Int64.Type}, {"sen_pct_per_decade", type number}, {"ols_pct_per_decade", type number}, {"mk_p", type number}, {"fdr_q", type number}, {"lag1_autocorrelation", type number}, {"significance", type text}}, "en-US")
+				in
+				    Typed

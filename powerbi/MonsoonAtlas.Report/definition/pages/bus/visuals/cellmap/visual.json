@@ -1,0 +1,140 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "cellmap",
+  "position": {
+    "x": 24,
+    "y": 220,
+    "z": 5000,
+    "width": 700,
+    "height": 488,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "scatterChart",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Bus Cells"
+                    }
+                  },
+                  "Property": "cell_id"
+                }
+              },
+              "queryRef": "Bus Cells.cell_id",
+              "nativeQueryRef": "cell_id"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Bus Cells"
+                    }
+                  },
+                  "Property": "band"
+                }
+              },
+              "queryRef": "Bus Cells.band",
+              "nativeQueryRef": "band",
+              "displayName": "Share within the walk"
+            }
+          ]
+        },
+        "X": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Bus Cells"
+                    }
+                  },
+                  "Property": "Cell Longitude"
+                }
+              },
+              "queryRef": "Bus Cells.Cell Longitude",
+              "nativeQueryRef": "Cell Longitude"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Bus Cells"
+                    }
+                  },
+                  "Property": "Cell Latitude"
+                }
+              },
+              "queryRef": "Bus Cells.Cell Latitude",
+              "nativeQueryRef": "Cell Latitude"
+            }
+          ]
+        },
+        "Size": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Bus Cells"
+                    }
+                  },
+                  "Property": "Cell People"
+                }
+              },
+              "queryRef": "Bus Cells.Cell People",
+              "nativeQueryRef": "Cell People"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Each dot is a 1 km cell (west to east, south to north), sized by people'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

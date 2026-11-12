@@ -1,7 +1,8 @@
-# T045 (D185): daily Karnataka release from the hot Worker plus committed static inputs, archived
-# to the owner's private Hugging Face dataset and read back. Deployment to Pages is not here: it
-# waits for the owner's public-release approval (H11) and the T046 gate. The repository name is
-# masked because Actions logs are public.
+# T045 + D190: daily approved Karnataka release (owner approved public release, D187). Builds the
+# release from the hot Worker plus committed static inputs and the warning archive, archives it to
+# the owner's private Hugging Face dataset with read-back, refreshes Ask, and deploys the site to
+# Cloudflare Pages (free plan). Account values are secrets; the archive repository name is masked
+# because Actions logs are public.
 name: daily
 
 on:
@@ -19,7 +20,7 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     defaults:
       run:
         shell: bash
@@ -27,23 +28,61 @@ jobs:
       PYTHONUTF8: "1"
       HF_HUB_DISABLE_PROGRESS_BARS: "1"
       HF_HUB_DISABLE_TELEMETRY: "1"
+      WRANGLER_SEND_METRICS: "false"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: 0 # Ask cites each document's commit time
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
-      - name: Install hash-locked core and archive requirements
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "22.16.0"
+      - name: Install hash-locked Python and pinned Node packages
         run: |
           python -m pip install --require-hashes -r requirements/core.txt -r requirements/archive.txt
           python -m pip install --no-deps -e .
-      - name: Build the release and archive it privately
+          (cd web && npm ci --ignore-scripts)
+          (cd worker && npm ci --ignore-scripts)
+      - name: Build the approved release, archive it privately and add the warning archive
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          ATLAS_INGEST_HMAC_KEY: ${{ secrets.ATLAS_INGEST_HMAC_KEY }}
           ATLAS_HOT_ORIGIN: ${{ vars.ATLAS_HOT_ORIGIN }}
           HF_ARCHIVE_REPO: ${{ vars.HF_ARCHIVE_REPO }}
         run: |
           echo "::add-mask::$HF_ARCHIVE_REPO"
-          python -m atlas.publish --origin "$ATLAS_HOT_ORIGIN" --out "$RUNNER_TEMP/publish" \
-            --approval pending --hf-repo "$HF_ARCHIVE_REPO"
+          python -m atlas.publish --origin "$ATLAS_HOT_ORIGIN" --out "$RUNNER_TEMP/site" \
+            --approval approved --alerts --hf-repo "$HF_ARCHIVE_REPO"
+      - name: Rebuild Ask and the web build
+        run: |
+          python -m atlas.rag.index
+          python -m atlas.rag.manifest --public "$RUNNER_TEMP/ask/data/ask"
+          (cd web && npm run build)
+          if [ -f configs/static/ka/monsoon-normals.json ]; then
+            out="$RUNNER_TEMP/site/data/ka/monsoon.json"
+            python -m atlas.analysis.district_monsoon current --out "$out" \
+              || echo "::warning::district monsoon tracker not refreshed today"
+          fi
+          cp -r "$RUNNER_TEMP/site/data" "$RUNNER_TEMP/site/api" web/dist/
+          cp -r "$RUNNER_TEMP/ask/data/ask" web/dist/data/
+      - name: Load Ask chunks into D1 and deploy the site
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_D1_DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
+        run: |
+          python - <<'PY'
+          import os, sys
+          sys.path.insert(0, "scripts")
+          import deploy_worker as d
+          base = (d.ROOT / "worker/wrangler.toml").read_text("utf-8")
+          config = d.deploy_config(base, os.environ["CLOUDFLARE_D1_DATABASE_ID"])
+          d.DEPLOY.write_text(config, encoding="utf-8", newline="\n")
+          PY
+          (cd worker && npx --no-install wrangler d1 execute monsoon-atlas-hot --remote \
+            --file ../data/rag/ask-release.sql --config wrangler.deploy.toml --yes > /dev/null)
+          (cd web && ../worker/node_modules/.bin/wrangler pages deploy dist \
+            --project-name monsoon-atlas --branch main --commit-dirty=true)

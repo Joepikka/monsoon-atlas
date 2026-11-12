@@ -1,0 +1,53 @@
+table Moran
+	lineageTag: c2f955fa-5dbf-57d3-82e1-be35e4ba8e35
+
+	measure 'Moran I' = AVERAGE('Moran'[moran_i])
+		formatString: 0.00
+		lineageTag: 48c7ad87-b745-510e-87c9-dd401de5440e
+
+	measure 'Significant Months' = CALCULATE(COUNTROWS('Moran'), 'Moran'[significant] = "yes")
+		formatString: 0
+		lineageTag: 8aeea1a7-52a5-5dcc-8f79-e9b8d8884e20
+
+	column month
+		dataType: string
+		lineageTag: 7ddc4f4e-b085-5fc6-8abd-8b92ceb227e5
+		summarizeBy: none
+		sourceColumn: month
+
+	column moran_i
+		dataType: double
+		formatString: 0.000
+		lineageTag: 6c7cc9b4-0ce9-5fdf-b764-ebfb3b97b81c
+		summarizeBy: none
+		sourceColumn: moran_i
+
+	column p
+		dataType: double
+		formatString: 0.000
+		lineageTag: e8c85d10-cd15-5439-a1fc-cfdba67ce412
+		summarizeBy: none
+		sourceColumn: p
+
+	column q_bh
+		dataType: double
+		formatString: 0.000
+		lineageTag: 80ad8ddf-5b37-5e9f-96d0-34506369ad8a
+		summarizeBy: none
+		sourceColumn: q_bh
+
+	column significant
+		dataType: string
+		lineageTag: 664e9279-26be-51c6-9070-93a8738c4e06
+		summarizeBy: none
+		sourceColumn: significant
+
+	partition Moran = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "moran.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"month", type text}, {"moran_i", type number}, {"p", type number}, {"q_bh", type number}, {"significant", type text}}, "en-US")
+				in
+				    Typed

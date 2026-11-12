@@ -157,6 +157,8 @@ changes gave no gain. The Ask page carries a research-only note, the release
 checklist shows the C3 check as research-only rather than pass, and the
 owner decided at H11 on 11 Nov 2026 (D166) that a research-only C3 counts for T046 extra
 check (2). Before any release, freeze Ask's document set and regenerate this report once.
+Done 12 Nov 2026 for the Karnataka release (D187): 31 documents, 521 chunks, evidence
+support 0.77 and correctness 0.82; still research-only.
 Revisit only with a fresh held-out question set written before tuning, or
 with reviewed generated answers after H05.
 

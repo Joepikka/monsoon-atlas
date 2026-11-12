@@ -1,0 +1,131 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "gates",
+  "position": {
+    "x": 24,
+    "y": 420,
+    "z": 4000,
+    "width": 620,
+    "height": 288,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Model Gates"
+                    }
+                  },
+                  "Property": "check"
+                }
+              },
+              "queryRef": "Model Gates.check",
+              "nativeQueryRef": "check",
+              "displayName": "Gate"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Model Gates"
+                    }
+                  },
+                  "Property": "value"
+                }
+              },
+              "queryRef": "Model Gates.value",
+              "nativeQueryRef": "value",
+              "displayName": "M05"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Model Gates"
+                    }
+                  },
+                  "Property": "reference"
+                }
+              },
+              "queryRef": "Model Gates.reference",
+              "nativeQueryRef": "reference",
+              "displayName": "Reference"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Model Gates"
+                    }
+                  },
+                  "Property": "passed"
+                }
+              },
+              "queryRef": "Model Gates.passed",
+              "nativeQueryRef": "passed",
+              "displayName": "Passed"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Model Gates"
+                  }
+                },
+                "Property": "check"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Promotion gates, 2020-2024 locked test (all must pass)'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

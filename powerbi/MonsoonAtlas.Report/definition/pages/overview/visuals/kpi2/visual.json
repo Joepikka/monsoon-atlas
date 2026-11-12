@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "kpi2",
+  "position": {
+    "x": 440,
+    "y": 108,
+    "z": 4000,
+    "width": 192,
+    "height": 104,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Bus Cells"
+                    }
+                  },
+                  "Property": "Bengaluru Covered Share"
+                }
+              },
+              "queryRef": "Bus Cells.Bengaluru Covered Share",
+              "nativeQueryRef": "Bengaluru Covered Share",
+              "displayName": "Bengaluru within 500 m of a bus"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

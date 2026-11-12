@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "kpi1",
+  "position": {
+    "x": 648,
+    "y": 108,
+    "z": 3000,
+    "width": 608,
+    "height": 96,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Moran"
+                    }
+                  },
+                  "Property": "Moran I"
+                }
+              },
+              "queryRef": "Moran.Moran I",
+              "nativeQueryRef": "Moran I",
+              "displayName": "Mean Moran's I (0 = none)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,10 +1,12 @@
 # T043 (T251 relay + D182 capture): every 15 minutes, restore the Karnataka feed checkpoint,
 # run one server-admitted S09 cycle and one S01 cycle against the hosted Worker, and relay the
-# committed checkpoint to the next run. `queue: max` keeps up to 100 pending runs, so no pending
-# run is cancelled and the immediate-predecessor chain (D86) holds. A failed source cycle warns
-# but does not fail the job, so one provider outage cannot break the chain. The Worker's D1
-# admission sets the real cadence (S09 15 minutes, S01 6 hours). Actions are pinned to audited
-# commit SHAs; the token can only read; the signing key reaches only the two cycle steps.
+# committed checkpoint to the next run. D193: the `queue: max` concurrency option was removed
+# because no scheduled run fired in four hours with it; a run takes about a minute every 15
+# minutes, so a pending run is rarely replaced, and a broken chain needs only a manual bootstrap.
+# A failed source cycle warns but does not fail the job, so one provider outage cannot break the
+# chain. The Worker's D1 admission sets the real cadence (S09 15 minutes, S01 6 hours). Actions
+# are pinned to audited commit SHAs; the token can only read; the signing key reaches only the two
+# cycle steps.
 name: feeds
 
 on:
@@ -24,7 +26,6 @@ permissions:
 concurrency:
   group: ka-feeds
   cancel-in-progress: false
-  queue: max
 
 jobs:
   relay:

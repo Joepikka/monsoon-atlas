@@ -2,8 +2,20 @@ table 'District Rain'
 	lineageTag: 6b0846b2-f002-567f-a164-be3d158b5429
 
 	measure 'Mean Annual Rain' = AVERAGE('District Rain'[gauge_mm])
-		formatString: 0
+		formatString: #,0
 		lineageTag: 1f55ba2d-165a-5dd7-8e81-105a074e95a5
+
+	measure 'Rain Variability' = DIVIDE(STDEV.P('District Rain'[gauge_mm]), AVERAGE('District Rain'[gauge_mm]))
+		formatString: 0.0%
+		lineageTag: f9c346d3-6c77-5bb1-8256-55789ab92802
+
+	measure 'Wettest Year' = MAX('District Rain'[gauge_mm])
+		formatString: #,0
+		lineageTag: fbf8e401-63db-55cc-8342-d0382a5712d3
+
+	measure 'Driest Year' = MIN('District Rain'[gauge_mm])
+		formatString: #,0
+		lineageTag: d847fc5d-c689-5e1e-900e-6c7c186aaea6
 
 	column district
 		dataType: string

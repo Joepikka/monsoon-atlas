@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "method",
+  "position": {
+    "x": 24,
+    "y": 624,
+    "z": 12000,
+    "width": 1232,
+    "height": 84,
+    "tabOrder": 12000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Methods: exact great-circle nearest-site search and a people-weighted Gini (hospitals); network walking catchments (buses); Mann-Kendall, Sen slope and Benjamini-Hochberg (rain trends); ridge regression against persistence, climatology and a LightGBM challenger, with a paired block bootstrap (drought model); Moran's I and a variogram (spatial errors). Notebooks 02, 04, 08, 10, 11.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "fontWeight": "normal",
+                      "color": "#5B6470"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -6,7 +6,22 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-ref table 'Reservoir Change'
 ref table 'District Rain'
 ref table 'Model Error'
 ref table 'Model Gain'
+ref table 'Rain Trend'
+ref table 'Hospital Access'
+ref table 'Bus Access'
+ref table Headline
+ref table 'Statewide Access'
+ref table Lorenz
+ref table 'Bus Cells'
+ref table 'Model Scores'
+ref table 'Model Gates'
+ref table Calibration
+ref table 'Interval Check'
+ref table 'Interval Selection'
+ref table Moran
+ref table Variogram
+ref table 'Gauge Stations'
+ref table 'Grid Coverage'

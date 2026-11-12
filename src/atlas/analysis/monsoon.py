@@ -107,20 +107,70 @@ def inferred_onset(daily: Mapping[date, float | None], year: int) -> dict:
     return {"onset": None, "label": INFERRED, "method": method}
 
 
+def mann_kendall(values: list[float]) -> tuple[float, float]:
+    """Two-sided Mann-Kendall test: (S, p). Tie-corrected variance, continuity correction,
+    normal approximation (fine for n >= 10). Assumes no serial correlation (D196 limit)."""
+    from math import erf, sqrt
+
+    x = np.asarray(values, dtype=float)
+    n = len(x)
+    s = float(sum(np.sign(x[j] - x[i]) for i in range(n - 1) for j in range(i + 1, n)))
+    _, counts = np.unique(x, return_counts=True)
+    var = (n * (n - 1) * (2 * n + 5) - sum(t * (t - 1) * (2 * t + 5) for t in counts)) / 18
+    z = 0.0 if s == 0 else (s - np.sign(s)) / sqrt(var)
+    p = 2 * (1 - 0.5 * (1 + erf(abs(z) / sqrt(2))))
+    return s, float(p)
+
+
+def sen_slope(years: list[int], values: list[float]) -> float:
+    """Median of all pairwise slopes (robust to outlier years)."""
+    slopes = [
+        (values[j] - values[i]) / (years[j] - years[i])
+        for i in range(len(years) - 1)
+        for j in range(i + 1, len(years))
+    ]
+    return float(np.median(slopes))
+
+
 def trend(area: str, annual: Mapping[int, float | None]) -> dict:
-    """Linear trend of annual rain as percent of the 1981-2010 mean per decade; years held only."""
+    """Trend of annual rain as percent of the 1981-2010 mean per decade (OLS and Sen), with a
+    Mann-Kendall test (D196); years held only."""
     ref = reference_sample(annual)
     years = sorted(y for y, v in annual.items() if v is not None)
     pct = [100 * annual[y] / statistics.fmean(ref) for y in years]
     slope = float(np.polyfit(years, pct, 1)[0]) * 10
+    _, p = mann_kendall(pct)
+    lag1 = float(np.corrcoef(pct[:-1], pct[1:])[0, 1]) if len(pct) > 2 else None
     return {
         "area": area,
         "first_year": years[0],
         "last_year": years[-1],
         "n_years": len(years),
         "slope_pct_per_decade": round(slope, 2),
-        "significance": "not tested",
+        "sen_slope_pct_per_decade": round(sen_slope(years, pct) * 10, 2),
+        "mann_kendall_p": round(p, 4),
+        "lag1_autocorrelation": None if lag1 is None else round(lag1, 3),
+        "significance": "significant at 5% (Mann-Kendall)" if p < 0.05 else "not significant",
     }
+
+
+def fdr(rows: list[dict]) -> list[dict]:
+    """Benjamini-Hochberg q-values across a family of trend tests (D196). The label then uses
+    q < 0.05, and a lag-1 autocorrelation above 0.2 is flagged, because it inflates MK."""
+    order = sorted(range(len(rows)), key=lambda i: rows[i]["mann_kendall_p"])
+    m, q, running = len(rows), [0.0] * len(rows), 1.0
+    for rank in range(m, 0, -1):
+        i = order[rank - 1]
+        running = min(running, rows[i]["mann_kendall_p"] * m / rank)
+        q[i] = running
+    out = []
+    for row, qi in zip(rows, q, strict=True):
+        qi = round(qi, 4)  # judge the value that is reported
+        label = "significant (5% false discovery rate)" if qi < 0.05 else "not significant"
+        if qi < 0.05 and (row["lag1_autocorrelation"] or 0) > 0.2:
+            label += "; autocorrelated, so weaker than it looks"
+        out.append(row | {"fdr_q": qi, "significance": label})
+    return out
 
 
 def projections(rows: Iterable[Mapping]) -> dict:

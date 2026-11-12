@@ -60,11 +60,12 @@ def test_every_project_json_parses():
         json.loads(p.read_text("utf-8"))
 
 
-def test_four_pages_in_order():
+def test_ten_karnataka_pages_in_order():
     pages = json.loads(
         (PROJECT / "MonsoonAtlas.Report/definition/pages/pages.json").read_text("utf-8")
     )
-    assert pages["pageOrder"] == ["reservoirs", "rain", "prices", "accuracy"]
+    order = ["overview", "trends", "rain", "hospitals", "bus", "accuracy", "reliability"]
+    assert pages["pageOrder"] == [*order, "spatial", "quality", "limits"]  # D197, D198
 
 
 def visuals():
@@ -103,15 +104,10 @@ def test_blocked_pages_carry_their_reason_and_no_data():
     for key, (ids, reason) in bp.BLOCKED.items():
         assert set(ids.split()) <= blocked, key
         assert reason.startswith(("blocked", "M07"))
-    for page, expected in (
-        ("reservoirs", "S28"),
-        ("rain", "S43"),
-        ("prices", "S22"),
-        ("accuracy", "M07"),
-    ):
-        text = " ".join(json.dumps(v) for p, v in visuals() if p == page)
-        assert "Blocked:" in text and expected in text, page
-    assert not [1 for p, v in visuals() if p == "prices" and v["visual"].get("query")]
+    text = " ".join(json.dumps(v) for p, v in visuals() if p == "limits")
+    for expected in ("S22", "S43", "M07"):
+        assert "Blocked:" in text and expected in text, expected
+    assert not [1 for p, v in visuals() if p == "limits" and v["visual"].get("query")]
 
 
 def test_accuracy_matches_registry_and_report():
@@ -122,15 +118,23 @@ def test_accuracy_matches_registry_and_report():
     assert gain[0]["mae_ridge"] == "0.732" and gain[0]["mae_baseline"] == "0.808"
 
 
-def test_reservoir_rows_are_the_published_s32_sample():
-    rows = list(csv.DictReader((bp.DATA / "reservoir_change.csv").open(encoding="utf-8")))
-    assert len(rows) == 16 and {r["window"] for r in rows} == {
-        w for w, _ in bp.RESERVOIR_WINDOWS.values()
-    }
-    assert all(
-        abs(float(r["end_pct"]) - float(r["start_pct"]) - float(r["change_points"])) < 0.06
-        for r in rows
+def test_showcase_tables_match_their_reports():
+    """D197: the new tables are copies of committed results, not new numbers."""
+    trend = list(csv.DictReader((bp.DATA / "rain_trend.csv").open(encoding="utf-8")))
+    assert len(trend) == 30 and sum(float(r["fdr_q"]) < 0.05 for r in trend) == 9
+    access = list(csv.DictReader((bp.DATA / "hospital_access.csv").open(encoding="utf-8")))
+    report = list(
+        csv.DictReader(
+            (ROOT / "reports/eda/11_ka_hospital_access/district_access.csv").open(encoding="utf-8")
+        )
     )
+    assert [r["district"] for r in access] == [r["district"] for r in report]
+    bus = list(csv.DictReader((bp.DATA / "bus_access.csv").open(encoding="utf-8")))
+    summary = json.loads((ROOT / "reports/eda/04_bmtc_coverage/summary.json").read_text("utf-8"))
+    total = sum(int(r["people"]) for r in bus)
+    assert abs(total - summary["population"]["total"]) <= 2  # every person in exactly one band
+    head = (bp.DATA / "headline.csv").read_text("utf-8")
+    assert "65.3%" in head and "9 of 30" in head
 
 
 def test_no_service_publishing_or_credentials():
@@ -146,3 +150,64 @@ def test_district_rain_is_gauge_only():
     assert (bp.DATA / "district_rain.csv").read_text("utf-8").splitlines()[
         0
     ] == "district,year,gauge_mm"
+
+
+def test_no_measure_shares_a_name_with_any_column():
+    """Power BI names are case-insensitive across the model: measure 'MAE' and column 'mae'
+    cannot coexist (Desktop refuses to load the project)."""
+    columns = {c.lower() for _, _, cols, _ in bp.TABLES.values() for c, _ in cols}
+    measures = [m.lower() for _, _, _, ms in bp.TABLES.values() for m, *_ in ms]
+    assert len(measures) == len(set(measures))
+    assert not set(measures) & columns, set(measures) & columns
+
+
+def test_d198_tables_are_copies_of_committed_results():
+    def rows(name):
+        return list(csv.DictReader((bp.DATA / name).open(encoding="utf-8")))
+
+    cells = rows("bus_cells.csv")
+    share = sum(float(r["covered_population"]) for r in cells) / sum(
+        float(r["population"]) for r in cells
+    )
+    assert round(share, 4) == 0.6534 and len(cells) <= 2450
+    assert set(cells[0]) == {
+        "cell_id",
+        "lon",
+        "lat",
+        "population",
+        "covered_population",
+        "band",
+        "band_order",
+    }
+    lorenz = rows("lorenz.csv")
+    assert lorenz[0] == {"people_share": "0.0", "distance_share": "0.0"}
+    assert lorenz[-1] == {"people_share": "1.0", "distance_share": "1.0"}
+    assert rows("statewide_access.csv")[0]["gini"] == "0.4798"
+    mae = {r["model"]: r["mae"] for r in rows("model_error.csv") if r["period"].startswith("2020")}
+    assert mae == {
+        "persistence (baseline)": "0.808",
+        "climatology": "1.053",
+        "M05 ridge": "0.732",
+        "LightGBM challenger": "0.722",
+    }
+    assert [r["passed"] for r in rows("model_gates.csv")] == ["yes"] * 5
+    looks = rows("interval_check.csv")
+    assert [r["result"] for r in looks].count("inside 75-85%") == 1  # only persistence, never M05
+    assert [r["chosen"] for r in rows("interval_selection.csv")].count("yes") == 1
+    moran = rows("moran.csv")
+    assert len(moran) == 60 and sum(r["significant"] == "yes" for r in moran) == 57
+    assert sum(int(r["stations"]) for r in rows("gauge_stations.csv")) == 5266
+
+
+def test_cards_and_sorts_point_at_real_fields():
+    for page, v in visuals():
+        sort = v["visual"].get("query", {}).get("sortDefinition")
+        if v["visual"]["visualType"] == "card":
+            assert len(v["visual"]["query"]["queryState"]["Values"]["projections"]) == 1
+        if sort:
+            field = next(iter(sort["sort"][0]["field"].values()))
+            entity, prop = field["Expression"]["SourceRef"]["Entity"], field["Property"]
+            assert prop in {c for c, _ in bp.TABLES[entity][2]}, (page, entity, prop)
+    for (table, col), by in bp.SORT_BY.items():
+        cols = {c for c, _ in bp.TABLES[table][2]}
+        assert {col, by} <= cols, (table, col, by)

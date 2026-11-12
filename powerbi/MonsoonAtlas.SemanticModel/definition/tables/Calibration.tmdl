@@ -1,0 +1,47 @@
+table Calibration
+	lineageTag: 42a6a018-2e25-59a2-851f-dc25df7622fe
+
+	measure 'Observed Drought Rate' = AVERAGE('Calibration'[observed_drought])
+		formatString: 0.0%
+		lineageTag: 0ad29d3d-05f7-57c4-9926-37d7226ea4af
+
+	measure 'Forecast Drought Probability' = AVERAGE('Calibration'[mean_probability])
+		formatString: 0.0%
+		lineageTag: 7d6b0d75-1281-5ef2-854f-d3add118b720
+
+	column season
+		dataType: string
+		lineageTag: ae02b5ff-d571-5bba-b7f3-138111069f68
+		summarizeBy: none
+		sourceColumn: season
+
+	column district_months
+		dataType: int64
+		formatString: 0
+		lineageTag: 5318d3f7-5540-50eb-b1d2-e04a6c987a4c
+		summarizeBy: none
+		sourceColumn: district_months
+
+	column observed_drought
+		dataType: double
+		formatString: 0.000
+		lineageTag: b06315b2-fff2-5f6f-85cb-b6091b3cae4a
+		summarizeBy: none
+		sourceColumn: observed_drought
+
+	column mean_probability
+		dataType: double
+		formatString: 0.000
+		lineageTag: 690a198f-9758-5bf5-b200-73ed2d467340
+		summarizeBy: none
+		sourceColumn: mean_probability
+
+	partition Calibration = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "calibration.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"season", type text}, {"district_months", Int64.Type}, {"observed_drought", type number}, {"mean_probability", type number}}, "en-US")
+				in
+				    Typed

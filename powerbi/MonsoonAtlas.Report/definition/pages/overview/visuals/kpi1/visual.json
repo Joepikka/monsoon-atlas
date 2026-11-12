@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "kpi1",
+  "position": {
+    "x": 232,
+    "y": 108,
+    "z": 3000,
+    "width": 192,
+    "height": 104,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Statewide Access"
+                    }
+                  },
+                  "Property": "Statewide Beyond 10 km"
+                }
+              },
+              "queryRef": "Statewide Access.Statewide Beyond 10 km",
+              "nativeQueryRef": "Statewide Beyond 10 km",
+              "displayName": "People over 10 km away"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

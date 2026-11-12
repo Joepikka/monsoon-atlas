@@ -246,11 +246,10 @@ def test_readme_lessons_match_their_reports():
     gate = json.loads(read("models/registry/m16.json"))["label_gate"]
     assert gate["adjudicated_flags"] == 0 and f"0 of {gate['required']} flags" in text
     rag = read("reports/rag.md")
-    assert re.search(r"\| all \| 45 \| 1\.00 \| 0\.89 \| 1\.00 \| 0\.86 \|", rag)
-    d147 = read("docs/decisions.md").split("- **D147")[1].split("\n- **D146")[0]
-    assert "correctness 0.84, evidence support 0.80" in " ".join(d147.split())
-    assert "correctness 0.89 and evidence support 0.86 against a 0.95 gate" in text
-    assert "gave 0.84 and 0.80" in text and "D147" in text
+    assert re.search(r"\| all \| 45 \| 1\.00 \| 0\.82 \| 1\.00 \| 0\.77 \|", rag)  # frozen, D187
+    assert "Corpus: 31 committed documents, 521 chunks." in rag
+    assert "correctness 0.82 and evidence support 0.77 against a 0.95 gate" in text
+    assert "down from 0.89 and 0.86 on 8 Nov" in text and "D187" in text
 
 
 def test_resume_counts_and_metrics_are_recomputed():

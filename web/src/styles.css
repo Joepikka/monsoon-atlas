@@ -943,3 +943,31 @@ h1,h2,h3,p{
   color:var(--muted);
   font-size:13px
 }
+
+/* D188: Nearby facilities on the map (letter + colour, not colour alone) */
+.facility-pin {
+  display: grid; place-items: center;
+  width: 24px; height: 24px; border-radius: 4px;
+  color: white; font: 700 13px/1 system-ui, sans-serif;
+  border: 2px solid white; box-shadow: 0 1px 3px rgb(0 0 0 / 35%);
+}
+.facility-pin.hospital { background: #b3261e; }
+.facility-pin.police { background: #1f4e8c; }
+.facility-pin.fire_station { background: #b35c00; }
+
+/* D191: transit access page */
+.transit-map { height: 480px; margin: 12px 0; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; list-style: none; padding: 0; }
+.legend .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 2px; vertical-align: -2px; }
+.headline { font-size: 1.15rem; font-weight: 600; }
+.credit { font-size: .85rem; }
+
+/* D192: district monsoon tracker */
+.monsoon-table { border-collapse: collapse; width: 100%; margin-top: 12px; font-size: .92rem; }
+.monsoon-table th, .monsoon-table td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: left; }
+.band-chip { color: white; padding: 2px 8px; border-radius: 10px; white-space: nowrap; font-size: .82rem; }
+
+/* D194: opt-in bus-access squares */
+.layer-toggle { padding: 8px 14px; border-radius: 6px; border: 1px solid #216b54; background: white; color: #216b54; font-weight: 600; cursor: pointer; }
+.layer-toggle[aria-pressed=true] { background: #216b54; color: white; }
+.hint { font-size: .85rem; }

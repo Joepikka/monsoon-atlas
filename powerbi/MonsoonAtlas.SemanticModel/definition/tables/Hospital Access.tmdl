@@ -1,0 +1,84 @@
+table 'Hospital Access'
+	lineageTag: ab1fd0b6-865d-53e6-809e-c9b0b8d0bc84
+
+	measure 'Mean km' = AVERAGE('Hospital Access'[mean_km])
+		formatString: 0.0
+		lineageTag: 4002bc13-d5fa-594b-a625-d62ffef10211
+
+	measure 'People Beyond 10 km' = SUMX('Hospital Access', 'Hospital Access'[people] * 'Hospital Access'[share_beyond_10km])
+		formatString: #,0
+		lineageTag: a1aeaf89-5075-5e1c-ac4c-59cdbe192f30
+
+	measure 'Median Distance' = AVERAGE('Hospital Access'[median_km])
+		formatString: 0.0
+		lineageTag: d287bbcd-6a4d-59de-8679-31f5ac0b00b4
+
+	measure 'Share Beyond 5 km' = AVERAGE('Hospital Access'[share_beyond_5km])
+		formatString: 0.0%
+		lineageTag: 23ddee13-df65-537e-a286-a0349c19dc62
+
+	measure 'Share Beyond 10 km' = AVERAGE('Hospital Access'[share_beyond_10km])
+		formatString: 0.0%
+		lineageTag: 1cfab484-f5b5-560e-969f-f1020200d0f6
+
+	measure 'District People' = SUM('Hospital Access'[people])
+		formatString: #,0
+		lineageTag: 69720efc-12ea-5b9c-ab10-1ba64bf6e6a5
+
+	column district
+		dataType: string
+		lineageTag: ce214494-b4d4-5d5e-b7ce-0f24419efe41
+		summarizeBy: none
+		sourceColumn: district
+
+	column people
+		dataType: int64
+		formatString: 0
+		lineageTag: 4df2fce7-ff1a-5c7c-bd56-0c323a17e843
+		summarizeBy: none
+		sourceColumn: people
+
+	column mean_km
+		dataType: double
+		formatString: 0.000
+		lineageTag: e3797ce4-3c70-53c4-aee1-c1a8a282f1ea
+		summarizeBy: none
+		sourceColumn: mean_km
+
+	column median_km
+		dataType: double
+		formatString: 0.000
+		lineageTag: 98fb4eb8-99b3-529e-873c-0e27f0770e6c
+		summarizeBy: none
+		sourceColumn: median_km
+
+	column p90_km
+		dataType: double
+		formatString: 0.000
+		lineageTag: c95b6773-b536-5835-8860-8964220f28c9
+		summarizeBy: none
+		sourceColumn: p90_km
+
+	column share_beyond_5km
+		dataType: double
+		formatString: 0.000
+		lineageTag: b23251ef-aec8-5822-8390-0f6ec024b51b
+		summarizeBy: none
+		sourceColumn: share_beyond_5km
+
+	column share_beyond_10km
+		dataType: double
+		formatString: 0.000
+		lineageTag: 88946ffe-1015-5425-ae0a-7d1b5beabc09
+		summarizeBy: none
+		sourceColumn: share_beyond_10km
+
+	partition 'Hospital Access' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "hospital_access.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"district", type text}, {"people", Int64.Type}, {"mean_km", type number}, {"median_km", type number}, {"p90_km", type number}, {"share_beyond_5km", type number}, {"share_beyond_10km", type number}}, "en-US")
+				in
+				    Typed

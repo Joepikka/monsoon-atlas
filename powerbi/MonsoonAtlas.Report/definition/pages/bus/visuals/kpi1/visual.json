@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "kpi1",
+  "position": {
+    "x": 440,
+    "y": 108,
+    "z": 3000,
+    "width": 400,
+    "height": 96,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Bus Cells"
+                    }
+                  },
+                  "Property": "People Within Walk"
+                }
+              },
+              "queryRef": "Bus Cells.People Within Walk",
+              "nativeQueryRef": "People Within Walk",
+              "displayName": "People within the walk"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

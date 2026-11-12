@@ -1,0 +1,51 @@
+table 'Interval Check'
+	lineageTag: 5605722e-3b3a-503b-8b1b-7cf86ba30cb2
+
+	measure 'Interval Coverage' = AVERAGE('Interval Check'[coverage])
+		formatString: 0.0%
+		lineageTag: 61af6012-ff3d-5259-bc5f-50f11beefd9b
+
+	measure 'Target Low' = 0.75
+		formatString: 0%
+		lineageTag: d7ac092a-7114-5c16-a1dd-1c73f47e51c6
+
+	measure 'Target High' = 0.85
+		formatString: 0%
+		lineageTag: 2c180d08-5421-5fc7-9f8f-4e613616f243
+
+	column order
+		dataType: int64
+		formatString: 0
+		lineageTag: 8b0b2dea-e6b1-5187-acbd-304859eab3f9
+		summarizeBy: none
+		sourceColumn: order
+
+	column stage
+		dataType: string
+		sortByColumn: order
+		lineageTag: ec0b2698-8929-5306-b5ea-304195cd291a
+		summarizeBy: none
+		sourceColumn: stage
+
+	column coverage
+		dataType: double
+		formatString: 0.000
+		lineageTag: 5cb29790-7d7f-5db2-a893-82f56d8c9eea
+		summarizeBy: none
+		sourceColumn: coverage
+
+	column result
+		dataType: string
+		lineageTag: ae47a2ca-937e-532e-b7c5-7c0110c221b4
+		summarizeBy: none
+		sourceColumn: result
+
+	partition 'Interval Check' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "interval_check.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"order", Int64.Type}, {"stage", type text}, {"coverage", type number}, {"result", type text}}, "en-US")
+				in
+				    Typed

@@ -153,12 +153,18 @@ def test_static_inputs_and_api_description_are_committed():
     assert {"/api/v1/current.json", "/api/v1/snapshots/{id}.json"} <= set(spec["paths"])
 
 
-def test_daily_workflow_archives_privately_and_never_deploys():
+def test_daily_workflow_archives_then_deploys_the_approved_release():
+    """D190: after the owner's public-release approval (D187) the daily job deploys; it archives
+    the release privately first and keeps every account value in secrets."""
     import yaml
 
     text = (ROOT / ".github/workflows/daily.yml").read_text("utf-8")
     flow = yaml.safe_load(text)
     assert flow[True]["schedule"] == [{"cron": "17 2 * * *"}]
     assert flow["permissions"] == {"contents": "read"}
-    assert "--approval pending" in text and "::add-mask::$HF_ARCHIVE_REPO" in text
-    assert "wrangler" not in text and "pages deploy" not in text
+    assert "--approval approved" in text and "--alerts" in text and "--hf-repo" in text
+    assert "::add-mask::$HF_ARCHIVE_REPO" in text
+    assert text.index("--hf-repo") < text.index("pages deploy")  # archive before deploy
+    assert "--project-name monsoon-atlas" in text
+    for name in ("CLOUDFLARE_API_TOKEN", "CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_D1_DATABASE_ID"):
+        assert f"${{{{ secrets.{name} }}}}" in text, name

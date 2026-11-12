@@ -915,7 +915,7 @@
       "owner_steps": [
         "H11"
       ],
-      "notes": "Judgement call: the minimal MVP table runs at ?page=accuracy locally (T257, T259); its plan task T046, the MVP gate, has not passed. No daily matured backtest exists because no model serves live predictions. H11 item 1 approved publishing the table on 11 Nov 2026 (D166); nothing is deployed."
+      "notes": "Judgement call: the minimal MVP table runs at ?page=accuracy locally (T257, T259); its plan task T046, the MVP gate, has not passed. No daily matured backtest exists because no model serves live predictions. H11 item 1 approved publishing the table on 11 Nov 2026 (D166); it is live with the Karnataka site since 12 Nov 2026 (D187)."
     },
     {
       "id": "F037",
@@ -1153,7 +1153,7 @@
         "tests/test_web_ask.py",
         "tests/test_ask_config.py"
       ],
-      "blocker": "Evidence support below the 0.95 gate (0.86 on 8 Nov, 0.80 on 11 Nov); extractive only; Workers AI waits for H05 (D101, D147).",
+      "blocker": "Evidence support below the 0.95 gate (0.86 on 8 Nov, 0.77 in the report frozen for release on 12 Nov); extractive only; Workers AI not connected (D101, D147, D187).",
       "owner_steps": [
         "H05",
         "H11"

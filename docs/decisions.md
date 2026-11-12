@@ -2,6 +2,144 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D198 — Power BI report expanded to ten pages (12 Nov 2026).**
+  Owner, in chat: "make it better more graphs ... a whole good big dashboard". The report now has
+  ten pages and 79 visuals: KPI cards on Overview, Hospital access, Bus access, Spatial errors and
+  Data quality; a Sen slope against BH q scatter; a district-by-year gauge rain matrix and a
+  coefficient-of-variation bar; a Lorenz curve; a 1 km cell scatter of Bengaluru bus access
+  (lon, lat, people and share only, as D191 allows); M05 against persistence, climatology and the
+  LightGBM challenger (not promoted, D41) with its bootstrap interval, promotion gates and Brier and
+  CRPS scores; a Forecast reliability page (calibration by season, every 80% interval look against
+  the 75-85% gate, and the D97 rule search); a Spatial errors page (Moran's I by month, variogram);
+  and a Data quality page (S08 completeness, S29 gauges per district). Twelve new CSVs are copied
+  from committed reports and the M05 registry; tests check them against their sources. No trips
+  per hour are shown (D191 allows no times). The 2025 tracker in `climate.json` is the Kerala box,
+  so it is left out of this Karnataka report. A sort column orders the bands, gates and interval
+  looks; a light theme adds card borders and a grey page. All 93 report JSON files pass the
+  published PBIR schemas (checked offline with jsonschema, not committed as a dependency).
+
+- **D197 — Karnataka Power BI report rebuilt around the analyses (12 Nov 2026).**
+  Owner, in chat: Power BI Desktop is installed and open; "this is mainly a data project".
+  `powerbi/build_pbip.py` now writes seven Karnataka pages: Overview (headline table), Rain trends
+  (Sen slope bar, test table, significance slicer), Hospital access (D195), Bus access (D191
+  derived bands), Model accuracy (M05), Gauge rain (S29) and Data limits (blocked notes for
+  prices, flood labels, M07/M06). The Kerala S32 reservoir page and its table are removed. New
+  CSVs (`rain_trend`, `hospital_access`, `bus_access`, `headline`) are copied from committed
+  reports; tests check they match and hold no blocked or restricted values.
+
+- **D196 — Rain trends tested: Mann-Kendall, Sen slope, Benjamini-Hochberg (12 Nov 2026).**
+  Each annual-rain trend (S08 indices only, 1981-2025) now carries Sen's slope, a tie-corrected
+  Mann-Kendall p-value and its lag-1 autocorrelation; the 30 Karnataka districts are corrected
+  together with Benjamini-Hochberg. Result: 18 districts have p < 0.05 but only 9 have q < 0.05,
+  8 of those flagged as autocorrelated (so weaker than they look). The Kerala cell box is a
+  single test. `significance` changes from "not tested" to the corrected result.
+
+- **D195 — Karnataka hospital access equity (12 Nov 2026).**
+  Owner, in chat: "choose the best 2 or 3". `src/atlas/analysis/access.py` and notebook 11:
+  every S16 WorldPop 2025 1 km cell (203,344, 70.8 M people) to the nearest of 3,581 S18 OSM
+  hospitals, exact great-circle nearest site (KD-tree on unit vectors), people-weighted. Median
+  3.79 km, mean 4.75 km, 90th percentile 10.5 km, 11.5% beyond 10 km, weighted Gini 0.48;
+  Yadgir worst (38% beyond 10 km), Bangalore best (median 0.6 km). Limits: straight-line, OSM
+  thinner in rural areas, hospitals of any size, modelled population. 51,869 people fall in cells
+  outside the S17 district polygons and are counted statewide only.
+
+- **D194 — Bus-access squares on request (12 Nov 2026).**
+  Owner, in chat: "make it as a option so user click a button and only then it shows stuff like
+  that". The bus-access map now opens as a plain map; a "Show bus access" button (aria-pressed)
+  turns the coloured 1 km squares and their legend on and off, and tapping a square opens a popup
+  with its people count and covered share. Tile or glyph errors after the map has loaded no longer
+  show "the map could not load".
+
+- **D193 — Feeds schedule without `queue: max` (12 Nov 2026).**
+  No scheduled run of any workflow fired between the first merge to `main` (10:45 UTC) and 14:48
+  UTC, while manual dispatches of the same files passed. The one unusual key is
+  `concurrency.queue: max` (D182). It is removed: a feeds run takes about a minute every 15
+  minutes, so GitHub's single pending slot is rarely replaced; if a pending run is ever cancelled,
+  the chain needs one manual bootstrap and the Worker's D1 admission still sets the real cadence.
+  If schedules still do not fire, the fallback is an external trigger (needs an owner token).
+
+- **D192 — District monsoon tracker from ERA5 (12 Nov 2026).**
+  Owner, in chat: "ok do all that" (warning archive, monsoon tracker, transit map).
+  `atlas.analysis.district_monsoon` uses S02 ERA5 daily rain at the 30 S17 district points: for
+  the southwest (1 Jun to 30 Sep) and northeast (1 Oct to 31 Dec) seasons it compares rain to the
+  latest weekly checkpoint with the same window in 2001-2025 (percent of median, rank), with plain
+  bands (not IMD categories); a missing day is never filled; two districts in one ERA5 cell are
+  mapped by request position, never by cell ID. History is fetched once, one year per request for
+  all points, within Open-Meteo's free limits (about 480 weighted calls a year; two batches today,
+  the rest tomorrow); derived normals are committed as `configs/static/ka/monsoon-normals.json`
+  (CC BY 4.0, ERA5 mm are not IMD data), so the daily job fetches only the current season.
+  `?page=monsoon` ("Monsoon tracker") lists districts driest first, labelled reanalysis, about
+  6 days behind, one grid point per district.
+
+- **D191 — Public Bengaluru bus-access page from derived T041 shares (12 Nov 2026).**
+  Owner, in chat (question on S30's restricted licence): "Yes, derived numbers only". `?page=transit`
+  ("Bus access") maps the 2,450 WorldPop cells of Bangalore district coloured by the share of
+  people within a 500 m walk of a BMTC stop with scheduled service (4 bands), with the 65.3% of
+  8.27 million headline, the service date, the T041 limits and credits. The bundle
+  `web/src/transit-coverage.json` is generated by `python -m atlas.analysis.coverage` from the
+  committed `reports/eda/04_bmtc_coverage/` files and holds only lon, lat, population and share
+  per cell; a test checks it equals the report and contains no stop, route, trip or time.
+  The S30 transit layer itself (stops, scheduled positions) stays unmounted (D116).
+
+- **D190 — Gate waivers and daily automatic deploy (12 Nov 2026).**
+  Owner answers, in chat: waive C1 and priced data for the Karnataka gate; add the Cloudflare
+  secrets so the site redeploys daily; publish derived transit numbers only (D191). The gate
+  records C1 and priced data as "waived" (not passed) and treats waived and C3's research-only
+  (counted by the owner, D166) as non-blocking; the only open check is the H14 case-study review.
+  GitHub Actions secrets `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` and
+  `CLOUDFLARE_D1_DATABASE_ID` were set with `gh` from `.env` over stdin. `daily.yml` now builds
+  the approved release with the warning archive, archives it privately (read-back) before
+  deploying, refreshes Ask (index, public files, D1 chunks) and deploys to Pages.
+
+- **D189 — Google Maps links and the Karnataka warning archive (12 Nov 2026).**
+  Owner, in chat: "ok do all that, and instead of open street map link is not good to give
+  google map link". (1) Each Nearby facility now has "Open in Google Maps" (a Maps search URL by
+  coordinates: no key, no tracking parameters) as its main link; the "Source: © OpenStreetMap
+  contributors" link stays, because ODbL requires attribution of the facility data. (2)
+  `atlas.alerts.archive` reads every stored S09 snapshot through the signed Worker export and
+  keeps each official CAP warning once, as issued, with first- and last-seen times; publish
+  writes `data/ka/alerts/archive.json` into each site release (`--alerts`), and `?page=warnings`
+  ("Warning archive" in the header) lists them newest first with district/text search and a
+  severity filter. The Sachet feed keeps no history, so the archive starts at the first stored
+  snapshot (12 Nov 2026) and is empty until a Karnataka warning is issued. The alerts privacy
+  guard now lists `archive.py`; it stores nothing about readers. kn, ml and hi strings for the
+  page are unreviewed drafts like the rest.
+
+- **D188 — Nearby keeps every facility kind and shows them on the map (12 Nov 2026).**
+  Owner, in chat: "when i click nearby i do see anythinf on the map why is it only showing
+  hospitals only". Cause: Nearby took the 10 nearest of any kind, and around central Bengaluru
+  those are all hospitals; the map drew records only, never facilities. Now Nearby keeps up to
+  4 of each kind (hospital, police, fire station) within 25 km, nearest first, and while the
+  Nearby tab is open the map shows them as lettered pins (H, P, F with distinct colours and an
+  accessible label) and fits them in view. Bangalore now lists 4 + 4 + 4, from 0.8 to 4.4 km.
+
+- **D187 — Public Karnataka release on pages.dev (12 Nov 2026).**
+  Owner, in chat: "Approve public release" (H11 public-release approval for Karnataka). Licence
+  check at deployment: the site bundles `dashboards.json`, `climate.json` (S08 derived outputs
+  only; no rainfall values, per H11 item 3) and the i18n strings; the release carries S01
+  (CC BY 4.0, non-commercial), S09 (public domain), S17 and S18 (ODbL, credited) only; the S30
+  transit layer (restricted) and S12/S20 layers are not mounted. Per H11 item 2 the Ask document
+  set was frozen and its report regenerated once before release: 31 documents, 521 chunks,
+  correctness 0.82, evidence support 0.77 against 0.95, so Ask stays research-only; its release
+  `bd058915` was loaded into D1 and published with the site. Approved Karnataka release
+  `bb00a60b` (pointer `approval: approved`). Pages project `monsoon-atlas` created and deployed
+  (`https://monsoon-atlas.pages.dev`) with two Pages Functions that forward `/api/v1/current` and
+  `/api/v1/ask` to the Worker, because the browser calls its own origin. Checked live: approved
+  snapshot loads, 30 districts, Nearby lists real hospitals with the not-walking-distance and
+  opening-hours notice, boundary disclaimer shown, no console errors. The live-update line
+  reads "unavailable" until a feed snapshot newer than the release arrives (T240 rule).
+  `scripts/deploy_site.py` repeats the deploy from `.env`; Kerala and Delhi stay "not released".
+
+- **D186 — T045 on main; first hosted feeds hop and daily release (12 Nov 2026).**
+  Owner, in chat: "Merge PR 2" and "Merge PR 3". PRs Joepikka/monsoon-atlas#6 (T044) and
+  Joepikka/monsoon-atlas#7 (T045) merged (`a1bf81a`, `0ec34af`). Manual runs on `main`: feeds
+  run 43229709170 selected the bootstrap run as its predecessor, imported its checkpoint,
+  stored a new S09 snapshot (S01 `not_due`) and offered a 546,710-byte checkpoint; daily run
+  43229714892 built release `0434e32c` (approval pending) and archived it privately. No
+  scheduled feeds run had fired by 13:39 UTC, about three hours after the workflow reached
+  `main`; manual dispatch works and continues the chain. Watch `gh run list --workflow
+  feeds.yml --event schedule`.
+
 - **D185 — T045 static releases, project API and replay; no public deploy (12 Nov 2026).**
   Owner, in chat: "continue the work and tell me when 1 state is done". `atlas.publish` builds a
   Karnataka release from the Worker's verified S09/S01 snapshots (wire digests checked), 30 S17

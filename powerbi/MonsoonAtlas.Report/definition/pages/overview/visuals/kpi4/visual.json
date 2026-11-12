@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "kpi4",
+  "position": {
+    "x": 856,
+    "y": 108,
+    "z": 6000,
+    "width": 192,
+    "height": 104,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Model Gain"
+                    }
+                  },
+                  "Property": "Gain 2020-2024"
+                }
+              },
+              "queryRef": "Model Gain.Gain 2020-2024",
+              "nativeQueryRef": "Gain 2020-2024",
+              "displayName": "Drought model gain, SPI"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

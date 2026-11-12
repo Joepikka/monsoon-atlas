@@ -25,7 +25,7 @@ proposed feature for an achieved result. A negative finding that can be reproduc
 - **Honest ML:** "Reported two negative findings with numbers: an anomaly rule that gives no
   z-score for 6,644,980 of 8,875,440 Karnataka cell-days and has 0 of 100 flags adjudicated, so its
   precision is not measured; and a retrieval evaluation whose evidence support fell from 0.86 on
-  8 Nov 2026 to 0.80 on 11 Nov 2026 against a 0.95 gate as the indexed corpus grew."
+  8 Nov 2026 to 0.77 on 12 Nov 2026 against a 0.95 gate as the indexed corpus grew."
   - Source: [reports/models/m16.md](../../reports/models/m16.md),
     [reports/rag.md](../../reports/rag.md), [docs/decisions.md](../../docs/decisions.md) (D147)
 - **LLM and product:** "Built extractive cited retrieval with no language model over 31 project

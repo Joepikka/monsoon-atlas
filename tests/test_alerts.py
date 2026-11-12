@@ -192,7 +192,7 @@ def test_nothing_about_readers_is_stored():
     sources = {
         p.name: p.read_text(encoding="utf-8") for p in (ROOT / "src/atlas/alerts").glob("*.py")
     }
-    assert set(sources) == {"__init__.py", "brief.py", "telegram.py"}
+    assert set(sources) == {"__init__.py", "archive.py", "brief.py", "telegram.py"}  # D189
     for name, text in sources.items():
         assert not re.search(r"chat_id|subscriber|user_id|username|environ|getenv", text, re.I), (
             name

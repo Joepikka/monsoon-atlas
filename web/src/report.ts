@@ -1,4 +1,4 @@
-import { hasCoordinates, type Facility, type MapRecord, type Place, type Snapshot, type StateId } from './data';
+import { facilityKinds, hasCoordinates, type Facility, type MapRecord, type Place, type Snapshot, type StateId } from './data';
 import { distanceKm, type Coordinates } from './map/Layers';
 
 export interface ShareIdentity { state: StateId; place: string; boundary: string; asOf: string; release: string }
@@ -15,6 +15,8 @@ export const sourceNames: Record<string, string> = {
   S32: 'KSEB', S33: 'KSEB monthly statistics', S34: 'KSDMA dam reports',
 };
 
+export const NEARBY_PER_KIND = 4;
+
 export function rankByDistance<T extends { longitude: number; latitude: number }>(origin: Coordinates, items: T[]): (T & { distance_km: number })[] {
   return items.map(item => ({ ...item, distance_km: distanceKm(origin, [item.longitude, item.latitude]) }))
     .sort((a, b) => a.distance_km - b.distance_km);
@@ -29,7 +31,11 @@ export function buildReport(snapshot: Snapshot, placeId: string, boundary: strin
     if (record.kind === 'model') return false; // A model score needs an explicit versioned place association.
     return record.spatial_scope === 'area' || (hasCoordinates(record) && distanceKm([place.longitude, place.latitude], [record.longitude, record.latitude]) <= 25);
   });
-  const facilities = rankByDistance([place.longitude, place.latitude], snapshot.facilities).filter(item => item.distance_km <= 25).slice(0, 10);
+  // Up to PER_KIND of each facility kind within 25 km, then nearest first, so a dense kind
+  // (hospitals in a city) cannot hide the nearest police or fire station.
+  const near = rankByDistance([place.longitude, place.latitude], snapshot.facilities).filter(item => item.distance_km <= 25);
+  const facilities = facilityKinds.flatMap(kind => near.filter(item => item.kind === kind).slice(0, NEARBY_PER_KIND))
+    .sort((a, b) => a.distance_km - b.distance_km);
   const sourceMap = new Map<string, { id: string; url: string }>();
   for (const source of [{ source_id: place.source_id, source_url: place.source_url }, ...records, ...facilities]) {
     sourceMap.set(source.source_id + '|' + source.source_url, { id: source.source_id, url: source.source_url });

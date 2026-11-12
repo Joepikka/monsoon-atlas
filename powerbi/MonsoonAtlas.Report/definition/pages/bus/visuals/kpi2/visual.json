@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "kpi2",
+  "position": {
+    "x": 856,
+    "y": 108,
+    "z": 4000,
+    "width": 400,
+    "height": 96,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "card",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Bus Cells"
+                    }
+                  },
+                  "Property": "Cell People"
+                }
+              },
+              "queryRef": "Bus Cells.Cell People",
+              "nativeQueryRef": "Cell People",
+              "displayName": "People in the district"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

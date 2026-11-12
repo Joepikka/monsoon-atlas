@@ -82,3 +82,20 @@ describe('frozen place reports', () => {
     expect(result.snapshot).toBeNull();
   });
 });
+
+describe('Nearby keeps every facility kind (D188)', () => {
+  it('many near hospitals cannot hide a farther police station', () => {
+    const asOf = facilities[0].fetched_at;
+    const base = facilities.find((f: { kind: string }) => f.kind === 'hospital');
+    const crowd = Array.from({ length: 12 }, (_, i) => ({ ...base, facility_id: `osm:node:${900000 + i}`, name: `H${i}`,
+      longitude: place.longitude + 0.001 * (i + 1), latitude: place.latitude }));
+    const police = { ...facilities.find((f: { kind: string }) => f.kind === 'police'), facility_id: 'osm:node:999999',
+      longitude: place.longitude + 0.1, latitude: place.latitude };
+    const parsed = parseSnapshot({ ...body, as_of: asOf, published_at: asOf, facilities: [...crowd, police] }, 'ka');
+    const report = buildReport({ ...parsed, release_hash: 'f'.repeat(64) }, place.place_id, place.boundary_version);
+    expect(report.facilities.filter(f => f.kind === 'hospital')).toHaveLength(4);
+    expect(report.facilities.some(f => f.facility_id === 'osm:node:999999')).toBe(true);
+    const d = report.facilities.map(f => f.distance_km);
+    expect(d).toEqual([...d].sort((a, b) => a - b));
+  });
+});

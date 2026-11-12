@@ -1,0 +1,118 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "lorenz",
+  "position": {
+    "x": 440,
+    "y": 472,
+    "z": 9000,
+    "width": 420,
+    "height": 236,
+    "tabOrder": 9000
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Lorenz"
+                    }
+                  },
+                  "Property": "people_share"
+                }
+              },
+              "queryRef": "Lorenz.people_share",
+              "nativeQueryRef": "people_share",
+              "displayName": "Share of people, closest first"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Lorenz"
+                    }
+                  },
+                  "Property": "Share of Total Distance"
+                }
+              },
+              "queryRef": "Lorenz.Share of Total Distance",
+              "nativeQueryRef": "Share of Total Distance"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Lorenz"
+                    }
+                  },
+                  "Property": "Equal Access Line"
+                }
+              },
+              "queryRef": "Lorenz.Equal Access Line",
+              "nativeQueryRef": "Equal Access Line"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Lorenz"
+                  }
+                },
+                "Property": "people_share"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Lorenz curve of distance'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
