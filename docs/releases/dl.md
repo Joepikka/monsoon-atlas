@@ -47,7 +47,7 @@ Why each is blocked (from the registry records): M12 and M13 take their labels f
 is blocked on owner step H04, so there are 0 vehicle positions, 0 service days and no scheduled
 arrival or headway; M14 takes its labels from S24, which is blocked, so there are 0 station rows
 and no PM2.5 label; M15 has no Delhi source enabled, S01 keeps no issue-time vintages, S02 is
-reanalysis and S18 is blocked by robots.txt. Each registry record has no baseline, candidate,
+reanalysis and S18 has no Delhi extract (D174). Each registry record has no baseline, candidate,
 score, weights or predictions (all `null`, 0 rows). The UI shows the words "blocked" and
 "planned, not started" beside these items; it shows no number for them.
 
@@ -126,7 +126,7 @@ files local: `data/raw` is not tracked, and git holds only each source's `manife
 
 | Check | Result | Test |
 |---|---|---|
-| Karnataka gate | 23 of 33 sources enabled; M05 approved; frozen interfaces unchanged | `tests/test_ka_v1.py`, `tests/test_ka_release.py` |
+| Karnataka gate | 24 of 33 sources enabled; M05 approved; frozen interfaces unchanged | `tests/test_ka_v1.py`, `tests/test_ka_release.py` |
 | Kerala gate | 4 of 19 Kerala sources enabled; M07 to M10 blocked | `tests/test_kl_release.py` |
 | Delhi isolation | `dl.yaml` keeps its own raw, clean and publish roots; S28 and S32 are not Delhi sources | `tests/test_dl_study.py` |
 | Delhi poll and collection | Live mode unavailable; readiness gate failed (not run) | `tests/test_dl_poll.py`, `tests/test_dl_collection.py` |

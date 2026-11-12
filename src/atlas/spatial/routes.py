@@ -1,9 +1,10 @@
 """Experimental route comparison and shelter routing (T143).
 
 Not an emergency service and never a safe route: road closures and flood depth are unknown, and
-a "high-risk" edge only means it was flagged by the supplied risk layer. There is no verified road
-network (S18 is blocked, D34) and no verified official shelter record (S43 is blocked, D124), so
-real use returns "unavailable" or "disabled". The algorithm is tested on small hand-built graphs.
+a "high-risk" edge only means it was flagged by the supplied risk layer. S18 road ways are
+available from the owner's extract (D174) but no routing graph is built from them yet, and there
+is no verified official shelter record (S43 is blocked, D124), so real use returns "unavailable"
+or "disabled". The algorithm is tested on small hand-built graphs.
 """
 
 from __future__ import annotations
@@ -67,7 +68,7 @@ def compare_routes(edges: list[Edge] | None, origin: str, dest: str) -> dict:
     """Shortest route vs shortest route that excludes high-risk edges; unavailable if none."""
     if edges is None:
         return _unavailable(
-            f"no verified road network (S18 {_outcome('S18')}); no route is computed"
+            f"no road graph supplied (S18 {_outcome('S18')}, graph not built); no route is computed"
         )
     plain = _dijkstra(edges, origin, dest, avoid_risk=False)
     avoiding = _dijkstra(edges, origin, dest, avoid_risk=True)

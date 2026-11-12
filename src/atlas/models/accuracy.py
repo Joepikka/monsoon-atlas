@@ -125,7 +125,12 @@ def release_checks() -> list[dict]:
             "H11 answers recorded (D166); boundary disclaimer on the map; S08 files untracked; "
             "licence check repeats at deployment",
         ),
-        ("Dependencies T045 and T041", "blocked", "T045 needs H05/H06; T041 needs S18"),
+        (
+            "Dependencies T045 and T041",
+            "blocked",
+            "T045 needs H06 and the capability probe (H05 token saved 12 Nov 2026); "
+            "T041 not built (S18 available, D174)",
+        ),
     ]
     return [{"check": c, "status": s, "evidence": e} for c, s, e in checks]
 

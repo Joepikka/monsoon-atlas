@@ -1,7 +1,7 @@
 {
   "model_id": "M15",
   "status": "blocked",
-  "reason": "M15 blocked: no Delhi source is enabled, S01 keeps no issue-time forecast vintages (D07) so no forecast is matched to observed truth, S02 is ERA5 reanalysis, which supports trends and exposure only, and S18 impervious inputs are blocked by robots.txt; calibration skill cannot be claimed (T162).",
+  "reason": "M15 blocked: no Delhi source is enabled, S01 keeps no issue-time forecast vintages (D07) so no forecast is matched to observed truth, S02 is ERA5 reanalysis, which supports trends and exposure only, and S18 holds only the owner's Southern Zone extract (D174), so no Delhi impervious input exists; calibration skill cannot be claimed (T162).",
   "sources": {
     "S01": {
       "outcome": "available",
@@ -31,13 +31,13 @@
       "retry_condition": null
     },
     "S18": {
-      "outcome": "blocked",
+      "outcome": "available",
       "licence": "open",
-      "units": "not_checked",
+      "units": "labelled",
       "history": "partial",
       "earliest_date": "2022-01-01",
-      "latest_date": "2026-11-03",
-      "retry_condition": "Any one of: (1) the owner downloads southern-zone-latest.osm.pbf in a browser and saves it in data/raw/S18 (a manual download is not a robot), then T021 checks it and T022 parses the local file; (2) Geofabrik states that scripted downloads are allowed; (3) a separate source task verifies the OpenStreetMap Overpass API for the few Karnataka feature types the map needs."
+      "latest_date": "2026-11-11",
+      "retry_condition": null
     }
   },
   "evidence": {
@@ -47,9 +47,9 @@
     "tests/fixtures/s02/manifest.json": "22916db841dad611cb2ae64a6be7bbb577ae3ed32fe4aca665147bdc3f569c4f",
     "configs/sources/s16.yaml": "b301d10c1a198b344ab5464fd442e7d1c7e856314544f61ab35f46a05095fce6",
     "tests/fixtures/s16/manifest.json": "fa59ee73061b3629cc9fcf27bdc7a10f3ae753b615fac4bf5940dc3f3d24d74e",
-    "configs/sources/s18.yaml": "1ff8be6fa84ec45ef72a795a542783bd30ca0da87d549884a36a92932167d176",
-    "tests/fixtures/s18/manifest.json": "537e3da629c6ce45cba0698b3e858cac546bc5a498d37a6aec0a19b662c4777b",
-    "configs/models/m15.yaml": "426786329e5f66ab2d0bbcea13cf00c7d9f8cb1a44ebac194b99a28760824ae9"
+    "configs/sources/s18.yaml": "2fea38ee31381d04a6cc766faa47744facf0e036728a853d2421526c99b19c65",
+    "tests/fixtures/s18/manifest.json": "ea70b8b0fe611c71ea55cba979586e81d04615bdc65cd853f7f472e581747c8b",
+    "configs/models/m15.yaml": "bdd1bb4e042c06a5f3e3c7020856ac8780e6ee4545fbfb68187b996635532ca7"
   },
   "split_manifest": null,
   "prediction_rows": 0

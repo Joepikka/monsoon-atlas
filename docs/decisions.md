@@ -2,6 +2,20 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D174 — S18 available through the owner's browser download (12 Nov 2026).**
+  Retry condition 1 of T021 is met: the owner downloaded the published dated Southern Zone file
+  `southern-zone-261111.osm.pbf` (559,594,968 bytes, replication timestamp
+  2026-11-11T21:22:47Z) in a browser into `data/raw/S18` (evidence e05; stored under its
+  SHA256). D34 still holds: `fetch` downloads nothing and raises `SourceUnavailable`; the
+  adapter reads the owner file through `owner_file`, and monthly updates repeat the owner step.
+  The T021 rule passed on e05 (0 duplicate type/id, 0 missing versions, 0 invalid geometries
+  over 3,779,956 amenity/highway/emergency objects), so S18 is `available` and enabled for
+  Karnataka. Rows are `provenance=inferred` (volunteer-mapped, like S10, D108), ODbL 1.0, and
+  carry no shelter opening status. The committed test fixture
+  `tests/fixtures/s18_southern_zone_bengaluru_261111.osm.pbf` is a small real cut of e05 (ODbL,
+  credit OpenStreetMap contributors). The file also covers Kerala; Kerala use waits (D173).
+  M15 stays blocked: its S18 input is Delhi impervious cover, which this zone does not hold.
+
 - **D173 — Karnataka first; S22 and S23 price retries stay blocked (11 Nov 2026).**
   Owner, in chat: "is it wise to do just one state for now and do rest some other time"; the
   agent recommended Karnataka first, as A8 already orders, and the owner did not object. Kerala and

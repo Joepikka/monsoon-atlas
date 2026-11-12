@@ -18,7 +18,8 @@ ROOT = Path(__file__).resolve().parents[2]
 def test_gate_reports_the_blocked_sources_with_evidence_hashes():
     gate = m15.data_gate()
     assert (gate["model_id"], gate["status"], gate["prediction_rows"]) == ("M15", "blocked", 0)
-    assert gate["sources"]["S18"]["outcome"] == "blocked"
+    assert gate["sources"]["S18"]["outcome"] == "available"  # Southern Zone only (D174)
+    assert "no Delhi impervious input" in gate["reason"]
     assert gate["sources"]["S01"]["history"] == "partial"
     assert gate["split_manifest"] is None
     for name, sha in gate["evidence"].items():

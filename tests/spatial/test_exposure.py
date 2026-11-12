@@ -71,9 +71,9 @@ def test_disconnected_graph_returns_unavailable():
         assert r["status"] == "unavailable" and r["label"] == ROUTE_LABEL
 
 
-def test_real_roads_and_shelters_are_unavailable_while_sources_are_blocked():
+def test_real_roads_and_shelters_are_unavailable_without_graph_or_record():
     r = compare_routes(None, "a", "b")
-    assert r["status"] == "unavailable" and "S18 blocked" in r["reason"]
+    assert r["status"] == "unavailable" and "graph not built" in r["reason"]
     s = shelter_route(None, None, "a", date(2026, 11, 9))
     assert s["status"] == "disabled" and "S43 blocked" in s["reason"]
     assert GUIDANCE_URL in (ROOT / "configs/sources/s36.yaml").read_text("utf-8")

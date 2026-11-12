@@ -10,8 +10,9 @@ SOURCES = ("S01", "S02", "S16", "S18")
 REASON = (
     "M15 blocked: no Delhi source is enabled, S01 keeps no issue-time forecast vintages "
     "(D07) so no forecast is matched to observed truth, S02 is ERA5 reanalysis, which "
-    "supports trends and exposure only, and S18 impervious inputs are blocked by "
-    "robots.txt; calibration skill cannot be claimed (T162)."
+    "supports trends and exposure only, and S18 holds only the owner's Southern Zone "
+    "extract (D174), so no Delhi impervious input exists; calibration skill cannot be claimed "
+    "(T162)."
 )
 
 

@@ -15,7 +15,7 @@ synthetic rows.
 
 ## Sources
 
-23 of 33 sources enabled; 10 blocked and disabled (outcome `blocked`, retry
+24 of 33 sources enabled; 9 blocked and disabled (outcome `blocked`, retry
 condition recorded in each `configs/sources/sNN.yaml`). Every row has a
 discovery record that passes the discovery contract
 (`atlas.ingest.discovery.check`), a manifest of stored evidence, and a source
@@ -41,7 +41,7 @@ adapter by design: T008 ended at discovery.
 | S15 | OpenFreeMap basemap | available | yes | open | [s15](../sources/s15.md) |  |
 | S16 | WorldPop India population | available | yes | open | [s16](../sources/s16.md) |  |
 | S17 | geoBoundaries administrative boundaries | available | yes | open | [s17](../sources/s17.md) |  |
-| S18 | Geofabrik OSM extracts | blocked | no | open | [s18](../sources/s18.md) | Owner downloads the Geofabrik southern-zone .pbf in a browser, or Geofabrik allows scripted downloads, or an Overpass source task passes. |
+| S18 | Geofabrik OSM extracts | available | yes | open | [s18](../sources/s18.md) |  |
 | S19 | Google Open Buildings | available | yes | open | [s19](../sources/s19.md) |  |
 | S20 | USGS earthquakes | available | yes | restricted | [s20](../sources/s20.md) |  |
 | S21 | Datameet railway schedules | available | yes | open | [s21](../sources/s21.md) |  |
@@ -110,7 +110,7 @@ F030 is district level because no taluk polygons exist (D43). F027 also needs
 the Kerala dam model (C1), which is blocked separately.
 
 Other KA v1 rows of the catalogue belong to later tasks and are not gated here:
-F003 (T142); F018, F038, F039 (T143; F018 and F039 need blocked S18 and S43);
+F003 (T142); F018, F038, F039 (T143; F018 and F039 need a road graph from S18, available since D174, and blocked S43);
 F037 (T216); F040 (T164); F042, F043, F044 (T145); F046 (T180);
 F048 (T182); F049, F050, F052 (T183); F053 (T045); F054, F055, F059 (T217);
 F056, F057 (T218); F064 (T219).
@@ -165,7 +165,7 @@ From `docs/HANDOFF.md` section 8, "Pending human-only steps" (not edited here):
   map guidance, OpenFreeMap 18+ confirmation, WorldPop undercount label.
 - H05 and H06 tokens (deferred by the owner on 6 Nov); T045 needs them.
 - H09 FIRMS key (S25), H08 Telegram bot (S39), K-RERA permission (S31), OpenSky
-  terms (S11), Geofabrik download (S18), KWRIS request (S28), S23 denominator
+  terms (S11), KWRIS request (S28), S23 denominator
   statement.
 - H04 Delhi Open Transit Data registration (needed in P4).
 

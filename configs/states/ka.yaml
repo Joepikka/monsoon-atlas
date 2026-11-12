@@ -143,8 +143,9 @@ sources:
     verify_task: T021
     cost: free
     storage_crs: EPSG:4326
-    schedule: "monthly clipped update"
-    enabled: false
+    schedule: "monthly clipped update (owner browser download, D174)"
+    verified_by: configs/sources/s18.yaml
+    enabled: true
   - source_id: S19
     name: "Google Open Buildings"
     verify_task: T069

@@ -44,6 +44,17 @@
       "bytes": 9288,
       "raw_path": "S18/2026-11-05/03e1721761b739ca247682e6bd98cdfd9d5a394117900ce8a03522b9452d1d82.html",
       "shows": "Technical details: extracts updated once a day around 21:00 CET"
+    },
+    {
+      "id": "e05",
+      "url": "https://download.geofabrik.de/asia/india/southern-zone-261111.osm.pbf",
+      "fetched_at": "2026-11-12T05:20:10Z",
+      "status": 200,
+      "media_type": "application/x-protobuf",
+      "sha256": "81f355bdfb7925a5aae68552bfb53dd558891bddbcd88e07a29765567bdf0693",
+      "bytes": 559594968,
+      "raw_path": "S18/2026-11-12/81f355bdfb7925a5aae68552bfb53dd558891bddbcd88e07a29765567bdf0693.pbf",
+      "shows": "Owner browser download (D174): Southern Zone PBF, replication timestamp 2026-11-11T21:22:47Z"
     }
   ]
 }

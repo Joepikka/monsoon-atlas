@@ -457,9 +457,9 @@
         "configs/sources/s43.yaml"
       ],
       "tests": [],
-      "blocker": "No road network (S18, robots.txt) and no flood labels or polygons (S43) (D34, D128).",
+      "blocker": "No road graph is built from S18 yet (S18 available, D174) and no flood labels or polygons (S43) (D128).",
       "owner_steps": [],
-      "notes": "Owner may download the Geofabrik extract in a browser (S18 retry condition)."
+      "notes": "S18 roads come from the owner's browser download (D174)."
     },
     {
       "id": "F019",
@@ -583,7 +583,7 @@
       ],
       "blocker": "",
       "owner_steps": [],
-      "notes": "Judgement call: the Lens runs locally, but risk and forecast show no model output and Nearby states that facilities cannot be verified (S18 blocked, D59). Same snapshot caveat as F001."
+      "notes": "Judgement call: the Lens runs locally, but risk and forecast show no model output and Nearby states that facilities cannot be verified (S18 facilities not yet exported, D59, D174). Same snapshot caveat as F001."
     },
     {
       "id": "F024",
@@ -630,9 +630,9 @@
       "tests": [
         "tests/test_lens.py"
       ],
-      "blocker": "S18 blocked by robots.txt (D34); no verified shelter record (S43).",
+      "blocker": "S18 facilities passed the source check (D174) but are not yet exported to the map snapshot; no verified shelter record (S43).",
       "owner_steps": [],
-      "notes": "Owner may download the Geofabrik extract in a browser (S18 retry condition)."
+      "notes": "Next agent step: export S18 facilities into the snapshot; shelters never show opening status."
     },
     {
       "id": "F026",
@@ -969,7 +969,7 @@
       "tests": [
         "web/src/components/RouteComparison.test.ts"
       ],
-      "blocker": "No road network (S18) and no official shelter record (S43); every result says not a safe route (D128).",
+      "blocker": "No road graph is built from S18 yet (D174) and no official shelter record (S43); every result says not a safe route (D128).",
       "owner_steps": [],
       "notes": ""
     },
@@ -991,7 +991,7 @@
       "tests": [
         "tests/test_dl_release.py"
       ],
-      "blocker": "No Delhi source enabled; S01 keeps no issue-time vintages; S18 blocked (D141).",
+      "blocker": "No Delhi source enabled; S01 keeps no issue-time vintages; S18 has no Delhi extract (D141, D174).",
       "owner_steps": [],
       "notes": "Not owner-gated: enable S01 and S02 for Delhi and collect forecast vintages."
     },
