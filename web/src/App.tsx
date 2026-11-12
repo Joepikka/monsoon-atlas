@@ -4,7 +4,7 @@ import { currentSources, currentView, pollCurrentSources, type SourceUpdates } f
 import Layers, { layerConfigs, visibleRecords, type Coordinates } from './map/Layers';
 import SourceBadge from './components/SourceBadge';
 import EventTicker from './components/EventTicker';
-import PlaceLens from './components/PlaceLens';
+import PlaceLens, { type NearbyFacility } from './components/PlaceLens';
 import Watches, { signalsFrom } from './components/Watches';
 import type { Want } from './map/Terrain';
 import { t } from './i18n';
@@ -51,6 +51,7 @@ export default function App() {
   const [selected, setSelected] = useState<string | null>(null);
   const [active, setActive] = useState<Set<LayerKind>>(() => new Set(layerConfigs.map(layer => layer.kind)));
   const [center, setCenter] = useState<Coordinates | null>(null);
+  const [nearby, setNearby] = useState<NearbyFacility[] | null>(null);
   const [clock, setClock] = useState(Date.now);
   const [view, setView] = useState<ViewState>({ status: 'loading', snapshot: null, message: '' });
   const [updates, setUpdates] = useState<SourceUpdates>({});
@@ -163,7 +164,7 @@ export default function App() {
               <a href={record.source_url} target="_blank" rel="noopener noreferrer">{record.source_id} · {sourceNames[record.source_id] ?? 'Original source'} ↗</a>
             </li>)}</ol>}
           </section>
-          <PlaceLens snapshot={snapshot} shared={share.identity} now={clock} />
+          <PlaceLens snapshot={snapshot} shared={share.identity} now={clock} onNearby={setNearby} />
           {snapshot && <Watches places={snapshot.places.map(p => ({ id: p.place_id, label: p.name }))} signals={signalsFrom(display.records)} />}
           <div className="reading-key"><h3>How to read the atlas</h3><p>Official reports, model outputs, inferred and reconstructed items stay separately labelled. Dates belong to the source snapshot.</p></div>
         </section>
@@ -171,7 +172,7 @@ export default function App() {
         <section className="map-panel" aria-label="Karnataka map">
           <div className="map-caption"><span className="map-cross" aria-hidden="true">⊕</span><span>{stateNames[state]}<small>{records.some(record => !hasCoordinates(record)) ? 'Mapped points & area warning list' : 'Map & matching record list'}</small></span></div>
           <Suspense fallback={<p className="map-message">Loading map…</p>}>
-            <MapView records={records} selected={selected} onSelect={setSelected} center={center} onCenter={setCenter} want={want} />
+            <MapView records={records} selected={selected} onSelect={setSelected} center={center} onCenter={setCenter} want={want} facilities={nearby} />
           </Suspense>
           <div className="map-note">{snapshot ? hasCurrent ? 'Active source updates and dated daily records' : 'Records belong to the dated snapshot' : 'Basemap only · no released observations'}
             <small className="map-disclaimer">{t('map.disclaimer')}</small></div>

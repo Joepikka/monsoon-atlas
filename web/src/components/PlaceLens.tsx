@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import type { FacilityKind, MapRecord, Snapshot } from '../data';
+import { useEffect, useMemo, useState } from 'react';
+import type { Facility, FacilityKind, MapRecord, Snapshot } from '../data';
 import { buildReport, shareUrl, sourceNames, type PlaceReport, type ShareIdentity } from '../report';
 import { localTime } from '../time';
 import SourceBadge from './SourceBadge';
@@ -54,7 +54,10 @@ function ReportSection({ tab, report, snapshot, now }: { tab: Tab; report: Place
   </>;
 }
 
-export default function PlaceLens({ snapshot, shared, now }: { snapshot: Snapshot | null; shared: ShareIdentity | null; now: number }) {
+export type NearbyFacility = Facility & { distance_km: number };
+
+export default function PlaceLens({ snapshot, shared, now, onNearby }: { snapshot: Snapshot | null; shared: ShareIdentity | null; now: number;
+  onNearby?: (facilities: NearbyFacility[] | null) => void }) {
   const [selection, setSelection] = useState<{ place: string; boundary: string } | null>(shared);
   const [tab, setTab] = useState<Tab>('Now');
   const result = useMemo(() => {
@@ -63,6 +66,8 @@ export default function PlaceLens({ snapshot, shared, now }: { snapshot: Snapsho
     catch (error) { return { report: null, error: error instanceof Error ? error.message : 'The report could not be built.' }; }
   }, [snapshot, selection]);
   const { report, error } = result;
+  // The map shows these facilities only while the Nearby tab is open (D188).
+  useEffect(() => { onNearby?.(tab === 'Nearby' && report ? report.facilities : null); }, [tab, report, onNearby]);
   const selectedIndex = snapshot?.places.findIndex(place => place.place_id === selection?.place && place.boundary_version === selection?.boundary) ?? -1;
   return <>
     <section className="place-lens" aria-label="Place Lens">

@@ -2,6 +2,14 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D188 — Nearby keeps every facility kind and shows them on the map (12 Nov 2026).**
+  Owner, in chat: "when i click nearby i do see anythinf on the map why is it only showing
+  hospitals only". Cause: Nearby took the 10 nearest of any kind, and around central Bengaluru
+  those are all hospitals; the map drew records only, never facilities. Now Nearby keeps up to
+  4 of each kind (hospital, police, fire station) within 25 km, nearest first, and while the
+  Nearby tab is open the map shows them as lettered pins (H, P, F with distinct colours and an
+  accessible label) and fits them in view. Bangalore now lists 4 + 4 + 4, from 0.8 to 4.4 km.
+
 - **D187 — Public Karnataka release on pages.dev (12 Nov 2026).**
   Owner, in chat: "Approve public release" (H11 public-release approval for Karnataka). Licence
   check at deployment: the site bundles `dashboards.json`, `climate.json` (S08 derived outputs

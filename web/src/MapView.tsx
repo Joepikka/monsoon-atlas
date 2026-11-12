@@ -10,10 +10,12 @@ import Globe from './map/Globe';
 
 setWorkerUrl(workerUrl);
 
+interface NearbyPin { facility_id: string; kind: string; name: string; longitude: number; latitude: number; distance_km: number }
 interface Props { records: MapRecord[]; selected: string | null; onSelect: (id: string) => void;
-  center: Coordinates | null; onCenter: (center: Coordinates) => void; want?: Want }
+  center: Coordinates | null; onCenter: (center: Coordinates) => void; want?: Want; facilities?: NearbyPin[] | null }
+const FACILITY_SYMBOL: Record<string, [string, string]> = { hospital: ['H', 'Hospital'], police: ['P', 'Police station'], fire_station: ['F', 'Fire station'] };
 
-export default function MapView({ records, selected, onSelect, center, onCenter, want = 'flat' }: Props) {
+export default function MapView({ records, selected, onSelect, center, onCenter, want = 'flat', facilities = null }: Props) {
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<Map | null>(null);
   const [failed, setFailed] = useState(false);
@@ -72,6 +74,22 @@ export default function MapView({ records, selected, onSelect, center, onCenter,
     const marker = new Marker({ element }).setLngLat(center).addTo(map.current);
     return () => { marker.remove(); };
   }, [center]);
+  useEffect(() => {
+    if (!facilities?.length || !map.current) return;
+    const pins = facilities.map(item => {
+      const [symbol, label] = FACILITY_SYMBOL[item.kind] ?? ['?', 'Facility'];
+      const element = document.createElement('span');
+      element.className = `facility-pin ${item.kind}`; element.textContent = symbol;
+      element.setAttribute('role', 'img');
+      element.setAttribute('aria-label', `${label}: ${item.name}, ${item.distance_km.toFixed(1)} km`);
+      element.title = `${label}: ${item.name} (${item.distance_km.toFixed(1)} km, straight line)`;
+      return new Marker({ element }).setLngLat([item.longitude, item.latitude]).addTo(map.current!);
+    });
+    const lons = facilities.map(f => f.longitude), lats = facilities.map(f => f.latitude);
+    map.current.fitBounds([[Math.min(...lons), Math.min(...lats)], [Math.max(...lons), Math.max(...lats)]],
+      { padding: 60, maxZoom: 14, duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 500 });
+    return () => pins.forEach(pin => pin.remove());
+  }, [facilities]);
   // S13 imagery stays off until a row with a reported date is fed in; no date is assumed.
   const imagery = useMemo(() => imageryFor(null), []);
   return <><div className="map-container" ref={container} />
