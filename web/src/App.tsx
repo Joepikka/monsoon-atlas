@@ -108,6 +108,7 @@ export default function App() {
         <a className="official-link" href="?page=wall">{t('wall.title')}</a>
         <a className="official-link" href="?page=warnings">{t('nav.warnings')}</a>
         <a className="official-link" href="?page=transit">{t('nav.transit')}</a>
+        <a className="official-link" href="?page=monsoon">{t('nav.monsoon')}</a>
         <a className="official-link" href="https://sachet.ndma.gov.in/" target="_blank" rel="noopener noreferrer">
           Official warnings <span aria-hidden="true">↗</span>
         </a>

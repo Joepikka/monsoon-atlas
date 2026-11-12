@@ -961,3 +961,8 @@ h1,h2,h3,p{
 .legend .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 2px; vertical-align: -2px; }
 .headline { font-size: 1.15rem; font-weight: 600; }
 .credit { font-size: .85rem; }
+
+/* D192: district monsoon tracker */
+.monsoon-table { border-collapse: collapse; width: 100%; margin-top: 12px; font-size: .92rem; }
+.monsoon-table th, .monsoon-table td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: left; }
+.band-chip { color: white; padding: 2px 8px; border-radius: 10px; white-space: nowrap; font-size: .82rem; }

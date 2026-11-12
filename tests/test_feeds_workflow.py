@@ -162,7 +162,7 @@ def test_relay_is_scheduled_serial_queued_bounded_and_read_only():
         }
     }
     assert flow["permissions"] == {"contents": "read", "actions": "read"}
-    assert flow["concurrency"] == {"group": "ka-feeds", "cancel-in-progress": False, "queue": "max"}
+    assert flow["concurrency"] == {"group": "ka-feeds", "cancel-in-progress": False}  # D193
     job = flow["jobs"]["relay"]
     assert (job["runs-on"], job["timeout-minutes"]) == ("ubuntu-24.04", 6)
     assert job["env"]["MODE"] == "${{ inputs.bootstrap && '--bootstrap' || '--discover' }}"

@@ -2,6 +2,27 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D193 — Feeds schedule without `queue: max` (12 Nov 2026).**
+  No scheduled run of any workflow fired between the first merge to `main` (10:45 UTC) and 14:48
+  UTC, while manual dispatches of the same files passed. The one unusual key is
+  `concurrency.queue: max` (D182). It is removed: a feeds run takes about a minute every 15
+  minutes, so GitHub's single pending slot is rarely replaced; if a pending run is ever cancelled,
+  the chain needs one manual bootstrap and the Worker's D1 admission still sets the real cadence.
+  If schedules still do not fire, the fallback is an external trigger (needs an owner token).
+
+- **D192 — District monsoon tracker from ERA5 (12 Nov 2026).**
+  Owner, in chat: "ok do all that" (warning archive, monsoon tracker, transit map).
+  `atlas.analysis.district_monsoon` uses S02 ERA5 daily rain at the 30 S17 district points: for
+  the southwest (1 Jun to 30 Sep) and northeast (1 Oct to 31 Dec) seasons it compares rain to the
+  latest weekly checkpoint with the same window in 2001-2025 (percent of median, rank), with plain
+  bands (not IMD categories); a missing day is never filled; two districts in one ERA5 cell are
+  mapped by request position, never by cell ID. History is fetched once, one year per request for
+  all points, within Open-Meteo's free limits (about 480 weighted calls a year; two batches today,
+  the rest tomorrow); derived normals are committed as `configs/static/ka/monsoon-normals.json`
+  (CC BY 4.0, ERA5 mm are not IMD data), so the daily job fetches only the current season.
+  `?page=monsoon` ("Monsoon tracker") lists districts driest first, labelled reanalysis, about
+  6 days behind, one grid point per district.
+
 - **D191 — Public Bengaluru bus-access page from derived T041 shares (12 Nov 2026).**
   Owner, in chat (question on S30's restricted licence): "Yes, derived numbers only". `?page=transit`
   ("Bus access") maps the 2,450 WorldPop cells of Bangalore district coloured by the share of

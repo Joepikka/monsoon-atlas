@@ -194,5 +194,22 @@
   "transit.date": "Scheduled weekday service of {date}; walking distance along mapped paths.",
   "transit.legend": "Share of people within the walk",
   "transit.limits": "What this does not show",
-  "transit.mapfailed": "The map could not load; the numbers above remain."
+  "transit.mapfailed": "The map could not load; the numbers above remain.",
+  "nav.monsoon": "Monsoon tracker",
+  "monsoon.title": "Karnataka district monsoon tracker",
+  "monsoon.intro": "Rain so far this season in each district, compared with the same days in each year of the reference period. Driest districts first.",
+  "monsoon.reference": "Reference years {reference}.",
+  "monsoon.season": "Season",
+  "monsoon.southwest": "Southwest monsoon (1 Jun to 30 Sep)",
+  "monsoon.northeast": "Northeast monsoon (1 Oct to 31 Dec)",
+  "monsoon.district": "District",
+  "monsoon.through": "Rain up to",
+  "monsoon.rain": "Rain (mm)",
+  "monsoon.median": "Usual (median, mm)",
+  "monsoon.pct": "% of usual",
+  "monsoon.rank": "Rank (0 to 100)",
+  "monsoon.status": "Compared with usual",
+  "monsoon.complete": "season complete",
+  "monsoon.empty": "No district has reached a weekly checkpoint in this season yet.",
+  "monsoon.unavailable": "The monsoon tracker could not be loaded."
 }

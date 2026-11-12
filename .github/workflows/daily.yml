@@ -61,6 +61,11 @@ jobs:
           python -m atlas.rag.index
           python -m atlas.rag.manifest --public "$RUNNER_TEMP/ask/data/ask"
           (cd web && npm run build)
+          if [ -f configs/static/ka/monsoon-normals.json ]; then
+            out="$RUNNER_TEMP/site/data/ka/monsoon.json"
+            python -m atlas.analysis.district_monsoon current --out "$out" \
+              || echo "::warning::district monsoon tracker not refreshed today"
+          fi
           cp -r "$RUNNER_TEMP/site/data" "$RUNNER_TEMP/site/api" web/dist/
           cp -r "$RUNNER_TEMP/ask/data/ask" web/dist/data/
       - name: Load Ask chunks into D1 and deploy the site
