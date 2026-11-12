@@ -49,7 +49,7 @@ h1,h2,h3,p{
   top:10px
 }
 .masthead{
-  height:94px;
+  min-height:94px;
   padding:0 34px;
   display:flex;
   align-items:center;
@@ -592,8 +592,8 @@ h1,h2,h3,p{
 }
 @media(max-width:680px){
   .masthead{
-    height:82px;
-    padding:0 16px;
+    min-height:82px;
+    padding:8px 16px;
     gap:8px
   }
   .brand{
@@ -971,3 +971,42 @@ h1,h2,h3,p{
 .layer-toggle { padding: 8px 14px; border-radius: 6px; border: 1px solid #216b54; background: white; color: #216b54; font-weight: 600; cursor: pointer; }
 .layer-toggle[aria-pressed=true] { background: #216b54; color: white; }
 .hint { font-size: .85rem; }
+
+/* D199: Karnataka data findings page */
+.findings { max-width: 1100px; line-height: 1.5; }
+.find-toc { display: flex; flex-wrap: wrap; gap: 8px 18px; list-style: none; padding: 0; }
+.find-section { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 8px; }
+.find-lead { max-width: 75ch; }
+.find-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 16px 0; }
+.find-kpis div { background: var(--paper); border: 1px solid var(--line); padding: 10px 12px; }
+.find-kpis dt { color: var(--muted); font-size: 13px; }
+.find-kpis dd { margin: 2px 0 0; font-size: 26px; font-weight: 700; color: var(--teal); }
+.find-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: 16px; align-items: start; }
+.find-figure { margin: 12px 0; background: var(--paper); border: 1px solid var(--line); padding: 12px; overflow-x: auto; }
+.find-figure figcaption { font-weight: 600; margin-bottom: 8px; }
+.find-chart { width: 100%; min-width: 540px; height: auto; display: block; } /* phones scroll the chart, not the page */
+.find-label { font-size: 12px; fill: #233c35; }
+.find-value { font-size: 11px; fill: var(--muted); }
+.find-axis { stroke: #8a948c; }
+.find-grid { stroke: var(--line); }
+.find-bar { fill: var(--teal); }
+.find-bar.weak { fill: #a9c4bc; }
+.find-line { stroke-width: 2.5; }
+.find-line.s0 { stroke: var(--teal); }
+.find-line.s1 { stroke: #a14a20; }
+.find-line.dashed { stroke-dasharray: 6 5; stroke-width: 1.5; }
+.find-legend { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.find-legend .key { display: inline-block; width: 22px; height: 0; border-top: 3px solid var(--teal); }
+.find-legend .key.s1 { border-top-color: #a14a20; }
+.find-legend .key.dashed { border-top-style: dashed; }
+.find-legend .key.bar { height: 12px; border: 0; background: var(--teal); }
+.find-legend .key.bar.weak { background: #a9c4bc; }
+.find-table { max-height: 320px; overflow: auto; }
+.find-table table { border-collapse: collapse; font-size: 13px; width: 100%; }
+.find-table th, .find-table td { border-bottom: 1px solid var(--line); padding: 4px 8px; text-align: left; }
+.find-gates { list-style: none; padding: 0; margin: 0; }
+.find-gates li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.find-gates .pass strong { color: #1f6b3a; }
+.find-gates .fail strong { color: #a1261e; }
+.find-limits { color: var(--muted); font-size: 14px; }
+.find-source { font-size: 13px; color: var(--muted); }

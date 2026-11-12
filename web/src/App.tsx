@@ -103,6 +103,7 @@ export default function App() {
       </div>
       <nav className="masthead-links" aria-label="Site">
         <a className="official-link" href="?page=ask">Ask</a>
+        <a className="official-link" href="?page=findings">{t('nav.findings')}</a>
         <a className="official-link" href="?page=accuracy">Model accuracy</a>
         <a className="official-link" href="?page=climate">{t('nav.climate')}</a>
         <a className="official-link" href="?page=wall">{t('wall.title')}</a>

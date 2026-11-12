@@ -1,0 +1,932 @@
+{
+ "schema_version": 1,
+ "state": "ka",
+ "hospital": {
+  "hospitals": 3581,
+  "statewide": {
+   "people": 70800564,
+   "mean_km": 4.75,
+   "median_km": 3.79,
+   "p90_km": 10.5,
+   "share_beyond_5km": 0.4026,
+   "share_beyond_10km": 0.1153,
+   "gini": 0.4798
+  },
+  "districts": [
+   {
+    "district": "Yadgir",
+    "people": 1021549,
+    "mean_km": 8.81,
+    "share_beyond_10km": 0.3797
+   },
+   {
+    "district": "Bijapur",
+    "people": 2793720,
+    "mean_km": 6.91,
+    "share_beyond_10km": 0.2679
+   },
+   {
+    "district": "Chamarajanagar",
+    "people": 1099557,
+    "mean_km": 6.57,
+    "share_beyond_10km": 0.1785
+   },
+   {
+    "district": "Bidar",
+    "people": 1269560,
+    "mean_km": 6.55,
+    "share_beyond_10km": 0.2185
+   },
+   {
+    "district": "Tumkur",
+    "people": 3912390,
+    "mean_km": 6.55,
+    "share_beyond_10km": 0.2222
+   },
+   {
+    "district": "Raichur",
+    "people": 1924808,
+    "mean_km": 6.35,
+    "share_beyond_10km": 0.2292
+   },
+   {
+    "district": "Chitradurga",
+    "people": 1889956,
+    "mean_km": 6.32,
+    "share_beyond_10km": 0.1982
+   },
+   {
+    "district": "Haveri",
+    "people": 1525365,
+    "mean_km": 6.31,
+    "share_beyond_10km": 0.218
+   },
+   {
+    "district": "Chikmagalur",
+    "people": 1669638,
+    "mean_km": 5.92,
+    "share_beyond_10km": 0.1773
+   },
+   {
+    "district": "Chikkaballapura",
+    "people": 1535941,
+    "mean_km": 5.77,
+    "share_beyond_10km": 0.1481
+   },
+   {
+    "district": "Shimoga",
+    "people": 2476145,
+    "mean_km": 5.77,
+    "share_beyond_10km": 0.1664
+   },
+   {
+    "district": "Gulbarga",
+    "people": 2238456,
+    "mean_km": 5.71,
+    "share_beyond_10km": 0.1883
+   },
+   {
+    "district": "Uttara Kannada",
+    "people": 1731199,
+    "mean_km": 5.7,
+    "share_beyond_10km": 0.1949
+   },
+   {
+    "district": "Kodagu",
+    "people": 1008733,
+    "mean_km": 5.61,
+    "share_beyond_10km": 0.1484
+   },
+   {
+    "district": "Ramanagara",
+    "people": 1697358,
+    "mean_km": 5.51,
+    "share_beyond_10km": 0.129
+   },
+   {
+    "district": "Koppal",
+    "people": 1410549,
+    "mean_km": 5.3,
+    "share_beyond_10km": 0.1302
+   },
+   {
+    "district": "Hassan",
+    "people": 2798800,
+    "mean_km": 5.25,
+    "share_beyond_10km": 0.0882
+   },
+   {
+    "district": "Belgaum",
+    "people": 5299257,
+    "mean_km": 5.22,
+    "share_beyond_10km": 0.1051
+   },
+   {
+    "district": "Bagalkot",
+    "people": 2170497,
+    "mean_km": 5.2,
+    "share_beyond_10km": 0.1255
+   },
+   {
+    "district": "Kolar",
+    "people": 1929219,
+    "mean_km": 5.12,
+    "share_beyond_10km": 0.0832
+   },
+   {
+    "district": "Davanagere",
+    "people": 1754277,
+    "mean_km": 4.81,
+    "share_beyond_10km": 0.0972
+   },
+   {
+    "district": "Gadag",
+    "people": 980631,
+    "mean_km": 4.74,
+    "share_beyond_10km": 0.1056
+   },
+   {
+    "district": "Bellary",
+    "people": 2068558,
+    "mean_km": 4.59,
+    "share_beyond_10km": 0.1062
+   },
+   {
+    "district": "Mandya",
+    "people": 2280169,
+    "mean_km": 4.44,
+    "share_beyond_10km": 0.0302
+   },
+   {
+    "district": "Dharwad",
+    "people": 1476013,
+    "mean_km": 3.83,
+    "share_beyond_10km": 0.068
+   },
+   {
+    "district": "Udupi",
+    "people": 2811305,
+    "mean_km": 3.81,
+    "share_beyond_10km": 0.0377
+   },
+   {
+    "district": "Mysore",
+    "people": 3261481,
+    "mean_km": 3.49,
+    "share_beyond_10km": 0.0372
+   },
+   {
+    "district": "Dakshina Kannada",
+    "people": 4368798,
+    "mean_km": 3.35,
+    "share_beyond_10km": 0.0289
+   },
+   {
+    "district": "Bangalore Rural",
+    "people": 2076762,
+    "mean_km": 3.27,
+    "share_beyond_10km": 0.0078
+   },
+   {
+    "district": "Bangalore",
+    "people": 8268006,
+    "mean_km": 1.04,
+    "share_beyond_10km": 0.0001
+   }
+  ],
+  "lorenz": [
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.05,
+    0.0017
+   ],
+   [
+    0.1,
+    0.0052
+   ],
+   [
+    0.15,
+    0.0106
+   ],
+   [
+    0.2,
+    0.0181
+   ],
+   [
+    0.25,
+    0.0282
+   ],
+   [
+    0.3,
+    0.042
+   ],
+   [
+    0.35,
+    0.0606
+   ],
+   [
+    0.4,
+    0.0848
+   ],
+   [
+    0.45,
+    0.1153
+   ],
+   [
+    0.5,
+    0.1521
+   ],
+   [
+    0.55,
+    0.1952
+   ],
+   [
+    0.6,
+    0.2448
+   ],
+   [
+    0.65,
+    0.3013
+   ],
+   [
+    0.7,
+    0.365
+   ],
+   [
+    0.75,
+    0.4363
+   ],
+   [
+    0.8,
+    0.5162
+   ],
+   [
+    0.85,
+    0.6061
+   ],
+   [
+    0.9,
+    0.7087
+   ],
+   [
+    0.95,
+    0.83
+   ],
+   [
+    1.0,
+    1.0
+   ]
+  ],
+  "limits": [
+   "Straight-line distance from the 1 km cell centre, not road distance or travel time.",
+   "OpenStreetMap hospitals are volunteer-mapped and thinner in rural areas, so remote distances are upper bounds; clinics and primary health centres tagged otherwise are not counted.",
+   "Public and private hospitals of any size count the same; capacity is unknown.",
+   "WorldPop 2025 is a modelled 1 km population estimate."
+  ],
+  "report": "notebooks/11_ka_hospital_access.ipynb"
+ },
+ "trends": {
+  "tested": 30,
+  "significant": 9,
+  "rows": [
+   {
+    "district": "Bagalkot",
+    "sen_pct_per_decade": 4.89,
+    "fdr_q": 0.2556,
+    "significance": "not significant"
+   },
+   {
+    "district": "Bangalore",
+    "sen_pct_per_decade": 8.74,
+    "fdr_q": 0.0356,
+    "significance": "significant (5% false discovery rate)"
+   },
+   {
+    "district": "Bangalore Rural",
+    "sen_pct_per_decade": 7.35,
+    "fdr_q": 0.0549,
+    "significance": "not significant"
+   },
+   {
+    "district": "Belgaum",
+    "sen_pct_per_decade": 5.2,
+    "fdr_q": 0.0804,
+    "significance": "not significant"
+   },
+   {
+    "district": "Bellary",
+    "sen_pct_per_decade": 5.4,
+    "fdr_q": 0.139,
+    "significance": "not significant"
+   },
+   {
+    "district": "Bidar",
+    "sen_pct_per_decade": 4.23,
+    "fdr_q": 0.2703,
+    "significance": "not significant"
+   },
+   {
+    "district": "Bijapur",
+    "sen_pct_per_decade": 4.08,
+    "fdr_q": 0.2957,
+    "significance": "not significant"
+   },
+   {
+    "district": "Chamarajanagar",
+    "sen_pct_per_decade": -0.43,
+    "fdr_q": 0.8833,
+    "significance": "not significant"
+   },
+   {
+    "district": "Chikkaballapura",
+    "sen_pct_per_decade": 11.86,
+    "fdr_q": 0.013,
+    "significance": "significant (5% false discovery rate); autocorrelated, so weaker than it looks"
+   },
+   {
+    "district": "Chikmagalur",
+    "sen_pct_per_decade": -0.28,
+    "fdr_q": 0.8503,
+    "significance": "not significant"
+   },
+   {
+    "district": "Chitradurga",
+    "sen_pct_per_decade": 10.51,
+    "fdr_q": 0.021,
+    "significance": "significant (5% false discovery rate); autocorrelated, so weaker than it looks"
+   },
+   {
+    "district": "Dakshina Kannada",
+    "sen_pct_per_decade": 1.44,
+    "fdr_q": 0.5351,
+    "significance": "not significant"
+   },
+   {
+    "district": "Davanagere",
+    "sen_pct_per_decade": 10.73,
+    "fdr_q": 0.0165,
+    "significance": "significant (5% false discovery rate); autocorrelated, so weaker than it looks"
+   },
+   {
+    "district": "Dharwad",
+    "sen_pct_per_decade": 8.88,
+    "fdr_q": 0.0566,
+    "significance": "not significant"
+   },
+   {
+    "district": "Gadag",
+    "sen_pct_per_decade": 9.12,
+    "fdr_q": 0.0397,
+    "significance": "significant (5% false discovery rate); autocorrelated, so weaker than it looks"
+   },
+   {
+    "district": "Gulbarga",
+    "sen_pct_per_decade": 3.72,
+    "fdr_q": 0.3292,
+    "significance": "not significant"
+   },
+   {
+    "district": "Hassan",
+    "sen_pct_per_decade": 8.9,
+    "fdr_q": 0.0045,
+    "significance": "significant (5% false discovery rate); autocorrelated, so weaker than it looks"
+   },
+   {
+    "district": "Haveri",
+    "sen_pct_per_decade": 1.54,
+    "fdr_q": 0.7943,
+    "significance": "not significant"
+   },
+   {
+    "district": "Kodagu",
+    "sen_pct_per_decade": 5.3,
+    "fdr_q": 0.0537,
+    "significance": "not significant"
+   },
+   {
+    "district": "Kolar",
+    "sen_pct_per_decade": 6.25,
+    "fdr_q": 0.078,
+    "significance": "not significant"
+   },
+   {
+    "district": "Koppal",
+    "sen_pct_per_decade": 7.44,
+    "fdr_q": 0.1041,
+    "significance": "not significant"
+   },
+   {
+    "district": "Mandya",
+    "sen_pct_per_decade": 12.05,
+    "fdr_q": 0.0045,
+    "significance": "significant (5% false discovery rate); autocorrelated, so weaker than it looks"
+   },
+   {
+    "district": "Mysore",
+    "sen_pct_per_decade": 7.53,
+    "fdr_q": 0.021,
+    "significance": "significant (5% false discovery rate); autocorrelated, so weaker than it looks"
+   },
+   {
+    "district": "Raichur",
+    "sen_pct_per_decade": 1.49,
+    "fdr_q": 0.8134,
+    "significance": "not significant"
+   },
+   {
+    "district": "Ramanagara",
+    "sen_pct_per_decade": 4.38,
+    "fdr_q": 0.3121,
+    "significance": "not significant"
+   },
+   {
+    "district": "Shimoga",
+    "sen_pct_per_decade": 7.62,
+    "fdr_q": 0.0529,
+    "significance": "not significant"
+   },
+   {
+    "district": "Tumkur",
+    "sen_pct_per_decade": 9.4,
+    "fdr_q": 0.0287,
+    "significance": "significant (5% false discovery rate); autocorrelated, so weaker than it looks"
+   },
+   {
+    "district": "Udupi",
+    "sen_pct_per_decade": 4.95,
+    "fdr_q": 0.0529,
+    "significance": "not significant"
+   },
+   {
+    "district": "Uttara Kannada",
+    "sen_pct_per_decade": -0.41,
+    "fdr_q": 0.8503,
+    "significance": "not significant"
+   },
+   {
+    "district": "Yadgir",
+    "sen_pct_per_decade": 2.83,
+    "fdr_q": 0.6299,
+    "significance": "not significant"
+   }
+  ],
+  "report": "reports/eda/08_climate_product/climate.json"
+ },
+ "bus": {
+  "district": "Bangalore",
+  "service_date": "2026-09-09",
+  "covered_share": 0.6534,
+  "people": 8268006,
+  "bands": [
+   {
+    "band": "under 25%",
+    "cells": 722,
+    "people": 888075
+   },
+   {
+    "band": "25 to 50%",
+    "cells": 491,
+    "people": 1194356
+   },
+   {
+    "band": "50 to 75%",
+    "cells": 657,
+    "people": 2534473
+   },
+   {
+    "band": "75% or more",
+    "cells": 578,
+    "people": 3651101
+   }
+  ],
+  "limits": [
+   "Scheduled supply only: the BMTC GTFS is unofficial (Vonter, scraped from the Namma BMTC app, known timetable errors, only routes with live tracking), as of 8 Sep 2026.",
+   "OSM walking network completeness is unknown: unmapped footpaths shorten catchments, and population in cells with no mapped walkway counts as uncovered.",
+   "WorldPop 2025 is a modelled estimate at 1 km; coverage inside a cell is assumed proportional to covered walkable length.",
+   "Stops outside the district boundary are not used, which can under-count coverage near the edge.",
+   "Access only: no frequency threshold, crowding, fares or safety is assessed."
+  ],
+  "report": "notebooks/04_bmtc_coverage.ipynb"
+ },
+ "model": {
+  "mae": [
+   {
+    "period": "2020-2024 locked test",
+    "model": "persistence (baseline)",
+    "mae": 0.808
+   },
+   {
+    "period": "2020-2024 locked test",
+    "model": "climatology",
+    "mae": 1.053
+   },
+   {
+    "period": "2020-2024 locked test",
+    "model": "M05 ridge",
+    "mae": 0.732
+   },
+   {
+    "period": "2020-2024 locked test",
+    "model": "LightGBM challenger",
+    "mae": 0.722
+   },
+   {
+    "period": "2025 hindcast",
+    "model": "persistence (baseline)",
+    "mae": 0.744
+   },
+   {
+    "period": "2025 hindcast",
+    "model": "M05 ridge",
+    "mae": 0.625
+   }
+  ],
+  "gain": [
+   {
+    "period": "2020-2024 locked test",
+    "mean": 0.076,
+    "lower95": 0.003,
+    "upper95": 0.15,
+    "promoted": "yes"
+   },
+   {
+    "period": "2025 hindcast",
+    "mean": 0.119,
+    "lower95": 0.019,
+    "upper95": 0.226,
+    "promoted": "yes"
+   }
+  ],
+  "gates": [
+   {
+    "check": "MAE ratio to persistence (below 1)",
+    "value": 0.9057,
+    "reference": 1.0,
+    "passed": "yes"
+   },
+   {
+    "check": "PR-AUC above drought prevalence",
+    "value": 0.2174,
+    "reference": 0.0567,
+    "passed": "yes"
+   },
+   {
+    "check": "Brier skill above 0",
+    "value": 0.1163,
+    "reference": 0.0,
+    "passed": "yes"
+   },
+   {
+    "check": "CRPS below persistence",
+    "value": 0.5296,
+    "reference": 0.5862,
+    "passed": "yes"
+   },
+   {
+    "check": "Lower 95% bound of the MAE gain above 0",
+    "value": 0.0026,
+    "reference": 0.0,
+    "passed": "yes"
+   }
+  ],
+  "report": "reports/models/m05.md"
+ },
+ "intervals": {
+  "gate": [
+   0.75,
+   0.85
+  ],
+  "looks": [
+   {
+    "stage": "v1 intervals, 2020-2024 (first look)",
+    "coverage": 0.6522,
+    "result": "outside 75-85%"
+   },
+   {
+    "stage": "D97 rule, 2020-2024 (second look)",
+    "coverage": 0.7283,
+    "result": "outside 75-85%"
+   },
+   {
+    "stage": "Persistence, same rule, 2020-2024",
+    "coverage": 0.7722,
+    "result": "inside 75-85%"
+   },
+   {
+    "stage": "D97 rule, 2025 hindcast",
+    "coverage": 0.8694,
+    "result": "outside 75-85%"
+   }
+  ]
+ },
+ "spatial": {
+  "months": 60,
+  "significant": 57,
+  "moran": [
+   {
+    "month": "2020-01",
+    "moran_i": 0.1777,
+    "significant": "no"
+   },
+   {
+    "month": "2020-02",
+    "moran_i": 0.5519,
+    "significant": "yes"
+   },
+   {
+    "month": "2020-03",
+    "moran_i": 0.5981,
+    "significant": "yes"
+   },
+   {
+    "month": "2020-04",
+    "moran_i": 0.5469,
+    "significant": "yes"
+   },
+   {
+    "month": "2020-05",
+    "moran_i": 0.1095,
+    "significant": "no"
+   },
+   {
+    "month": "2020-06",
+    "moran_i": 0.6078,
+    "significant": "yes"
+   },
+   {
+    "month": "2020-07",
+    "moran_i": 0.5479,
+    "significant": "yes"
+   },
+   {
+    "month": "2020-08",
+    "moran_i": 0.2406,
+    "significant": "yes"
+   },
+   {
+    "month": "2020-09",
+    "moran_i": 0.2663,
+    "significant": "yes"
+   },
+   {
+    "month": "2020-10",
+    "moran_i": 0.5859,
+    "significant": "yes"
+   },
+   {
+    "month": "2020-11",
+    "moran_i": 0.4484,
+    "significant": "yes"
+   },
+   {
+    "month": "2020-12",
+    "moran_i": 0.4262,
+    "significant": "yes"
+   },
+   {
+    "month": "2021-01",
+    "moran_i": 0.735,
+    "significant": "yes"
+   },
+   {
+    "month": "2021-02",
+    "moran_i": 0.4648,
+    "significant": "yes"
+   },
+   {
+    "month": "2021-03",
+    "moran_i": 0.4178,
+    "significant": "yes"
+   },
+   {
+    "month": "2021-04",
+    "moran_i": 0.0855,
+    "significant": "no"
+   },
+   {
+    "month": "2021-05",
+    "moran_i": 0.6348,
+    "significant": "yes"
+   },
+   {
+    "month": "2021-06",
+    "moran_i": 0.3428,
+    "significant": "yes"
+   },
+   {
+    "month": "2021-07",
+    "moran_i": 0.3374,
+    "significant": "yes"
+   },
+   {
+    "month": "2021-08",
+    "moran_i": 0.4565,
+    "significant": "yes"
+   },
+   {
+    "month": "2021-09",
+    "moran_i": 0.3935,
+    "significant": "yes"
+   },
+   {
+    "month": "2021-10",
+    "moran_i": 0.6172,
+    "significant": "yes"
+   },
+   {
+    "month": "2021-11",
+    "moran_i": 0.7447,
+    "significant": "yes"
+   },
+   {
+    "month": "2021-12",
+    "moran_i": 0.6967,
+    "significant": "yes"
+   },
+   {
+    "month": "2022-01",
+    "moran_i": 0.7472,
+    "significant": "yes"
+   },
+   {
+    "month": "2022-02",
+    "moran_i": 0.6156,
+    "significant": "yes"
+   },
+   {
+    "month": "2022-03",
+    "moran_i": 0.2804,
+    "significant": "yes"
+   },
+   {
+    "month": "2022-04",
+    "moran_i": 0.4647,
+    "significant": "yes"
+   },
+   {
+    "month": "2022-05",
+    "moran_i": 0.3698,
+    "significant": "yes"
+   },
+   {
+    "month": "2022-06",
+    "moran_i": 0.643,
+    "significant": "yes"
+   },
+   {
+    "month": "2022-07",
+    "moran_i": 0.3655,
+    "significant": "yes"
+   },
+   {
+    "month": "2022-08",
+    "moran_i": 0.626,
+    "significant": "yes"
+   },
+   {
+    "month": "2022-09",
+    "moran_i": 0.6936,
+    "significant": "yes"
+   },
+   {
+    "month": "2022-10",
+    "moran_i": 0.4431,
+    "significant": "yes"
+   },
+   {
+    "month": "2022-11",
+    "moran_i": 0.612,
+    "significant": "yes"
+   },
+   {
+    "month": "2022-12",
+    "moran_i": 0.5991,
+    "significant": "yes"
+   },
+   {
+    "month": "2023-01",
+    "moran_i": 0.7028,
+    "significant": "yes"
+   },
+   {
+    "month": "2023-02",
+    "moran_i": 0.6153,
+    "significant": "yes"
+   },
+   {
+    "month": "2023-03",
+    "moran_i": 0.6239,
+    "significant": "yes"
+   },
+   {
+    "month": "2023-04",
+    "moran_i": 0.7343,
+    "significant": "yes"
+   },
+   {
+    "month": "2023-05",
+    "moran_i": 0.5932,
+    "significant": "yes"
+   },
+   {
+    "month": "2023-06",
+    "moran_i": 0.5586,
+    "significant": "yes"
+   },
+   {
+    "month": "2023-07",
+    "moran_i": 0.4629,
+    "significant": "yes"
+   },
+   {
+    "month": "2023-08",
+    "moran_i": 0.4907,
+    "significant": "yes"
+   },
+   {
+    "month": "2023-09",
+    "moran_i": 0.4349,
+    "significant": "yes"
+   },
+   {
+    "month": "2023-10",
+    "moran_i": 0.69,
+    "significant": "yes"
+   },
+   {
+    "month": "2023-11",
+    "moran_i": 0.4862,
+    "significant": "yes"
+   },
+   {
+    "month": "2023-12",
+    "moran_i": 0.7412,
+    "significant": "yes"
+   },
+   {
+    "month": "2024-01",
+    "moran_i": 0.2471,
+    "significant": "yes"
+   },
+   {
+    "month": "2024-02",
+    "moran_i": 0.2891,
+    "significant": "yes"
+   },
+   {
+    "month": "2024-03",
+    "moran_i": 0.4592,
+    "significant": "yes"
+   },
+   {
+    "month": "2024-04",
+    "moran_i": 0.8439,
+    "significant": "yes"
+   },
+   {
+    "month": "2024-05",
+    "moran_i": 0.694,
+    "significant": "yes"
+   },
+   {
+    "month": "2024-06",
+    "moran_i": 0.531,
+    "significant": "yes"
+   },
+   {
+    "month": "2024-07",
+    "moran_i": 0.681,
+    "significant": "yes"
+   },
+   {
+    "month": "2024-08",
+    "moran_i": 0.5087,
+    "significant": "yes"
+   },
+   {
+    "month": "2024-09",
+    "moran_i": 0.607,
+    "significant": "yes"
+   },
+   {
+    "month": "2024-10",
+    "moran_i": 0.5116,
+    "significant": "yes"
+   },
+   {
+    "month": "2024-11",
+    "moran_i": 0.5765,
+    "significant": "yes"
+   },
+   {
+    "month": "2024-12",
+    "moran_i": 0.729,
+    "significant": "yes"
+   }
+  ],
+  "report": "reports/eda/10_spatial_statistics/summary.json"
+ }
+}
