@@ -954,3 +954,10 @@ h1,h2,h3,p{
 .facility-pin.hospital { background: #b3261e; }
 .facility-pin.police { background: #1f4e8c; }
 .facility-pin.fire_station { background: #b35c00; }
+
+/* D191: transit access page */
+.transit-map { height: 480px; margin: 12px 0; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; list-style: none; padding: 0; }
+.legend .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 2px; vertical-align: -2px; }
+.headline { font-size: 1.15rem; font-weight: 600; }
+.credit { font-size: .85rem; }

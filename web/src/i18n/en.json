@@ -187,5 +187,12 @@
   "archive.original": "Original CAP message (Sachet)",
   "archive.empty": "No official Karnataka warning has been stored yet.",
   "archive.nomatch": "No stored warning matches this search.",
-  "archive.unavailable": "The warning archive could not be loaded."
+  "archive.unavailable": "The warning archive could not be loaded.",
+  "nav.transit": "Bus access",
+  "transit.title": "Bengaluru: who lives within a short walk of a bus?",
+  "transit.headline": "{share} of about {total} million people in Bangalore district live within a {radius} m walk of a BMTC stop with scheduled service.",
+  "transit.date": "Scheduled weekday service of {date}; walking distance along mapped paths.",
+  "transit.legend": "Share of people within the walk",
+  "transit.limits": "What this does not show",
+  "transit.mapfailed": "The map could not load; the numbers above remain."
 }

@@ -307,3 +307,43 @@ def run(out: Path) -> dict:  # pragma: no cover - needs local raw files (data/ra
         w.writerow(["service_hour", "trips_starting"])
         w.writerows(hours.items())
     return {"summary": summary, "cells": table, "centre": centre, "hours": hours}
+
+
+WEB = ROOT / "web/src/transit-coverage.json"
+CELL_DEG = 1 / 120  # WorldPop 30 arc-second cells
+
+
+def web_cells(report_dir: Path = ROOT / "reports/eda/04_bmtc_coverage") -> dict:
+    """D191: the public, derived-only view of T041: per-cell coverage and the headline numbers.
+    No stop, route or time from the restricted S30 feed is included."""
+    import csv
+
+    summary = json.loads((report_dir / "summary.json").read_text("utf-8"))
+    cells = []
+    with open(report_dir / "cell_coverage.csv", encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            pop = float(r["population"])
+            frac = float(r["covered_population"]) / pop if pop else 0.0
+            cells.append([float(r["lon"]), float(r["lat"]), round(pop), round(frac, 3)])
+    return {
+        "schema_version": 1,
+        "district": summary["district"]["name"],
+        "service_date": summary["service_date"],
+        "radius_m": summary["radius_m"],
+        "cell_deg": CELL_DEG,
+        "population": summary["population"],
+        "limits": summary["limits"],
+        "credit": (
+            "Derived from the unofficial Vonter BMTC GTFS (ODbL; some contents copyright BMTC), "
+            "OpenStreetMap (ODbL) and WorldPop 2025 (CC BY 4.0). Only coverage shares are shown: "
+            "no stops, routes or timetables."
+        ),
+        "cells": cells,
+    }
+
+
+if __name__ == "__main__":
+    WEB.write_text(
+        json.dumps(web_cells(), separators=(",", ":")) + "\n", encoding="utf-8", newline="\n"
+    )
+    print(json.dumps({"written": str(WEB), "cells": len(web_cells()["cells"])}))
