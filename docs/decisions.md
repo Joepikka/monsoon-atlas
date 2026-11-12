@@ -2,6 +2,16 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D190 — Gate waivers and daily automatic deploy (12 Nov 2026).**
+  Owner answers, in chat: waive C1 and priced data for the Karnataka gate; add the Cloudflare
+  secrets so the site redeploys daily; publish derived transit numbers only (D191). The gate
+  records C1 and priced data as "waived" (not passed) and treats waived and C3's research-only
+  (counted by the owner, D166) as non-blocking; the only open check is the H14 case-study review.
+  GitHub Actions secrets `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` and
+  `CLOUDFLARE_D1_DATABASE_ID` were set with `gh` from `.env` over stdin. `daily.yml` now builds
+  the approved release with the warning archive, archives it privately (read-back) before
+  deploying, refreshes Ask (index, public files, D1 chunks) and deploys to Pages.
+
 - **D189 — Google Maps links and the Karnataka warning archive (12 Nov 2026).**
   Owner, in chat: "ok do all that, and instead of open street map link is not good to give
   google map link". (1) Each Nearby facility now has "Open in Google Maps" (a Maps search URL by
