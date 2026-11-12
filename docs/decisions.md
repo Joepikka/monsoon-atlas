@@ -2,6 +2,16 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D183 — PR 5 merged to main; hosted feeds started (12 Nov 2026).**
+  Owner, in chat: "Merge and start it". Before merging, only `feeds.yml` had a schedule; `ci.yml`,
+  `web.yml` and `worker.yml` run on push or pull request, `monitor.yml` and `tiles.yml` only by
+  hand. PR Joepikka/monsoon-atlas#5 was marked ready and merged at 10:45 UTC (merge commit
+  `fae8260`). Bootstrap dispatch run 43203183286 passed in 1 min 8 s: bootstrapped an empty
+  chain, S09 captured and stored on the Worker, S01 `not_due` (the 09:27 UTC check from this PC
+  used the six-hour slot), checkpoint 292,744 bytes offered for the next run. No scheduled run
+  had started by 11:33 UTC; GitHub registers a new workflow's schedule with delay. The public
+  website stays off until the T046 gate and release approval.
+
 - **D182 — T043 hosted capture and upload to the Worker (12 Nov 2026).**
   Owner, in chat: "Build T043". `atlas.ingest.upload.signing_key` now also trusts the hosted
   origin, but only when it equals `ATLAS_HOT_ORIGIN` exactly and is an https workers.dev origin
