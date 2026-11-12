@@ -2,6 +2,21 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D175 — S18 facilities exported for the Nearby tab (12 Nov 2026).**
+  `src/atlas/ingest/s18_prepare.py` turns S18 rows into the browser's Facility shape:
+  hospitals, police and fire stations only, the nearest 10 of each kind within 25 km of
+  each S17 district representative point, so a release stays far below the 1 MB snapshot
+  limit. OSM `amenity=shelter` is left out because it mostly marks bus and rain shelters;
+  official shelters remain S43 (blocked). Unnamed objects say "Unnamed hospital
+  (OpenStreetMap)"; each row links to its OSM object and carries `source_checked` (T021
+  passed on this extract). Facility rows gain a required `kind` field, which the browser
+  validates and Nearby shows. The export is written under `data/prepared/S18/` (untracked);
+  nothing is published: facilities reach users only when T045 builds an approved release
+  (H06, H11), so F025 stays blocked on that, not on S18. Tests use the real Bengaluru cut
+  (6 facilities) in Python, vitest and Playwright. Real Karnataka run: 433 facilities (297
+  hospitals, 110 police, 26 fire stations; 21 unnamed), 146,688 bytes, near 30 districts (S17 has no Vijayanagara).
+  `data/prepared/` is now git-ignored.
+
 - **D174 — S18 available through the owner's browser download (12 Nov 2026).**
   Retry condition 1 of T021 is met: the owner downloaded the published dated Southern Zone file
   `southern-zone-261111.osm.pbf` (559,594,968 bytes, replication timestamp

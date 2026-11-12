@@ -22,6 +22,7 @@ data/raw/
 data/clean/
 data/models/
 data/rag/
+data/prepared/
 data/manifests/S32/history.json
 *.duckdb
 *.duckdb.wal

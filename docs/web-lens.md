@@ -27,9 +27,13 @@ does not prove an incident at this place. A model score needs an explicit match
 to the place ID and boundary version, plus a model ID and release status. No
 score is inferred from proximity or converted from missing to zero.
 
-S18 is blocked. Nearby therefore says facility data is unavailable. If a later
-verified S18 snapshot supplies facilities, their source-check status, fetch time
-and approximate distance appear without an open-now or safe-routing claim.
+S18 is available from the owner's extract (D174). `python -m atlas.ingest.s18_prepare`
+exports hospitals, police and fire stations, the nearest 10 of each within 25 km of
+every S17 district point, each linked to its OpenStreetMap object (D175). Nearby
+shows the kind, approximate distance, source-check status and fetch time, without
+an open-now or safe-routing claim. OSM shelters stay out. Facilities appear only
+once T045 adds them to an approved release; until then Nearby says facility data is
+unavailable.
 
 The local test place is Bangalore district, derived from the captured S17
 geoBoundaries ADM2 release `9469f09`; its original name and boundary version are

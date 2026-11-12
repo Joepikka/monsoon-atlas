@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react';
-import type { MapRecord, Snapshot } from '../data';
+import type { FacilityKind, MapRecord, Snapshot } from '../data';
 import { buildReport, shareUrl, sourceNames, type PlaceReport, type ShareIdentity } from '../report';
 import { localTime } from '../time';
 import SourceBadge from './SourceBadge';
 
 const tabs = ['Now', 'Risk', 'Forecast', 'History', 'Nearby', 'Sources'] as const;
 type Tab = typeof tabs[number];
+const facilityLabel: Record<FacilityKind, string> = { hospital: 'Hospital', police: 'Police station', fire_station: 'Fire station' };
 
 function Records({ records, snapshot, now }: { records: MapRecord[]; snapshot: Snapshot; now: number }) {
   return <ul className="lens-records">{records.map(record => <li key={record.id}>
@@ -33,7 +34,7 @@ function ReportSection({ tab, report, snapshot, now }: { tab: Tab; report: Place
   if (tab === 'Nearby') return <>
     <p>Approximate straight-line distances from the place representative point, within 25 km. These are not walking distances or safe routes. Opening hours and current operation are not verified.</p>
     {report.facilities.length ? <ul className="lens-records">{report.facilities.map(item => <li key={item.facility_id}>
-      <h4>{item.name}</h4><p>{item.distance_km.toFixed(1)} km · {item.verification_status.replaceAll('_', ' ')}</p>
+      <h4>{item.name}</h4><p>{facilityLabel[item.kind]} · {item.distance_km.toFixed(1)} km · {item.verification_status.replaceAll('_', ' ')}</p>
       <p>Fetched <time dateTime={item.fetched_at}>{localTime(item.fetched_at)}</time></p>
       <a href={item.source_url} target="_blank" rel="noopener noreferrer">OpenStreetMap · Original source</a>
     </li>)}</ul> : <p>Facility data is unavailable.</p>}

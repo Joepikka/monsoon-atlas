@@ -624,15 +624,20 @@
       ],
       "evidence": [
         "configs/sources/s18.yaml",
+        "src/atlas/ingest/s18_prepare.py",
         "configs/sources/s43.yaml",
         "docs/web-lens.md"
       ],
       "tests": [
-        "tests/test_lens.py"
+        "tests/test_lens.py",
+        "tests/sources/test_s18_prepare.py"
       ],
-      "blocker": "S18 facilities passed the source check (D174) but are not yet exported to the map snapshot; no verified shelter record (S43).",
-      "owner_steps": [],
-      "notes": "Next agent step: export S18 facilities into the snapshot; shelters never show opening status."
+      "blocker": "Facility export and the Nearby kind display are built (D175); facilities appear only in an approved release snapshot, which T045 publishes; no verified shelter record (S43).",
+      "owner_steps": [
+        "H06",
+        "H11"
+      ],
+      "notes": "Hospitals, police and fire stations only; OSM shelters are mostly bus shelters and stay out (D175)."
     },
     {
       "id": "F026",

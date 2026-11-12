@@ -79,3 +79,24 @@ test('place tabs support keyboard navigation and accessible report content', asy
   const audit = await new AxeBuilder({ page }).include('.place-lens').analyze();
   expect(audit.violations).toEqual([]);
 });
+
+test('Nearby lists real S18 facilities with kind, distance and an OSM link, no opening claim', async ({ page }) => {
+  const facilities = JSON.parse(readFileSync(new URL('./fixtures/s18-facilities-bengaluru.json', import.meta.url), 'utf8'));
+  const asOf = facilities[0].fetched_at;
+  const withFacilities = JSON.stringify({ ...release, release_id: 'lens-facilities', as_of: asOf, published_at: asOf, facilities });
+  const digest = createHash('sha256').update(withFacilities).digest('hex');
+  const current = { ...pointer, sha256: digest, manifest_url: `/data/ka/releases/${digest}.json` };
+  await page.clock.setFixedTime(new Date('2026-11-12T06:00:00Z'));
+  await page.route('**/data/ka/latest.json', route => route.fulfill({ json: current }));
+  await page.route(`**/data/ka/releases/${digest}.json`, route => route.fulfill({ body: withFacilities, contentType: 'application/json' }));
+  await page.goto('/');
+  await page.getByLabel('Place', { exact: true }).selectOption({ label: 'Bangalore · district' });
+  const lens = page.getByRole('region', { name: 'Place Lens' });
+  await lens.getByRole('tab', { name: 'Nearby', exact: true }).click();
+  await expect(lens.getByText('Opening hours and current operation are not verified.', { exact: false })).toBeVisible();
+  await expect(lens.getByRole('heading', { name: 'Hebbal Fire Station' })).toBeVisible();
+  await expect(lens.getByText(/^Fire station · \d+\.\d km · source checked$/)).toBeVisible();
+  await expect(lens.getByText(/^Hospital · /)).toHaveCount(3);
+  await expect(lens.getByRole('link', { name: 'OpenStreetMap · Original source' }).first()).toHaveAttribute('href', /^https:\/\/www\.openstreetmap\.org\/node\/\d+$/);
+  expect((await new AxeBuilder({ page }).include('[aria-label="Place Lens"]').analyze()).violations).toEqual([]);
+});

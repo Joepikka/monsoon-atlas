@@ -10,8 +10,10 @@ export interface Place {
   boundary_version: string; longitude: number; latitude: number;
   source_id: string; source_url: string; licence_id: string; location_note: string;
 }
+export type FacilityKind = 'hospital' | 'police' | 'fire_station';
+export const facilityKinds: readonly FacilityKind[] = ['hospital', 'police', 'fire_station'];
 export interface Facility {
-  facility_id: string; name: string; longitude: number; latitude: number;
+  facility_id: string; kind: FacilityKind; name: string; longitude: number; latitude: number;
   source_id: 'S18'; source_url: string; fetched_at: string;
   verification_status: 'unverified' | 'source_checked';
 }
@@ -205,9 +207,10 @@ export function parseSnapshot(value: unknown, state: StateId): Snapshot {
   const facilities: Facility[] = ((data.facilities ?? []) as unknown[]).map(value => {
     const facility = object(value);
     if (facility.source_id !== 'S18' || !['unverified', 'source_checked'].includes(String(facility.verification_status))) throw new Error('Invalid facility source or verification.');
+    if (!facilityKinds.includes(facility.kind as FacilityKind)) throw new Error('Invalid facility kind.');
     const fetched = timestamp(facility.fetched_at, 'facility fetched_at');
     if (Date.parse(fetched) > Date.parse(asOf)) throw new Error('Facility was not known at this cutoff.');
-    return { facility_id: text(facility.facility_id, 'facility ID'), name: text(facility.name, 'facility name'),
+    return { facility_id: text(facility.facility_id, 'facility ID'), kind: facility.kind as FacilityKind, name: text(facility.name, 'facility name'),
       ...coordinates(facility), source_id: 'S18', source_url: publicUrl(facility.source_url), fetched_at: fetched,
       verification_status: facility.verification_status as Facility['verification_status'] };
   });

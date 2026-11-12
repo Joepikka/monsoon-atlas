@@ -6,6 +6,7 @@ import { loadSnapshot, parseSnapshot, sha256 } from './data';
 const place = JSON.parse(readFileSync(new URL('../tests/fixtures/bangalore-place.json', import.meta.url), 'utf8'));
 const cap = JSON.parse(readFileSync(new URL('../tests/fixtures/sachet-ka-point.json', import.meta.url), 'utf8'));
 const weather = JSON.parse(readFileSync(new URL('../tests/fixtures/openmeteo-temperature-point.json', import.meta.url), 'utf8'));
+const facilities = JSON.parse(readFileSync(new URL('../tests/fixtures/s18-facilities-bengaluru.json', import.meta.url), 'utf8'));
 const body = { schema_version: 1, state: 'ka', release_id: 'report-contract', data_revision: 'e'.repeat(64),
   as_of: cap.fetched_at, published_at: cap.fetched_at, places: [place], records: [cap, weather], facilities: [] };
 const now = Date.parse(cap.fetched_at) + 3600000;
@@ -13,6 +14,17 @@ const now = Date.parse(cap.fetched_at) + 3600000;
 function snapshot() { return { ...parseSnapshot(body, 'ka'), release_hash: 'f'.repeat(64) }; }
 
 describe('frozen place reports', () => {
+  it('lists real S18 facilities by straight-line distance, nearest first, with their kind', () => {
+    const asOf = facilities[0].fetched_at;
+    const parsed = parseSnapshot({ ...body, as_of: asOf, published_at: asOf, facilities }, 'ka');
+    const report = buildReport({ ...parsed, release_hash: 'f'.repeat(64) }, place.place_id, place.boundary_version);
+    expect(report.facilities.map(f => f.kind).sort()).toEqual(['fire_station', 'hospital', 'hospital', 'hospital', 'police', 'police']);
+    const distances = report.facilities.map(f => f.distance_km);
+    expect(distances).toEqual([...distances].sort((a, b) => a - b));
+    expect(distances.every(d => d <= 25)).toBe(true);
+    expect(report.sources.some(s => s.id === 'S18')).toBe(true);
+    expect(() => parseSnapshot({ ...body, as_of: asOf, published_at: asOf, facilities: [{ ...facilities[0], kind: 'shelter' }] }, 'ka')).toThrow('Invalid facility kind.');
+  });
   it('keeps the real place version, original cutoff and unavailable outputs', () => {
     const report = buildReport(snapshot(), place.place_id, place.boundary_version);
     expect(report.place.boundary_version).toBe(place.boundary_version);
