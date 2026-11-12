@@ -150,3 +150,12 @@ def test_district_rain_is_gauge_only():
     assert (bp.DATA / "district_rain.csv").read_text("utf-8").splitlines()[
         0
     ] == "district,year,gauge_mm"
+
+
+def test_no_measure_shares_a_name_with_any_column():
+    """Power BI names are case-insensitive across the model: measure 'MAE' and column 'mae'
+    cannot coexist (Desktop refuses to load the project)."""
+    columns = {c.lower() for _, _, cols, _ in bp.TABLES.values() for c, _ in cols}
+    measures = [m.lower() for _, _, _, ms in bp.TABLES.values() for m, *_ in ms]
+    assert len(measures) == len(set(measures))
+    assert not set(measures) & columns, set(measures) & columns

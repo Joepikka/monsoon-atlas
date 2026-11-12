@@ -42,11 +42,11 @@
                       "Entity": "Bus Access"
                     }
                   },
-                  "Property": "People"
+                  "Property": "Total People"
                 }
               },
-              "queryRef": "Bus Access.People",
-              "nativeQueryRef": "People"
+              "queryRef": "Bus Access.Total People",
+              "nativeQueryRef": "Total People"
             }
           ]
         }

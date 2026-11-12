@@ -1,9 +1,9 @@
 table 'Bus Access'
 	lineageTag: 5b4358b5-5072-5aa8-88cb-57c0eee0f304
 
-	measure People = SUM('Bus Access'[people])
+	measure 'Total People' = SUM('Bus Access'[people])
 		formatString: #,0
-		lineageTag: 105d0f26-2aba-546c-b653-7e5676d09f47
+		lineageTag: 58aaeb14-18f3-528d-9dcf-5135f682d4e1
 
 	column band
 		dataType: string

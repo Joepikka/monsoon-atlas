@@ -60,11 +60,11 @@
                       "Entity": "Model Error"
                     }
                   },
-                  "Property": "MAE"
+                  "Property": "Mean Absolute Error"
                 }
               },
-              "queryRef": "Model Error.MAE",
-              "nativeQueryRef": "MAE"
+              "queryRef": "Model Error.Mean Absolute Error",
+              "nativeQueryRef": "Mean Absolute Error"
             }
           ]
         }

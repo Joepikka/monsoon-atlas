@@ -55,7 +55,7 @@ TABLES = {
         "model_error.csv",
         "M05",
         [("period", "string"), ("model", "string"), ("mae", "double")],
-        [("MAE", "AVERAGE('Model Error'[mae])", "0.000")],
+        [("Mean Absolute Error", "AVERAGE('Model Error'[mae])", "0.000")],
     ),
     "Model Gain": (
         "model_gain.csv",
@@ -122,7 +122,7 @@ TABLES |= {
         "bus_access.csv",
         "S30",
         [("band", "string"), ("band_order", "int64"), ("cells", "int64"), ("people", "int64")],
-        [("People", "SUM('Bus Access'[people])", "#,0")],
+        [("Total People", "SUM('Bus Access'[people])", "#,0")],
     ),
     "Headline": (
         "headline.csv",
@@ -653,7 +653,7 @@ PAGES = [
                 110,
                 800,
                 420,
-                {"Category": [C("Bus Access", "band")], "Y": [M("Bus Access", "People")]},
+                {"Category": [C("Bus Access", "band")], "Y": [M("Bus Access", "Total People")]},
                 "People by share of their 1 km cell within the walk",
             ),
             visual(
@@ -693,7 +693,7 @@ PAGES = [
                 {
                     "Category": [C("Model Error", "period")],
                     "Series": [C("Model Error", "model")],
-                    "Y": [M("Model Error", "MAE")],
+                    "Y": [M("Model Error", "Mean Absolute Error")],
                 },
                 "Mean absolute error, SPI units",
             ),
