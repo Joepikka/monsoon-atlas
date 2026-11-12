@@ -97,6 +97,7 @@ test('Nearby lists real S18 facilities with kind, distance and an OSM link, no o
   await expect(lens.getByRole('heading', { name: 'Hebbal Fire Station' })).toBeVisible();
   await expect(lens.getByText(/^Fire station · \d+\.\d km · source checked$/)).toBeVisible();
   await expect(lens.getByText(/^Hospital · /)).toHaveCount(3);
-  await expect(lens.getByRole('link', { name: 'OpenStreetMap · Original source' }).first()).toHaveAttribute('href', /^https:\/\/www\.openstreetmap\.org\/node\/\d+$/);
+  await expect(lens.getByRole('link', { name: 'Open in Google Maps' }).first()).toHaveAttribute('href', /^https:\/\/www\.google\.com\/maps\/search\/\?api=1&query=-?\d+(\.\d+)?,-?\d+(\.\d+)?$/);
+  await expect(lens.getByRole('link', { name: 'Source: © OpenStreetMap contributors' }).first()).toHaveAttribute('href', /^https:\/\/www\.openstreetmap\.org\/node\/\d+$/);
   expect((await new AxeBuilder({ page }).include('[aria-label="Place Lens"]').analyze()).violations).toEqual([]);
 });

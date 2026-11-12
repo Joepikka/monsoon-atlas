@@ -172,5 +172,20 @@
   "watches.notifications": "Watch notifications",
   "watches.source": "Source",
   "watches.err_read": "Watches could not be read in this browser.",
-  "watches.err_save": "The watch could not be saved in this browser."
+  "watches.err_save": "The watch could not be saved in this browser.",
+  "nav.warnings": "Warning archive",
+  "archive.title": "Karnataka official warning archive",
+  "archive.intro": "Every official NDMA Sachet warning for Karnataka this site has stored, as issued: original wording, severity, issue and expiry times. The feed itself keeps no history, so the archive starts on the first stored day.",
+  "archive.emergency": "Not an emergency service. In an emergency call 112 and follow official channels.",
+  "archive.since": "Archive since",
+  "archive.count": "Warnings stored",
+  "archive.search": "Search district or text",
+  "archive.severity": "Severity",
+  "archive.all": "All",
+  "archive.issued": "issued",
+  "archive.expires": "expires",
+  "archive.original": "Original CAP message (Sachet)",
+  "archive.empty": "No official Karnataka warning has been stored yet.",
+  "archive.nomatch": "No stored warning matches this search.",
+  "archive.unavailable": "The warning archive could not be loaded."
 }

@@ -2,6 +2,20 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D189 — Google Maps links and the Karnataka warning archive (12 Nov 2026).**
+  Owner, in chat: "ok do all that, and instead of open street map link is not good to give
+  google map link". (1) Each Nearby facility now has "Open in Google Maps" (a Maps search URL by
+  coordinates: no key, no tracking parameters) as its main link; the "Source: © OpenStreetMap
+  contributors" link stays, because ODbL requires attribution of the facility data. (2)
+  `atlas.alerts.archive` reads every stored S09 snapshot through the signed Worker export and
+  keeps each official CAP warning once, as issued, with first- and last-seen times; publish
+  writes `data/ka/alerts/archive.json` into each site release (`--alerts`), and `?page=warnings`
+  ("Warning archive" in the header) lists them newest first with district/text search and a
+  severity filter. The Sachet feed keeps no history, so the archive starts at the first stored
+  snapshot (12 Nov 2026) and is empty until a Karnataka warning is issued. The alerts privacy
+  guard now lists `archive.py`; it stores nothing about readers. kn, ml and hi strings for the
+  page are unreviewed drafts like the rest.
+
 - **D188 — Nearby keeps every facility kind and shows them on the map (12 Nov 2026).**
   Owner, in chat: "when i click nearby i do see anythinf on the map why is it only showing
   hospitals only". Cause: Nearby took the 10 nearest of any kind, and around central Bengaluru

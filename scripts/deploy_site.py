@@ -37,6 +37,8 @@ def main() -> int:
         "CLOUDFLARE_API_TOKEN": pairs["CLOUDFLARE_API_TOKEN"],
         "CLOUDFLARE_ACCOUNT_ID": pairs["CLOUDFLARE_ACCOUNT_ID"],
         "HF_TOKEN": pairs["HF_TOKEN"],
+        "ATLAS_INGEST_HMAC_KEY": pairs["ATLAS_INGEST_HMAC_KEY"],
+        "ATLAS_HOT_ORIGIN": ORIGIN,
         "HF_HUB_DISABLE_PROGRESS_BARS": "1",
         "WRANGLER_SEND_METRICS": "false",
         "FORCE_COLOR": "0",
@@ -64,6 +66,7 @@ def main() -> int:
             "approved",
             "--hf-repo",  # every public release is archived privately first (rollback, D187)
             pairs["HF_ARCHIVE_REPO"],
+            "--alerts",  # warning archive from the signed Worker export (D189)
         ],
         ROOT,
         env,

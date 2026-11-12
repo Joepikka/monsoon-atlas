@@ -200,6 +200,29 @@ def archive_release(out: Path, pointer: dict, repo: str, token: str) -> str:  # 
     return revision
 
 
+def write_alert_archive(out: Path, origin: str) -> int:  # pragma: no cover - live Worker
+    """data/ka/alerts/archive.json from every stored S09 snapshot (D189)."""
+    from atlas.alerts.archive import archive_body, warnings_from_rows
+    from atlas.data.hot_export import fetch_new
+    from atlas.ingest.upload import signing_key
+
+    key = signing_key(origin)
+    with httpx.Client(
+        trust_env=False,
+        follow_redirects=False,
+        timeout=httpx.Timeout(30.0, connect=5.0),
+        headers={"User-Agent": "monsoon-atlas-publish/1", "Accept-Encoding": "identity"},
+    ) as client:
+        rows, _, _ = fetch_new(client, origin, key, {"after_ms": -1, "after_id": ""})
+    s09 = [r for r in rows if r["source_id"] == "S09"]
+    since = utc(min(r["as_of"] for r in s09)) if s09 else None
+    body = archive_body(warnings_from_rows(s09), since, datetime.now(UTC))
+    path = out / "data/ka/alerts/archive.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(canonical(body))
+    return body["count"]
+
+
 def main(argv: list[str] | None = None) -> int:  # pragma: no cover - needs the live Worker
     import os
 
@@ -209,6 +232,9 @@ def main(argv: list[str] | None = None) -> int:  # pragma: no cover - needs the 
     parser.add_argument("--approval", choices=APPROVALS, default="pending")
     parser.add_argument("--hf-repo", help="also archive the release to this private dataset")
     parser.add_argument("--write-static", type=Path, metavar="FACILITIES_JSON")
+    parser.add_argument(
+        "--alerts", action="store_true", help="add the warning archive (signed Worker export)"
+    )
     args = parser.parse_args(argv)
     if args.write_static:
         write_static_inputs(args.write_static)
@@ -232,6 +258,8 @@ def main(argv: list[str] | None = None) -> int:  # pragma: no cover - needs the 
         release = build_release(snaps, place_rows, facility_rows, datetime.now(UTC))
         pointer = write_release(args.out, release, args.approval)
         result = {"status": "published_locally", **pointer, "bytes": len(canonical(release))}
+        if args.alerts:
+            result["alerts"] = write_alert_archive(args.out, args.origin)
         if args.hf_repo:
             result["archive_revision"] = archive_release(
                 args.out, pointer, args.hf_repo, os.environ["HF_TOKEN"]

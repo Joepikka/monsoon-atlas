@@ -6,6 +6,8 @@ import SourceBadge from './SourceBadge';
 
 const tabs = ['Now', 'Risk', 'Forecast', 'History', 'Nearby', 'Sources'] as const;
 type Tab = typeof tabs[number];
+// D189: a Google Maps search URL by coordinates (no key, no tracking parameters); OSM credit stays (ODbL).
+export const googleMaps = (lat: number, lon: number) => `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
 const facilityLabel: Record<FacilityKind, string> = { hospital: 'Hospital', police: 'Police station', fire_station: 'Fire station' };
 
 function Records({ records, snapshot, now }: { records: MapRecord[]; snapshot: Snapshot; now: number }) {
@@ -36,7 +38,8 @@ function ReportSection({ tab, report, snapshot, now }: { tab: Tab; report: Place
     {report.facilities.length ? <ul className="lens-records">{report.facilities.map(item => <li key={item.facility_id}>
       <h4>{item.name}</h4><p>{facilityLabel[item.kind]} · {item.distance_km.toFixed(1)} km · {item.verification_status.replaceAll('_', ' ')}</p>
       <p>Fetched <time dateTime={item.fetched_at}>{localTime(item.fetched_at)}</time></p>
-      <a href={item.source_url} target="_blank" rel="noopener noreferrer">OpenStreetMap · Original source</a>
+      <p><a className="maps-link" href={googleMaps(item.latitude, item.longitude)} target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
+        {' · '}<a href={item.source_url} target="_blank" rel="noopener noreferrer">Source: © OpenStreetMap contributors</a></p>
     </li>)}</ul> : <p>Facility data is unavailable.</p>}
   </>;
   if (tab === 'Sources') return <>

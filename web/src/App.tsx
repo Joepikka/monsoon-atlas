@@ -106,6 +106,7 @@ export default function App() {
         <a className="official-link" href="?page=accuracy">Model accuracy</a>
         <a className="official-link" href="?page=climate">{t('nav.climate')}</a>
         <a className="official-link" href="?page=wall">{t('wall.title')}</a>
+        <a className="official-link" href="?page=warnings">{t('nav.warnings')}</a>
         <a className="official-link" href="https://sachet.ndma.gov.in/" target="_blank" rel="noopener noreferrer">
           Official warnings <span aria-hidden="true">↗</span>
         </a>
