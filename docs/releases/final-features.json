@@ -1153,7 +1153,7 @@
         "tests/test_web_ask.py",
         "tests/test_ask_config.py"
       ],
-      "blocker": "Evidence support below the 0.95 gate (0.86 on 8 Nov, 0.80 on 11 Nov); extractive only; Workers AI waits for H05 (D101, D147).",
+      "blocker": "Evidence support below the 0.95 gate (0.86 on 8 Nov, 0.77 in the report frozen for release on 12 Nov); extractive only; Workers AI not connected (D101, D147, D187).",
       "owner_steps": [
         "H05",
         "H11"
