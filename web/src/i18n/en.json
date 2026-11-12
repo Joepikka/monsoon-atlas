@@ -196,6 +196,7 @@
   "transit.limits": "What this does not show",
   "transit.mapfailed": "The map could not load; the numbers above remain.",
   "nav.monsoon": "Monsoon tracker",
+  "nav.findings": "Data findings",
   "monsoon.title": "Karnataka district monsoon tracker",
   "monsoon.intro": "Rain so far this season in each district, compared with the same days in each year of the reference period. Driest districts first.",
   "monsoon.reference": "Reference years {reference}.",

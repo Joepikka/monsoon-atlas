@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D199 — Karnataka data findings page on the site (12 Nov 2026).**
+  Owner, in chat: "continue the work", after asking for the data, science and ML work to be shown.
+  `?page=findings` ("Data findings", linked in the masthead) presents six analyses: hospital
+  access (KPIs, share over 10 km by district, Lorenz curve), rain trends (Sen slope with
+  significant districts marked), Bengaluru bus access bands, the M05 drought model (MAE against
+  persistence, climatology and the LightGBM challenger, and its five promotion gates), interval
+  coverage at every look against the 75-85% gate, and Moran's I of residuals by month. Charts are
+  plain SVG with a data table under each (no chart library). The bundle `web/src/findings.json` is
+  written by `scripts/findings_product.py` through the Power BI row functions, so the page and the
+  report cannot disagree; a test checks it is in sync and holds no rain in mm and no stop, route
+  or time. Page text is English only, as on the Accuracy page; only the nav label has locale
+  drafts. On phones each chart scrolls inside its frame at 540 px wide, so labels stay readable.
+
 - **D198 — Power BI report expanded to ten pages (12 Nov 2026).**
   Owner, in chat: "make it better more graphs ... a whole good big dashboard". The report now has
   ten pages and 79 visuals: KPI cards on Overview, Hospital access, Bus access, Spatial errors and
