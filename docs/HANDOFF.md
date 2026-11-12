@@ -184,6 +184,7 @@ and a YAML block `- id: T057`.
 | T017 | `4a5735e` | S16 WorldPop: **available**, R2025A 1 km counts 2015-2030, CC BY 4.0; alpha release, post-2025 are projections; LZW BigTIFF needs rasterio (geo lock) for T018 |
 | T021 | `1545fc5` | S18 Geofabrik: **blocked**, robots.txt disallows *.osm.pbf (D34); 533 MB extract; retry = owner browser download to data/raw/S18, Geofabrik permission, or Overpass source |
 | T022 | `a883fa3` | S18 disabled adapter: fetch/parse raise SourceUnavailable, zero rows |
+| T021-T022 retry | `cb63d98` (D174) | Owner browser download of `southern-zone-261111.osm.pbf` (e05); check passed (0 dup, 0 missing version, 0 invalid geometry); S18 enabled; pyosmium adapter streams facilities and road ways in the state polygon; fetch still closed (D34) |
 | T018 | `98a6524` | S16 adapter: native 1 km cells in the S17 state polygon, totals conserved (Karnataka 2025: 203,344 cells, ~70.8 M); geo lock installed locally, lazy imports (D35); enabled |
 | T031 | `2774b3f` | S40 adapter: 369 GBA 2025 wards, place_id gba2025-c<corp>-w<ward>, parent corporation, WKB; BBMP maps never parsed; enabled |
 | T032 | `e9807ef` | Places + gazetteer + crosswalks (src/atlas/spatial): version history, H3 r7/r8 never wards, m2 areas (EPSG:6933), metres, ambiguous search lists choices (D36). Finding: WorldPop gives ~6.0 M in GBA wards (undercount) |
@@ -659,7 +660,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S15 OpenFreeMap basemap | T015, T016 | available, enabled | keep attribution; no bulk tiles; integrator 18+ |
 | S16 WorldPop population | T017, T018 | available, enabled | CC BY 4.0; R2025A alpha; needs geo lock |
 | S17 geoBoundaries | T019, T020 | available, enabled | 30 Karnataka districts (no Vijayanagara); ODbL |
-| S18 Geofabrik OSM | T021, T022 | blocked | robots.txt disallows .osm.pbf (D34) |
+| S18 Geofabrik OSM | T021, T022 | available (D174) | owner browser download; robots.txt still bars the pipeline (D34) |
 | S22 India Data Portal Agmarknet | T023 | blocked | client-side app; retry with a browser render; T025 is the other route |
 | S23 data.gov.in mandi prices | T025 | blocked on price denominator; GODL verified | Key was already used in discovery; no new key or licence confirmation needed |
 | S28 KWRIS | T008 | blocked | retry if KWRIS daily history arrives |
@@ -733,8 +734,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 - T025 already accessed data.gov.in with the owner's key, and the browser retry verified
   GODL. Remaining blocker: a publisher statement establishing the API price denominator;
   see `docs/sources/s23.md`. Do not request another key or repeat licence confirmation.
-- Optional: download `southern-zone-latest.osm.pbf` from Geofabrik in a browser into
-  `data/raw/S18/` to unblock S18 (D34).
+- S18: done 12 Nov 2026 (D174). Repeat the browser download monthly into `data/raw/S18/`.
 
 ### Git
 
@@ -778,8 +778,8 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    already supplied; do not request it again without cause.
    T035-T037's prescribed blocked branch is complete; `reports/models/m06.md`
    records why there is no trained price model. Continue independent P1 work (D54).
-8. **A8 step 9:** T038/T039/T040 checks pass. T041's walking-network study is
-   blocked by S18 (T021/T022); no catchments or coverage results are invented.
+8. **A8 step 9:** T038/T039/T040 checks pass. T041's walking-network study was
+   blocked by S18; S18 is available since D174, so T041 is now buildable.
    `scripts/web.ps1 run dev` serves the local
    map at http://127.0.0.1:5173. There is no approved public snapshot or deployment.
    T229's local T042 implementation and real Ubuntu runtime CI pass. Full T042
@@ -870,7 +870,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    and pins 88 evidence files in `final-manifest.json` (regenerate with
    `.\.venv\Scripts\python tests/test_final.py --manifest` after changing any of them).
    Operating runbook: `docs/runbooks/maintain.md`. **Karnataka first (owner, 11 Nov 2026): Kerala and Delhi work waits until Karnataka is
-   live.** Next agent task without the owner: none for Karnataka; S22 and S23 prices were retried
+   live.** Next agent tasks without the owner: export S18 facilities into the snapshot (F025 Nearby), then T041 (BMTC coverage, now unblocked by S18, D174); S22 and S23 prices were retried
    in the in-app browser and stay blocked (D173). Later, for Delhi: re-run T146 (S24); the
    data.gov.in resource page now renders in the in-app browser. First owner
    step: H05/H06** (H05 Cloudflare token saved and verified 12 Nov 2026; H06 waits; the H11 Karnataka sheet `docs/releases/h11-ka.md` was answered on 11 Nov 2026,
@@ -878,7 +878,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    T046 (the Karnataka MVP gate, first unfinished task in plan order) needs. New owner steps from P3: H12 (aisstream key), proposed
    H15 (Copernicus account), T118 bulk OCR approval, S41 publisher permission, Power BI Desktop
    exports (D132);
-   the gate itself waits for T045 (H05/H06), T041 (S18) and H11;
+   the gate itself waits for T045 (H06 and the capability probe), T041 (buildable) and H11;
    unresolved human/data gates must remain pending rather than blocking independent work.
 
 ## 10. Lessons and pitfalls
