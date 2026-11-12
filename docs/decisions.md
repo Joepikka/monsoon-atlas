@@ -2,6 +2,23 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D187 — Public Karnataka release on pages.dev (12 Nov 2026).**
+  Owner, in chat: "Approve public release" (H11 public-release approval for Karnataka). Licence
+  check at deployment: the site bundles `dashboards.json`, `climate.json` (S08 derived outputs
+  only; no rainfall values, per H11 item 3) and the i18n strings; the release carries S01
+  (CC BY 4.0, non-commercial), S09 (public domain), S17 and S18 (ODbL, credited) only; the S30
+  transit layer (restricted) and S12/S20 layers are not mounted. Per H11 item 2 the Ask document
+  set was frozen and its report regenerated once before release: 31 documents, 521 chunks,
+  correctness 0.82, evidence support 0.77 against 0.95, so Ask stays research-only; its release
+  `bd058915` was loaded into D1 and published with the site. Approved Karnataka release
+  `bb00a60b` (pointer `approval: approved`). Pages project `monsoon-atlas` created and deployed
+  (`https://monsoon-atlas.pages.dev`) with two Pages Functions that forward `/api/v1/current` and
+  `/api/v1/ask` to the Worker, because the browser calls its own origin. Checked live: approved
+  snapshot loads, 30 districts, Nearby lists real hospitals with the not-walking-distance and
+  opening-hours notice, boundary disclaimer shown, no console errors. The live-update line
+  reads "unavailable" until a feed snapshot newer than the release arrives (T240 rule).
+  `scripts/deploy_site.py` repeats the deploy from `.env`; Kerala and Delhi stay "not released".
+
 - **D186 — T045 on main; first hosted feeds hop and daily release (12 Nov 2026).**
   Owner, in chat: "Merge PR 2" and "Merge PR 3". PRs Joepikka/monsoon-atlas#6 (T044) and
   Joepikka/monsoon-atlas#7 (T045) merged (`a1bf81a`, `0ec34af`). Manual runs on `main`: feeds
