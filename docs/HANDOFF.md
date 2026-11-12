@@ -701,6 +701,12 @@ M08 is a non-core descriptive 2018 replay (P3).
   The owner explicitly deferred tokens on 6 Nov: "I'll do this later; continue
   local work." Do not repeat the token question; proceed with independent local
   preparation. The concrete owner guide is `docs/account-setup.md`.
+  **12 Nov 2026: H05 Cloudflare token done.** The owner created a custom token
+  (Workers Scripts Edit, D1 Edit, Cloudflare Pages Edit, Account Settings Read;
+  one account) and saved `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in
+  `.env`. A read-only check passed: `/user/tokens/verify` active, and account,
+  Workers scripts, D1 and Pages list calls succeed (0 items each). Nothing was
+  created remotely. H06 (`HF_TOKEN`) still waits for the archive repository.
 
 - **S34 OCR sample reviewed (D102, 8 Nov 2026):** the owner delegated the review;
   the agent read all eight crops with their full rows and headers. Records are
@@ -867,7 +873,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    live.** Next agent task without the owner: none for Karnataka; S22 and S23 prices were retried
    in the in-app browser and stay blocked (D173). Later, for Delhi: re-run T146 (S24); the
    data.gov.in resource page now renders in the in-app browser. First owner
-   step: H05/H06** (the H11 Karnataka sheet `docs/releases/h11-ka.md` was answered on 11 Nov 2026,
+   step: H05/H06** (H05 Cloudflare token saved and verified 12 Nov 2026; H06 waits; the H11 Karnataka sheet `docs/releases/h11-ka.md` was answered on 11 Nov 2026,
    D166) for hosting T042-T045, which
    T046 (the Karnataka MVP gate, first unfinished task in plan order) needs. New owner steps from P3: H12 (aisstream key), proposed
    H15 (Copernicus account), T118 bulk OCR approval, S41 publisher permission, Power BI Desktop
