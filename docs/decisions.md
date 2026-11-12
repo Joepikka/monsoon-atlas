@@ -2,6 +2,31 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D197 — Karnataka Power BI report rebuilt around the analyses (12 Nov 2026).**
+  Owner, in chat: Power BI Desktop is installed and open; "this is mainly a data project".
+  `powerbi/build_pbip.py` now writes seven Karnataka pages: Overview (headline table), Rain trends
+  (Sen slope bar, test table, significance slicer), Hospital access (D195), Bus access (D191
+  derived bands), Model accuracy (M05), Gauge rain (S29) and Data limits (blocked notes for
+  prices, flood labels, M07/M06). The Kerala S32 reservoir page and its table are removed. New
+  CSVs (`rain_trend`, `hospital_access`, `bus_access`, `headline`) are copied from committed
+  reports; tests check they match and hold no blocked or restricted values.
+
+- **D196 — Rain trends tested: Mann-Kendall, Sen slope, Benjamini-Hochberg (12 Nov 2026).**
+  Each annual-rain trend (S08 indices only, 1981-2025) now carries Sen's slope, a tie-corrected
+  Mann-Kendall p-value and its lag-1 autocorrelation; the 30 Karnataka districts are corrected
+  together with Benjamini-Hochberg. Result: 18 districts have p < 0.05 but only 9 have q < 0.05,
+  8 of those flagged as autocorrelated (so weaker than they look). The Kerala cell box is a
+  single test. `significance` changes from "not tested" to the corrected result.
+
+- **D195 — Karnataka hospital access equity (12 Nov 2026).**
+  Owner, in chat: "choose the best 2 or 3". `src/atlas/analysis/access.py` and notebook 11:
+  every S16 WorldPop 2025 1 km cell (203,344, 70.8 M people) to the nearest of 3,581 S18 OSM
+  hospitals, exact great-circle nearest site (KD-tree on unit vectors), people-weighted. Median
+  3.79 km, mean 4.75 km, 90th percentile 10.5 km, 11.5% beyond 10 km, weighted Gini 0.48;
+  Yadgir worst (38% beyond 10 km), Bangalore best (median 0.6 km). Limits: straight-line, OSM
+  thinner in rural areas, hospitals of any size, modelled population. 51,869 people fall in cells
+  outside the S17 district polygons and are counted statewide only.
+
 - **D194 — Bus-access squares on request (12 Nov 2026).**
   Owner, in chat: "make it as a option so user click a button and only then it shows stuff like
   that". The bus-access map now opens as a plain map; a "Show bus access" button (aria-pressed)

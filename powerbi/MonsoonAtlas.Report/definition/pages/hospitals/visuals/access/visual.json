@@ -1,0 +1,113 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "access",
+  "position": {
+    "x": 740,
+    "y": 110,
+    "z": 3000,
+    "width": 516,
+    "height": 600,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hospital Access"
+                    }
+                  },
+                  "Property": "district"
+                }
+              },
+              "queryRef": "Hospital Access.district",
+              "nativeQueryRef": "district",
+              "displayName": "District"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hospital Access"
+                    }
+                  },
+                  "Property": "median_km"
+                }
+              },
+              "queryRef": "Hospital Access.median_km",
+              "nativeQueryRef": "median_km",
+              "displayName": "Median km"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hospital Access"
+                    }
+                  },
+                  "Property": "p90_km"
+                }
+              },
+              "queryRef": "Hospital Access.p90_km",
+              "nativeQueryRef": "p90_km",
+              "displayName": "90th pct km"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hospital Access"
+                    }
+                  },
+                  "Property": "share_beyond_10km"
+                }
+              },
+              "queryRef": "Hospital Access.share_beyond_10km",
+              "nativeQueryRef": "share_beyond_10km",
+              "displayName": "Share > 10 km"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Distances per district'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

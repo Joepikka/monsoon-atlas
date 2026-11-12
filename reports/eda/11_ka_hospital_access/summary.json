@@ -1,0 +1,112 @@
+{
+ "state": "ka",
+ "hospitals": 3581,
+ "cells": 203344,
+ "unassigned_people": 51869,
+ "statewide": {
+  "people": 70800564,
+  "mean_km": 4.75,
+  "median_km": 3.79,
+  "p90_km": 10.5,
+  "share_beyond_5km": 0.4026,
+  "share_beyond_10km": 0.1153,
+  "gini": 0.4798
+ },
+ "lorenz": [
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.05,
+   0.0017
+  ],
+  [
+   0.1,
+   0.0052
+  ],
+  [
+   0.15,
+   0.0106
+  ],
+  [
+   0.2,
+   0.0181
+  ],
+  [
+   0.25,
+   0.0282
+  ],
+  [
+   0.3,
+   0.042
+  ],
+  [
+   0.35,
+   0.0606
+  ],
+  [
+   0.4,
+   0.0848
+  ],
+  [
+   0.45,
+   0.1153
+  ],
+  [
+   0.5,
+   0.1521
+  ],
+  [
+   0.55,
+   0.1952
+  ],
+  [
+   0.6,
+   0.2448
+  ],
+  [
+   0.65,
+   0.3013
+  ],
+  [
+   0.7,
+   0.365
+  ],
+  [
+   0.75,
+   0.4363
+  ],
+  [
+   0.8,
+   0.5162
+  ],
+  [
+   0.85,
+   0.6061
+  ],
+  [
+   0.9,
+   0.7087
+  ],
+  [
+   0.95,
+   0.83
+  ],
+  [
+   1.0,
+   1.0
+  ]
+ ],
+ "inputs": {
+  "S16": "e188723030087fb8e90e1741199bd476a181c00b046fab7dd8e8358adb136b64",
+  "S17": "8bef6929fd65432e7dc775e7c44473e84efff064ebddbfd6b834e6291546db40",
+  "S18": "81f355bdfb7925a5aae68552bfb53dd558891bddbcd88e07a29765567bdf0693"
+ },
+ "limits": [
+  "Straight-line distance from the 1 km cell centre, not road distance or travel time.",
+  "OpenStreetMap hospitals are volunteer-mapped and thinner in rural areas, so remote distances are upper bounds; clinics and primary health centres tagged otherwise are not counted.",
+  "Public and private hospitals of any size count the same; capacity is unknown.",
+  "WorldPop 2025 is a modelled 1 km population estimate."
+ ]
+}

@@ -1,0 +1,5 @@
+order,metric,value,source
+1,Median distance to a hospital (Karnataka),3.8 km,"S16, S18"
+2,People more than 10 km from a hospital,11.5%,"S16, S18"
+3,Bengaluru people within a 500 m walk of a served bus stop,65.3%,"S16, S18, S30"
+4,Districts with a significant rain rise since 1981,9 of 30,S08 (indices only)

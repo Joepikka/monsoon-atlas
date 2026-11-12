@@ -6,7 +6,10 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-ref table 'Reservoir Change'
 ref table 'District Rain'
 ref table 'Model Error'
 ref table 'Model Gain'
+ref table 'Rain Trend'
+ref table 'Hospital Access'
+ref table 'Bus Access'
+ref table Headline

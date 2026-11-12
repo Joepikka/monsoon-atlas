@@ -53,9 +53,10 @@ def build() -> dict:
     ).items():
         by_district[name][year] = v
     trends = [monsoon.trend("Kerala cell box (IMD 0.25 deg; not the state boundary)", annual)]
-    trends += [
-        monsoon.trend(f"{n} (Karnataka district)", by_district[n]) for n in sorted(by_district)
-    ]
+    # D196: one family of 30 Karnataka district tests, corrected together (Kerala stays alone)
+    trends += monsoon.fdr(
+        [monsoon.trend(f"{n} (Karnataka district)", by_district[n]) for n in sorted(by_district)]
+    )
     with open(ROOT / "reports/eda/07_climate/s06_model_change.csv", encoding="utf-8") as f:
         projection = monsoon.projections(csv.DictReader(f))
     return monsoon.product(

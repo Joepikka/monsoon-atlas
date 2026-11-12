@@ -1,0 +1,98 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "bandtable",
+  "position": {
+    "x": 840,
+    "y": 110,
+    "z": 3000,
+    "width": 416,
+    "height": 420,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Bus Access"
+                    }
+                  },
+                  "Property": "band"
+                }
+              },
+              "queryRef": "Bus Access.band",
+              "nativeQueryRef": "band",
+              "displayName": "Band"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Bus Access"
+                    }
+                  },
+                  "Property": "cells"
+                }
+              },
+              "queryRef": "Bus Access.cells",
+              "nativeQueryRef": "cells",
+              "displayName": "1 km cells"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Bus Access"
+                    }
+                  },
+                  "Property": "people"
+                }
+              },
+              "queryRef": "Bus Access.people",
+              "nativeQueryRef": "people",
+              "displayName": "People"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Bands'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

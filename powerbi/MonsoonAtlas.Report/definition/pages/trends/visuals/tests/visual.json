@@ -1,0 +1,143 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "tests",
+  "position": {
+    "x": 24,
+    "y": 500,
+    "z": 4000,
+    "width": 1232,
+    "height": 210,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rain Trend"
+                    }
+                  },
+                  "Property": "district"
+                }
+              },
+              "queryRef": "Rain Trend.district",
+              "nativeQueryRef": "district",
+              "displayName": "District"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rain Trend"
+                    }
+                  },
+                  "Property": "sen_pct_per_decade"
+                }
+              },
+              "queryRef": "Rain Trend.sen_pct_per_decade",
+              "nativeQueryRef": "sen_pct_per_decade",
+              "displayName": "Sen, %/decade"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rain Trend"
+                    }
+                  },
+                  "Property": "mk_p"
+                }
+              },
+              "queryRef": "Rain Trend.mk_p",
+              "nativeQueryRef": "mk_p",
+              "displayName": "Mann-Kendall p"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rain Trend"
+                    }
+                  },
+                  "Property": "fdr_q"
+                }
+              },
+              "queryRef": "Rain Trend.fdr_q",
+              "nativeQueryRef": "fdr_q",
+              "displayName": "BH q"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rain Trend"
+                    }
+                  },
+                  "Property": "lag1_autocorrelation"
+                }
+              },
+              "queryRef": "Rain Trend.lag1_autocorrelation",
+              "nativeQueryRef": "lag1_autocorrelation",
+              "displayName": "Lag-1 r"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rain Trend"
+                    }
+                  },
+                  "Property": "significance"
+                }
+              },
+              "queryRef": "Rain Trend.significance",
+              "nativeQueryRef": "significance",
+              "displayName": "Result"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Tests per district'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

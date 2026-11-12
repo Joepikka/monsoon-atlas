@@ -60,11 +60,12 @@ def test_every_project_json_parses():
         json.loads(p.read_text("utf-8"))
 
 
-def test_four_pages_in_order():
+def test_seven_karnataka_pages_in_order():
     pages = json.loads(
         (PROJECT / "MonsoonAtlas.Report/definition/pages/pages.json").read_text("utf-8")
     )
-    assert pages["pageOrder"] == ["reservoirs", "rain", "prices", "accuracy"]
+    order = ["overview", "trends", "hospitals", "bus", "accuracy", "rain", "limits"]
+    assert pages["pageOrder"] == order  # D197
 
 
 def visuals():
@@ -103,15 +104,10 @@ def test_blocked_pages_carry_their_reason_and_no_data():
     for key, (ids, reason) in bp.BLOCKED.items():
         assert set(ids.split()) <= blocked, key
         assert reason.startswith(("blocked", "M07"))
-    for page, expected in (
-        ("reservoirs", "S28"),
-        ("rain", "S43"),
-        ("prices", "S22"),
-        ("accuracy", "M07"),
-    ):
-        text = " ".join(json.dumps(v) for p, v in visuals() if p == page)
-        assert "Blocked:" in text and expected in text, page
-    assert not [1 for p, v in visuals() if p == "prices" and v["visual"].get("query")]
+    text = " ".join(json.dumps(v) for p, v in visuals() if p == "limits")
+    for expected in ("S22", "S43", "M07"):
+        assert "Blocked:" in text and expected in text, expected
+    assert not [1 for p, v in visuals() if p == "limits" and v["visual"].get("query")]
 
 
 def test_accuracy_matches_registry_and_report():
@@ -122,15 +118,23 @@ def test_accuracy_matches_registry_and_report():
     assert gain[0]["mae_ridge"] == "0.732" and gain[0]["mae_baseline"] == "0.808"
 
 
-def test_reservoir_rows_are_the_published_s32_sample():
-    rows = list(csv.DictReader((bp.DATA / "reservoir_change.csv").open(encoding="utf-8")))
-    assert len(rows) == 16 and {r["window"] for r in rows} == {
-        w for w, _ in bp.RESERVOIR_WINDOWS.values()
-    }
-    assert all(
-        abs(float(r["end_pct"]) - float(r["start_pct"]) - float(r["change_points"])) < 0.06
-        for r in rows
+def test_showcase_tables_match_their_reports():
+    """D197: the new tables are copies of committed results, not new numbers."""
+    trend = list(csv.DictReader((bp.DATA / "rain_trend.csv").open(encoding="utf-8")))
+    assert len(trend) == 30 and sum(float(r["fdr_q"]) < 0.05 for r in trend) == 9
+    access = list(csv.DictReader((bp.DATA / "hospital_access.csv").open(encoding="utf-8")))
+    report = list(
+        csv.DictReader(
+            (ROOT / "reports/eda/11_ka_hospital_access/district_access.csv").open(encoding="utf-8")
+        )
     )
+    assert [r["district"] for r in access] == [r["district"] for r in report]
+    bus = list(csv.DictReader((bp.DATA / "bus_access.csv").open(encoding="utf-8")))
+    summary = json.loads((ROOT / "reports/eda/04_bmtc_coverage/summary.json").read_text("utf-8"))
+    total = sum(int(r["people"]) for r in bus)
+    assert abs(total - summary["population"]["total"]) <= 2  # every person in exactly one band
+    head = (bp.DATA / "headline.csv").read_text("utf-8")
+    assert "65.3%" in head and "9 of 30" in head
 
 
 def test_no_service_publishing_or_credentials():

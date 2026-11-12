@@ -2,7 +2,7 @@
 """Generate the Power BI project (powerbi/MonsoonAtlas.pbip) from code (T223, D132).
 
 Same approach as build_pbip.py in kerala-veg-prices: a TMDL semantic model that imports small CSVs
-through Power Query, and a PBIR report with four pages. The CSVs in reports/powerbi/data/ are
+through Power Query, and a PBIR report with seven Karnataka pages (D197). The CSVs in reports/powerbi/data/ are
 derived from files already committed (S29 district gauge totals, M05 registry records, and the S32
 tables in reports/sql_insights.md). Raw restricted data is never embedded: the S08 grid columns of
 the S29 file are dropped, and no blocked source (S22, S23, S28, S43) feeds a table. Blocked pages
@@ -31,6 +31,9 @@ ACCENT, GREY, INK, MUTED = "#1F6F8B", "#8A94A0", "#1B1F24", "#5B6470"
 SQL_REPORT = ROOT / "reports" / "sql_insights.md"
 S29_CSV = ROOT / "reports" / "eda" / "02_ka_rain" / "district_year_comparison.csv"
 M05_DIR = ROOT / "models" / "registry" / "M05"
+CLIMATE = ROOT / "reports" / "eda" / "08_climate_product" / "climate.json"
+ACCESS = ROOT / "reports" / "eda" / "11_ka_hospital_access"
+BUS = ROOT / "reports" / "eda" / "04_bmtc_coverage"
 # sql_insights.md question -> (window label, sign of the *_points column relative to end - start)
 RESERVOIR_WINDOWS = {
     "Q08": ("1 Aug to 1 Nov 2026", 1),
@@ -42,18 +45,6 @@ RESERVOIR_WINDOWS = {
 
 # table -> (csv, source id, [(column, dataType)], [(measure, DAX, format)])
 TABLES = {
-    "Reservoir Change": (
-        "reservoir_change.csv",
-        "S32",
-        [
-            ("window", "string"),
-            ("reservoir", "string"),
-            ("start_pct", "double"),
-            ("end_pct", "double"),
-            ("change_points", "double"),
-        ],
-        [("Storage Change", "AVERAGE('Reservoir Change'[change_points])", "+0.0;-0.0;0.0")],
-    ),
     "District Rain": (
         "district_rain.csv",
         "S29",
@@ -79,6 +70,64 @@ TABLES = {
             ("upper95", "double"),
             ("promoted", "string"),
         ],
+        [],
+    ),
+}
+TABLES |= {
+    "Rain Trend": (
+        "rain_trend.csv",
+        "S08",
+        [
+            ("district", "string"),
+            ("first_year", "int64"),
+            ("last_year", "int64"),
+            ("sen_pct_per_decade", "double"),
+            ("ols_pct_per_decade", "double"),
+            ("mk_p", "double"),
+            ("fdr_q", "double"),
+            ("lag1_autocorrelation", "double"),
+            ("significance", "string"),
+        ],
+        [
+            ("Sen Slope", "AVERAGE('Rain Trend'[sen_pct_per_decade])", "+0.0;-0.0;0.0"),
+            (
+                "Significant Districts",
+                "CALCULATE(COUNTROWS('Rain Trend'), 'Rain Trend'[fdr_q] < 0.05)",
+                "0",
+            ),
+        ],
+    ),
+    "Hospital Access": (
+        "hospital_access.csv",
+        "S18",
+        [
+            ("district", "string"),
+            ("people", "int64"),
+            ("mean_km", "double"),
+            ("median_km", "double"),
+            ("p90_km", "double"),
+            ("share_beyond_5km", "double"),
+            ("share_beyond_10km", "double"),
+        ],
+        [
+            ("Mean km", "AVERAGE('Hospital Access'[mean_km])", "0.0"),
+            (
+                "People Beyond 10 km",
+                "SUMX('Hospital Access', 'Hospital Access'[people] * 'Hospital Access'[share_beyond_10km])",
+                "#,0",
+            ),
+        ],
+    ),
+    "Bus Access": (
+        "bus_access.csv",
+        "S30",
+        [("band", "string"), ("band_order", "int64"), ("cells", "int64"), ("people", "int64")],
+        [("People", "SUM('Bus Access'[people])", "#,0")],
+    ),
+    "Headline": (
+        "headline.csv",
+        "derived",
+        [("order", "int64"), ("metric", "string"), ("value", "string"), ("source", "string")],
         [],
     ),
 }
@@ -161,10 +210,106 @@ def model_rows() -> tuple[list[list], list[list]]:
     return err, gain
 
 
+def trend_rows() -> list[list]:
+    """30 Karnataka district trends from the climate product (indices and tests, no S08 mm)."""
+    rows = json.loads(CLIMATE.read_text("utf-8"))["trend"]
+    out = []
+    for r in rows:
+        if "(Karnataka district)" not in r["area"]:
+            continue
+        out.append(
+            [
+                r["area"].replace(" (Karnataka district)", ""),
+                r["first_year"],
+                r["last_year"],
+                r["sen_slope_pct_per_decade"],
+                r["slope_pct_per_decade"],
+                r["mann_kendall_p"],
+                r["fdr_q"],
+                r["lag1_autocorrelation"],
+                r["significance"],
+            ]
+        )
+    return sorted(out)
+
+
+def access_rows() -> list[list]:
+    with (ACCESS / "district_access.csv").open(encoding="utf-8", newline="") as f:
+        return [
+            [
+                r["district"],
+                int(r["people"]),
+                float(r["mean_km"]),
+                float(r["median_km"]),
+                float(r["p90_km"]),
+                float(r["share_beyond_5km"]),
+                float(r["share_beyond_10km"]),
+            ]
+            for r in csv.DictReader(f)
+        ]
+
+
+BUS_BANDS = [(0.25, "under 25%"), (0.5, "25 to 50%"), (0.75, "50 to 75%"), (1.01, "75% or more")]
+
+
+def bus_rows() -> list[list]:
+    """People and cells per bus-access band (derived shares only, no S30 timetable, D191)."""
+    counts = {label: [0, 0.0] for _, label in BUS_BANDS}
+    with (BUS / "cell_coverage.csv").open(encoding="utf-8", newline="") as f:
+        for r in csv.DictReader(f):
+            pop = float(r["population"])
+            if pop <= 0:
+                continue
+            frac = float(r["covered_population"]) / pop
+            label = next(lab for top, lab in BUS_BANDS if frac < top)
+            counts[label][0] += 1
+            counts[label][1] += pop
+    return [
+        [label, i, counts[label][0], round(counts[label][1])]
+        for i, (_, label) in enumerate(BUS_BANDS)
+    ]
+
+
+def headline_rows() -> list[list]:
+    access = json.loads((ACCESS / "summary.json").read_text("utf-8"))["statewide"]
+    bus = json.loads((BUS / "summary.json").read_text("utf-8"))["population"]
+    trends = trend_rows()
+    sig = sum(1 for t in trends if t[6] < 0.05)
+    return [
+        [
+            1,
+            "Median distance to a hospital (Karnataka)",
+            f"{access['median_km']:.1f} km",
+            "S16, S18",
+        ],
+        [
+            2,
+            "People more than 10 km from a hospital",
+            f"{access['share_beyond_10km'] * 100:.1f}%",
+            "S16, S18",
+        ],
+        [
+            3,
+            "Bengaluru people within a 500 m walk of a served bus stop",
+            f"{bus['covered_share'] * 100:.1f}%",
+            "S16, S18, S30",
+        ],
+        [
+            4,
+            "Districts with a significant rain rise since 1981",
+            f"{sig} of {len(trends)}",
+            "S08 (indices only)",
+        ],
+    ]
+
+
 def write_data(data_dir: Path = DATA) -> None:
     err, gain = model_rows()
     rows = {
-        "Reservoir Change": reservoir_rows(),
+        "Rain Trend": trend_rows(),
+        "Hospital Access": access_rows(),
+        "Bus Access": bus_rows(),
+        "Headline": headline_rows(),
         "District Rain": district_rows(),
         "Model Error": err,
         "Model Gain": gain,
@@ -371,80 +516,162 @@ def blocked_card(name, x, y, w, h, key):
 
 PAGES = [
     (
-        "reservoirs",
-        "Reservoir trends",
+        "overview",
+        "Overview",
         [
             *heading(
-                "Kerala dam storage changed between sampled report dates",
-                "KSEB daily water level reports (S32, CC BY-SA 2.5 India, credit KSEB; share alike), sampled about every 15 days. "
-                "8 of 16 dams have complete readings. Net of rain, releases and generation.",
-            ),
-            slicer("window", 24, 110, 200, 160, "Reservoir Change", "window", "Window"),
-            visual(
-                "change",
-                "clusteredBarChart",
-                240,
-                110,
-                1016,
-                330,
-                {
-                    "Category": [C("Reservoir Change", "reservoir")],
-                    "Y": [M("Reservoir Change", "Storage Change")],
-                },
-                "Change in live storage, percentage points of full capacity",
+                "Karnataka in four numbers",
+                "Monsoon Atlas, a Rs 0 open-data project. Every figure is derived from committed, licensed data "
+                "with its limits stated; blocked sources are shown as blocked, never as zero.",
             ),
             visual(
-                "table",
+                "headline",
                 "tableEx",
-                240,
-                452,
-                1016,
-                200,
+                24,
+                110,
+                1232,
+                260,
                 {
                     "Values": [
-                        C("Reservoir Change", "reservoir", "Reservoir"),
-                        C("Reservoir Change", "window", "Window"),
-                        C("Reservoir Change", "start_pct", "Start, %"),
-                        C("Reservoir Change", "end_pct", "End, %"),
-                        C("Reservoir Change", "change_points", "Change, points"),
+                        C("Headline", "metric", "Measure"),
+                        C("Headline", "value", "Value"),
+                        C("Headline", "source", "Sources"),
                     ]
                 },
-                "Readings",
+                "Headline results",
             ),
-            blocked_card("blocked", 24, 660, 1232, 50, "KWRIS daily reservoir levels (S28)"),
+            textbox(
+                "method",
+                24,
+                390,
+                1232,
+                160,
+                "Methods: exact great-circle nearest-site search (hospitals), network walking catchments "
+                "(buses), Mann-Kendall with Benjamini-Hochberg correction (rain trends), ridge regression "
+                "against persistence with a paired block bootstrap (drought model). Notebooks 02, 04, 08, 11.",
+                "11pt",
+                False,
+                MUTED,
+            ),
         ],
     ),
     (
-        "rain",
-        "Ward rain and flood exposure",
+        "trends",
+        "Rain trends",
         [
             *heading(
-                "Karnataka rain by district; ward flood exposure is blocked",
-                "KSNDMC rain-gauge annual district totals (S29, public domain), 29 districts with like-for-like years. Gauge totals only.",
+                "Annual rain rose in 9 of 30 districts since 1981, after correcting for 30 tests",
+                "IMD gridded rain (S08) as % of the 1981-2010 mean, never mm. Sen slope per decade; Mann-Kendall p; "
+                "Benjamini-Hochberg q across the 30 districts. Autocorrelated series are flagged as weaker.",
             ),
-            slicer("year", 24, 110, 200, 200, "District Rain", "year", "Year"),
+            slicer("sig", 24, 110, 220, 200, "Rain Trend", "significance", "Significance"),
             visual(
-                "rain",
+                "slope",
                 "clusteredBarChart",
-                240,
+                260,
                 110,
-                1016,
-                480,
-                {
-                    "Category": [C("District Rain", "district")],
-                    "Y": [M("District Rain", "Mean Annual Rain")],
-                },
-                "Mean annual rain at the gauges, mm",
+                996,
+                380,
+                {"Category": [C("Rain Trend", "district")], "Y": [M("Rain Trend", "Sen Slope")]},
+                "Sen slope, % of the 1981-2010 mean per decade",
             ),
-            blocked_card("blocked", 24, 600, 1232, 100, "Flood labels (S43) and ward-level rain"),
+            visual(
+                "tests",
+                "tableEx",
+                24,
+                500,
+                1232,
+                210,
+                {
+                    "Values": [
+                        C("Rain Trend", "district", "District"),
+                        C("Rain Trend", "sen_pct_per_decade", "Sen, %/decade"),
+                        C("Rain Trend", "mk_p", "Mann-Kendall p"),
+                        C("Rain Trend", "fdr_q", "BH q"),
+                        C("Rain Trend", "lag1_autocorrelation", "Lag-1 r"),
+                        C("Rain Trend", "significance", "Result"),
+                    ]
+                },
+                "Tests per district",
+            ),
         ],
     ),
     (
-        "prices",
-        "Prices",
+        "hospitals",
+        "Hospital access",
         [
-            *heading("Market prices are blocked", "No price series is shown because none is held."),
-            blocked_card("blocked", 24, 120, 1232, 120, "Market prices (S22, S23)"),
+            *heading(
+                "How far people live from the nearest hospital",
+                "WorldPop 2025 1 km cells (S16) to OpenStreetMap hospitals (S18), straight-line km, people-weighted. "
+                "OSM is thinner in rural areas, so remote distances are upper bounds.",
+            ),
+            visual(
+                "beyond",
+                "clusteredBarChart",
+                24,
+                110,
+                700,
+                600,
+                {
+                    "Category": [C("Hospital Access", "district")],
+                    "Y": [M("Hospital Access", "Mean km")],
+                },
+                "People-weighted mean km to the nearest hospital",
+            ),
+            visual(
+                "access",
+                "tableEx",
+                740,
+                110,
+                516,
+                600,
+                {
+                    "Values": [
+                        C("Hospital Access", "district", "District"),
+                        C("Hospital Access", "median_km", "Median km"),
+                        C("Hospital Access", "p90_km", "90th pct km"),
+                        C("Hospital Access", "share_beyond_10km", "Share > 10 km"),
+                    ]
+                },
+                "Distances per district",
+            ),
+        ],
+    ),
+    (
+        "bus",
+        "Bus access",
+        [
+            *heading(
+                "Bengaluru: 65.3% of people live within a 500 m walk of a served bus stop",
+                "Bangalore district, BMTC weekday service of 9 Sep 2026 (unofficial GTFS, S30), walking along OSM "
+                "paths, WorldPop people. Derived shares only: no stops, routes or times (D191).",
+            ),
+            visual(
+                "bands",
+                "clusteredColumnChart",
+                24,
+                110,
+                800,
+                420,
+                {"Category": [C("Bus Access", "band")], "Y": [M("Bus Access", "People")]},
+                "People by share of their 1 km cell within the walk",
+            ),
+            visual(
+                "bandtable",
+                "tableEx",
+                840,
+                110,
+                416,
+                420,
+                {
+                    "Values": [
+                        C("Bus Access", "band", "Band"),
+                        C("Bus Access", "cells", "1 km cells"),
+                        C("Bus Access", "people", "People"),
+                    ]
+                },
+                "Bands",
+            ),
         ],
     ),
     (
@@ -489,7 +716,43 @@ PAGES = [
                 },
                 "Improvement over persistence (paired block bootstrap)",
             ),
-            blocked_card("blocked", 24, 460, 1232, 60, "Models M07 and M06"),
+        ],
+    ),
+    (
+        "rain",
+        "Gauge rain",
+        [
+            *heading(
+                "Karnataka gauge rain by district",
+                "KSNDMC rain-gauge annual district totals (S29, public domain), 29 districts with like-for-like years. Gauge totals only.",
+            ),
+            slicer("year", 24, 110, 200, 200, "District Rain", "year", "Year"),
+            visual(
+                "rain",
+                "clusteredBarChart",
+                240,
+                110,
+                1016,
+                480,
+                {
+                    "Category": [C("District Rain", "district")],
+                    "Y": [M("District Rain", "Mean Annual Rain")],
+                },
+                "Mean annual rain at the gauges, mm",
+            ),
+        ],
+    ),
+    (
+        "limits",
+        "Data limits",
+        [
+            *heading(
+                "What this report cannot show, and why",
+                "Blocked sources are listed with their reason; none feeds a table here.",
+            ),
+            blocked_card("prices", 24, 120, 1232, 90, "Market prices (S22, S23)"),
+            blocked_card("flood", 24, 220, 1232, 90, "Flood labels (S43) and ward-level rain"),
+            blocked_card("models", 24, 320, 1232, 90, "Models M07 and M06"),
         ],
     ),
 ]

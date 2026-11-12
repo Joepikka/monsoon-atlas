@@ -1,0 +1,37 @@
+table Headline
+	lineageTag: a690d535-81f0-539c-bb55-ddadd8a4462c
+
+	column order
+		dataType: int64
+		formatString: 0
+		lineageTag: 30e1a0b9-e77a-5536-8b3e-07135f67b59e
+		summarizeBy: none
+		sourceColumn: order
+
+	column metric
+		dataType: string
+		lineageTag: 514e028e-2009-5d54-baa4-6b6e14db6fba
+		summarizeBy: none
+		sourceColumn: metric
+
+	column value
+		dataType: string
+		lineageTag: 5448d886-8b95-5153-bb0e-fdc3fd05d363
+		summarizeBy: none
+		sourceColumn: value
+
+	column source
+		dataType: string
+		lineageTag: 5708930f-f5e2-59a1-adca-5d67e081cda7
+		summarizeBy: none
+		sourceColumn: source
+
+	partition Headline = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "headline.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"order", Int64.Type}, {"metric", type text}, {"value", type text}, {"source", type text}}, "en-US")
+				in
+				    Typed
