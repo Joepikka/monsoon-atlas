@@ -707,7 +707,9 @@ M08 is a non-core descriptive 2018 replay (P3).
   one account) and saved `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in
   `.env`. A read-only check passed: `/user/tokens/verify` active, and account,
   Workers scripts, D1 and Pages list calls succeed (0 items each). Nothing was
-  created remotely. **Hosted feeds started 12 Nov 2026 (D183):** PR 5 merged to `main`; bootstrap run passed.
+  created remotely. **T044 archive built 12 Nov 2026 (D184):** daily `archive.yml` exports verified snapshots to
+  the private HF dataset (first run: 3 archived, read back); no purge yet (cap-guard note in D184).
+  **Hosted feeds started 12 Nov 2026 (D183):** PR 5 merged to `main`; bootstrap run passed.
   Check `gh run list --workflow feeds.yml` that scheduled runs follow and succeed.
   **T043 hosted feeds built 12 Nov 2026 (D182):** `feeds.yml` schedule + S09/S01 cycles to the
   Worker; verified live from this PC. Not running until the workflow is on `main` and a

@@ -28,6 +28,7 @@ SECTION5 = {
     "dl": {"torch": "2.15.0", "transformers": "5.22.1", "sentence-transformers": "6.2.0",
            "safetensors": "0.8.0", "onnx": "1.23.2", "onnxruntime": "1.31.1"},
     "ocr": {"pypdf": "6.21.4", "tesserocr": "2.12.0", "pillow": "13.0.0"},
+    "archive": {"huggingface-hub": "2.4.0"},  # plan section 5 pin, T044 upload only (D184)
 }  # fmt: skip
 
 

@@ -1,0 +1,48 @@
+# T044 (D184): daily verified export of the hot Worker snapshots to the owner's private Hugging
+# Face dataset. Read-only on the Worker (signed /internal/export); nothing is deleted there. The
+# archive repository name is masked because Actions logs are public on a public repository.
+name: archive
+
+on:
+  schedule:
+    - cron: "47 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ka-archive
+  cancel-in-progress: false
+
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONUTF8: "1"
+      HF_HUB_DISABLE_PROGRESS_BARS: "1"
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Install hash-locked core and archive requirements
+        run: |
+          python -m pip install --require-hashes -r requirements/core.txt -r requirements/archive.txt
+          python -m pip install --no-deps -e .
+      - name: Export, archive and read back new hot snapshots
+        env:
+          ATLAS_INGEST_HMAC_KEY: ${{ secrets.ATLAS_INGEST_HMAC_KEY }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          ATLAS_HOT_ORIGIN: ${{ vars.ATLAS_HOT_ORIGIN }}
+          HF_ARCHIVE_REPO: ${{ vars.HF_ARCHIVE_REPO }}
+        run: |
+          echo "::add-mask::$HF_ARCHIVE_REPO"
+          python -m atlas.data.hot_export --origin "$ATLAS_HOT_ORIGIN" --hf-repo "$HF_ARCHIVE_REPO"
