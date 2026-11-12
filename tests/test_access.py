@@ -16,6 +16,7 @@ from atlas.analysis.access import (
 
 
 def test_nearest_site_is_exact_great_circle():
+    pytest.importorskip("scipy")  # geo/ml lock; core-only CI has no scipy
     sites = np.array([[77.0, 13.0], [76.0, 12.0]])
     cells = np.array([[77.1, 13.0], [76.0, 12.2]])
     km = nearest_km(cells, sites)
