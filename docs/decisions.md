@@ -2,6 +2,27 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D178 — Owner skips the S23 publisher email (12 Nov 2026).**
+  Owner, in chat: "lets skip email i do not think any one is going to respnd". The data.gov.in
+  CDO request for the price denominator is not sent. S23 stays blocked (D58, D173), and with it
+  F021, F033 and F061 and the priced-data item of the T046 checklist. Retry stays as recorded in
+  `configs/sources/s23.yaml`; the agent does not guess the unit.
+
+- **D177 — T041 BMTC population coverage study (12 Nov 2026).**
+  Built now that S18 is available (D174). `src/atlas/analysis/coverage.py` measures 500 m
+  catchments along the S18 OSM walking network (motorways and `foot=no` excluded; ways split at
+  shared nodes) from every BMTC stop with service on Wednesday 9 Sep 2026 in the S30 Vonter GTFS
+  (commit ee945dc), snapped to the nearest walkable node within 100 m (the snap distance counts).
+  Population is S16 WorldPop 2025 1 km cells inside the S17 Bangalore district: a cell is covered
+  in proportion to its covered walkable length, so overlaps never add people twice and covered
+  plus uncovered equals the total. Result: 5,402,563 of 8,268,006 people (65.3%) are within a
+  500 m walk; 6,987 of 6,998 served stops snapped (median 7 m); 18,103 of 30,895 walkable km are
+  covered; 57,836 trips with the 08:00 hour busiest. Notebook `notebooks/04_bmtc_coverage.ipynb`
+  re-runs byte for byte (the road extraction is cached in `data/clean/S18/` by input SHA256).
+  Limits are listed in `summary.json`: unofficial scheduled feed, unknown OSM completeness,
+  modelled population, district-only stops, access only. WorldPop counts in Bengaluru are known to
+  run low (owner label item at H11), so the share, not the head count, is the headline.
+
 - **D176 — S25 FIRMS available with the owner's MAP_KEY (12 Nov 2026).**
   The owner saved `NASA_FIRMS_MAP_KEY` (H09); its status service showed 5,000 transactions per
   10 minutes. The FIRMS API puts the key in the URL path, which the frozen `Fetcher` cannot hide

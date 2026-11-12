@@ -312,7 +312,7 @@ Other open owner items without an H number (from the same pages):
   without H05.
 
 T046 (the Karnataka MVP gate) stays the first unfinished task in plan order: it waits for T045
-(H06 and the capability probe; H05 token saved 12 Nov 2026), T041 (not built; S18 available, D174) and H11.
+(H06 and the capability probe; H05 token saved 12 Nov 2026) and H11; T041 is done (D177).
 
 ## Findings
 

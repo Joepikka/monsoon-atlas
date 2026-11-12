@@ -778,8 +778,8 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    already supplied; do not request it again without cause.
    T035-T037's prescribed blocked branch is complete; `reports/models/m06.md`
    records why there is no trained price model. Continue independent P1 work (D54).
-8. **A8 step 9:** T038/T039/T040 checks pass. T041's walking-network study was
-   blocked by S18; S18 is available since D174, so T041 is now buildable.
+8. **A8 step 9:** T038/T039/T040 checks pass. T041 is done (D177): `notebooks/04_bmtc_coverage.ipynb`,
+   `reports/eda/04_bmtc_coverage/`.
    `scripts/web.ps1 run dev` serves the local
    map at http://127.0.0.1:5173. There is no approved public snapshot or deployment.
    T229's local T042 implementation and real Ubuntu runtime CI pass. Full T042
@@ -870,7 +870,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    and pins 88 evidence files in `final-manifest.json` (regenerate with
    `.\.venv\Scripts\python tests/test_final.py --manifest` after changing any of them).
    Operating runbook: `docs/runbooks/maintain.md`. **Karnataka first (owner, 11 Nov 2026): Kerala and Delhi work waits until Karnataka is
-   live.** Next agent task without the owner: T041 (BMTC coverage, now unblocked by S18, D174). S18 facilities are exported for Nearby (D175, `python -m atlas.ingest.s18_prepare`, 433 for Karnataka) and reach users only when T045 builds an approved release; S22 and S23 prices were retried
+   live.** T041 BMTC coverage is done (D177: 65.3% of Bangalore district within a 500 m walk of a served stop). Next agent task without the owner: none for Karnataka; the S23 email is skipped by the owner (D178). S18 facilities are exported for Nearby (D175, `python -m atlas.ingest.s18_prepare`, 433 for Karnataka) and reach users only when T045 builds an approved release; S22 and S23 prices were retried
    in the in-app browser and stay blocked (D173). Later, for Delhi: re-run T146 (S24); the
    data.gov.in resource page now renders in the in-app browser. First owner
    step: H05/H06** (H05 Cloudflare token saved and verified 12 Nov 2026; H06 waits; the H11 Karnataka sheet `docs/releases/h11-ka.md` was answered on 11 Nov 2026,
@@ -878,7 +878,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    T046 (the Karnataka MVP gate, first unfinished task in plan order) needs. New owner steps from P3: H12 (aisstream key), proposed
    H15 (Copernicus account), T118 bulk OCR approval, S41 publisher permission, Power BI Desktop
    exports (D132);
-   the gate itself waits for T045 (H06 and the capability probe), T041 (buildable) and H11;
+   the gate itself waits for T045 (H06 and the capability probe) and H11 (T041 done, D177; priced data stays blocked, D178);
    unresolved human/data gates must remain pending rather than blocking independent work.
 
 ## 10. Lessons and pitfalls

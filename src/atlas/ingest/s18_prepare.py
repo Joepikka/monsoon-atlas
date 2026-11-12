@@ -80,6 +80,24 @@ def facilities(table: pa.Table, places: list[dict]) -> list[dict]:
     return [keep[k] for k in sorted(keep)]
 
 
+def evidence(sid: str, eid: str):
+    """A stored evidence file (data/raw) as a RawArtifact, from its source's manifest."""
+    from atlas.contracts import RawArtifact
+    from atlas.ingest.discovery import load_manifest
+
+    manifest = load_manifest(ROOT / "tests" / "fixtures" / sid.lower() / "manifest.json")
+    e = next(x for x in manifest.evidence if x.id == eid)
+    return RawArtifact(
+        sha256=e.sha256,
+        path=ROOT / "data" / "raw" / e.raw_path,
+        fetched_at=e.fetched_at,
+        media_type=e.media_type,
+        response_status=e.status,
+        source_url=e.url,
+        schema_mapping_version=f"{sid.lower()}-v1",
+    )
+
+
 def district_points(districts: pa.Table) -> list[dict]:
     """Representative points (inside each polygon) of S17 district rows."""
     import shapely
@@ -97,35 +115,13 @@ def main(argv: list[str] | None = None) -> Path:
     import shapely
 
     from atlas.config import load_state
-    from atlas.contracts import RawArtifact
-    from atlas.ingest.discovery import load_manifest
     from atlas.ingest.s17 import S17
-    from atlas.ingest.s18 import S18, owner_file
+    from atlas.ingest.s18 import S18
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--state", default="ka")
     args = parser.parse_args(argv)
-    raw = ROOT / "data" / "raw"
     state = load_state(ROOT / "configs" / "states" / f"{args.state}.yaml")
-
-    def evidence(sid: str, eid: str) -> RawArtifact:
-        e = next(
-            x
-            for x in load_manifest(ROOT / "tests" / "fixtures" / sid / "manifest.json").evidence
-            if x.id == eid
-        )
-        path = raw / e.raw_path
-        if sid == "s18":
-            return owner_file(path, e.url, e.fetched_at)
-        return RawArtifact(
-            sha256=e.sha256,
-            path=path,
-            fetched_at=e.fetched_at,
-            media_type=e.media_type,
-            response_status=e.status,
-            source_url=e.url,
-            schema_mapping_version="s17-v1",
-        )
 
     districts = S17(args.state).parse(
         evidence("s17", "e06"), state.source("S17"), adm1=evidence("s17", "e05")

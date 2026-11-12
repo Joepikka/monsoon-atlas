@@ -129,7 +129,7 @@ def release_checks() -> list[dict]:
             "Dependencies T045 and T041",
             "blocked",
             "T045 needs H06 and the capability probe (H05 token saved 12 Nov 2026); "
-            "T041 not built (S18 available, D174)",
+            "T041 done (D177)",
         ),
     ]
     return [{"check": c, "status": s, "evidence": e} for c, s, e in checks]

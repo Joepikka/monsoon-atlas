@@ -1,0 +1,46 @@
+{
+ "district": {
+  "name": "Bangalore",
+  "place_id": "gb-IND-ADM2-76128533B76927648517269",
+  "boundary_version": "geoboundaries-IND-ADM2-9469f09"
+ },
+ "service_date": "2026-09-09",
+ "radius_m": 500.0,
+ "snap_max_m": 100.0,
+ "inputs": {
+  "S16": "e188723030087fb8e90e1741199bd476a181c00b046fab7dd8e8358adb136b64",
+  "S17": "8bef6929fd65432e7dc775e7c44473e84efff064ebddbfd6b834e6291546db40",
+  "S18": "81f355bdfb7925a5aae68552bfb53dd558891bddbcd88e07a29765567bdf0693",
+  "S30": "b5fe4a8e05495f719e4c8f16452dc6c4820f342b5414c3fb51e19687b5ea3333"
+ },
+ "population": {
+  "total": 8268006,
+  "covered": 5402563,
+  "uncovered": 2865443,
+  "covered_share": 0.6534,
+  "in_cells_without_mapped_walkway": 493,
+  "cells": 2450
+ },
+ "network": {
+  "walk_edges": 938250,
+  "walk_km": 30895.4,
+  "covered_km": 18103.3
+ },
+ "stops": {
+  "served_in_district": 6998,
+  "snapped": 6987,
+  "unsnapped": 11,
+  "median_snap_m": 7.0
+ },
+ "trips": {
+  "service_day_trips": 57836,
+  "peak_hour": 8
+ },
+ "limits": [
+  "Scheduled supply only: the BMTC GTFS is unofficial (Vonter, scraped from the Namma BMTC app, known timetable errors, only routes with live tracking), as of 8 Sep 2026.",
+  "OSM walking network completeness is unknown: unmapped footpaths shorten catchments, and population in cells with no mapped walkway counts as uncovered.",
+  "WorldPop 2025 is a modelled estimate at 1 km; coverage inside a cell is assumed proportional to covered walkable length.",
+  "Stops outside the district boundary are not used, which can under-count coverage near the edge.",
+  "Access only: no frequency threshold, crowding, fares or safety is assessed."
+ ]
+}
