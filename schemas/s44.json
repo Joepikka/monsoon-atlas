@@ -1,0 +1,16 @@
+{
+  "$comment": "S44 district crime statistics (T088). Measure columns added to the common envelope (common.json). Field map: configs/sources/s44.yaml; rules: decision D114.",
+  "source_id": "S44",
+  "schema_version": 1,
+  "mapping_version": "s44-v1",
+  "fields": [
+    {"name": "district_id", "type": "string", "nullable": false, "meaning": "police unit as published (DISTRICT/UNITS or Districts); not a revenue district"},
+    {"name": "unit_kind", "type": "string", "nullable": false, "meaning": "district, commissionerate, range_subtotal, state_total or no_area (railways, coastal security, CID)"},
+    {"name": "year", "type": "int64", "nullable": false, "meaning": "calendar year of the table"},
+    {"name": "offence_category", "type": "string", "nullable": false, "meaning": "column header as published (offence head, or IPC Cases / SLL Cases / Total)"},
+    {"name": "count", "type": "int64", "nullable": true, "meaning": "registered cases; not crime incidence (under-reporting)"},
+    {"name": "population_year", "type": "int64", "nullable": true, "meaning": "always null: no population is published with the tables"}
+  ],
+  "valid_at": "end of the calendar year, IST",
+  "not_included": "names, case locations and individual cases: none are published or stored"
+}

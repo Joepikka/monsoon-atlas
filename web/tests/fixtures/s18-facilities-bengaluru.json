@@ -1,0 +1,68 @@
+[
+ {
+  "facility_id": "osm:node:266740082",
+  "kind": "hospital",
+  "name": "Swamy Hospital",
+  "longitude": 77.664273,
+  "latitude": 12.855063,
+  "source_id": "S18",
+  "source_url": "https://www.openstreetmap.org/node/266740082",
+  "fetched_at": "2026-11-12T05:20:10Z",
+  "verification_status": "source_checked"
+ },
+ {
+  "facility_id": "osm:node:267214379",
+  "kind": "hospital",
+  "name": "Clinic",
+  "longitude": 77.677485,
+  "latitude": 12.913418,
+  "source_id": "S18",
+  "source_url": "https://www.openstreetmap.org/node/267214379",
+  "fetched_at": "2026-11-12T05:20:10Z",
+  "verification_status": "source_checked"
+ },
+ {
+  "facility_id": "osm:node:295766640",
+  "kind": "police",
+  "name": "DCP Bangalore North Traffic Police",
+  "longitude": 77.558167,
+  "latitude": 13.018197,
+  "source_id": "S18",
+  "source_url": "https://www.openstreetmap.org/node/295766640",
+  "fetched_at": "2026-11-12T05:20:10Z",
+  "verification_status": "source_checked"
+ },
+ {
+  "facility_id": "osm:node:303924572",
+  "kind": "hospital",
+  "name": "Shanti Hospital",
+  "longitude": 77.585752,
+  "latitude": 12.923504,
+  "source_id": "S18",
+  "source_url": "https://www.openstreetmap.org/node/303924572",
+  "fetched_at": "2026-11-12T05:20:10Z",
+  "verification_status": "source_checked"
+ },
+ {
+  "facility_id": "osm:node:303925790",
+  "kind": "police",
+  "name": "Jayanagar 4th Block Police Station",
+  "longitude": 77.581366,
+  "latitude": 12.928565,
+  "source_id": "S18",
+  "source_url": "https://www.openstreetmap.org/node/303925790",
+  "fetched_at": "2026-11-12T05:20:10Z",
+  "verification_status": "source_checked"
+ },
+ {
+  "facility_id": "osm:node:928264962",
+  "kind": "fire_station",
+  "name": "Hebbal Fire Station",
+  "longitude": 77.618528,
+  "latitude": 13.048249,
+  "source_id": "S18",
+  "source_url": "https://www.openstreetmap.org/node/928264962",
+  "fetched_at": "2026-11-12T05:20:10Z",
+  "verification_status": "source_checked"
+ }
+]

@@ -1,0 +1,6 @@
+{
+  "source_id": "S27",
+  "status": "disabled",
+  "reason": "T077: no HTTPS; undocumented template endpoints without station list, units or licence",
+  "fields": []
+}

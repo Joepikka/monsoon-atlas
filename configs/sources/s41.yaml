@@ -1,0 +1,143 @@
+# Discovery record for S41 (plan task T125). Evidence IDs refer to tests/fixtures/s41/manifest.json;
+# the files stay in data/raw/S41. See docs/sources/s41.md.
+source_id: S41
+state: kl
+name: "Permitted news RSS sources"
+verify_task: T125
+discovered_at: "2026-11-09T15:47:35Z"
+outcome: blocked
+landing_url: "https://english.mathrubhumi.com/rss/news/kerala"
+publisher: "Mathrubhumi English (Mathrubhumi Printing and Publishing Company Ltd); also checked The Hindu, Onmanorama, Times of India"
+no_card: true
+account_required: false
+
+access:
+  status: feeds_public_licence_withheld
+  detail: >-
+    Publisher-listed feeds open without an account or key. Mathrubhumi English lists
+    /rss/news/kerala as a Sitemap line in its robots.txt, which allows all agents on that path
+    (e01), and the feed returns RSS 2.0 with 20 items per response (e02). The Hindu lists section
+    feeds on its RSS page, States and Cities among them, but no Kerala-only feed link and no
+    quota (e06). Onmanorama links kerala.feeds.onmrss.xml from its RSS page (e09) while its
+    robots.txt disallows /rss/ (e08). The Times of India RSS page links its feeds (e11). The
+    Onmanorama, The Hindu and Times of India feed files were not fetched, because each publisher's
+    terms limit RSS use to personal use. The New Indian Express and Deccan Herald RSS pages return
+    404 (see failed_fetches). No feed URL was guessed.
+  evidence: [e01, e02, e06, e08, e09, e11]
+
+licence:
+  status: restricted
+  detail: >-
+    No publisher grants reuse for a public, model-labelled product. Mathrubhumi: content is for
+    personal, non-commercial use only; any use of Content (text, metadata, data) to develop
+    software, including training a machine learning or AI system, needs prior written consent;
+    copyright stays with Mathrubhumi (e04). The Hindu: limited licence for personal,
+    non-commercial use, RSS feed named as a covered service; clicking the RSS button counts as
+    agreeing to RSS terms that the page does not print (e06, e07). Onmanorama: personal use only,
+    no commercial use without express consent, and no copies of the feed pages kept (e09).
+    Times of India: personal use only, no copying, publishing or distribution, no retained copies
+    (e11). Accepting terms or asking for consent is an owner step (AGENTS.md, human-only steps), so
+    no permission is on record and nothing is stored or redistributed.
+  evidence: [e04, e06, e07, e09, e11]
+
+provider_quota:
+  status: not_published
+  detail: >-
+    No publisher states a request quota or minimum poll interval for its feeds. Mathrubhumi's
+    feed carries Cache-Control max-age=120 and its robots.txt has no Crawl-delay (e01, e02).
+    Requests were spaced 3 seconds apart.
+  evidence: [e01, e02]
+
+history:
+  status: partial
+  detail: >-
+    The Mathrubhumi Kerala feed returns the 20 newest items only: pubDate from 08 Nov 2026 21:30
+    to 09 Nov 2026 20:25 (+0530) when read (e02). The feed carries no archive, so the retrospective
+    labelled set M18 needs would have to come from article pages, which the terms do not permit
+    for ML use (e04).
+  evidence: [e02, e04]
+earliest_date: "2026-11-08"
+latest_date: "2026-11-09"
+
+units:
+  status: checked
+  detail: >-
+    Mathrubhumi item pubDate is RFC 822 with an explicit +0530 offset, which converts to UTC
+    without guessing (e02). The feed has no language element, so language is not published per
+    item. Other publishers were not read for item fields.
+  evidence: [e02]
+
+source_check:
+  status: fail
+  detail: >-
+    Plan rules: no full-text republication by default, no victims' names, original publication
+    date not scrape date, preliminary marker required. The feed gives the original pubDate and
+    only a one-line description, but every checked publisher limits use to personal reading, and
+    Mathrubhumi and The Hindu require written consent for non-personal or ML use (e04, e07).
+    News items stay separate from official alerts. Without consent S41 cannot feed M18 or the
+    F017 event pins.
+  evidence: [e04, e06, e07, e09, e11]
+
+field_map:
+  - canonical: article_id
+    upstream: "item/guid"
+    unit_status: not_applicable
+    detail: "Mathrubhumi guid equals the article link (permalink), so it is a stable string ID."
+    evidence: [e02]
+  - canonical: published_at
+    upstream: "item/pubDate"
+    unit_status: labelled
+    detail: "RFC 822 timestamp with +0530 offset, for example 'Mon, 09 Nov 2026 20:25:46 +0530'; convert to UTC."
+    evidence: [e02]
+  - canonical: title
+    upstream: "item/title"
+    unit_status: not_applicable
+    detail: "Headline text in a CDATA block."
+    evidence: [e02]
+  - canonical: canonical_url
+    upstream: "item/link"
+    unit_status: not_applicable
+    detail: "Article permalink on english.mathrubhumi.com."
+    evidence: [e02]
+  - canonical: publisher
+    upstream: null
+    unit_status: not_applicable
+    detail: "No per-item publisher element; the publisher is the feed host, set from configuration."
+    evidence: [e02]
+  - canonical: language
+    upstream: null
+    unit_status: absent
+    detail: "The feed has no language element at channel or item level."
+    evidence: [e02]
+  - canonical: place_id
+    upstream: null
+    unit_status: absent
+    detail: "No place field; M18 would derive it later from the gazetteer (S17, S40), so it stays null."
+    evidence: [e02]
+  - canonical: event_type
+    upstream: null
+    unit_status: absent
+    detail: "item/category is a site section such as 'Kerala', not an event type; model output only."
+    evidence: [e02]
+  - canonical: confidence
+    upstream: null
+    unit_status: absent
+    detail: "Model output (M18); the source publishes no confidence."
+    evidence: [e02]
+
+dependents: [T126, T211]
+retry_condition: >-
+  Retry T125 when the owner obtains written permission from one publisher (Mathrubhumi English,
+  The Hindu, Onmanorama or Times Internet) that allows storing headline, link and timestamp
+  metadata from its RSS feed for a non-commercial public map and for a classifier (M18), or when a
+  publisher issues an open licence or a terms update that allows this. The owner records the
+  permission text and the permitted feed URLs; then re-verify the item fields, a quota and
+  history, and enable only the permitted feeds.
+
+failed_fetches:
+  - url: "https://www.newindianexpress.com/rss"
+    attempted_at: "2026-11-09T15:47:31Z"
+    error: "HTTP 404: no RSS page at this path"
+  - url: "https://www.deccanherald.com/rss"
+    attempted_at: "2026-11-09T15:47:35Z"
+    error: "HTTP 404: no RSS page at this path"

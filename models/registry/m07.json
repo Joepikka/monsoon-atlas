@@ -1,0 +1,25 @@
+{
+  "model_id": "M07",
+  "state": "kl",
+  "status": "blocked",
+  "reason": "M07 blocked: a known vertical datum exists for 4 of the 8 dams the gate needs (D103, T129), S32 daily history is sampled dates only and S34 awaits the unapproved T118 bulk OCR, so labels, features and forecasts cannot be built (T130).",
+  "evidence": {
+    "configs/sources/s32.yaml": "03d7dcb7c7249462975eb6152e3fb815e73d002c24d3c0a6533e33804fe3df68",
+    "tests/fixtures/s32/manifest.json": "59aca083b7a2d6bdb11f1835e350d324661402b0258052edda7691066c631b73",
+    "configs/sources/s33.yaml": "05a3d9cbff93cb9e1466c9717017ad03614c4b6b1e02cb9a9b364416ea307281",
+    "tests/fixtures/s33/manifest.json": "2d3ac0669ff195502b3d357059a36c222f96147554e5c45cc37ed817cb2f3b76",
+    "configs/sources/s34.yaml": "f327e2dd2a0c30370d08282f8abeda8aa3853bc750788bbec6706d13c96e74fc",
+    "tests/fixtures/s34/manifest.json": "60ff2db85c114a269a452ef89e7c5497532b8f317a5ec38639e946ed2dc39ec4",
+    "configs/models/m07.yaml": "830bfb93c35fc6997e0590515080c589c2011055c861564bd23e2deeab18664d",
+    "configs/states/kl/dams.yaml": "a50a138ee59025b7486c7612ec013697ff8c9535950e2418105584a1f06274d3"
+  },
+  "source_gate_sha256": "5371e62e4290018f6f235d210578157603d184b0c02adcb9e71c156fe3a27de0",
+  "dataset_sha256": null,
+  "split_sha256": null,
+  "weights": null,
+  "baseline_scores": null,
+  "candidate_scores": null,
+  "improvement": null,
+  "prediction_rows": 0,
+  "report": "reports/models/m07.md"
+}

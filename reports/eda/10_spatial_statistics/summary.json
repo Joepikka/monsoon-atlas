@@ -1,0 +1,91 @@
+{
+  "model": {
+    "id": "M05",
+    "version": "v1",
+    "champion": "ridge",
+    "dataset_sha256": "91bb4930a3ffa0200e9e12fc87ea503edcd562dfafa4bb87747b2bd496356a42",
+    "train_cutoff": "1981-07-01/2016-09-30",
+    "evidence": "hindcast (D39)",
+    "features_known_before_target": true
+  },
+  "weights": {
+    "rule": "queen (shared boundary point), row-standardised",
+    "districts": 30,
+    "shared_borders": 66,
+    "islands": [],
+    "min_neighbours": 1,
+    "max_neighbours": 7
+  },
+  "moran": {
+    "residuals": "observed minus saved v1 ridge forecast (target_spi3, SPI units)",
+    "months": 60,
+    "months_tested": 60,
+    "district_months": 1800,
+    "district_months_expected": 1800,
+    "first_month": "2020-01",
+    "last_month": "2024-12",
+    "permutations": 999,
+    "seed": 109,
+    "p_value": "two-sided: (1 + #{|I_perm - E| >= |I_obs - E|}) / (999 + 1), E = -1/(N-1)",
+    "bh_family": "all tested months",
+    "q": 0.05,
+    "significant_raw_p05": 57,
+    "significant_bh": 57,
+    "significant_bh_positive": 57,
+    "moran_i_min": 0.08551875592494014,
+    "moran_i_median": 0.5499036653634816,
+    "moran_i_max": 0.8439466378842221,
+    "caption": "M05 v1 ridge residuals on S08 IMD (S17 geoBoundaries 2021 districts, queen weights): Moran's I of observed minus forecast SPI-3 per issue month, 999 permutations (dimensionless; residual in SPI units), 2020-01 to 2024-12; coverage 1800 of 1800 district-months, 60 of 60 months."
+  },
+  "variogram": {
+    "residuals": "ridge refits at origins 2000, 2005, 2010, 2015 (v1 alpha, 92-day purge)",
+    "years": [
+      2000,
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019
+    ],
+    "months": 240,
+    "district_months": 7200,
+    "district_months_expected": 7200,
+    "distance": "district centroid in EPSG:6933, km",
+    "bin_km": 50,
+    "site_pairs": 435,
+    "pair_months": 104400,
+    "semivariance_all_pairs": 0.32452993260520535,
+    "caption": "M05 rolling-origin ridge refits on S08 IMD (S17 district centroids, EPSG:6933): semivariance of same-month residual differences by centroid distance (SPI units squared; distance km), 2000-01 to 2019-12; coverage 104400 of 104400 pair-months, 7200 of 7200 district-months."
+  },
+  "inputs": {
+    "s08_years": [
+      1981,
+      2024
+    ],
+    "s08_files": 44,
+    "s08_first_fetch": "2026-11-05T15:47:17.066208+00:00",
+    "s08_last_fetch": "2026-11-05T17:02:15.174497+00:00",
+    "s17_fetch": "2026-11-05T13:19:13.028069+00:00",
+    "s17_sha256": "8bef6929fd65432e7dc775e7c44473e84efff064ebddbfd6b834e6291546db40"
+  },
+  "limits": [
+    "M04 is blocked (no gauge-day data, D113): no M04 outputs exist, so no comparison is made.",
+    "30 S17 districts only (geoBoundaries 2021; Ballari includes Vijayanagara); neighbours outside Karnataka are not in the weights.",
+    "60 test months: BH at q = 0.05 controls the false discovery rate over months, not the spatial structure within a month.",
+    "Variogram residuals come from refits, not the champion itself (trained to 2016-09); test years are excluded by design."
+  ]
+}

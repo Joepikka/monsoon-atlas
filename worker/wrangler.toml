@@ -1,0 +1,12 @@
+name = "monsoon-atlas-hot"
+main = "src/index.ts"
+compatibility_date = "2026-11-06"
+workers_dev = false
+send_metrics = false
+
+[vars]
+CAPABILITY_GATE = "blocked"
+
+# H05 and the actual free/no-card probe are pending. No remote D1 ID invented.
+# The deployment step must supply a real DB binding and server-side
+# ATLAS_INGEST_HMAC_KEY. Never put either account tokens or HMAC values here.

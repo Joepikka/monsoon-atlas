@@ -1,0 +1,20 @@
+{
+  "model_id": "M13",
+  "state": "dl",
+  "status": "blocked",
+  "reason": "M13 blocked: S38 is blocked on owner step H04 (D135), so there are 0 completed trajectories, 0 service days and no verified scheduled headways; bunching cannot be labelled and no flag or persistence forecast can be made (T156).",
+  "evidence": {
+    "configs/sources/s38.yaml": "b6320c1a08f1c0f8a9ca55774871e3833461c265dd3262c7f045fb355febd38d",
+    "tests/fixtures/s38/manifest.json": "8ffec2dfcbeb59aaf6cb2c5a7922e9e522fcb303d2a2cd7109a3f2681870c019",
+    "configs/models/m13.yaml": "00f35533878a5d28a6eb477981591a3535dfe34dca9c206cf3a358f7f0c5fd9e"
+  },
+  "source_gate_sha256": "c85665078ef94f96597a4c4ec3d560eba03ca4f7c53f1373e5c786e57b45227f",
+  "dataset_sha256": null,
+  "split_sha256": null,
+  "weights": null,
+  "baseline_scores": null,
+  "candidate_scores": null,
+  "improvement": null,
+  "prediction_rows": 0,
+  "report": "reports/models/m13.md"
+}

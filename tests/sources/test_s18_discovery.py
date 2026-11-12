@@ -1,16 +1,18 @@
 """T021 acceptance: the S18 (Geofabrik OSM extracts) discovery record passes the discovery contract
-only with cited evidence and explicit access, licence and history status."""
+only with cited evidence and explicit access, licence and history status. Retried on the owner's
+browser download (D174): available, while robots.txt still bars the pipeline (D34)."""
 
 
 def test_s18_discovery_contract(record):
     assert record("S18").problems() == []
 
 
-def test_s18_is_blocked_by_robots(record):
+def test_s18_is_available_through_the_owner_download(record):
     d = record("S18").discovery
-    assert d.outcome == "blocked" and d.access.status == "robots_disallow"
-    assert (d.licence.status, d.source_check.status) == ("open", "fail")
-    assert d.dependents == ["T022"] and "data/raw/S18" in d.retry_condition
+    assert d.outcome == "available" and d.access.status == "owner_browser_download"
+    assert (d.licence.status, d.source_check.status) == ("open", "pass")
+    assert "e05" in d.source_check.evidence and d.retry_condition is None
+    assert "Shelter opening status is never inferred" in d.source_check.detail
 
 
 def test_no_data_committed(record):
@@ -27,4 +29,6 @@ def test_robots_disallows_extract_files(record):
         assert pattern in rules, pattern
     page = " ".join(record("S18").raw("e03").read_text("utf-8").split())
     assert "File size: 533&nbsp;MB" in page and "License: ODbL 1.0" in page
-    assert not any(e.url.endswith(".pbf") for e in record("S18").manifest.evidence)
+    pbf = [e for e in record("S18").manifest.evidence if e.url.endswith(".pbf")]
+    assert [e.id for e in pbf] == ["e05"]  # the owner's browser download, not the pipeline
+    assert "Owner browser download" in pbf[0].shows

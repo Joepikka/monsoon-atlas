@@ -1,0 +1,106 @@
+# Discovery record for S27 (plan task T077). Evidence IDs refer to tests/fixtures/s27/manifest.json;
+# the files stay in data/raw/S27. See docs/sources/s27.md and decision D112.
+source_id: S27
+state: ka
+name: "KSNDMC gauges"
+verify_task: T077
+discovered_at: "2026-11-09T10:38:29Z"
+outcome: blocked
+landing_url: "http://ksndmc.org/"
+publisher: "Karnataka State Natural Disaster Monitoring Centre (KSNDMC)"
+no_card: true
+account_required: false
+
+access:
+  status: https_unavailable
+  detail: >-
+    ksndmc.org and www.ksndmc.org refuse HTTPS connections, and the KSNDMC Varunamitra portal
+    could not be reached (failed_fetches). Over plain HTTP, ksndmc.org serves an unconfigured
+    ASP.NET template home page (e01) and a template API help page listing three undocumented
+    telemetric rain gauge (TRG) endpoints, for example GetTrg24HourRainfallByDate?trgId=...,
+    each marked "No documentation available" (e02). Both were read once over HTTP under D112;
+    the Fetcher and every adapter stay HTTPS-only, so the source cannot be ingested.
+  evidence: [e01, e02]
+
+licence:
+  status: unverified
+  detail: >-
+    Neither page states a licence, terms or attribution; the help page is the framework's
+    template text ("Provide a general description of your APIs here", e02).
+  evidence: [e01, e02]
+
+provider_quota:
+  status: not_published
+  detail: "No limit or terms are published (e01, e02)."
+  evidence: [e01, e02]
+
+history:
+  status: not_public
+  detail: >-
+    No station list, date range or sample is published; the TRG endpoints need station IDs that no
+    page lists (e02). Calling them with guessed IDs would invent inputs, so no data was requested.
+  evidence: [e02]
+earliest_date: null
+latest_date: null
+
+units:
+  status: unlabelled
+  detail: "The endpoints name 24-hour rainfall but give no units, fields or time convention (e02)."
+  evidence: [e02]
+
+source_check:
+  status: blocked
+  detail: >-
+    Plan rule: counter reset vs interval rainfall; station moves/version; coverage >= 80% per day.
+    None can be checked: there is no documented response, station list or units (e02), and the host
+    has no HTTPS (failed_fetches). Historical hobli rainfall from KSNDMC is assessed separately as
+    S29 (OpenCity, T079); S27 is never mixed with it.
+  evidence: [e02]
+
+field_map:
+  - canonical: station_id
+    upstream: "trgId parameter (no published list)"
+    unit_status: absent
+    detail: "The endpoints take a TRG station ID, but no page lists the IDs."
+    evidence: [e02]
+  - canonical: observed_at
+    upstream: null
+    unit_status: absent
+    detail: "No response format is documented."
+    evidence: [e02]
+  - canonical: rain_mm
+    upstream: null
+    unit_status: absent
+    detail: "The endpoint names say 24-hour rainfall; no unit is documented."
+    evidence: [e02]
+  - canonical: interval_minutes
+    upstream: null
+    unit_status: absent
+    detail: "Not documented; needed to tell interval rainfall from cumulative counters."
+    evidence: [e02]
+  - canonical: lat
+    upstream: null
+    unit_status: absent
+    detail: "No station positions are published."
+    evidence: [e02]
+  - canonical: lon
+    upstream: null
+    unit_status: absent
+    detail: "No station positions are published."
+    evidence: [e02]
+
+dependents: [T078]
+retry_condition: >-
+  KSNDMC serves its gauge data over HTTPS with a published station list, units and terms (on
+  ksndmc.org or the Varunamitra portal), or publishes an equivalent open dataset; then re-run
+  T077. Historical hobli rainfall is covered separately by S29 (T079).
+failed_fetches:
+  - url: "https://ksndmc.org/"
+    attempted_at: "2026-11-09T10:38:33Z"
+    error: "ConnectError after retries: port 443 refuses connections"
+  - url: "https://www.ksndmc.org/"
+    attempted_at: "2026-11-09T10:39:26Z"
+    error: "ConnectError after retries: the name did not resolve"
+  - url: "https://varunamitra.karnataka.gov.in/"
+    attempted_at: "2026-11-09T10:40:19Z"
+    error: "ConnectError after retries: no connection to the KSNDMC Varunamitra portal"

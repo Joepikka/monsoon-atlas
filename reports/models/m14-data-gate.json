@@ -1,0 +1,34 @@
+{
+  "model_id": "M14",
+  "status": "blocked",
+  "reason": "M14 blocked: S24 CPCB station data is blocked (D133, D134): resource ID, licence, fields, units, averaging interval and history are unread and there are 0 station rows, so no PM2.5 label exists; S04 CAMS is a model estimate and baseline input, never a label (T159).",
+  "sources": {
+    "S24": {
+      "outcome": "blocked",
+      "licence": "unverified",
+      "units": "unlabelled",
+      "history": "not_public",
+      "earliest_date": null,
+      "latest_date": null,
+      "retry_condition": "In a browser that can read page content (the Browser pane read tools or the owner's Chrome), open the data.gov.in resource page for \"Real time Air Quality Index from various locations\", read the resource ID from its API tab and the licence text from the page, then re-run T146 with that ID: record one keyed sample (Delhi stations), fields, units, the averaging interval, last_update semantics and any history. Enable S24 only if the licence is verified and the units and averaging interval are stated by the publisher. The key already exists; no new key is needed."
+    },
+    "S04": {
+      "outcome": "available",
+      "licence": "open",
+      "units": "labelled",
+      "history": "available",
+      "earliest_date": "2022-08-04",
+      "latest_date": "2026-11-13",
+      "retry_condition": null
+    }
+  },
+  "evidence": {
+    "configs/sources/s24.yaml": "c52af27ef0f8e09f0f17cec83f19fd602c1720771ee6e8a548f7d72c34960033",
+    "tests/fixtures/s24/manifest.json": "9d8d68ef449f85c92ecd1eae4b4d94d2854e72862c40645c810449e5a15bb820",
+    "configs/sources/s04.yaml": "24265a3470d3831ea8c0f88c2f0c5b9cb179af575c3fa49f28434163166ccfa5",
+    "tests/fixtures/s04/manifest.json": "22a0a2e8aa46ecca8068b4cf4414851b64179808cec0fbcc82a80c5882381928",
+    "configs/models/m14.yaml": "445980270c3e3837610401c12addea96fced902675fa0d715bd0fddf68501d52"
+  },
+  "split_manifest": null,
+  "prediction_rows": 0
+}

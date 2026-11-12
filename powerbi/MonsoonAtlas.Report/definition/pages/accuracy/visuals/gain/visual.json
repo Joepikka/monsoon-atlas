@@ -1,0 +1,143 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "gain",
+  "position": {
+    "x": 660,
+    "y": 110,
+    "z": 3000,
+    "width": 596,
+    "height": 330,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Model Gain"
+                    }
+                  },
+                  "Property": "period"
+                }
+              },
+              "queryRef": "Model Gain.period",
+              "nativeQueryRef": "period",
+              "displayName": "Period"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Model Gain"
+                    }
+                  },
+                  "Property": "district_months"
+                }
+              },
+              "queryRef": "Model Gain.district_months",
+              "nativeQueryRef": "district_months",
+              "displayName": "District-months"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Model Gain"
+                    }
+                  },
+                  "Property": "improvement"
+                }
+              },
+              "queryRef": "Model Gain.improvement",
+              "nativeQueryRef": "improvement",
+              "displayName": "Improvement"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Model Gain"
+                    }
+                  },
+                  "Property": "lower95"
+                }
+              },
+              "queryRef": "Model Gain.lower95",
+              "nativeQueryRef": "lower95",
+              "displayName": "Lower 95%"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Model Gain"
+                    }
+                  },
+                  "Property": "upper95"
+                }
+              },
+              "queryRef": "Model Gain.upper95",
+              "nativeQueryRef": "upper95",
+              "displayName": "Upper 95%"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Model Gain"
+                    }
+                  },
+                  "Property": "promoted"
+                }
+              },
+              "queryRef": "Model Gain.promoted",
+              "nativeQueryRef": "promoted",
+              "displayName": "Lower bound above 0"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Improvement over persistence (paired block bootstrap)'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

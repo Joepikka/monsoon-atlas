@@ -1,14 +1,17 @@
 {
-  "$comment": "S18 Geofabrik OSM extracts (T022). The source is blocked (T021, D34); the adapter is disabled and produces no rows. Planned measure columns from plan section 7, unverified until a retry condition is met.",
+  "$comment": "S18 Geofabrik OSM extracts (T022). Measure columns added to the common envelope (common.json). Field map: configs/sources/s18.yaml. Input is the owner's browser-downloaded Southern Zone PBF (D34, D174).",
   "source_id": "S18",
   "schema_version": 1,
-  "status": "disabled",
+  "mapping_version": "s18-v1",
   "fields": [
-    {"name": "osm_type", "type": "string", "nullable": false},
-    {"name": "osm_id", "type": "int64", "nullable": false},
-    {"name": "osm_version", "type": "int64", "nullable": false},
-    {"name": "feature_kind", "type": "string", "nullable": false},
-    {"name": "tags_json", "type": "string", "nullable": false},
-    {"name": "geometry", "type": "binary", "nullable": false}
-  ]
+    {"name": "osm_type", "type": "string", "nullable": false, "meaning": "node or way; relations are not used"},
+    {"name": "osm_id", "type": "int64", "nullable": false, "meaning": "OSM id, unique per type"},
+    {"name": "osm_version", "type": "int64", "nullable": false, "meaning": "OSM object version"},
+    {"name": "feature_kind", "type": "string", "nullable": false, "meaning": "hospital, clinic, police, fire_station, shelter, assembly_point, bus_stop or road"},
+    {"name": "tags_json", "type": "string", "nullable": false, "meaning": "all OSM tags as sorted JSON, unchanged"},
+    {"name": "geometry", "type": "wkb", "nullable": false, "meaning": "Point (node) or LineString (way), WGS84"}
+  ],
+  "valid_at": "null: an extract is the map state at its replication timestamp, not a dated observation",
+  "clip": "rows whose centroid lies in the state polygon (S17); objects with an unresolved node are skipped and counted",
+  "not_included": "shelter opening status, capacity or operation: OSM does not state them and none are inferred"
 }

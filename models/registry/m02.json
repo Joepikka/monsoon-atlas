@@ -1,0 +1,20 @@
+{
+  "model_id": "M02",
+  "state": "ka",
+  "status": "blocked",
+  "reason": "M02 blocked: no verified daily reservoir level or storage history (S28 KWRIS, T008), so labels, features and forecasts cannot be built (T092).",
+  "evidence": {
+    "configs/sources/s28.yaml": "04a3df19c26e99eb337b3ad0b154bc045c8db91990952c8516d7b301f6522281",
+    "tests/fixtures/s28/manifest.json": "1dac49892f5e1611e5f72d8e4922a5b7f1a41fc4d4fe58696f0d53c9f599e5b5",
+    "configs/models/m02.yaml": "481c1c680e6038eb7a63c057a01f404f2cc52301b03eccd325a0e075d0dbf02f"
+  },
+  "source_gate_sha256": "6bcc6da70b38be585cca32d14389b126929b36bff473d5a47f21c619f0c540f7",
+  "dataset_sha256": null,
+  "split_sha256": null,
+  "weights": null,
+  "baseline_scores": null,
+  "candidate_scores": null,
+  "improvement": null,
+  "prediction_rows": 0,
+  "report": "reports/models/m02.md"
+}

@@ -1,0 +1,103 @@
+# Discovery record for S19 (plan task T069). Evidence IDs refer to tests/fixtures/s19/manifest.json;
+# the files stay in data/raw/S19. See docs/sources/s19.md.
+source_id: S19
+state: ka
+name: "Google Open Buildings"
+verify_task: T069
+discovered_at: "2026-11-09T07:53:09Z"
+outcome: available
+landing_url: "https://sites.research.google/open-buildings/"
+publisher: "Google Research, Open Buildings v3"
+no_card: true
+account_required: false
+
+access:
+  status: public_download_no_key
+  detail: >-
+    Polygons are published as one gzipped CSV per S2 level-4 cell; the home page links a GeoJSON
+    of cell geometries with each file's URL and size (e01, e02) and the score-threshold CSV (e03).
+    Files download over HTTPS without a key (e04). sites.research.google has no robots.txt.
+  evidence: [e01, e02, e03, e04]
+
+licence:
+  status: open
+  detail: >-
+    "The data is shared under the Creative Commons Attribution (CC BY-4.0) license and the Open
+    Data Commons Open Database License (ODbL) v1.0 license. As the user, you can pick which of the
+    two licenses you prefer" (e01). The project uses the CC BY 4.0 branch, as the plan asks, and
+    credits Google Research Open Buildings v3.
+  evidence: [e01]
+
+provider_quota:
+  status: not_published
+  detail: >-
+    No request limit is published (e01). All polygons total 178 GB; Karnataka lies in one cell,
+    3bb, whose file is 4,834.4 MB gzipped (e01, e02), so the adapter downloads that one file once
+    per release and clips it.
+  evidence: [e01, e02]
+
+history:
+  status: available
+  detail: >-
+    One static release per version: "v3 : inference carried out during May 2023" on imagery of
+    Africa, South and South-East Asia and Latin America (e01). Rows carry no acquisition dates.
+  evidence: [e01]
+earliest_date: null
+latest_date: null
+
+units:
+  status: labelled
+  detail: >-
+    The columns are latitude and longitude of the polygon centroid (degrees), area_in_meters
+    (square metres), confidence ("confidence score [0.65;1.0] assigned by the model"), geometry
+    (WKT POLYGON or MULTIPOLYGON) and full_plus_code (e01). The sample shard has exactly these six
+    columns, 40,789 polygons, areas from 2.5 to 12,530 m2 (e04).
+  evidence: [e01, e04]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: deduplicate within release; confidence 0..1; no ownership or inferred residents;
+    >= 0.75 display default. In the sample shard no plus code or geometry repeats (e04), and
+    confidence runs from 0.65 to 0.9704, inside 0..1 and the documented [0.65;1.0] (e01, e04);
+    26,065 of 40,789 polygons reach 0.75. The page says there is "no information about the type of
+    building, its street address, or any details other than its geometry" (e01), so nothing about
+    owners or residents exists to drop; the project adds none. The map shows confidence >= 0.75 by
+    default; the page's own explorer bands 0.65, 0.7 and 0.75 (e01).
+  evidence: [e01, e04]
+
+field_map:
+  - canonical: building_id
+    upstream: "full_plus_code (unique within the release in the sample)"
+    unit_status: not_applicable
+    detail: "No building ID is published; the release name plus the full Plus Code identifies a polygon."
+    evidence: [e01, e04]
+  - canonical: source_release
+    upstream: "the download path (v3) and the release text"
+    unit_status: not_applicable
+    detail: "open-buildings-v3 (inference May 2023)."
+    evidence: [e01, e04]
+  - canonical: geometry
+    upstream: "geometry (WKT)"
+    unit_status: labelled
+    detail: "WKT POLYGON or MULTIPOLYGON in WGS84 degrees; stored as WKB."
+    evidence: [e01, e04]
+  - canonical: area_m2
+    upstream: "area_in_meters"
+    unit_status: labelled
+    detail: "Square metres, as published."
+    evidence: [e01, e04]
+  - canonical: confidence
+    upstream: "confidence"
+    unit_status: labelled
+    detail: "Model score in [0.65, 1.0]; display default >= 0.75."
+    evidence: [e01, e04]
+  - canonical: plus_code
+    upstream: "full_plus_code"
+    unit_status: not_applicable
+    detail: "Full Plus Code of the polygon centroid."
+    evidence: [e01, e04]
+
+dependents: [T070]
+retry_condition: null
+failed_fetches: []

@@ -1,0 +1,39 @@
+{
+  "station": {
+    "layer": "station",
+    "state": "unavailable",
+    "source_id": "S24",
+    "reason": "S24 blocked: api key resource unresolved",
+    "retry_condition": "In a browser that can read page content (the Browser pane read tools or the owner's Chrome), open the data.gov.in resource page for \"Real time Air Quality Index from various locations\", read the resource ID from its API tab and the licence text from the page, then re-run T146 with that ID: record one keyed sample (Delhi stations), fields, units, the averaging interval, last_update semantics and any history. Enable S24 only if the licence is verified and the units and averaging interval are stated by the publisher. The key already exists; no new key is needed."
+  },
+  "model": {
+    "layer": "model",
+    "state": "unavailable",
+    "source_id": "S04",
+    "reason": "S04 is available but not configured for Delhi: dl.yaml lists no S04 entry",
+    "retry_condition": "Add S04 to dl.yaml with Delhi points and an adapter test."
+  },
+  "comparison": {
+    "status": "unavailable",
+    "reason": "no station basis (S24 blocked); nothing to compare with"
+  },
+  "card": {
+    "status": "blocked",
+    "model_id": "M14",
+    "reason": "M14 blocked: S24 CPCB station data is blocked (D133, D134): resource ID, licence, fields, units, averaging interval and history are unread and there are 0 station rows, so no PM2.5 label exists; S04 CAMS is a model estimate and baseline input, never a label (T159).",
+    "coverage": {
+      "status": "planned, not started",
+      "test_period": [
+        "2028-04-27",
+        "2028-05-26"
+      ],
+      "months": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  }
+}

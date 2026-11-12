@@ -1,0 +1,28 @@
+# Planned M07 definition, not a fitted model or a claim that labels exist. T130.
+model_id: M07
+state: kl
+enabled: false
+task: regression
+unit: "dam x daily issue"
+sources: [S32, S34, S33]
+target: "water level in metres at day t+7; storage in million cubic metres only separately; S33 monthly is EDA only"
+data_gate:
+  min_years_daily: 3
+  min_dams: 8
+  requires: [known vertical datum per dam]
+  note: if only a monthly archive exists, accumulate daily data and keep the seven-day model experimental
+planned_splits:
+  train: ["2017-01-01", "2022-12-31"]
+  tune: ["2023-01-01", "2023-06-30"]
+  calibrate: ["2023-07-01", "2023-12-31"]
+  locked_test: ["2024-01-01", "2024-12-31"]
+prospective_fallback:
+  collect_from: "2028-01-17"
+  train: ["2028-01-17", "2028-03-28"]
+  tune: ["2028-03-29", "2028-04-12"]
+  calibrate: ["2028-04-13", "2028-04-26"]
+  locked_test: ["2028-04-27", "2028-05-26"]
+split_manifest: null
+status: blocked
+reason: "Datum known for 4 of the 8 dams the gate needs, S32 daily history is sampled dates only with a 700-day empty stretch, and S34 needs the unapproved T118 bulk OCR."
+fallback: "none: persistence and seasonal naive need the same missing daily observations"

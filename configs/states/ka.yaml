@@ -31,31 +31,41 @@ sources:
     verify_task: T047
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "daily; hindcast unless stored at issue time"
+    verified_by: configs/sources/s03.yaml
+    enabled: true
   - source_id: S04
     name: "Open-Meteo CAMS air-quality estimates"
     verify_task: T049
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "every 6 hours"
+    verified_by: configs/sources/s04.yaml
+    enabled: true
   - source_id: S05
     name: "Open-Meteo ensemble"
     verify_task: T051
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "daily; store every run (no archive of runs)"
+    verified_by: configs/sources/s05.yaml
+    enabled: true
   - source_id: S06
     name: "Open-Meteo climate projections"
     verify_task: T053
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "once per product revision; split long ranges (weighted calls)"
+    verified_by: configs/sources/s06.yaml
+    enabled: true
   - source_id: S07
     name: "NASA POWER daily point"
     verify_task: T055
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "backfill; monthly; split requests that mix products"
+    verified_by: configs/sources/s07.yaml
+    enabled: true
   - source_id: S08
     name: "IMD Pune gridded rainfall 1901-2024"
     verify_task: T057
@@ -76,7 +86,9 @@ sources:
     verify_task: T059
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "every 5 minutes while a view is active (at least 300 s per region)"
+    verified_by: configs/sources/s10.yaml
+    enabled: true
   - source_id: S11
     name: "OpenSky flight fallback"
     verify_task: T061
@@ -87,17 +99,23 @@ sources:
     name: "CelesTrak orbit elements"
     verify_task: T063
     cost: free
-    enabled: false
+    schedule: "every 12 hours (never more than once per 2-hour update; no retries)"
+    verified_by: configs/sources/s12.yaml
+    enabled: true
   - source_id: S13
     name: "NASA GIBS satellite imagery"
     verify_task: T065
     cost: free
-    enabled: false
+    schedule: "daily layer date check"
+    verified_by: configs/sources/s13.yaml
+    enabled: true
   - source_id: S14
     name: "AWS Terrarium terrain"
     verify_task: T067
     cost: free
-    enabled: false
+    schedule: "static, on demand"
+    verified_by: configs/sources/s14.yaml
+    enabled: true
   - source_id: S15
     name: "OpenFreeMap basemap"
     verify_task: T015
@@ -125,26 +143,33 @@ sources:
     verify_task: T021
     cost: free
     storage_crs: EPSG:4326
-    schedule: "monthly clipped update"
-    enabled: false
+    schedule: "monthly clipped update (owner browser download, D174)"
+    verified_by: configs/sources/s18.yaml
+    enabled: true
   - source_id: S19
     name: "Google Open Buildings"
     verify_task: T069
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "once per release (stream cell 3bb to disk)"
+    verified_by: configs/sources/s19.yaml
+    enabled: true
   - source_id: S20
     name: "USGS earthquakes"
     verify_task: T071
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "hourly (past-day feed); history by dated query"
+    verified_by: configs/sources/s20.yaml
+    enabled: true
   - source_id: S21
     name: "Datameet railway schedules"
     verify_task: T073
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "once at the pinned commit; annual review"
+    verified_by: configs/sources/s21.yaml
+    enabled: true
   - source_id: S22
     name: "India Data Portal Agmarknet / existing price data"
     verify_task: T023
@@ -165,7 +190,8 @@ sources:
     storage_crs: EPSG:4326
     secret_env: NASA_FIRMS_MAP_KEY
     schedule: "every 6 hours"
-    enabled: false
+    verified_by: configs/sources/s25.yaml
+    enabled: true
   - source_id: S27
     name: "KSNDMC gauges"
     verify_task: T077
@@ -183,14 +209,17 @@ sources:
     verify_task: T079
     cost: free
     storage_crs: EPSG:4326
-    enabled: false
+    schedule: "one backfill of annual files (10 s apart)"
+    verified_by: configs/sources/s29.yaml
+    enabled: true
   - source_id: S30
     name: "BMTC and Namma Metro static GTFS"
     verify_task: T028
     cost: free
     storage_crs: EPSG:4326
     schedule: "weekly"
-    enabled: false
+    verified_by: configs/sources/s30.yaml
+    enabled: true
   - source_id: S31
     name: "Karnataka RERA projects"
     verify_task: T081
@@ -222,4 +251,7 @@ sources:
     name: "District crime statistics"
     verify_task: T087
     cost: free
-    enabled: false
+    storage_crs: EPSG:4326
+    schedule: "annual if published (10 s apart)"
+    verified_by: configs/sources/s44.yaml
+    enabled: true

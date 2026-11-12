@@ -1,0 +1,109 @@
+# Discovery record for S25 (plan task T075). Evidence IDs refer to tests/fixtures/s25/manifest.json;
+# the files stay in data/raw/S25. See docs/sources/s25.md. Retried 12 Nov 2026 with the owner's
+# MAP_KEY (H09, D176); recorded URLs keep the literal MAP_KEY segment.
+source_id: S25
+state: ka
+name: "NASA FIRMS active fires"
+verify_task: T075
+discovered_at: "2026-11-09T10:34:50Z"
+outcome: available
+landing_url: "https://www.earthdata.nasa.gov/data/tools/firms"
+publisher: "NASA Fire Information for Resource Management System (FIRMS), LANCE / ESDIS"
+no_card: true
+account_required: true
+
+access:
+  status: owner_key
+  detail: >-
+    The area API pattern is /api/area/csv/[MAP_KEY]/[SOURCE]/[AREA_COORDINATES]/[DAY_RANGE] with a
+    day range of 1 to 5 (e06), and robots.txt allows /api/ (e01). On 12 Nov 2026 the owner's
+    MAP_KEY (H09, NASA_FIRMS_MAP_KEY in .env) returned the data availability CSV (e08) and a
+    Karnataka area CSV (e09). Recorded URLs keep the literal segment MAP_KEY; the key is never
+    stored.
+  evidence: [e01, e06, e08, e09]
+
+licence:
+  status: open
+  detail: >-
+    "NASA supports full and open sharing of data. We ask that if you provide FIRMS data to a third
+    party, you follow the guidelines below", with an acknowledgement text for FIRMS, LANCE and
+    ESDIS and an "as is" disclaimer (e02).
+  evidence: [e02]
+
+provider_quota:
+  status: published
+  detail: >-
+    The MAP_KEY status service reported a limit of 5,000 transactions per 10 minutes for the
+    owner's key on 12 Nov 2026 (the response carries the key, so it is not stored); the API page
+    links that status check (e07). The planned schedule uses 4 requests a day.
+  evidence: [e07]
+
+history:
+  status: partial
+  detail: >-
+    "Global data are available within 3 hours of satellite observation" (e02). The NRT product
+    VIIRS_NOAA20_NRT covers 2026-08-01 to 2026-11-12 (e08); older data are in the separately
+    processed SP products, which are not used.
+  evidence: [e02, e08]
+earliest_date: "2026-08-01"
+latest_date: "2026-11-12"
+
+units:
+  status: labelled
+  detail: >-
+    The VIIRS 375 m attribute table gives latitude and longitude of the pixel centre, acquisition
+    date and time "in UTC", satellite (N, N20, N21), confidence "low, nominal and high" and FRP
+    "in MW (megawatts)" (e05). The area CSV carries these as latitude, longitude, acq_date,
+    acq_time (HHMM), satellite, confidence (l, n, h) and frp (e09).
+  evidence: [e05, e09]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule run on e09 (Karnataka box, VIIRS NOAA-20 NRT, 2 days): 113 detections, all N20,
+    acquired 2026-11-11; 0 duplicates on satellite, acquisition time and position; confidence 101
+    nominal, 8 low, 4 high; FRP 0.35 to 16.7 MW. Detection latency is reported per row (fetch time
+    minus acquisition time, 11.0 to 23.6 hours here, because the last overpass was the previous
+    day). A hotspot is a satellite thermal anomaly, not a confirmed building fire.
+  evidence: [e02, e09]
+
+field_map:
+  - canonical: detection_id
+    upstream: "satellite + acq_date + acq_time + latitude + longitude"
+    unit_status: not_applicable
+    detail: "No ID is published; SHA256 of satellite, UTC minute and position to 5 decimals (e09)."
+    evidence: [e09]
+  - canonical: acquired_at
+    upstream: "acq_date + acq_time (UTC)"
+    unit_status: labelled
+    detail: "Acquisition date and overpass time in UTC; acq_time is HHMM (e05, e09)."
+    evidence: [e05, e09]
+  - canonical: lat
+    upstream: "latitude"
+    unit_status: labelled
+    detail: "Centre of the nominal 375 m fire pixel, degrees."
+    evidence: [e05, e09]
+  - canonical: lon
+    upstream: "longitude"
+    unit_status: labelled
+    detail: "Centre of the nominal 375 m fire pixel, degrees."
+    evidence: [e05, e09]
+  - canonical: confidence
+    upstream: "confidence"
+    unit_status: labelled
+    detail: "l, n or h in the CSV; stored as low, nominal or high (e05, e09)."
+    evidence: [e05, e09]
+  - canonical: frp_mw
+    upstream: "frp"
+    unit_status: labelled
+    detail: "Fire radiative power in megawatts."
+    evidence: [e05, e09]
+  - canonical: sensor
+    upstream: "satellite"
+    unit_status: not_applicable
+    detail: "N (Suomi NPP, no new data), N20, N21."
+    evidence: [e05, e09]
+
+dependents: [T076]
+retry_condition: null
+failed_fetches: []

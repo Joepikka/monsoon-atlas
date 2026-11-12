@@ -1,0 +1,18 @@
+{
+  "$comment": "S29 OpenCity KSNDMC annual rainfall (T080). Measure columns added to the common envelope (common.json). Field map: configs/sources/s29.yaml; rules: decision D113.",
+  "source_id": "S29",
+  "schema_version": 1,
+  "mapping_version": "s29-v1",
+  "fields": [
+    {"name": "area_level", "type": "string", "nullable": false, "meaning": "district, taluk, hobli (D/T/H rows), region, state, or station (2023 station file)"},
+    {"name": "area_id", "type": "string", "nullable": false, "meaning": "published name path, for example BENGALURU URBAN / Anekal / Anekal_1; no codes are published"},
+    {"name": "year", "type": "int64", "nullable": false, "meaning": "calendar year of the annual total (from the resource)"},
+    {"name": "rain_mm", "type": "float64", "nullable": true, "meaning": "annual actual rainfall in mm; null with missing_reason not_reported when blank"},
+    {"name": "normal_mm", "type": "float64", "nullable": true, "meaning": "annual normal rainfall in mm (not in the station file)"},
+    {"name": "departure_pct", "type": "float64", "nullable": true, "meaning": "departure from normal in percent (not in the station file)"},
+    {"name": "coverage", "type": "float64", "nullable": true, "meaning": "always null: coverage is not published (D113)"}
+  ],
+  "valid_at": "end of the calendar year, IST",
+  "refused": "the 2025 file, which has no D/T/H marker",
+  "flags": "duplicate when a level and name path repeat within one file"
+}

@@ -1,0 +1,126 @@
+# Discovery record for S24 (plan task T146). Evidence IDs refer to tests/fixtures/s24/manifest.json;
+# the file stays in data/raw/S24. The API key is sent only in requests (secret parameter), never
+# stored. See docs/sources/s24.md.
+source_id: S24
+state: dl
+name: "CPCB station pollution via data.gov.in"
+verify_task: T146
+discovered_at: "2026-11-10T12:46:41.986230Z"
+outcome: blocked
+landing_url: "https://www.data.gov.in"
+publisher: "Central Pollution Control Board (CPCB), on data.gov.in"
+no_card: true
+account_required: true
+
+access:
+  status: api_key_resource_unresolved
+  detail: >-
+    The owner's free data.gov.in key (supplied for T025) works against the API host: a request
+    for the S23 resource with that key returned 200 on 10 Nov 2026 (e01). The S24 resource ID
+    was not resolved. The resource page and catalogue pages are served only to a browser:
+    plain HTTP requests received 403 (failed_fetches). The Browser pane did load the page
+    https://www.data.gov.in/resource/real-time-air-quality-index-various-locations (its title is
+    "Real time Air Quality Index from various locations"), but every tool that reads page content
+    (text, accessibility tree, script, screenshot) answered "Policy check temporarily unavailable",
+    so neither the API tab nor the licence text could be read. The only ID found elsewhere is in a
+    third-party tutorial, which is not a page the source publishes; it was not used (AGENTS.md:
+    never guess a resource ID). No key was entered in any web form.
+  evidence: [e01]
+
+licence:
+  status: unverified
+  detail: >-
+    The licence text of the real-time air quality resource could not be read (see access). Nothing
+    is inferred from the S23 resource (e01 covers a different dataset) or from the plan's
+    "resource-specific GODL check": GODL applies only if this resource states it. Station terms
+    gate redistribution, so redistribution_allowed stays false.
+  evidence: [e01]
+
+provider_quota:
+  status: not_published
+  detail: >-
+    The API response for the key published no rate-limit header or field (e01); the same
+    result as S23. Keep calls to a few per run.
+  evidence: [e01]
+
+history:
+  status: not_public
+  detail: >-
+    Not established: no S24 sample was fetched, so no earliest or latest date is recorded. Treat the
+    feed as a current snapshot only (hourly polling would have to build any history) until a
+    sample shows otherwise.
+  evidence: [e01]
+earliest_date: null
+latest_date: null
+
+units:
+  status: unlabelled
+  detail: >-
+    Not established: no S24 field list or sample was read. Whether the feed gives concentrations
+    or sub-indices, their unit, the averaging interval and the meaning of last_update are all
+    unverified; none is assumed from the CPCB convention or from the S04 model estimates.
+  evidence: [e01]
+
+source_check:
+  status: blocked
+  detail: >-
+    Plan rule: validate station vs model; retain pollutant averaging interval; hourly snapshots
+    may be rolling averages, not instantaneous truth. No station observation was read, so none of
+    this could be checked (e01). Station values must stay separate from the S04 CAMS model
+    estimates (provenance "model"); the disabled adapter publishes no rows.
+  evidence: [e01]
+
+field_map:
+  - canonical: station_id
+    upstream: null
+    unit_status: absent
+    detail: "Unresolved: no upstream field list for the S24 resource was read."
+    evidence: [e01]
+  - canonical: observed_at
+    upstream: null
+    unit_status: absent
+    detail: "Unresolved: last_update semantics and time zone not read."
+    evidence: [e01]
+  - canonical: pollutant
+    upstream: null
+    unit_status: absent
+    detail: "Unresolved: pollutant naming and coverage for Delhi stations not read."
+    evidence: [e01]
+  - canonical: concentration
+    upstream: null
+    unit_status: absent
+    detail: "Unresolved: concentration or sub-index, and its unit, not read."
+    evidence: [e01]
+  - canonical: unit
+    upstream: null
+    unit_status: absent
+    detail: "Unresolved: no unit statement read."
+    evidence: [e01]
+  - canonical: averaging_hours
+    upstream: null
+    unit_status: absent
+    detail: "Unresolved: the publisher's averaging interval not read."
+    evidence: [e01]
+  - canonical: reported_aqi
+    upstream: null
+    unit_status: absent
+    detail: "Unresolved: whether an AQI field is published not read."
+    evidence: [e01]
+
+dependents: [T147, T150, T159]
+retry_condition: >-
+  In a browser that can read page content (the Browser pane read tools or the owner's Chrome),
+  open the data.gov.in resource page for "Real time Air Quality Index from various locations",
+  read the resource ID from its API tab and the licence text from the page, then re-run T146 with
+  that ID: record one keyed sample (Delhi stations), fields, units, the averaging interval,
+  last_update semantics and any history. Enable S24 only if the licence is verified and the
+  units and averaging interval are stated by the publisher. The key already exists; no new key
+  is needed.
+
+failed_fetches:
+  - url: "https://www.data.gov.in/resource/real-time-air-quality-index-various-locations"
+    attempted_at: "2026-11-10T12:43:00Z"
+    error: "HTTP 403 for plain HTTP client (Akamai); time given to the nearest minute"
+  - url: "https://www.data.gov.in/backend/dms/v1/resource/real-time-air-quality-index-various-locations?_format=json"
+    attempted_at: "2026-11-10T12:44:00Z"
+    error: "HTTP 403 for plain HTTP client (Akamai); time given to the nearest minute"

@@ -1,0 +1,38 @@
+{
+  "model_id": "M05",
+  "version": "v1",
+  "decision": "D98",
+  "evidence": "hindcast (D39); IMD 2025 data provisional (finality not stated)",
+  "s08_2025_sha256": "b4fa5ffb389496c0fa7d5a468d1cb47e4db0bcabcd11be4f273c0e6cfa7d611d",
+  "dataset_sha256_1981_2024": "91bb4930a3ffa0200e9e12fc87ea503edcd562dfafa4bb87747b2bd496356a42",
+  "git_sha": "7daa1de2f1100a8c89f4f20ad5d5247882e93cdd",
+  "period": "2025-01-01/2025-12-31",
+  "rows": 360,
+  "months": 12,
+  "mae": {
+    "ridge": 0.6252999971222221,
+    "persistence": 0.7439619051166814
+  },
+  "mae_ratio": 0.8405000213339571,
+  "improvement": {
+    "mean": 0.1186619079944594,
+    "lower95": 0.01876490829198819,
+    "upper95": 0.2261396163901586
+  },
+  "drought_rows": 4,
+  "interval80": {
+    "rule": "last 5 years, by season (D97), champion residuals 2020-2024",
+    "coverage": 0.8694444444444445,
+    "coverage_by_season": {
+      "monsoon (Jun-Sep)": 0.975,
+      "rest of year": 0.8166666666666667
+    },
+    "mean_width": 2.203784209605242,
+    "gate": [
+      0.75,
+      0.85
+    ],
+    "shown": false
+  },
+  "flag": "holds"
+}

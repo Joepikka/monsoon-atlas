@@ -143,7 +143,16 @@ def test_disabled_source_fails_closed():
     with pytest.raises(SourceUnavailable):
         S08("ka", [2024]).parse(artifact("e04", ROOT / "README.md"), off)
     with pytest.raises(SourceUnavailable):
-        S08("kl", [2024])  # no cell box yet: Kerala is added in P3
+        S08("dl", [2024])  # no cell box yet: Delhi is added in P4
+
+
+def test_kerala_box_keeps_only_cells_inside_it():
+    land = np.ones((s08_mod.NY, s08_mod.NX), bool)
+    rows, cols, cells = s08_mod.state_cells("kl", land)
+    lat, lon = s08_mod.LAT0 + s08_mod.STEP * rows, s08_mod.LON0 + s08_mod.STEP * cols
+    assert len(cells) == 19 * 12  # 8.25-12.75 N by 74.75-77.5 E at 0.25 deg
+    assert (lat.min(), lat.max(), lon.min(), lon.max()) == (8.25, 12.75, 74.75, 77.5)
+    assert cells[0] == "imd025_8.25N_74.75E"
 
 
 def test_fetch_requests_each_year_and_parses(tmp_path, monkeypatch):

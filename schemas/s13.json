@@ -1,0 +1,16 @@
+{
+  "$comment": "S13 NASA GIBS satellite imagery (T066). Measure columns added to the common envelope (common.json). Field map: configs/sources/s13.yaml.",
+  "source_id": "S13",
+  "schema_version": 1,
+  "mapping_version": "s13-v1",
+  "fields": [
+    {"name": "layer_id", "type": "string", "nullable": false, "meaning": "VIIRS_NOAA20_CorrectedReflectance_TrueColor (Suomi NPP stopped on 2 Nov 2026)"},
+    {"name": "imagery_date", "type": "date32", "nullable": false, "meaning": "newest date listed in the layer's Time ranges whose tile over the state is not blank; shown on the map"},
+    {"name": "tile_template", "type": "string", "nullable": false, "meaning": "ResourceURL template with {Time}, {TileMatrixSet}, {TileMatrix}, {TileRow}, {TileCol}"},
+    {"name": "bounds", "type": "string", "nullable": false, "meaning": "WGS84BoundingBox lower and upper corners: lon lat lon lat"},
+    {"name": "crs", "type": "string", "nullable": false, "meaning": "EPSG:3857 (GoogleMapsCompatible_Level9 tiles)"}
+  ],
+  "valid_at": "end of the imagery date (UTC)",
+  "source_url": "the probed tile that proved the date has imagery over the state",
+  "blank": "a tile whose pixels are all black (grey level 8 or less) is no imagery; white cloud is imagery"
+}

@@ -1,0 +1,71 @@
+{
+  "source_id": "S14",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://registry.opendata.aws/terrain-tiles/",
+      "fetched_at": "2026-11-09T07:46:07.714456Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "987ab6495aa276f607e7d8233a80077f4aefb217a58324c2e5340463f99bda5d",
+      "bytes": 13864,
+      "raw_path": "S14/2026-11-09/987ab6495aa276f607e7d8233a80077f4aefb217a58324c2e5340463f99bda5d.html",
+      "shows": "AWS Open Data registry entry for Terrain Tiles"
+    },
+    {
+      "id": "e02",
+      "url": "https://github.com/tilezen/joerd/blob/master/docs/attribution.md",
+      "fetched_at": "2026-11-09T07:47:04.052551Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "d0f6c1c612a803763dbbabd522e7afa64765c7aed4597854e9e19ceb55fcf5fd",
+      "bytes": 260981,
+      "raw_path": "S14/2026-11-09/d0f6c1c612a803763dbbabd522e7afa64765c7aed4597854e9e19ceb55fcf5fd.html",
+      "shows": "Terrain Tiles licence and attribution (linked as the licence)"
+    },
+    {
+      "id": "e03",
+      "url": "https://github.com/tilezen/joerd/blob/master/docs/formats.md",
+      "fetched_at": "2026-11-09T07:50:13.890817Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "850e9067ae483220fa876f84a4f09c0f056981898d5cbdecb96582cd41400578",
+      "bytes": 204347,
+      "raw_path": "S14/2026-11-09/850e9067ae483220fa876f84a4f09c0f056981898d5cbdecb96582cd41400578.html",
+      "shows": "Terrain Tiles formats documentation (Terrarium encoding), retry after a 504"
+    },
+    {
+      "id": "e04",
+      "url": "https://elevation-tiles-prod.s3.amazonaws.com/index.html",
+      "fetched_at": "2026-11-09T07:50:17.877349Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "c8b5c6136ce5becb7b87c7668a926b8839c0083a28528772483933549c437e84",
+      "bytes": 2610,
+      "raw_path": "S14/2026-11-09/c8b5c6136ce5becb7b87c7668a926b8839c0083a28528772483933549c437e84.html",
+      "shows": "Bucket index page linked from the registry entry"
+    },
+    {
+      "id": "e05",
+      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/10/732/474.png",
+      "fetched_at": "2026-11-09T07:50:22.171821Z",
+      "status": 200,
+      "media_type": "image/png",
+      "sha256": "8c91a21a0ce7a508c81c78aed97f84dea52b45b9c5083c3be8b4a479b8cbbfad",
+      "bytes": 39211,
+      "raw_path": "S14/2026-11-09/8c91a21a0ce7a508c81c78aed97f84dea52b45b9c5083c3be8b4a479b8cbbfad.png",
+      "shows": "Terrarium tile over Bengaluru (z10, x732, y474)"
+    },
+    {
+      "id": "e06",
+      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/180/119.png",
+      "fetched_at": "2026-11-09T07:50:26.717277Z",
+      "status": 200,
+      "media_type": "image/png",
+      "sha256": "295bde31fc077c588eec1b9dd81171c973ce9564b1a44d0f8b8bdd6fe206196d",
+      "bytes": 136140,
+      "raw_path": "S14/2026-11-09/295bde31fc077c588eec1b9dd81171c973ce9564b1a44d0f8b8bdd6fe206196d.png",
+      "shows": "Terrarium tile over the Arabian Sea off Karnataka (z8, x180, y119)"
+    }
+  ]
+}

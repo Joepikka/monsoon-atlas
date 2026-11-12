@@ -119,6 +119,20 @@ def test_429_waits_per_retry_after_header(tmp_path):
     assert art.response_status == 200
 
 
+def test_no_retry_fetcher_stops_on_the_first_error(tmp_path):
+    calls = []
+
+    def handler(request):
+        calls.append(1)
+        return httpx.Response(503)
+
+    store = RawStore(tmp_path / "raw")
+    f = Fetcher(store, {HOST}, transport=httpx.MockTransport(handler), retry_delays=())
+    with pytest.raises(FetchError, match="HTTP 503"):
+        f.fetch_bytes(ctx(tmp_path), URL, mapping_version="m1")
+    assert calls == [1]  # D109: providers that forbid retries get exactly one request
+
+
 def test_retry_after_above_cap_fails(tmp_path):
     f, _, sleeps = make(tmp_path, lambda r: httpx.Response(429, headers={"Retry-After": "3600"}))
     with pytest.raises(FetchError, match="exceeds cap"):

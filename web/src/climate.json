@@ -1,0 +1,351 @@
+{
+  "schema_version": 1,
+  "title": "Monsoon and climate",
+  "ndvi": {
+    "status": "unavailable",
+    "reason": "S42 blocked (H15: owner account needed for imagery)",
+    "wording": "vegetation greenness"
+  },
+  "tracker": {
+    "year": 2025,
+    "reference": "1981-2010",
+    "checkpoints": [
+      {
+        "date": "2025-06-30",
+        "reference_years": 30,
+        "value_pct_of_median": 127.3,
+        "rank_percentile": 80.0,
+        "band_p10_pct_of_median": 77.0,
+        "band_p90_pct_of_median": 146.0
+      },
+      {
+        "date": "2025-07-31",
+        "reference_years": 30,
+        "value_pct_of_median": 113.1,
+        "rank_percentile": 73.3,
+        "band_p10_pct_of_median": 78.6,
+        "band_p90_pct_of_median": 127.5
+      },
+      {
+        "date": "2025-08-31",
+        "reference_years": 30,
+        "value_pct_of_median": 110.9,
+        "rank_percentile": 76.7,
+        "band_p10_pct_of_median": 86.5,
+        "band_p90_pct_of_median": 127.7
+      },
+      {
+        "date": "2025-09-30",
+        "reference_years": 30,
+        "value_pct_of_median": 104.2,
+        "rank_percentile": 66.7,
+        "band_p10_pct_of_median": 80.1,
+        "band_p90_pct_of_median": 122.2
+      }
+    ]
+  },
+  "onset": {
+    "official_onset": null,
+    "source": null,
+    "reason": "no enabled source publishes an IMD onset date (checked S01 to S44 configs)",
+    "inferred": {
+      "onset": "2025-05-13",
+      "label": "inferred",
+      "method": "first of 3 days in a row with at least 2.5 mm, 1 May to 30 Jun (a guess that can differ from the date IMD declares)"
+    }
+  },
+  "trend": [
+    {
+      "area": "Kerala cell box (IMD 0.25 deg; not the state boundary)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 4.08,
+      "significance": "not tested"
+    },
+    {
+      "area": "Bagalkot (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 5.15,
+      "significance": "not tested"
+    },
+    {
+      "area": "Bangalore (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 11.17,
+      "significance": "not tested"
+    },
+    {
+      "area": "Bangalore Rural (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 9.08,
+      "significance": "not tested"
+    },
+    {
+      "area": "Belgaum (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 5.6,
+      "significance": "not tested"
+    },
+    {
+      "area": "Bellary (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 6.38,
+      "significance": "not tested"
+    },
+    {
+      "area": "Bidar (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 4.57,
+      "significance": "not tested"
+    },
+    {
+      "area": "Bijapur (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 4.91,
+      "significance": "not tested"
+    },
+    {
+      "area": "Chamarajanagar (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": -0.26,
+      "significance": "not tested"
+    },
+    {
+      "area": "Chikkaballapura (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 13.28,
+      "significance": "not tested"
+    },
+    {
+      "area": "Chikmagalur (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": -0.98,
+      "significance": "not tested"
+    },
+    {
+      "area": "Chitradurga (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 11.3,
+      "significance": "not tested"
+    },
+    {
+      "area": "Dakshina Kannada (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 0.88,
+      "significance": "not tested"
+    },
+    {
+      "area": "Davanagere (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 10.11,
+      "significance": "not tested"
+    },
+    {
+      "area": "Dharwad (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 10.33,
+      "significance": "not tested"
+    },
+    {
+      "area": "Gadag (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 9.28,
+      "significance": "not tested"
+    },
+    {
+      "area": "Gulbarga (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 4.32,
+      "significance": "not tested"
+    },
+    {
+      "area": "Hassan (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 11.02,
+      "significance": "not tested"
+    },
+    {
+      "area": "Haveri (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 0.87,
+      "significance": "not tested"
+    },
+    {
+      "area": "Kodagu (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 5.36,
+      "significance": "not tested"
+    },
+    {
+      "area": "Kolar (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 8.65,
+      "significance": "not tested"
+    },
+    {
+      "area": "Koppal (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 8.22,
+      "significance": "not tested"
+    },
+    {
+      "area": "Mandya (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 12.96,
+      "significance": "not tested"
+    },
+    {
+      "area": "Mysore (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 8.71,
+      "significance": "not tested"
+    },
+    {
+      "area": "Raichur (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 1.75,
+      "significance": "not tested"
+    },
+    {
+      "area": "Ramanagara (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 4.58,
+      "significance": "not tested"
+    },
+    {
+      "area": "Shimoga (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 8.31,
+      "significance": "not tested"
+    },
+    {
+      "area": "Tumkur (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 10.9,
+      "significance": "not tested"
+    },
+    {
+      "area": "Udupi (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 5.09,
+      "significance": "not tested"
+    },
+    {
+      "area": "Uttara Kannada (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": -0.9,
+      "significance": "not tested"
+    },
+    {
+      "area": "Yadgir (Karnataka district)",
+      "first_year": 1981,
+      "last_year": 2025,
+      "n_years": 45,
+      "slope_pct_per_decade": 2.14,
+      "significance": "not tested"
+    }
+  ],
+  "projection": {
+    "label": "climate projection, not a forecast",
+    "baseline": "1981-2010",
+    "window": "2021-2050",
+    "by_point": {
+      "Thiruvananthapuram": {
+        "CMCC_CM2_VHR4": -6.1,
+        "FGOALS_f3_H": 0.1,
+        "HiRAM_SIT_HR": 9.8,
+        "MRI_AGCM3_2_S": -4.4,
+        "EC_Earth3P_HR": -0.9,
+        "MPI_ESM1_2_XR": 25.3,
+        "NICAM16_8S": -1.4
+      },
+      "Kozhikode": {
+        "CMCC_CM2_VHR4": -3.2,
+        "FGOALS_f3_H": 1.8,
+        "HiRAM_SIT_HR": 5.9,
+        "MRI_AGCM3_2_S": -11.7,
+        "EC_Earth3P_HR": -1.2,
+        "MPI_ESM1_2_XR": 1.3,
+        "NICAM16_8S": -3.1
+      }
+    },
+    "model_spread_pct": {
+      "Thiruvananthapuram": {
+        "min": -6.1,
+        "median": -0.9,
+        "max": 25.3
+      },
+      "Kozhikode": {
+        "min": -11.7,
+        "median": -1.2,
+        "max": 5.9
+      }
+    }
+  },
+  "source": "S08 IMD 0.25 deg gridded rainfall (Kerala box, S17 Karnataka districts); S06 CMIP6",
+  "limits": [
+    "Rain values are shown as indices (percent of the 1981-2010 normal or percentile rank), not as mm: the IMD licence does not allow publishing area-averaged rainfall (D129, H11).",
+    "The IMD grid is held for 1981-2025 only; 1901-1980 is not held, so trends cover 1981-2025.",
+    "Year 2025 is provisional and the tracker shows a past year; it is not a live feed.",
+    "Climate projections are model results for 2021-2050 against 1981-2010, not forecasts; spread across models is not forecast confidence."
+  ]
+}

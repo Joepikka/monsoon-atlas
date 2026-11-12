@@ -1,0 +1,134 @@
+# T226: minimal Kerala bootstrap, split from T129 by D44 for the D17 M07 fallback.
+# Discovery references record evidence, not adapter readiness. Enable a source only
+# after its Kerala adapter and source-specific acceptance tests pass (S32: T114).
+# T129: dam IDs, datum status and dam-level source precedence are in configs/states/kl/dams.yaml
+# (StateConfig rejects extra keys); label audit is docs/labels/kerala.md.
+state_id: kl
+name: Kerala
+storage_tz: UTC
+display_tz: Asia/Kolkata
+paths:
+  raw_root: data/raw/kl
+  clean_root: data/clean/kl
+  publish_root: data/publish/kl
+sources:
+  - source_id: S01
+    name: "Open-Meteo weather forecast"
+    verify_task: T009
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S02
+    name: "Open-Meteo historical weather / ERA5"
+    verify_task: T011
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S06
+    name: "Open-Meteo climate projections"
+    verify_task: T053
+    cost: free
+    storage_crs: EPSG:4326
+    schedule: "once per product revision; split long ranges (weighted calls)"
+    verified_by: configs/sources/s06.yaml
+    enabled: true
+  - source_id: S08
+    name: "IMD Pune gridded rainfall"
+    verify_task: T057
+    cost: free
+    schedule: "yearly check"
+    enabled: true
+    verified_by: configs/sources/s08.yaml
+  - source_id: S09
+    name: "NDMA Sachet CAP alerts"
+    verify_task: T013
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S15
+    name: "OpenFreeMap basemap"
+    verify_task: T015
+    cost: free
+    enabled: false
+  - source_id: S16
+    name: "WorldPop India population"
+    verify_task: T017
+    cost: free
+    enabled: false
+  - source_id: S17
+    name: "geoBoundaries administrative boundaries"
+    verify_task: T019
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S26
+    name: "aisstream ships"
+    verify_task: T111
+    cost: free_with_key
+    secret_env: AISSTREAM_API_KEY
+    storage_crs: EPSG:4326
+    enabled: false
+    verified_by: configs/sources/s26.yaml
+  - source_id: S32
+    name: "KSEB daily water level"
+    verify_task: T113
+    cost: free
+    schedule: "daily; one report per requested date"
+    enabled: true
+    verified_by: configs/sources/s32.yaml
+  - source_id: S33
+    name: "KSEB monthly dam statistics"
+    verify_task: T115
+    cost: free
+    enabled: false
+    verified_by: configs/sources/s33.yaml
+  - source_id: S34
+    name: "KSDMA dam level reports"
+    verify_task: T117
+    cost: free
+    enabled: false
+    verified_by: configs/sources/s34.yaml
+  - source_id: S35
+    name: "Kerala 2018 flood dataset"
+    verify_task: T119
+    cost: free
+    enabled: false
+    verified_by: configs/sources/s35.yaml
+  - source_id: S36
+    name: "KSDMA post-disaster assessment"
+    verify_task: T121
+    cost: free
+    schedule: "one-off; two 2018 flood memoranda"
+    enabled: true
+    verified_by: configs/sources/s36.yaml
+  - source_id: S37
+    name: "2018 landslide inventory / ISRO Atlas"
+    verify_task: T123
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+    verified_by: configs/sources/s37.yaml
+  - source_id: S40
+    name: "Kerala ward / taluk polygons and crosswalks"
+    verify_task: T030
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false
+  - source_id: S41
+    name: "Permitted news RSS sources"
+    verify_task: T125
+    cost: free
+    enabled: false
+    verified_by: configs/sources/s41.yaml
+  - source_id: S42
+    name: "Sentinel-1 / NDVI quantitative imagery"
+    verify_task: T127
+    cost: free
+    enabled: false
+    verified_by: configs/sources/s42.yaml
+  - source_id: S43
+    name: "Kerala official shelters and flood impact labels"
+    verify_task: T085
+    cost: free
+    storage_crs: EPSG:4326
+    enabled: false

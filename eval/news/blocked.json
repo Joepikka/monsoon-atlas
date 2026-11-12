@@ -1,0 +1,129 @@
+{
+  "record": "news_annotation_batches",
+  "status": "blocked",
+  "reason": "T189 to T208 blocked: S41 (permitted news RSS sources) is blocked, so 0 permitted articles exist and no frozen temporal split can be drawn from; owner step H13 (owner review of at least 20% of every batch and every held-out test item) has not happened. No article, hash, label or score exists (D155).",
+  "blocking": {
+    "source": "S41",
+    "source_task": "T125",
+    "contract_task": "T126",
+    "owner_step": "H13"
+  },
+  "tasks": [
+    {
+      "task": "T189",
+      "batch": 1,
+      "planned_file": "eval/news/batch_01.jsonl"
+    },
+    {
+      "task": "T190",
+      "batch": 2,
+      "planned_file": "eval/news/batch_02.jsonl"
+    },
+    {
+      "task": "T191",
+      "batch": 3,
+      "planned_file": "eval/news/batch_03.jsonl"
+    },
+    {
+      "task": "T192",
+      "batch": 4,
+      "planned_file": "eval/news/batch_04.jsonl"
+    },
+    {
+      "task": "T193",
+      "batch": 5,
+      "planned_file": "eval/news/batch_05.jsonl"
+    },
+    {
+      "task": "T194",
+      "batch": 6,
+      "planned_file": "eval/news/batch_06.jsonl"
+    },
+    {
+      "task": "T195",
+      "batch": 7,
+      "planned_file": "eval/news/batch_07.jsonl"
+    },
+    {
+      "task": "T196",
+      "batch": 8,
+      "planned_file": "eval/news/batch_08.jsonl"
+    },
+    {
+      "task": "T197",
+      "batch": 9,
+      "planned_file": "eval/news/batch_09.jsonl"
+    },
+    {
+      "task": "T198",
+      "batch": 10,
+      "planned_file": "eval/news/batch_10.jsonl"
+    },
+    {
+      "task": "T199",
+      "batch": 11,
+      "planned_file": "eval/news/batch_11.jsonl"
+    },
+    {
+      "task": "T200",
+      "batch": 12,
+      "planned_file": "eval/news/batch_12.jsonl"
+    },
+    {
+      "task": "T201",
+      "batch": 13,
+      "planned_file": "eval/news/batch_13.jsonl"
+    },
+    {
+      "task": "T202",
+      "batch": 14,
+      "planned_file": "eval/news/batch_14.jsonl"
+    },
+    {
+      "task": "T203",
+      "batch": 15,
+      "planned_file": "eval/news/batch_15.jsonl"
+    },
+    {
+      "task": "T204",
+      "batch": 16,
+      "planned_file": "eval/news/batch_16.jsonl"
+    },
+    {
+      "task": "T205",
+      "batch": 17,
+      "planned_file": "eval/news/batch_17.jsonl"
+    },
+    {
+      "task": "T206",
+      "batch": 18,
+      "planned_file": "eval/news/batch_18.jsonl"
+    },
+    {
+      "task": "T207",
+      "batch": 19,
+      "planned_file": "eval/news/batch_19.jsonl"
+    },
+    {
+      "task": "T208",
+      "batch": 20,
+      "planned_file": "eval/news/batch_20.jsonl"
+    }
+  ],
+  "counts": {
+    "batches": 20,
+    "required_per_batch": 50,
+    "required_total": 1000,
+    "articles_selected": 0,
+    "records_labelled": 0,
+    "records_reviewed_by_owner": 0,
+    "batches_completed": 0
+  },
+  "review_rule": "agent may pre-label; owner reviews at least 20% of every batch and every held-out test item (H13); AI-only labels are not ground truth",
+  "carry_over": "all 1000 records are carried into future bounded tasks; none is done",
+  "evidence": {
+    "configs/sources/s41.yaml": "837d314d67fdee0370e580a2eea328bbfe708cd9d33d85371263c67e451f5afd",
+    "tests/fixtures/s41/manifest.json": "2ca24cf142939c70b0fdc95f95dfe59ca941476d4dd8aa4ad92e525da17dd90c"
+  },
+  "retry_condition": "Written publisher permission to store headline, link and timestamp is on record and S41 is re-run (T125); then select from a frozen temporal split, agent pre-labels, and the owner reviews at least 20% of each batch and all test items (H13)."
+}

@@ -1,0 +1,24 @@
+{
+  "model_id": "M20",
+  "state": "all",
+  "status": "blocked",
+  "reason": "M20 blocked: it recomputes an already-approved flood score from the exact M01 or M08 input snapshot, and neither is approved: M01 is blocked (S43 has no labels, T085) and M08 is blocked (S35 is blocked and S36 holds 2018 district tables only). M05 is the only approved model and is a drought model, so it is not a base; the controls stay disabled (T176).",
+  "evidence": {
+    "configs/sources/s43.yaml": "2ec5a030a12bf2e27268ffc36267a3b36b7accb7202f2cb6d4eb5aca5719af8e",
+    "tests/fixtures/s43/manifest.json": "9eeaa3ba6f50802410539694b0de145b60acf213fecdddfa305307ac23adbfad",
+    "configs/sources/s35.yaml": "9d0224d38a97570d42ce02278eb10f6bd6b3d116b7f0c8f92fdc1eb54a2f68ef",
+    "tests/fixtures/s35/manifest.json": "1f06998d338d63a7f36b44497f6dd6a9a481bc3ab748fae23236c6defc8cf366",
+    "configs/sources/s36.yaml": "1eea5b6e96c89a9f1b6a4103ce574885125c761c489a1da308819286648c65d5",
+    "tests/fixtures/s36/manifest.json": "a2df582cd87c7ccc98349d0909c3fd167f7d57c27c911e54e49d8eab1c8f73aa",
+    "configs/models/m20.yaml": "f019ab395cbd0de4245711bd1fa0c757e2fb014af283157f27f613c3e0ac5e6c"
+  },
+  "source_gate_sha256": "bce3e20331abdb199de474f7cb3988222a9a1de5b19cccabacb9295c6fa834d0",
+  "dataset_sha256": null,
+  "split_sha256": null,
+  "weights": null,
+  "baseline_scores": null,
+  "candidate_scores": null,
+  "improvement": null,
+  "prediction_rows": 0,
+  "report": "reports/models/m20.md"
+}

@@ -1,0 +1,49 @@
+{
+  "source_id": "S19",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://sites.research.google/open-buildings/",
+      "fetched_at": "2026-11-09T07:53:09.962109Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "779a46a314cc141566e34cb04e1d9a6ffc5c37656c0612b640e4d77a16cacce1",
+      "bytes": 107645,
+      "raw_path": "S19/2026-11-09/779a46a314cc141566e34cb04e1d9a6ffc5c37656c0612b640e4d77a16cacce1.html",
+      "shows": "Open Buildings home page"
+    },
+    {
+      "id": "e02",
+      "url": "https://openbuildings-public-dot-gweb-research.uw.r.appspot.com/public/tiles.geojson",
+      "fetched_at": "2026-11-09T07:53:27.312147Z",
+      "status": 200,
+      "media_type": "application/octet-stream",
+      "sha256": "f63227f3da41a40381d16b5bf6a9a1101a3a462650a69ff3049c6d775e6f1e77",
+      "bytes": 250366,
+      "raw_path": "S19/2026-11-09/f63227f3da41a40381d16b5bf6a9a1101a3a462650a69ff3049c6d775e6f1e77.bin",
+      "shows": "Open Buildings tile geometry and download URLs (GeoJSON), linked from the home page"
+    },
+    {
+      "id": "e03",
+      "url": "https://storage.googleapis.com/open-buildings-data/v3/score_thresholds_s2_level_4.csv",
+      "fetched_at": "2026-11-09T07:53:31.711447Z",
+      "status": 200,
+      "media_type": "application/octet-stream",
+      "sha256": "136b0d491ccac4ca15a95656dbf996106b5222c1a6dc71d77dfeeae56c2c8d80",
+      "bytes": 75976,
+      "raw_path": "S19/2026-11-09/136b0d491ccac4ca15a95656dbf996106b5222c1a6dc71d77dfeeae56c2c8d80.bin",
+      "shows": "Open Buildings v3 score thresholds per S2 level-4 cell"
+    },
+    {
+      "id": "e04",
+      "url": "https://storage.googleapis.com/open-buildings-data/v3/polygons_s2_level_4_gzip/3b3_buildings.csv.gz",
+      "fetched_at": "2026-11-09T07:54:32.783983Z",
+      "status": 200,
+      "media_type": "application/octet-stream",
+      "sha256": "1a6c9ae29b17dade04d77d7e7de315351c8fef1f8513a6e3b4d76b31e6d66820",
+      "bytes": 3888630,
+      "raw_path": "S19/2026-11-09/1a6c9ae29b17dade04d77d7e7de315351c8fef1f8513a6e3b4d76b31e6d66820.bin",
+      "shows": "Sample shard 3b3 (3.9 MB, Indian Ocean near the Maldives): v3 polygons, same format as Karnataka's shard 3bb"
+    }
+  ]
+}

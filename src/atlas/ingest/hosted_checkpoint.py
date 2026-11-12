@@ -1,0 +1,328 @@
+"""Verify a pinned GitHub checkpoint, discover its predecessor or admit a manual bootstrap."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import sys
+from dataclasses import dataclass, replace
+from datetime import UTC, datetime, timedelta
+
+import httpx
+
+from atlas.config import load_budgets
+from atlas.data.budget import ArchiveOnly
+from atlas.ingest.base import IngestError
+from atlas.ingest.checkpoint_bundle import HASH, ROOT
+from atlas.ingest.schedule import run_bounded
+
+API = "https://api.github.com"
+API_VERSION = "2026-03-10"
+PAGE_SIZE = 100
+MAX_PAGES = 10
+MAX_REPLY = 1024**2
+DEADLINE_S = 30
+RECENT_RUNS = 30
+ARTIFACT_PREFIX = "ka-feed-checkpoint-"
+
+
+@dataclass(frozen=True)
+class TrustedRun:
+    repository: str
+    repository_id: int
+    workflow_id: int
+    run_id: int
+    head_sha: str
+    branch: str = "main"
+
+
+def _integer(value: object, *, minimum: int = 0) -> int:
+    if type(value) is not int or value < minimum:
+        raise IngestError("Invalid GitHub metadata integer")
+    return value
+
+
+def _metadata(client: httpx.Client, path: str, params: dict | None = None) -> dict:
+    with client.stream("GET", path, params=params) as response:
+        if response.status_code != 200:
+            raise IngestError(f"GitHub metadata request returned HTTP {response.status_code}")
+        if response.headers.get("content-encoding", "identity").lower() != "identity":
+            raise IngestError("GitHub metadata has an unsupported encoding")
+        body = bytearray()
+        for chunk in response.iter_bytes(chunk_size=64 * 1024):
+            body.extend(chunk)
+            if len(body) > MAX_REPLY:
+                raise IngestError("GitHub metadata exceeds its byte bound")
+    value = json.loads(body.decode("utf-8"))
+    if not isinstance(value, dict):
+        raise IngestError("GitHub metadata must be an object")
+    return value
+
+
+def _verify_run(
+    value: dict, trust: TrustedRun, *, active: bool = False, manual: bool = False
+) -> None:
+    outcome = ("in_progress", None) if active else ("completed", "success")
+    events = {"workflow_dispatch"} if manual else {"schedule", "workflow_dispatch"}
+    if (
+        _integer(value["id"], minimum=1) != trust.run_id
+        or _integer(value["workflow_id"], minimum=1) != trust.workflow_id
+        or _integer(value["repository"]["id"], minimum=1) != trust.repository_id
+        or _integer(value["head_repository"]["id"], minimum=1) != trust.repository_id
+        or value["repository"]["full_name"].lower() != trust.repository.lower()
+        or value["head_branch"] != trust.branch
+        or value["head_sha"] != trust.head_sha
+        or value["event"] not in events
+        or (value["status"], value["conclusion"]) != outcome
+        or type(value["run_attempt"]) is not int
+        or value["run_attempt"] != 1
+    ):
+        kind = "active" if active else "completed"
+        raise IngestError(f"GitHub run does not match the trusted {kind} run")
+
+
+def _predecessor(client: httpx.Client, path: str, active: TrustedRun, value: dict) -> TrustedRun:
+    number = _integer(value["run_number"], minimum=1)
+    if number == 1:
+        raise IngestError("First GitHub run has no predecessor checkpoint")
+    recent = _metadata(
+        client, f"{path}/workflows/{active.workflow_id}/runs", {"per_page": RECENT_RUNS, "page": 1}
+    )
+    rows = recent["workflow_runs"]
+    count = _integer(recent["total_count"])
+    if not isinstance(rows, list) or len(rows) != min(RECENT_RUNS, count):
+        raise IngestError("Recent GitHub workflow run listing is incomplete")
+    by_number, seen = {}, set()
+    for row in rows:
+        run_id = _integer(row["id"], minimum=1)
+        run_number = _integer(row["run_number"], minimum=1)
+        if run_id in seen or run_number in by_number:
+            raise IngestError("Recent GitHub workflow run listing repeats an identity")
+        seen.add(run_id)
+        by_number[run_number] = row
+    listed_active = by_number.get(number, {})
+    if (listed_active.get("id"), listed_active.get("head_sha")) != (
+        active.run_id,
+        active.head_sha,
+    ) or number - 1 not in by_number:
+        raise IngestError("Immediate GitHub predecessor is missing from the recent listing")
+
+    candidate = by_number[number - 1]
+    sha = candidate["head_sha"]
+    if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+        raise IngestError("GitHub predecessor commit is invalid")
+    prior = replace(active, run_id=candidate["id"], head_sha=sha)
+    detail = _metadata(client, f"{path}/runs/{prior.run_id}")
+    _verify_run(detail, prior)
+    if _integer(detail["run_number"], minimum=1) != number - 1:
+        raise IngestError("GitHub predecessor sequence changed")
+    if sha != active.head_sha:
+        comparison = _metadata(
+            client, f"/repos/{active.repository}/compare/{sha}...{active.head_sha}", {"per_page": 1}
+        )
+        if comparison["status"] != "ahead" or comparison["merge_base_commit"]["sha"] != sha:
+            raise IngestError("GitHub predecessor commit is outside the active run's history")
+    return prior
+
+
+def _inventory(
+    client: httpx.Client, path: str, trust: TrustedRun, name: str | None
+) -> tuple[dict | None, int]:
+    seen = set()
+    expected = selected = None
+    retained = 0
+    for page in range(1, MAX_PAGES + 1):
+        payload = _metadata(client, path, {"per_page": PAGE_SIZE, "page": page})
+        count = _integer(payload["total_count"])
+        rows = payload["artifacts"]
+        if expected is None:
+            expected = count
+        if (
+            count != expected
+            or count > MAX_PAGES * PAGE_SIZE
+            or not isinstance(rows, list)
+            or len(rows) != min(PAGE_SIZE, count - len(seen))
+        ):
+            raise IngestError(
+                "GitHub artifact inventory is incomplete, changed or exceeds its bound"
+            )
+        for item in rows:
+            identifier = _integer(item["id"], minimum=1)
+            if identifier in seen:
+                raise IngestError("GitHub artifact inventory repeats an ID")
+            seen.add(identifier)
+            retained += _integer(item["size_in_bytes"])
+            label = item.get("name")
+            if not isinstance(label, str):
+                continue
+            if not (label.startswith(ARTIFACT_PREFIX) if name is None else label == name):
+                continue
+            run = item.get("workflow_run")
+            if not isinstance(run, dict) or run.get("id") != trust.run_id:
+                continue
+            if selected is not None:
+                raise IngestError("GitHub run has ambiguous checkpoint artifacts")
+            selected = item
+        if len(seen) == count:
+            return selected, retained
+    raise IngestError("GitHub artifact inventory exceeds its page bound")
+
+
+def select_checkpoint(
+    trust: TrustedRun,
+    manifest_sha256: str | None,
+    *,
+    bootstrap: bool = False,
+    now: datetime | None = None,
+    transport: httpx.BaseTransport | None = None,
+) -> dict:
+    """Verify a pinned checkpoint. None discovers the active run's immediate predecessor.
+
+    ``bootstrap`` instead admits an active manual run with no predecessor and only measures
+    the retained repository inventory.
+    """
+    discover = manifest_sha256 is None and not bootstrap
+    now = datetime.now(UTC) if now is None else now
+    if (
+        not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,38}/[A-Za-z0-9_.-]{1,100}", trust.repository)
+        or trust.repository.split("/")[-1] in {".", ".."}
+        or not re.fullmatch(r"[0-9a-f]{40}", trust.head_sha)
+        or (bootstrap and manifest_sha256 is not None)
+        or (manifest_sha256 is not None and not re.fullmatch(HASH, manifest_sha256))
+        or not 1 <= len(trust.branch) <= 255
+        or now.utcoffset() != timedelta(0)
+    ):
+        raise IngestError("Invalid pinned checkpoint identity")
+    for identifier in (trust.repository_id, trust.workflow_id, trust.run_id):
+        _integer(identifier, minimum=1)
+    budget = load_budgets(ROOT / "configs/budgets.yaml").github_actions
+    cap = budget.artifacts_mb * 1_000_000
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Accept-Encoding": "identity",
+        "X-GitHub-Api-Version": API_VERSION,
+    }
+    if token := os.environ.get("GITHUB_TOKEN"):
+        headers["Authorization"] = f"Bearer {token}"
+    path = f"/repos/{trust.repository}/actions"
+    try:
+        with httpx.Client(
+            base_url=API,
+            headers=headers,
+            transport=transport,
+            trust_env=False,
+            follow_redirects=False,
+            timeout=httpx.Timeout(5, connect=2),
+        ) as client:
+            run_info = _metadata(client, f"{path}/runs/{trust.run_id}")
+            _verify_run(run_info, trust, active=discover or bootstrap, manual=bootstrap)
+            if discover:
+                trust = _predecessor(client, path, trust, run_info)
+            name = None if manifest_sha256 is None else ARTIFACT_PREFIX + manifest_sha256
+            artifact, retained = _inventory(client, f"{path}/artifacts", trust, name)
+        if bootstrap:
+            if artifact is not None:
+                raise IngestError("Bootstrap run already has a checkpoint artifact")
+            if retained > cap:
+                raise ArchiveOnly("Listed GitHub artifacts exceed the configured storage budget")
+            return {
+                "status": "bootstrap",
+                "repository": trust.repository,
+                "run_id": trust.run_id,
+                "retained_artifact_bytes": retained,
+                "available_artifact_bytes": cap - retained,
+                "retention_days": budget.artifact_retention_days,
+            }
+        if artifact is None:
+            raise IngestError("Pinned GitHub run has no matching checkpoint artifact")
+        if discover:
+            manifest_sha256 = artifact["name"].removeprefix(ARTIFACT_PREFIX)
+            if not re.fullmatch(HASH, manifest_sha256):
+                raise IngestError("GitHub predecessor artifact has an invalid manifest name")
+        run = artifact["workflow_run"]
+        digest = artifact["digest"]
+        created = datetime.fromisoformat(artifact["created_at"])
+        expires = datetime.fromisoformat(artifact["expires_at"])
+        if (
+            _integer(run["id"], minimum=1) != trust.run_id
+            or _integer(run["repository_id"], minimum=1) != trust.repository_id
+            or _integer(run["head_repository_id"], minimum=1) != trust.repository_id
+            or run["head_branch"] != trust.branch
+            or run["head_sha"] != trust.head_sha
+            or artifact["expired"] is not False
+            or not isinstance(digest, str)
+            or not re.fullmatch(f"sha256:{HASH}", digest)
+            or created.utcoffset() != timedelta(0)
+            or expires.utcoffset() != timedelta(0)
+            or not created
+            <= now
+            < expires
+            <= created + timedelta(days=budget.artifact_retention_days)
+        ):
+            raise IngestError("GitHub checkpoint artifact failed identity or retention checks")
+        size = _integer(artifact["size_in_bytes"], minimum=1)
+    except (KeyError, TypeError, ValueError, AttributeError, RecursionError, OverflowError):
+        raise IngestError("Malformed GitHub checkpoint metadata") from None
+    if retained > cap:
+        raise ArchiveOnly("Listed GitHub artifacts exceed the configured storage budget")
+    result = {
+        "status": "selected",
+        "repository": trust.repository,
+        "run_id": trust.run_id,
+        "artifact_id": artifact["id"],
+        "manifest_sha256": manifest_sha256,
+        "archive_sha256": digest.removeprefix("sha256:"),
+        "artifact_bytes": size,
+        "retained_artifact_bytes": retained,
+        "available_artifact_bytes": cap - retained,
+        "retention_days": budget.artifact_retention_days,
+    }
+    if discover:
+        result["head_sha"] = trust.head_sha
+    return result
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--repository", required=True)
+    parser.add_argument("--repository-id", required=True, type=int)
+    parser.add_argument("--workflow-id", required=True, type=int)
+    parser.add_argument("--run-id", required=True, type=int)
+    parser.add_argument("--head-sha", required=True)
+    parser.add_argument("--branch", default="main")
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--manifest-sha256")
+    mode.add_argument("--discover", action="store_true", help="Check the active run's predecessor")
+    mode.add_argument("--bootstrap", action="store_true", help="Admit a manual run's new chain")
+    parser.add_argument("--child", action="store_true", help=argparse.SUPPRESS)
+    args = parser.parse_args()
+    try:
+        if args.child:
+            trust = TrustedRun(
+                args.repository,
+                args.repository_id,
+                args.workflow_id,
+                args.run_id,
+                args.head_sha,
+                args.branch,
+            )
+            result = select_checkpoint(trust, args.manifest_sha256, bootstrap=args.bootstrap)
+        else:
+            result = run_bounded(
+                [sys.executable, "-m", "atlas.ingest.hosted_checkpoint", "--child", *sys.argv[1:]],
+                timeout=DEADLINE_S,
+            )
+    except (IngestError, ArchiveOnly, OSError, ValueError, httpx.HTTPError) as error:
+        reason = (
+            str(error) if isinstance(error, (ArchiveOnly, IngestError)) else type(error).__name__
+        )
+        result = {"status": "failed", "reason": reason}
+    print(json.dumps(result))
+    if not args.child and result["status"] not in {"selected", "bootstrap"}:
+        raise SystemExit(1)
+
+
+if __name__ == "__main__":
+    main()

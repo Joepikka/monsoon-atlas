@@ -1,0 +1,102 @@
+# Discovery record for S12 (plan task T063). Evidence IDs refer to tests/fixtures/s12/manifest.json;
+# the files stay in data/raw/S12. See docs/sources/s12.md and decision D109.
+source_id: S12
+state: ka
+name: "CelesTrak orbit elements"
+verify_task: T063
+discovered_at: "2026-11-09T07:31:46Z"
+outcome: available
+landing_url: "https://celestrak.org/NORAD/documentation/gp-data-formats.php"
+publisher: "CelesTrak (Dr. T.S. Kelso), redistributing 18 SDS general perturbations data from Space-Track"
+no_card: true
+account_required: false
+
+access:
+  status: public_query_no_key
+  detail: >-
+    GP data come from documented queries such as /NORAD/elements/gp.php?GROUP=...&FORMAT=...,
+    listed on the documentation and current-data pages (e03, e04), without a key (e07, e08).
+    robots.txt disallows gp*.php and .txt for all agents (e01), but the usage policy is written
+    for machine-to-machine software (e05), so D31 applies as recorded in D109.
+  evidence: [e01, e03, e04, e05, e07, e08]
+
+licence:
+  status: restricted
+  detail: >-
+    No licence or redistribution permission is published on the home, documentation, usage
+    policy or contact pages (e02, e03, e05, e06). The GP data come from 18 SDS through Space-Track
+    (e03), and CelesTrak describes its tradition of making data freely available to all users
+    (e05). Treat as restricted: credit CelesTrak, keep raw element sets local and show only derived
+    positions after H11 (plan: disable public redistribution until permission is recorded).
+  evidence: [e02, e03, e05, e06]
+
+provider_quota:
+  status: published
+  detail: >-
+    "Only download the data you need, when you are going to use it, and only download data once
+    per update. For GP data, updates are once every 2 hours" (e05). One-download-per-update is
+    enforced for large groups, errors past limits lead to firewall blocks, and M2M software must
+    stop on any non-200 response and report to a human (e03, e05).
+  evidence: [e03, e05]
+
+history:
+  status: partial
+  detail: >-
+    The GP queries return the latest element set per object, current as of the 2-hourly update
+    (e04, e07, e08); the stations sample has epochs from 7 to 8 Nov 2026 (e08). Older element
+    sets are not part of this source.
+  evidence: [e04, e07, e08]
+earliest_date: "2026-11-07"
+latest_date: "2026-11-08"
+
+units:
+  status: labelled
+  detail: >-
+    The documentation defines the OMM fields and the legacy TLE format (e03). OMM JSON gives EPOCH
+    as an ISO UTC time, NORAD_CAT_ID as an integer, MEAN_MOTION in revolutions per day and angles
+    in degrees (e08); the TLE epoch 26312.17541007 equals the OMM EPOCH 2026-11-08T04:12:35.43 for
+    the ISS (e07, e08).
+  evidence: [e03, e07, e08]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: TLE checksum and epoch; extrapolated positions are inferred; hide elements older
+    than 7 days. All 15 TLE pairs pass the modulo-10 checksum and their epochs match the OMM
+    epochs (e07, e08). Since 11 July 2026 new objects have 6-digit catalog numbers that TLE cannot
+    carry: the stations group has 19 OMM objects but 15 TLEs, missing Soyuz MS-29, Progress MS-35,
+    Crew Dragon 13 and Dragon CRS-35 (e02, e07, e08). T064 uses OMM JSON. Sample epochs are 1 to 2
+    days old; T064 hides elements older than 7 days, and any position propagated from them is
+    provenance inferred.
+  evidence: [e02, e03, e07, e08]
+
+field_map:
+  - canonical: norad_id
+    upstream: "NORAD_CAT_ID"
+    unit_status: not_applicable
+    detail: "Integer catalog number, 6 digits for objects catalogued since July 2026."
+    evidence: [e08]
+  - canonical: epoch_at
+    upstream: "EPOCH"
+    unit_status: labelled
+    detail: "ISO 8601 UTC without offset, microsecond precision."
+    evidence: [e03, e08]
+  - canonical: tle_line1
+    upstream: null
+    unit_status: absent
+    detail: "Null with a reason: TLE cannot carry 6-digit catalog numbers, so the OMM elements are stored instead (D109)."
+    evidence: [e02, e07, e08]
+  - canonical: tle_line2
+    upstream: null
+    unit_status: absent
+    detail: "Null with the same reason as tle_line1; mean elements come from the OMM fields."
+    evidence: [e07, e08]
+  - canonical: name
+    upstream: "OBJECT_NAME"
+    unit_status: not_applicable
+    detail: "Object name as published, for example ISS (ZARYA)."
+    evidence: [e08]
+
+dependents: [T064]
+retry_condition: null
+failed_fetches: []

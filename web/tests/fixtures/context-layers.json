@@ -1,0 +1,42 @@
+[
+  {
+    "layer": "fire",
+    "source_id": "S25",
+    "title": "Satellite thermal anomalies",
+    "note": "A FIRMS hotspot is a satellite-detected thermal anomaly with a confidence and an acquisition time; it is not a confirmed fire and never a confirmed structure fire.",
+    "available": true,
+    "reason": null,
+    "evidence": "docs/sources/s25.md",
+    "landing_url": "https://www.earthdata.nasa.gov/data/tools/firms"
+  },
+  {
+    "layer": "rera",
+    "source_id": "S31",
+    "title": "Registered real-estate projects",
+    "note": "Public project records only; promoter names and personal contacts are never shown.",
+    "available": false,
+    "reason": "The owner asks K-RERA for permission to reproduce the project list (copyright policy, by email) and records the reply; then T081 is re-run. Promoter names stay excluded either way.",
+    "evidence": "docs/sources/s31.md",
+    "landing_url": "https://rera.karnataka.gov.in/viewAllProjects"
+  },
+  {
+    "layer": "buildings",
+    "source_id": "S19",
+    "title": "Building footprints",
+    "note": "Machine-detected footprints (Open Buildings v3, May 2023 imagery) with model confidence, 0.75 or more by default; not a building register.",
+    "available": true,
+    "reason": null,
+    "evidence": "docs/sources/s19.md",
+    "landing_url": "https://sites.research.google/open-buildings/"
+  },
+  {
+    "layer": "crime",
+    "source_id": "S44",
+    "title": "Registered crime, district-year totals",
+    "note": "Registered cases, not crime incidence: under-reporting varies by offence, place and year. Police units are not revenue districts, so the totals are listed, not mapped.",
+    "available": true,
+    "reason": null,
+    "evidence": "docs/sources/s44.md",
+    "landing_url": "https://data.opencity.in/dataset/karnataka-crime-data-2024"
+  }
+]

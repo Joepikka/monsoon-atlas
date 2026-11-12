@@ -1,0 +1,29 @@
+{
+  "name": "monsoon-atlas-web",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "engines": {"node": "22.16.0", "npm": "10.9.2"},
+  "overrides": {"playwright-core": "1.64.1"},
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5173",
+    "build": "tsc --noEmit && vite build",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "maplibre-gl": "6.16.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "@types/node": "22.16.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.5",
+    "vitest": "5.1.0"
+  }
+}

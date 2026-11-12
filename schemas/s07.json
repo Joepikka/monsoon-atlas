@@ -1,0 +1,21 @@
+{
+  "$comment": "S07 NASA POWER daily point (T056). Measure columns added to the common envelope (common.json). Field map: configs/sources/s07.yaml.",
+  "source_id": "S07",
+  "schema_version": 1,
+  "mapping_version": "s07-v1",
+  "fields": [
+    {"name": "cell_id", "type": "string", "nullable": false, "meaning": "power_<lat>N_<lon>E, the requested point echoed in geometry.coordinates (POWER returns no source cell)"},
+    {"name": "date_local", "type": "date32", "nullable": false, "meaning": "UTC day from the parameter keys (time-standard=UTC is requested and checked in the header)"},
+    {"name": "met_product", "type": "string", "nullable": true, "meaning": "MERRA2 or GEOSIT from header.sources; one per response (mixed responses are split or refused)"},
+    {"name": "solar_product", "type": "string", "nullable": true, "meaning": "SRB or SYN1DEG from header.sources; null when the response has no solar value"},
+    {"name": "api_version", "type": "string", "nullable": false, "meaning": "header.api.version, cited with the data as POWER asks"},
+    {"name": "rain_mm", "type": "float64", "nullable": true, "meaning": "PRECTOTCORR, precipitation corrected, mm/day"},
+    {"name": "tmean_c", "type": "float64", "nullable": true, "meaning": "T2M, daily mean temperature at 2 m, C"},
+    {"name": "solar_mj_m2", "type": "float64", "nullable": true, "meaning": "ALLSKY_SFC_SW_DWN, all-sky surface shortwave, MJ/m^2/day (community=AG)"},
+    {"name": "solar_missing_reason", "type": "string", "nullable": true, "meaning": "Why solar_mj_m2 is null (not_yet_available, out_of_coverage, quality_rejected); solar lags rain and temperature by months"}
+  ],
+  "valid_at": "the end of the UTC day",
+  "issued_at": "null: estimates, not forecasts",
+  "available_at": "the fetch time",
+  "missing": "-999 (header fill_value) is null. Rain or temperature missing makes the row all-null for both with missing_reason (not_yet_available after the newest complete day, else out_of_coverage); negative rain gives quality_rejected. Solar has its own solar_missing_reason"
+}

@@ -1,0 +1,28 @@
+# Planned M20 definition, not a fitted model or a claim that labels exist. T176.
+model_id: M20
+state: all
+enabled: false
+task: scenario
+unit: "place x issue time x rain factor {0.5, 1.0, 1.5}"
+sources: [S43, S35, S36]
+depends_on: [M01, M08]
+target: >-
+  for a chosen place and issue time, recompute the already-approved flood score under 0.5x, 1.0x
+  and 1.5x observed input rain and show the delta against the original; model sensitivity, not a
+  causal intervention or a hydrodynamic flood depth
+data_gate:
+  requires: [approved M01 or M08 flood model, consistent recomputation of its exact input snapshot]
+  note: otherwise the controls are disabled; M05 is a drought model and cannot be the base
+baselines: [original prediction at factor 1.0, no-change output]
+candidates: [approved_base_model_with_coherent_rain_group_scaling]
+rain_factor_range: training 1st to 99th percentile
+planned_splits: null
+split_note: no new split; inherits the approved base model's test and runs on held-out cases only for illustration
+split_manifest: null
+status: blocked
+reason: >-
+  M20 blocked: it recomputes an already-approved flood score from the exact M01 or M08 input
+  snapshot, and neither is approved: M01 is blocked (S43 has no labels, T085) and M08 is blocked
+  (S35 is blocked and S36 holds 2018 district tables only). M05 is the only approved model and is
+  a drought model, so it is not a base; the controls stay disabled (T176).
+fallback: "none: with no approved flood score the controls stay disabled and no sensitivity is shown"

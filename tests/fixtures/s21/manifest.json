@@ -1,0 +1,93 @@
+{
+  "source_id": "S21",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://github.com/datameet/railways",
+      "fetched_at": "2026-11-09T09:45:51.839385Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "df711915beb4c75d2e576cd9ec5e6433a5dff01c6cefd6b25737aac4441456d9",
+      "bytes": 222384,
+      "raw_path": "S21/2026-11-09/df711915beb4c75d2e576cd9ec5e6433a5dff01c6cefd6b25737aac4441456d9.html",
+      "shows": "Datameet railways repository page"
+    },
+    {
+      "id": "e02",
+      "url": "https://github.com/datameet/railways/blob/master/README.md",
+      "fetched_at": "2026-11-09T09:45:55.777994Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "3ce8b31e3fc53c0d52dabb050c57e7427cd530659fbc22c08be57e89c185f190",
+      "bytes": 201483,
+      "raw_path": "S21/2026-11-09/3ce8b31e3fc53c0d52dabb050c57e7427cd530659fbc22c08be57e89c185f190.html",
+      "shows": "Repository README (data description and licence)"
+    },
+    {
+      "id": "e03",
+      "url": "https://api.github.com/repos/datameet/railways",
+      "fetched_at": "2026-11-09T09:45:59.604997Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "66a526b4da889ca53ef7bd19f5b2effbe8577d9cfb8168f5cb29415c01d6e398",
+      "bytes": 6026,
+      "raw_path": "S21/2026-11-09/66a526b4da889ca53ef7bd19f5b2effbe8577d9cfb8168f5cb29415c01d6e398.json",
+      "shows": "GitHub API: repository metadata including licence"
+    },
+    {
+      "id": "e04",
+      "url": "https://api.github.com/repos/datameet/railways/commits/master",
+      "fetched_at": "2026-11-09T09:46:03.257113Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "b0f48f19107f94d26c21399514f4ea94f8fc54007a252bcccd151ce36c215da4",
+      "bytes": 4460,
+      "raw_path": "S21/2026-11-09/b0f48f19107f94d26c21399514f4ea94f8fc54007a252bcccd151ce36c215da4.json",
+      "shows": "GitHub API: latest commit on master (hash to pin)"
+    },
+    {
+      "id": "e05",
+      "url": "https://api.github.com/repos/datameet/railways/contents/",
+      "fetched_at": "2026-11-09T09:46:06.759117Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "d0eeaf4a729c9320a1529ee243146019b0c1ba1b073d76cdecc71ad2f6760c63",
+      "bytes": 3045,
+      "raw_path": "S21/2026-11-09/d0eeaf4a729c9320a1529ee243146019b0c1ba1b073d76cdecc71ad2f6760c63.json",
+      "shows": "GitHub API: repository files and sizes"
+    },
+    {
+      "id": "e06",
+      "url": "https://raw.githubusercontent.com/datameet/railways/e0c538a1e41ae5eace454d2818902e1065608e16/stations.json",
+      "fetched_at": "2026-11-09T09:46:24.591697Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "9bd5e1da3a859e5359a95f40b6009aa468efb177da4faac57ffdcd7daeb4df18",
+      "bytes": 1864683,
+      "raw_path": "S21/2026-11-09/9bd5e1da3a859e5359a95f40b6009aa468efb177da4faac57ffdcd7daeb4df18.bin",
+      "shows": "stations.json at the pinned commit"
+    },
+    {
+      "id": "e07",
+      "url": "https://raw.githubusercontent.com/datameet/railways/e0c538a1e41ae5eace454d2818902e1065608e16/trains.json",
+      "fetched_at": "2026-11-09T09:46:30.325679Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "e434d9c56016ccdf2291ccd446586ef87a7fab101084efa5f68871ab27800167",
+      "bytes": 14768598,
+      "raw_path": "S21/2026-11-09/e434d9c56016ccdf2291ccd446586ef87a7fab101084efa5f68871ab27800167.bin",
+      "shows": "trains.json at the pinned commit"
+    },
+    {
+      "id": "e08",
+      "url": "https://raw.githubusercontent.com/datameet/railways/e0c538a1e41ae5eace454d2818902e1065608e16/schedules.json",
+      "fetched_at": "2026-11-09T09:46:43.270081Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "105d63816acb177eac30a7d156eb2d312625a42ddebd273edee810d2989878ec",
+      "bytes": 82174280,
+      "raw_path": "S21/2026-11-09/105d63816acb177eac30a7d156eb2d312625a42ddebd273edee810d2989878ec.bin",
+      "shows": "schedules.json at the pinned commit (82 MB, streamed to disk)"
+    }
+  ]
+}

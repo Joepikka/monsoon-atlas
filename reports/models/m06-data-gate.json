@@ -1,0 +1,34 @@
+{
+  "model_id": "M06",
+  "status": "blocked",
+  "reason": "M06 blocked: verified Karnataka price history, price units and publication timing are required before implementing labels, features or predictions (T035).",
+  "sources": {
+    "S22": {
+      "outcome": "blocked",
+      "licence": "unverified",
+      "units": "not_checked",
+      "history": "not_public",
+      "earliest_date": null,
+      "latest_date": null,
+      "retry_condition": "Re-run T023 with a working browser render of https://indiadataportal.com/p/agmarknet (or the owner opens it and notes the download button, file format and licence shown). If downloads need a sign-in, that is an owner step. Meanwhile T025 (data.gov.in mandi prices, free API key) is the other route to the same Agmarknet prices."
+    },
+    "S23": {
+      "outcome": "blocked",
+      "licence": "open",
+      "units": "unlabelled",
+      "history": "partial",
+      "earliest_date": "2026-11-05",
+      "latest_date": "2026-11-05",
+      "retry_condition": "Capture a publisher statement tied to resource 9ef84268-d588-465a-a308-a864a43d0070 establishing the denominator of min_price, max_price and modal_price (including commodity-specific exceptions if units vary). Then re-run T025 and validate the mapping before enabling S23 or implementing ingestion in T026. GODL is verified; no new API key or licence confirmation is needed."
+    }
+  },
+  "evidence": {
+    "configs/sources/s22.yaml": "9d17a637c742ee4c5a4742c063efa7e3ee35ba864f9920138564b523304f4ee7",
+    "tests/fixtures/s22/manifest.json": "5af6a2af8b22ef168abe8c68728c66271367231e46c6e0a5b3d288b7ef967f09",
+    "configs/sources/s23.yaml": "c628900604c0bb2a012d4ea9aaa7d81d7003b95b9a904d17c239218d7f07e350",
+    "tests/fixtures/s23/manifest.json": "7a80be329d1e5021eea5df203a55045219514ccb24903ec8b9646330cbc7f5c2",
+    "configs/models/m06.yaml": "e6e13c5ace1a0be4663f5e45b9fd10d101bd2ea1f9ff8a24d199931ef9809606"
+  },
+  "split_manifest": null,
+  "prediction_rows": 0
+}

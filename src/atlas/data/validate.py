@@ -78,7 +78,9 @@ def validate_table(table: pa.Table, *, measures: Sequence[str] = ()) -> pa.Table
         problems.append(f"schema_version {sorted(versions)} not supported by this reader")
 
     has_reason = pc.is_valid(table["missing_reason"])
-    flagged_missing = pa.array(["missing" in flags for flags in table["quality_flags"].to_pylist()])
+    flagged_missing = pa.array(
+        ["missing" in flags for flags in table["quality_flags"].to_pylist()], type=pa.bool_()
+    )
     for m in measures:
         null = pc.is_null(table[m])
         if pc.any(pc.and_(null, pc.invert(has_reason))).as_py():
@@ -103,6 +105,9 @@ def validate_table(table: pa.Table, *, measures: Sequence[str] = ()) -> pa.Table
 def dedupe_snapshots(table: pa.Table) -> pa.Table:
     """Drop exact duplicate rows of the same (record_id, snapshot_id). A published snapshot is
     immutable, so the same key with different content is an error, not a revision."""
+    keys = list(zip(table["record_id"].to_pylist(), table["snapshot_id"].to_pylist(), strict=True))
+    if len(set(keys)) == len(keys):  # no repeated key: nothing to compare (large tables, S30)
+        return table
     rows = table.to_pylist()
     seen: dict[tuple[str, str], dict] = {}
     keep = []

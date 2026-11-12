@@ -1,0 +1,22 @@
+{
+  "model_id": "M10",
+  "state": "kl",
+  "status": "blocked",
+  "reason": "M10 blocked: S22 exposes no price row and S23 is a one-day snapshot (5 Nov 2026) with an unverified price unit, so there is no weekly market-commodity panel, no 30-market sample and no 50 heavy-rain events; no effect can be estimated (T139).",
+  "evidence": {
+    "configs/sources/s22.yaml": "9d17a637c742ee4c5a4742c063efa7e3ee35ba864f9920138564b523304f4ee7",
+    "tests/fixtures/s22/manifest.json": "5af6a2af8b22ef168abe8c68728c66271367231e46c6e0a5b3d288b7ef967f09",
+    "configs/sources/s23.yaml": "c628900604c0bb2a012d4ea9aaa7d81d7003b95b9a904d17c239218d7f07e350",
+    "tests/fixtures/s23/manifest.json": "7a80be329d1e5021eea5df203a55045219514ccb24903ec8b9646330cbc7f5c2",
+    "configs/models/m10.yaml": "08b81b3d181bf50db7f4364f4ae224667af1fe88b537279f98c354ec1bc302c8"
+  },
+  "source_gate_sha256": "741d04d839e0a4069222c3925391aa24211d63525cd1739de6b6b2d52c5a22ca",
+  "dataset_sha256": null,
+  "split_sha256": null,
+  "weights": null,
+  "baseline_scores": null,
+  "candidate_scores": null,
+  "improvement": null,
+  "prediction_rows": 0,
+  "report": "reports/models/m10.md"
+}

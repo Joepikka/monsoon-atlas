@@ -1,0 +1,20 @@
+# Planned M04 definition, not a fitted model or a claim that labels exist. T098.
+model_id: M04
+state: ka
+enabled: false
+task: regression
+unit: "gauge x day (same-day reconstruction of a withheld observed gauge-day, not a forecast)"
+sources: [S27, S29]
+target: "rainfall mm at a withheld observed gauge-day"
+data_gate:
+  min_gauges: 30
+  min_years: 3
+  requires: [coordinates, station move history]
+planned_splits:
+  train: ["2017-01-01", "2021-12-31"]
+  tune: ["2022-01-01", "2022-06-30"]
+  calibrate: ["2022-07-01", "2022-12-31"]
+  locked_test: ["2023-01-01", "2023-12-31"]
+split_manifest: null
+status: blocked
+reason: "S27 KSNDMC gauges are blocked (no HTTPS, no station list) and S29 holds annual totals only, no daily gauge data (D113)."

@@ -1,0 +1,66 @@
+# T185 (D151): build Tippecanoe 2.79.0 from source and run the tile-build checks on Linux.
+# Manual dispatch only: no push, pull request or schedule, and no first run until the owner decides.
+# The Tippecanoe commit is an input that must be verified by hand on GitHub (felt/tippecanoe, tag
+# 2.79.0) and pasted in full; nothing here guesses it, and an empty or malformed value stops the
+# job before any checkout. Actions are pinned to audited commit SHAs; the token can only read.
+name: tiles
+
+on:
+  workflow_dispatch:
+    inputs:
+      tippecanoe_commit:
+        description: Full 40-character commit SHA of tag 2.79.0 in felt/tippecanoe, verified by hand
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tiles
+  cancel-in-progress: false
+
+jobs:
+  tiles:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONUTF8: "1"
+      COMMIT: ${{ inputs.tippecanoe_commit }}
+    steps:
+      - name: Refuse an unverified Tippecanoe commit
+        run: |
+          if ! [[ "$COMMIT" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "tippecanoe_commit must be the full 40-character SHA of tag 2.79.0, verified on GitHub"
+            exit 1
+          fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: felt/tippecanoe
+          ref: ${{ inputs.tippecanoe_commit }}
+          path: tippecanoe
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check the commit carries tag 2.79.0
+        run: git -C tippecanoe tag --points-at HEAD | grep -Eqx 'v?2\.79\.0'
+      - name: Build Tippecanoe
+        run: |
+          sudo apt-get install -y --no-install-recommends build-essential libsqlite3-dev zlib1g-dev
+          make -C tippecanoe -j"$(nproc)"
+          tippecanoe/tippecanoe --version 2>&1 | grep -F '2.79.0'
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Install hash-locked core and dev requirements
+        run: |
+          python -m pip install --require-hashes -r requirements/core.txt
+          python -m pip install --require-hashes -r requirements/dev.txt
+          python -m pip install --no-deps -e .
+      - name: Tile build checks
+        run: python -m pytest tests/test_tiles_build.py -q

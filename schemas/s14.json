@@ -1,0 +1,19 @@
+{
+  "$comment": "S14 AWS Terrarium terrain (T068). Measure columns added to the common envelope (common.json). Field map: configs/sources/s14.yaml.",
+  "source_id": "S14",
+  "schema_version": 1,
+  "mapping_version": "s14-v1",
+  "fields": [
+    {"name": "tile_key", "type": "string", "nullable": false, "meaning": "terrarium/{z}/{x}/{y}.png in the elevation-tiles-prod bucket"},
+    {"name": "z", "type": "int64", "nullable": false, "meaning": "zoom"},
+    {"name": "x", "type": "int64", "nullable": false, "meaning": "tile column (XYZ)"},
+    {"name": "y", "type": "int64", "nullable": false, "meaning": "tile row from the north (XYZ)"},
+    {"name": "elevation_encoding", "type": "string", "nullable": false, "meaning": "terrarium: metres = R*256 + G + B/256 - 32768"},
+    {"name": "crs", "type": "string", "nullable": false, "meaning": "EPSG:3857"},
+    {"name": "min_m", "type": "float64", "nullable": false, "meaning": "lowest decoded value in the tile, metres; below 0 over the sea is bathymetry"},
+    {"name": "max_m", "type": "float64", "nullable": false, "meaning": "highest decoded value in the tile, metres"}
+  ],
+  "valid_at": "null: static terrain",
+  "available_at": "the fetch time",
+  "range": "a tile decoding outside the documented -11000 to 8900 m is rejected"
+}

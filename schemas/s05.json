@@ -1,0 +1,17 @@
+{
+  "$comment": "S05 Open-Meteo ensemble (T052). Measure columns added to the common envelope (common.json). Field map: configs/sources/s05.yaml.",
+  "source_id": "S05",
+  "schema_version": 1,
+  "mapping_version": "s05-v1",
+  "fields": [
+    {"name": "cell_id", "type": "string", "nullable": false, "meaning": "om_ecmwf_ifs025_ensemble_<lat>N_<lon>E, the grid point the API snapped to"},
+    {"name": "member_id", "type": "string", "nullable": false, "meaning": "Series suffix as returned: 00 for the unsuffixed series, else NN from _memberNN; the count is read from each response"},
+    {"name": "model", "type": "string", "nullable": false, "meaning": "ecmwf_ifs025_ensemble, the one named model requested"},
+    {"name": "rain_mm", "type": "float64", "nullable": true, "meaning": "precipitation over the preceding hour in mm (the API interpolates 3-hourly steps to 1 hour)"},
+    {"name": "temperature_c", "type": "float64", "nullable": true, "meaning": "temperature_2m in °C"}
+  ],
+  "valid_at": "hourly.time, UTC (timezone=GMT is requested)",
+  "issued_at": "last_run_initialisation_time from data/ecmwf_ifs025_ensemble/static/meta.json, read before and after the call",
+  "available_at": "the later of last_run_availability_time + 10 minutes and the fetch time",
+  "missing": "Hours before the run or at/after its exclusive data_end_time belong to another run: all-null with issued_at null, out_of_coverage, flags missing and stale. A null value gives out_of_coverage; negative rain gives quality_rejected"
+}

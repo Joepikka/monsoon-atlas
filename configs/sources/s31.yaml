@@ -1,0 +1,106 @@
+# Discovery record for S31 (plan task T081). Evidence IDs refer to tests/fixtures/s31/manifest.json;
+# the files stay in data/raw/S31. See docs/sources/s31.md.
+source_id: S31
+state: ka
+name: "Karnataka RERA projects"
+verify_task: T081
+discovered_at: "2026-11-09T10:50:52Z"
+outcome: blocked
+landing_url: "https://rera.karnataka.gov.in/viewAllProjects"
+publisher: "Karnataka Real Estate Regulatory Authority (K-RERA)"
+no_card: true
+account_required: false
+
+access:
+  status: public_pages_permission_required
+  detail: >-
+    The registered-projects page loads without a login or CAPTCHA and embeds 10,106 applications
+    in page script (application number, registration number for 9,065, project name and promoter
+    name); district and taluk are search filters posted to projectViewDetails (e02). The home page
+    links it and a Mahiti Kanaja project-details page that needs year, district and status filters
+    (e01, e06). rera.karnataka.gov.in has no robots.txt (HTTP 404).
+  evidence: [e01, e02, e06]
+
+licence:
+  status: restricted
+  detail: >-
+    "Material featured on this Portal may be reproduced free of charge after taking proper
+    permission by sending a mail to us", accurately, with the source acknowledged (e03). Asking
+    for that permission is a message on the owner's behalf, which the agent does not send.
+  evidence: [e03]
+
+provider_quota:
+  status: not_published
+  detail: "No request limit is published on the terms, copyright or hyperlink pages (e03, e04, e05)."
+  evidence: [e03, e04, e05]
+
+history:
+  status: partial
+  detail: >-
+    The list covers every application to date; registration numbers embed the registration date
+    (for example PRM/KA/RERA/1251/446/PR/071126/009091), but the list carries no status or
+    location (e02).
+  evidence: [e02]
+earliest_date: null
+latest_date: null
+
+units:
+  status: not_applicable
+  detail: "Project records, not measurements; no geometry or coordinates are listed (e02)."
+  evidence: [e02]
+
+source_check:
+  status: blocked
+  detail: >-
+    Plan rule: exclude names/phones of individuals; geocode precision visible; no CAPTCHA bypass.
+    No CAPTCHA was met (e02). Promoter names include individuals as well as companies (e02), so
+    promoters would be dropped. The list has no location; geocoding would rely on district and
+    taluk filters only, which must be shown as district- or taluk-level precision. Reuse needs
+    K-RERA's emailed permission first (e03), so the source stays disabled.
+  evidence: [e02, e03]
+
+field_map:
+  - canonical: project_id
+    upstream: "registration number (PRM/KA/RERA/...) or application number (ACK/...)"
+    unit_status: not_applicable
+    detail: "Registration number where present (9,065 of 10,106), else the application number."
+    evidence: [e02]
+  - canonical: project_name
+    upstream: "project name in the embedded list"
+    unit_status: not_applicable
+    detail: "Project name as published."
+    evidence: [e02]
+  - canonical: status
+    upstream: null
+    unit_status: absent
+    detail: "Not in the list; only registered (PRM) versus applied (ACK) can be told apart."
+    evidence: [e02]
+  - canonical: registered_on
+    upstream: "the DDMMYY part of the registration number"
+    unit_status: not_applicable
+    detail: "Derived from the number, for example 071126; not a separate field."
+    evidence: [e02]
+  - canonical: place_id
+    upstream: "district and taluk search filters"
+    unit_status: not_applicable
+    detail: "Only through filtered searches; no place in the list itself."
+    evidence: [e02]
+  - canonical: geometry
+    upstream: null
+    unit_status: absent
+    detail: "No coordinates are published."
+    evidence: [e02]
+  - canonical: location_precision
+    upstream: null
+    unit_status: absent
+    detail: "Would be district or taluk, from the search filter used."
+    evidence: [e02]
+
+dependents: [T082]
+retry_condition: >-
+  The owner asks K-RERA for permission to reproduce the project list (copyright policy, by
+  email) and records the reply; then T081 is re-run. Promoter names stay excluded either way.
+failed_fetches:
+  - url: "https://rera.karnataka.gov.in/robots.txt"
+    attempted_at: "2026-11-09T10:53:00Z"
+    error: "HTTP 404: no robots.txt (custom error page)"

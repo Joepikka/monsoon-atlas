@@ -1,0 +1,115 @@
+# Discovery record for S07 (plan task T055). Evidence IDs refer to tests/fixtures/s07/manifest.json;
+# the files stay in data/raw/S07. See docs/sources/s07.md.
+source_id: S07
+state: ka
+name: "NASA POWER daily point"
+verify_task: T055
+discovered_at: "2026-11-09T06:44:17Z"
+outcome: available
+landing_url: "https://power.larc.nasa.gov/docs/services/api/temporal/daily/"
+publisher: "NASA Langley Research Center, Prediction Of Worldwide Energy Resources (POWER) project"
+no_card: true
+account_required: false
+
+access:
+  status: public_api_no_key
+  detail: >-
+    GET https://power.larc.nasa.gov/api/temporal/daily/point is the documented route (e03) and
+    works without a key or account (e16-e27). robots.txt disallows /api/ for all agents and blocks
+    named AI training crawlers (e01), but the tutorial invites "a POWER API URL in your scripted
+    application" (e04), so D31 applies as recorded in D106: documented API calls only, at least
+    3 seconds apart, never crawling.
+  evidence: [e01, e03, e04, e16, e19]
+
+licence:
+  status: open
+  detail: >-
+    The AWS Open Data registry entry linked from the POWER home page says "There are no
+    restrictions on the use, access, and/or download of data from the NASA POWER Project", asks
+    users to cite the project, and lists Creative Commons BY 4.0 (e28, e29). The referencing guide
+    asks for the POWER reference with service, version and access date, a notice of publications,
+    and notification when POWER data is transmitted to other researchers (e11).
+  evidence: [e11, e28, e29]
+
+provider_quota:
+  status: published
+  detail: >-
+    No numeric quota is published. Errors include HTTP 429 "Too Many Requests" (e02); at most 20
+    parameters per point request; an application that "persists in requesting the same relative
+    location ... will potentially be blocked" (e03). Request each location and range once.
+  evidence: [e02, e03]
+
+history:
+  status: available
+  detail: >-
+    The docs say daily UTC and LST data run "from 1981/01/01 to Near Real Time" (e03). At Bengaluru
+    corrected precipitation and 2 m temperature have every day from 1 Jan 1981 to 7 Nov 2026; 8 Nov
+    2026 is the fill value (e19). All-sky shortwave starts on 1 Jan 1984 and ends on 31 Aug 2026
+    (e19, e21), longer than the 5-7 day solar latency the FAQ gives (e08).
+  evidence: [e03, e08, e19, e21]
+earliest_date: "1981-01-01"
+latest_date: "2026-11-07"
+
+units:
+  status: labelled
+  detail: >-
+    Each response lists units per parameter (e16): PRECTOTCORR "mm/day", T2M "C" and, with
+    community=AG, ALLSKY_SFC_SW_DWN "MJ/m^2/day". The RE community returns the same shortwave in
+    "kW-hr/m^2/day" (3.3629 instead of 12.11 on 1 Jul 2024, a factor of 3.6) with the other units
+    unchanged (e17). Units must be read from each response before any conversion.
+  evidence: [e16, e17]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: decode fill values; verify units before conversion; do not silently combine
+    products. The header gives "fill_value": -999.0, which marks days with no data (8 Nov 2026 for
+    all parameters; shortwave before 1984 and after 31 Aug 2026), never a value (e16, e19). Units
+    differ by community (e16, e17). The header lists the products behind each request, not each
+    day: MERRA2 and SRB for January 1990, MERRA2 and SYN1DEG for July 2024, and MERRA2, GEOSIT, SRB
+    and SYN1DEG for 1981-2026 (e16, e19, e20). The meteorology changes from MERRA2 to GEOSIT
+    between 1 and 8 October 2026 (MERRA2 alone for September, GEOSIT alone from 9 October; e23-e27),
+    in line with the FAQ's MERRA-2 and GEOS-IT sources (e08). A request whose header lists two
+    meteorology products must be split until each part names one.
+  evidence: [e08, e16, e17, e19, e20, e23, e24, e25, e26, e27]
+
+field_map:
+  - canonical: cell_id
+    upstream: "geometry.coordinates (the requested longitude, latitude and an elevation)"
+    unit_status: not_applicable
+    detail: >-
+      The response echoes the requested point (77.59, 12.97, elevation 841.72 m), not a source
+      cell; data come at "original source spatial resolution" (e03, e16). The ID is the point.
+    evidence: [e03, e16]
+  - canonical: date_local
+    upstream: "the YYYYMMDD keys of properties.parameter.<name>"
+    unit_status: labelled
+    detail: >-
+      Day in the requested time standard: time-standard=UTC gives UTC days; the default LST (local
+      solar time, 15-degree swaths) gives other values for rain and temperature (e05, e16, e18).
+    evidence: [e03, e05, e16, e18]
+  - canonical: rain_mm
+    upstream: "PRECTOTCORR"
+    unit_status: labelled
+    detail: "Precipitation Corrected, mm/day; -999 is missing."
+    evidence: [e16, e19]
+  - canonical: solar_mj_m2
+    upstream: "ALLSKY_SFC_SW_DWN"
+    unit_status: labelled
+    detail: "All Sky Surface Shortwave Downward Irradiance, MJ/m^2/day with community=AG (kW-hr/m^2/day with RE)."
+    evidence: [e16, e17]
+  - canonical: tmean_c
+    upstream: "T2M"
+    unit_status: labelled
+    detail: "Temperature at 2 Meters, daily mean in C."
+    evidence: [e16]
+
+dependents: [T056]
+retry_condition: null
+failed_fetches:
+  - url: "https://power.larc.nasa.gov/docs/methodology/data/sources/"
+    attempted_at: "2026-11-09T06:44:32Z"
+    error: "HTTP 404: the data sources page linked from the docs home and the data FAQ is missing, so per-product periods were measured instead"
+  - url: "https://power.larc.nasa.gov/docs/methodology/meteorology/precipitation/"
+    attempted_at: "2026-11-09T06:44:36Z"
+    error: "HTTP 404: listed in the sitemap but missing"

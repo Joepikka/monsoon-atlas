@@ -1,0 +1,27 @@
+{
+  "source_id": "S27",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "http://ksndmc.org/",
+      "fetched_at": "2026-11-09T10:38:29.974826Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "8937f00baa1e7830b7f26e2a593a339a0a2533fa2d6bb05ed6ae7005a655ce60",
+      "bytes": 3003,
+      "raw_path": "S27/2026-11-09/8937f00baa1e7830b7f26e2a593a339a0a2533fa2d6bb05ed6ae7005a655ce60.html",
+      "shows": "ksndmc.org home page over plain HTTP (D112: host refuses HTTPS; read outside the Fetcher)"
+    },
+    {
+      "id": "e02",
+      "url": "http://ksndmc.org/Help",
+      "fetched_at": "2026-11-09T10:38:33.021823Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "890fc921e82821368ed1983a02aed449484e87bff3d6b224bfbd59b0b843a9fb",
+      "bytes": 3522,
+      "raw_path": "S27/2026-11-09/890fc921e82821368ed1983a02aed449484e87bff3d6b224bfbd59b0b843a9fb.html",
+      "shows": "ksndmc.org /Help page over plain HTTP (D112)"
+    }
+  ]
+}

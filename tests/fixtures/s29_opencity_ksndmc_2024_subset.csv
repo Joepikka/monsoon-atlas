@@ -1,0 +1,31 @@
+District(D)/Taluk(T)/Hobli(H),Name,Normal (mm),Actual (mm),Departure (%)
+D,BENGALURU URBAN,845.6,933.8,10
+T,Anekal,901.6,933.8,4
+H,Anekal_1,901.6,866.5,-4
+H,Attibele_1,823.5,970.5,18
+H,Jigani_1,844.8,900.4,7
+H,Sarjapura_1,747.8,929.3,24
+H,Anekal_2,880.9,937.5,6
+H,Jigani_2,865,969,12
+H,Attibele_2,856.8,941.3,10
+H,Sarjapura_1,855,959.4,12
+H,Sarjapura_3,813.6,994.3,22
+T,Bengaluru North,1004.6,969.2,-4
+H,Bengaluru North_1,1004.6,869.3,-13
+H,Dasanapura_1,895.6,884.6,-1
+H,Yashavantapura_1,819,1031.4,26
+H,Bengaluru North_2,854.2,950,11
+H,Yashavantapura_2,865.7,1081.6,25
+H,Dasanapura_2,872.2,1079.2,24
+H,Dasanapura_3,899.8,1019.1,13
+T,Bengaluru South,819.5,913.3,11
+H,Beguru_3,819.5,818,0
+H,Kengeri_1,905.4,1036,14
+H,Tavarekere_1,734.4,1096.7,49
+H,Uttarahalli_4,904.7,1147.4,27
+H,Uttarahalli_1,885.8,780.7,-12
+,1.SIK,714.1,874.5,22
+,2.NIK,701.6,782.9,12
+,3.MALNAD,1949.6,2341.9,20
+,4.COASTAL,3518.3,4366.6,24
+,State,1153.4,1374.7,19

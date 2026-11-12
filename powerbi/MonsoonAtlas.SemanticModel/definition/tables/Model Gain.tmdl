@@ -1,0 +1,66 @@
+table 'Model Gain'
+	lineageTag: f692aa9d-087c-5d59-bbb0-ab1cfc2e3d8a
+
+	column period
+		dataType: string
+		lineageTag: fc4c11bb-6a78-5a74-a56e-e80cfe49b0db
+		summarizeBy: none
+		sourceColumn: period
+
+	column district_months
+		dataType: int64
+		formatString: 0
+		lineageTag: 4154c22a-a83c-5b38-ae0f-4098a1193c71
+		summarizeBy: none
+		sourceColumn: district_months
+
+	column mae_baseline
+		dataType: double
+		formatString: 0.000
+		lineageTag: af7db62b-f886-51a1-9a0e-2a2b845d4589
+		summarizeBy: none
+		sourceColumn: mae_baseline
+
+	column mae_ridge
+		dataType: double
+		formatString: 0.000
+		lineageTag: c31ba918-22a9-5bf5-9f08-b91fbedf15d8
+		summarizeBy: none
+		sourceColumn: mae_ridge
+
+	column improvement
+		dataType: double
+		formatString: 0.000
+		lineageTag: 6486704a-f972-5bab-a98b-7435caf5012d
+		summarizeBy: none
+		sourceColumn: improvement
+
+	column lower95
+		dataType: double
+		formatString: 0.000
+		lineageTag: f40fd09e-7b05-5cc0-917b-abbcce300fa5
+		summarizeBy: none
+		sourceColumn: lower95
+
+	column upper95
+		dataType: double
+		formatString: 0.000
+		lineageTag: 723c90c3-db31-5a0f-9064-1c233aa7ca16
+		summarizeBy: none
+		sourceColumn: upper95
+
+	column promoted
+		dataType: string
+		lineageTag: 9b301f4a-e4eb-5d45-9d7b-b0f4080ab718
+		summarizeBy: none
+		sourceColumn: promoted
+
+	partition 'Model Gain' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "model_gain.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"period", type text}, {"district_months", Int64.Type}, {"mae_baseline", type number}, {"mae_ridge", type number}, {"improvement", type number}, {"lower95", type number}, {"upper95", type number}, {"promoted", type text}}, "en-US")
+				in
+				    Typed

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "MonsoonAtlas"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "5f9e736d-ba83-5885-b33f-a77eabf487ff"
+  }
+}

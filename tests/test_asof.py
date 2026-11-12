@@ -94,6 +94,11 @@ def test_real_fixture_validates():
     assert t.column("rain_mm").to_pylist() == [9.0, 0.1, 10.4, 3.8]
 
 
+def test_empty_typed_table_validates_without_inventing_measurements():
+    empty = table([])
+    assert validate_table(empty, measures=["rain_mm"]).equals(empty)
+
+
 def test_midnight_ist_converted_correctly():
     assert local_midnight_utc(date(2024, 7, 2)) == datetime(2024, 7, 1, 18, 30, tzinfo=UTC)
     assert local_to_utc(datetime(2024, 7, 2, 0, 0)) == datetime(2024, 7, 1, 18, 30, tzinfo=UTC)

@@ -1,0 +1,11 @@
+{
+  "name": "Monsoon Atlas",
+  "short_name": "Monsoon Atlas",
+  "description": "Dated weather, official alerts and clearly labelled research for Karnataka. Not an emergency service.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "lang": "en",
+  "background_color": "#ffffff",
+  "theme_color": "#165d53"
+}

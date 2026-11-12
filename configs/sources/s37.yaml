@@ -1,0 +1,129 @@
+# Discovery record for S37 (plan task T123). Evidence IDs refer to tests/fixtures/s37/manifest.json;
+# the files stay in data/raw/S37. See docs/sources/s37.md.
+source_id: S37
+state: kl
+name: "2018 landslide inventory / ISRO Atlas"
+verify_task: T123
+discovered_at: "2026-11-09T15:38:28Z"
+outcome: blocked
+landing_url: "https://www.nrsc.gov.in/"
+publisher: "National Remote Sensing Centre (NRSC), ISRO, Department of Space"
+no_card: true
+account_required: false
+
+access:
+  status: pdf_only_no_point_data
+  detail: >-
+    The only landslide file NRSC publishes on its site is the Landslide Atlas of India PDF, linked
+    from the Landslide Atlas page (e05) and downloaded without an account (e07, 94 pages, 29 MB,
+    2023 edition updated 25 Aug 2023). It holds maps as figures and Table 2 with landslide counts per
+    state, season and event year. The point inventory (about 80,000 landslides) is said to be
+    "available in a web GIS platform in the Bhuvan portal" (e07, page 19). The Bhuvan page linked from
+    the NRSC home page is a client-rendered app shell with no download link or data service
+    description (e08), and the NRSC pages link no shapefile, GeoJSON or CSV (e02, e03, e05). No
+    endpoint was guessed. No row with a landslide ID or coordinates could be downloaded.
+  evidence: [e01, e02, e03, e05, e07, e08]
+
+licence:
+  status: restricted
+  detail: >-
+    Terms and Conditions: content is copyright NRSC, ISRO; downloadable content may be used for
+    non-commercial purposes with the attribution "Source: NRSC, ISRO/DOS" and a link to
+    www.nrsc.gov.in; derivative works are allowed; all data remain NRSC property (e06). The Atlas
+    front matter allows reproduction for educational or non-profit purposes with acknowledgement and
+    citation, and forbids resale and other commercial use (e07). The footer reads "All Rights Reserved"
+    (e01). No open licence applies, so the PDF stays in data/raw and is not redistributed.
+  evidence: [e01, e06, e07]
+
+provider_quota:
+  status: not_published
+  detail: >-
+    No quota is published. robots.txt returns HTTP 404 on www.nrsc.gov.in and on bhuvan.nrsc.gov.in
+    (see failed_fetches). Requests were spaced 3 seconds apart.
+  evidence: [e01]
+
+history:
+  status: partial
+  detail: >-
+    Table 2 of the Atlas gives Kerala counts only: 9 landslides mapped for the 2014 monsoon, 45 for
+    2017, and event-based inventories of 5,191 (2018), 756 (2019), 9 (2020) and 29 (2021), 6,039 in
+    all (e07, page 19). The Landslide Atlas page and the Atlas say the database covers 1998 to 2022
+    nationally, in three types: seasonal (2014 and 2017), event-based and route-wise (e05, e07).
+    No per-landslide occurrence date is published in these files; the years above are inventory
+    labels per event.
+  evidence: [e05, e07]
+earliest_date: "2014-06-01"
+latest_date: "2021-12-31"
+
+units:
+  status: not_checked
+  detail: >-
+    Table 2 counts landslides per state with no unit beyond the count. No coordinate, CRS, location
+    error or area unit was seen, because no per-landslide record is published (e07).
+  evidence: [e07]
+
+source_check:
+  status: fail
+  detail: >-
+    Plan rule: Atlas maps are not necessarily reusable geospatial labels, and unknown occurrence
+    dates exclude temporal scoring. The Atlas maps for Kerala (Figure 41, 2014 to 2021) are images
+    with no coordinates or IDs in the file (e07), and the only machine-readable Kerala facts are the
+    six counts in Table 2. M09 needs at least 200 independent landslides with positional error of
+    100 m or less and a survey footprint (plan T136). None of that is downloadable, so the
+    inventory cannot serve as labels, and no temporal scoring is possible.
+  evidence: [e05, e07, e08]
+
+field_map:
+  - canonical: landslide_id
+    upstream: null
+    unit_status: absent
+    detail: "Not published: the Atlas holds counts per state and year, not one record per landslide."
+    evidence: [e07]
+  - canonical: event_date
+    upstream: null
+    unit_status: absent
+    detail: "Only an inventory year per state (for example 5191 event-based landslides in 2018); no date per landslide."
+    evidence: [e07]
+  - canonical: lat
+    upstream: null
+    unit_status: absent
+    detail: "No coordinate is printed; points exist only as map figures and in the Bhuvan web GIS."
+    evidence: [e07, e08]
+  - canonical: lon
+    upstream: null
+    unit_status: absent
+    detail: "No coordinate is printed; points exist only as map figures and in the Bhuvan web GIS."
+    evidence: [e07, e08]
+  - canonical: geometry
+    upstream: null
+    unit_status: absent
+    detail: "No vector layer is linked from the NRSC pages; the Kerala map is a figure (Figure 41)."
+    evidence: [e05, e07]
+  - canonical: location_error_m
+    upstream: null
+    unit_status: absent
+    detail: "No positional accuracy is stated for the mapped landslides."
+    evidence: [e07]
+
+# M09 inventory labels blocked; T129 audits Kerala labels without S37.
+dependents: [T124, T129, T136]
+retry_condition: >-
+  Retry T123 when NRSC links a downloadable landslide inventory (shapefile, GeoJSON or CSV, or a
+  documented Bhuvan data service) from the pages in e02, e03 or e05, with its terms stated. If the
+  owner obtains the Kerala 2018 inventory from NRSC or Bhuvan (an owner step if it needs a
+  sign-in or request form), re-verify its licence, a landslide ID per row, coordinates, the
+  survey footprint and the event date before enabling S37.
+
+failed_fetches:
+  - url: "https://www.nrsc.gov.in/robots.txt"
+    attempted_at: "2026-11-09T15:30:33Z"
+    error: "HTTP 404: no robots.txt at the site root"
+  - url: "https://www.nrsc.gov.in/resources_atlas.php"
+    attempted_at: "2026-11-09T15:33:34Z"
+    error: "HTTP 404: nav links are relative to /nrscnew/, not the host root"
+  - url: "https://bhuvan.nrsc.gov.in/robots.txt"
+    attempted_at: "2026-11-09T15:37:57Z"
+    error: "HTTP 404: Bhuvan serves no robots.txt"
+  - url: "https://www.nrsc.gov.in/nrscnew/robots.txt"
+    attempted_at: "2026-11-09T15:38:28Z"
+    error: "HTTP 404: no robots.txt under /nrscnew/"

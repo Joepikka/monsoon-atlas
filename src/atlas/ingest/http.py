@@ -104,8 +104,10 @@ class Fetcher:
         sleep: Callable[[float], None] = time.sleep,
         rng: random.Random | None = None,
         clock: Callable[[], datetime] = lambda: datetime.now(UTC),
+        retry_delays: tuple[float, ...] = RETRY_DELAYS_S,
     ):
         self.store = store
+        self.retry_delays = retry_delays  # () for providers that forbid retries (D109)
         self.allowed_hosts = {h.lower() for h in allowed_hosts}
         self.client = httpx.Client(
             transport=transport,
@@ -165,20 +167,20 @@ class Fetcher:
             if modified := prior["http"].get("last-modified"):
                 headers["If-Modified-Since"] = modified
 
-        for attempt in range(len(RETRY_DELAYS_S) + 1):
+        for attempt in range(len(self.retry_delays) + 1):
             try:
                 status, body, resp_headers, final_url = self._request(
                     ctx, public_url, secrets, headers
                 )
             except (httpx.TimeoutException, httpx.TransportError) as exc:
-                if attempt == len(RETRY_DELAYS_S):
+                if attempt == len(self.retry_delays):
                     raise FetchError(
                         f"{ctx.source_id}: {type(exc).__name__} after retries"
                     ) from None
-                self._wait(ctx, RETRY_DELAYS_S[attempt], None)
+                self._wait(ctx, self.retry_delays[attempt], None)
                 continue
-            if status in RETRY_STATUS and attempt < len(RETRY_DELAYS_S):
-                self._wait(ctx, RETRY_DELAYS_S[attempt], resp_headers.get("retry-after"))
+            if status in RETRY_STATUS and attempt < len(self.retry_delays):
+                self._wait(ctx, self.retry_delays[attempt], resp_headers.get("retry-after"))
                 continue
             break
 
@@ -221,6 +223,54 @@ class Fetcher:
         )
         self.store.record(artifact, http_meta)
         log.info("%s stored %s (%d bytes)", ctx.source_id, sha[:12], len(body))
+        return artifact
+
+    def fetch_large(self, ctx: FetchContext, url: str, *, mapping_version: str) -> RawArtifact:
+        """Stream one large public file straight to the raw store (no memory copy, no retry,
+        no conditional GET). The byte budget still applies while streaming."""
+        self._check_url(url)
+        used = self._requests.get(ctx.run_id, 0)
+        if used >= ctx.budget.max_requests:
+            raise BudgetExceeded(f"{ctx.source_id}: request budget {used} reached")
+        self._requests[ctx.run_id] = used + 1
+        try:
+            with self.client.stream("GET", url) as resp:
+                if resp.status_code != 200:
+                    raise FetchError(f"{ctx.source_id}: HTTP {resp.status_code} for {url}")
+                headers = {k.lower(): v for k, v in resp.headers.items()}
+                declared = int(headers.get("content-length") or 0)
+                if declared > ctx.budget.max_bytes:
+                    raise TooLarge(f"{ctx.source_id}: {declared} bytes > budget")
+
+                def chunks():
+                    size = 0
+                    for chunk in resp.iter_bytes(1024 * 1024):
+                        size += len(chunk)
+                        if size > ctx.budget.max_bytes:
+                            raise TooLarge(f"{ctx.source_id}: response exceeded byte budget")
+                        yield chunk
+
+                fetched_at = self.clock()
+                media_type = headers.get("content-type", "application/octet-stream").split(";")[0]
+                ext = EXT.get(media_type.strip().lower(), "bin")
+                path, sha, size = self.store.put_stream(
+                    chunks(), ctx.source_id, fetched_at, ext, expected_size=declared
+                )
+        except httpx.HTTPError as exc:
+            raise FetchError(f"{ctx.source_id}: {type(exc).__name__}") from None
+        artifact = RawArtifact(
+            sha256=sha,
+            path=path,
+            fetched_at=fetched_at,
+            media_type=media_type.strip(),
+            response_status=200,
+            source_url=url,
+            schema_mapping_version=mapping_version,
+        )
+        kept = {k: headers[k] for k in KEPT_HEADERS if k in headers}
+        meta = {"status": 200, "final_url": url} | kept
+        self.store.record(artifact, meta)
+        log.info("%s streamed %s (%d bytes)", ctx.source_id, sha[:12], size)
         return artifact
 
     def _wait(self, ctx: FetchContext, base: float, retry_after: str | None) -> None:

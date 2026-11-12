@@ -1,0 +1,126 @@
+{
+  "source_id": "S06",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://climate-api.open-meteo.com/robots.txt",
+      "fetched_at": "2026-11-09T06:22:08.054727Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "efdb5938a9736727f5cce2b60355588e4fa541d19d022d222d8a09b8efd5dcce",
+      "bytes": 25,
+      "raw_path": "S06/2026-11-09/efdb5938a9736727f5cce2b60355588e4fa541d19d022d222d8a09b8efd5dcce.bin",
+      "shows": "Climate API host robots.txt"
+    },
+    {
+      "id": "e02",
+      "url": "https://open-meteo.com/en/terms",
+      "fetched_at": "2026-11-09T06:22:10.497045Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "ed615d416b404ab2ec3de944c897b4df7fbaaa13c0b0596406ca84613c48315a",
+      "bytes": 38673,
+      "raw_path": "S06/2026-11-09/ed615d416b404ab2ec3de944c897b4df7fbaaa13c0b0596406ca84613c48315a.html",
+      "shows": "Open-Meteo terms of use"
+    },
+    {
+      "id": "e03",
+      "url": "https://open-meteo.com/en/licence",
+      "fetched_at": "2026-11-09T06:22:12.897948Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "080d43d9ece181c6c03c546a7481a0652bf6372cb16ae3f644b392124d6de16a",
+      "bytes": 40502,
+      "raw_path": "S06/2026-11-09/080d43d9ece181c6c03c546a7481a0652bf6372cb16ae3f644b392124d6de16a.html",
+      "shows": "Open-Meteo licence page"
+    },
+    {
+      "id": "e04",
+      "url": "https://open-meteo.com/en/docs/climate-api",
+      "fetched_at": "2026-11-09T06:22:15.285741Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "6f54bd6be8f9d1e4773125aa6cec5da8693f6c389f92443a9b033a7946fbb024",
+      "bytes": 152595,
+      "raw_path": "S06/2026-11-09/6f54bd6be8f9d1e4773125aa6cec5da8693f6c389f92443a9b033a7946fbb024.html",
+      "shows": "Climate change API documentation"
+    },
+    {
+      "id": "e05",
+      "url": "https://pcmdi.llnl.gov/CMIP6/TermsOfUse",
+      "fetched_at": "2026-11-09T06:23:03.382776Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "55e13b4edab014c2241209e937d00f3bb282d6af9a77c5eb50ba91a3e64856b2",
+      "bytes": 361,
+      "raw_path": "S06/2026-11-09/55e13b4edab014c2241209e937d00f3bb282d6af9a77c5eb50ba91a3e64856b2.html",
+      "shows": "CMIP6 terms of use linked from the Climate API docs"
+    },
+    {
+      "id": "e06",
+      "url": "https://climate-api.open-meteo.com/v1/climate?latitude=12.97&longitude=77.59&daily=precipitation_sum,temperature_2m_max&temperature_unit=celsius&precipitation_unit=mm&models=CMCC_CM2_VHR4,FGOALS_f3_H,HiRAM_SIT_HR,MRI_AGCM3_2_S,EC_Earth3P_HR,MPI_ESM1_2_XR,NICAM16_8S&start_date=1950-01-01&end_date=2050-01-01",
+      "fetched_at": "2026-11-09T06:23:09.422515Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "714dcdef18c108d8a2d0a41853c83243259cf9ee3e86a1a1a1f4b27fa389dfad",
+      "bytes": 3049124,
+      "raw_path": "S06/2026-11-09/714dcdef18c108d8a2d0a41853c83243259cf9ee3e86a1a1a1f4b27fa389dfad.json",
+      "shows": "Sample: Bengaluru, all 7 models, daily rain and maximum temperature 1950 to 2050, default bias correction"
+    },
+    {
+      "id": "e07",
+      "url": "https://climate-api.open-meteo.com/v1/climate?latitude=12.97&longitude=77.59&daily=precipitation_sum,temperature_2m_max&temperature_unit=celsius&precipitation_unit=mm&models=CMCC_CM2_VHR4,FGOALS_f3_H,HiRAM_SIT_HR,MRI_AGCM3_2_S,EC_Earth3P_HR,MPI_ESM1_2_XR,NICAM16_8S&start_date=2000-01-01&end_date=2000-12-31&disable_bias_correction=true",
+      "fetched_at": "2026-11-09T06:24:07.079965Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "ed35ceff81e30b88eff9c0d1a8d800ecaff59c15abbdb8d2164a3dcf6401a1c7",
+      "bytes": 31829,
+      "raw_path": "S06/2026-11-09/ed35ceff81e30b88eff9c0d1a8d800ecaff59c15abbdb8d2164a3dcf6401a1c7.json",
+      "shows": "Sample: Bengaluru, all 7 models, 2000, bias correction disabled"
+    },
+    {
+      "id": "e08",
+      "url": "https://climate-api.open-meteo.com/v1/climate?latitude=12.97&longitude=77.59&daily=precipitation_sum,temperature_2m_max&temperature_unit=celsius&precipitation_unit=mm&models=CMCC_CM2_VHR4,FGOALS_f3_H,HiRAM_SIT_HR,MRI_AGCM3_2_S,EC_Earth3P_HR,MPI_ESM1_2_XR,NICAM16_8S&start_date=2050-01-01&end_date=2050-01-31",
+      "fetched_at": "2026-11-09T06:24:09.886685Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "5e65b524f80e827344a67a4f4af38473174043493551c393876e339d4bb7c711",
+      "bytes": 3839,
+      "raw_path": "S06/2026-11-09/5e65b524f80e827344a67a4f4af38473174043493551c393876e339d4bb7c711.json",
+      "shows": "Range check: January 2050, past the documented end"
+    },
+    {
+      "id": "e09",
+      "url": "https://pcmdi.llnl.gov/CMIP6/TermsOfUse/TermsOfUse6-2.html",
+      "fetched_at": "2026-11-09T06:24:42.074514Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "b1d51fa1551cef3961e9547f5b43035e7e1ed6cdebb6c52de8a67fbfdbddd191",
+      "bytes": 21108,
+      "raw_path": "S06/2026-11-09/b1d51fa1551cef3961e9547f5b43035e7e1ed6cdebb6c52de8a67fbfdbddd191.html",
+      "shows": "CMIP6 terms of use (target of the e05 redirect)"
+    },
+    {
+      "id": "e10",
+      "url": "https://hrcm.ceda.ac.uk/research/cmip6-highresmip/",
+      "fetched_at": "2026-11-09T06:24:44.481983Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "775dd80795007d54f07b6874b444f980eb69f6384d12781d87d8b11e681368a8",
+      "bytes": 22851,
+      "raw_path": "S06/2026-11-09/775dd80795007d54f07b6874b444f980eb69f6384d12781d87d8b11e681368a8.html",
+      "shows": "HighResMIP page linked from the Climate API docs"
+    },
+    {
+      "id": "e11",
+      "url": "https://climate-api.open-meteo.com/v1/climate?latitude=12.97&longitude=77.59&daily=precipitation_sum,temperature_2m_max&temperature_unit=celsius&precipitation_unit=mm&models=CMCC_CM2_VHR4,FGOALS_f3_H,HiRAM_SIT_HR,MRI_AGCM3_2_S,EC_Earth3P_HR,MPI_ESM1_2_XR,NICAM16_8S&start_date=2050-12-01&end_date=2050-12-31",
+      "fetched_at": "2026-11-09T06:24:47.335521Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "e831cf971f971b8753da14160c4ac11d9c1a509786c4993ab32b4d54ed40545a",
+      "bytes": 3840,
+      "raw_path": "S06/2026-11-09/e831cf971f971b8753da14160c4ac11d9c1a509786c4993ab32b4d54ed40545a.json",
+      "shows": "Range check: December 2050"
+    }
+  ]
+}

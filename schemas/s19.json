@@ -1,0 +1,17 @@
+{
+  "$comment": "S19 Google Open Buildings v3 (T070). Measure columns added to the common envelope (common.json). Field map: configs/sources/s19.yaml.",
+  "source_id": "S19",
+  "schema_version": 1,
+  "mapping_version": "s19-v1",
+  "fields": [
+    {"name": "building_id", "type": "string", "nullable": false, "meaning": "full_plus_code; no building ID is published, and the release plus the Plus Code is unique"},
+    {"name": "source_release", "type": "string", "nullable": false, "meaning": "open-buildings-v3 (inference May 2023)"},
+    {"name": "geometry", "type": "wkb", "nullable": false, "meaning": "footprint polygon, WKT converted to WKB, WGS84"},
+    {"name": "area_m2", "type": "float64", "nullable": true, "meaning": "area_in_meters, square metres"},
+    {"name": "confidence", "type": "float64", "nullable": true, "meaning": "model score 0.65 to 1.0; the map shows 0.75 or more by default"},
+    {"name": "plus_code", "type": "string", "nullable": false, "meaning": "full_plus_code of the centroid"}
+  ],
+  "valid_at": "null: one static release; rows carry no image dates",
+  "clip": "rows whose centroid lies in the requested box; duplicate Plus Codes within a release are dropped",
+  "not_included": "owners, residents, addresses and building use: none are published and none are inferred"
+}

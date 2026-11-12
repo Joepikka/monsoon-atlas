@@ -1,0 +1,55 @@
+# M16 definition and honest status. The rule is implemented (src/atlas/features/m16.py); no label,
+# precision, recall or prediction exists. T214.
+model_id: M16
+state: all
+enabled: false
+task: anomaly
+unit: "feed-entity x report time"
+target: >-
+  unusual residual relative to the trailing 28-day median and MAD; flag abs(robust_z) > 4 or a
+  value outside a stated physical unit bound; an anomaly is not a real-world incident
+rule:
+  window_days: 28
+  min_valid_days: 21  # implementation choice, not on the card
+  threshold: 4.0
+  mad_scale: 1.4826
+  mad_zero: "no robust z; counted, not flagged"
+  missing: "never zero; never flags; left out of windows"
+  season_hour_correction: not_applied  # trailing window follows the local level; daily data has no hour
+unit_bounds:
+  # Bounds come only from the source records: S08 reports rainfall in mm "from 0 upward"
+  # (configs/sources/s08.yaml units; the adapter rejects negative values, D30). No upper bound is stated.
+  S08: {field: rain_mm, lower: 0.0, upper: null}
+sources:
+  S08: "used: daily 1981-2025 held locally; licence restricted, so only aggregate flag counts are published"
+  S02: "not used: only single-point discovery probes (Bengaluru) are held, no daily history"
+  S07: "not used: only single-point discovery probes (Bengaluru) are held, no daily history"
+  S32: "not used: dates sampled twice a month, so a trailing 28-day window is undefined; T114 quarantine"
+  S22: "not used: blocked, zero price rows"
+  S23: "not used: blocked, zero price rows (discovery API probes only)"
+data_gate:
+  min_adjudicated_flags: 100
+  note: "manual labels from real archived records; under 100 report counts and intervals only"
+baselines:
+  - "range check on stated unit bounds: implemented, 0 violations in the held S08 grids"
+  - "seasonal robust-z rule: not implemented (nothing to compare it with: 0 labels)"
+candidates:
+  robust_z: "implemented as the default rule; no tuned parameter"
+  isolation_forest: "not run: with 0 adjudicated labels no challenger can be evaluated"
+release_targets:
+  precision_among_100_adjudicated_flags: 0.80
+  false_alerts_per_entity_week: 1
+  interval: "Wilson CI and day-block CI"
+planned_splits:
+  note: "planned only; no split manifest is written because nothing is trained or scored"
+  price_rain_train: ["2021-01-01", "2023-12-31"]
+  tune: ["2024-01-01", "2024-06-30"]
+  test: ["2025-01-01", "2025-12-31"]
+  new_feeds: "first 30 days calibration, next 30 days manual evaluation"
+split_manifest: null
+status: research_only
+reason: >-
+  M16 is research-only: the rule runs on the held S08 daily grids and flag counts are reported,
+  but 0 of 100 flags are adjudicated (T212, T213 blocked, D159), so precision is not measured and
+  no quality claim is made.
+fallback: "none: no flag is published as an alert"

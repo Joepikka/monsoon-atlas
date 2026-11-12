@@ -1,0 +1,45 @@
+# Planned M19 definition, not a fitted model or a claim that labels exist. T167.
+model_id: M19
+state: ka
+enabled: false
+task: regression
+unit: "reservoir x daily issue x horizon {7, 30} days"
+sources: [S28]
+depends_on: [M02]
+target: >-
+  the M02 reservoir level target as daily q10/q50/q90 at 7 and 30 days from one GRU, compared
+  with M02 under identical dates and features; not a separate product
+architecture: >-
+  N3: Bx60x8 (level delta, level, rain, inflow, outflow, sinDOY, cosDOY, missingness) -> GRU64 ->
+  dropout 0.2 -> GRU32 + reservoir embedding 8 -> Dense32 -> 2 horizons x 3 ordered quantiles;
+  future rain excluded
+data_gate:
+  min_reservoirs: 5
+  min_years_daily: 5
+  requires: [M02 trained baseline on the same rows, free GPU session within 2 GPU hours per experiment]
+  note: the 2 GB local GPU is too small; deep learning runs on Kaggle or Colab only (AGENTS.md)
+baselines: [M02 strongest trained non-neural baseline]
+candidates: [gru_n3]
+planned_splits:
+  collect_from: "2028-01-17"
+  train: ["2028-01-17", "2028-03-28"]
+  tune: ["2028-03-29", "2028-04-12"]
+  calibrate: ["2028-04-13", "2028-04-26"]
+  locked_test: ["2028-04-27", "2028-05-26"]
+  note: >-
+    Planned only and identical to M02. Dates assume source approval and readiness pass on
+    schedule; if delayed the whole manifest shifts before training. No earlier observation is
+    invented.
+card_splits_unreachable:
+  train: ["2017-01-01", "2022-12-31"]
+  tune: ["2023-01-01", "2023-06-30"]
+  calibrate: ["2023-07-01", "2023-12-31"]
+  locked_test: ["2024-01-01", "2024-12-31"]
+split_manifest: null
+status: blocked
+reason: >-
+  M19 blocked: it must beat the M02 baseline on the same reservoir level target, and M02 is
+  blocked because S28 KWRIS has no verified daily reservoir level history (T092), so there are no
+  reservoirs with 5 years of daily data, no M02 baseline and no target; no free GPU session exists
+  either, as the Kaggle owner step H10 is open (T167).
+fallback: "none: M02 is the baseline and it does not exist, so a GRU alone has nothing to be compared against"

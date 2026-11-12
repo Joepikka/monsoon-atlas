@@ -20,6 +20,10 @@ htmlcov/
 # Data (versioned outside git)
 data/raw/
 data/clean/
+data/models/
+data/rag/
+data/prepared/
+data/manifests/S32/history.json
 *.duckdb
 *.duckdb.wal
 
@@ -29,6 +33,8 @@ mlruns/
 # Frontend
 node_modules/
 dist/
+web/test-results/
+web/playwright-report/
 
 # OS / editor
 .DS_Store
@@ -39,3 +45,14 @@ Thumbs.db
 # Handoff bundle copies (the combined .md is committed; zip and pdf copies are local)
 handoff/*.zip
 handoff/*.pdf
+
+# IMD S08 area-averaged rainfall (mm): local only, not tracked (H11 item 9, D166)
+reports/eda/05_kl_flood2018/replay2018.json
+reports/eda/05_kl_flood2018/monthly_2018.csv
+reports/eda/07_climate/s08_kerala_annual.csv
+# IMD S08 charts that plot area-averaged rainfall in mm: local only (H11 answer of 11 Nov, D167)
+reports/eda/02_ka_rain/gauge_vs_grid.png
+reports/eda/02_ka_rain/bias_by_district.png
+reports/eda/05_kl_flood2018/rain_2018_vs_climatology.png
+reports/eda/07_climate/s08_annual_rain.png
+worker/wrangler.deploy.toml

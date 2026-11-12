@@ -1,0 +1,20 @@
+{"id": "Q01", "question": "Which state is built first?", "gold": ["project/rules", "project/readme", "project/amendments"]}
+{"id": "Q02", "question": "Does this project charge for access?", "gold": ["project/rules", "project/readme"]}
+{"id": "Q03", "question": "Is this an official emergency service?", "gold": ["project/readme", "project/rules"]}
+{"id": "Q12", "question": "Why is an alert no longer active?", "gold": ["S09"]}
+{"id": "Q16", "question": "Can missing rainfall be treated as zero?", "gold": ["project/decisions", "S01", "S32", "project/web-lens"]}
+{"id": "Q17", "question": "Why is my ward unavailable?", "gold": ["S40"]}
+{"id": "Q23", "question": "Can monthly dam reports validate a seven-day daily forecast?", "gold": ["S33", "project/decisions", "project/amendments", "labels/kerala"]}
+{"id": "Q25", "question": "What is the price-spike target?", "gold": ["M06"]}
+{"id": "Q27", "question": "Why avoid random time splits?", "gold": ["project/rules"]}
+{"id": "Q28", "question": "What must a model beat?", "gold": ["project/rules", "M05"]}
+{"id": "Q33", "question": "What does SPI-3 measure?", "gold": ["M05"]}
+{"id": "K01", "question": "Is Geofabrik OpenStreetMap data available?", "gold": ["S18"]}
+{"id": "K02", "question": "What licence does WorldPop population data use?", "gold": ["S16"]}
+{"id": "K03", "question": "How many Karnataka districts does geoBoundaries contain?", "gold": ["S17"]}
+{"id": "K04", "question": "When does KSEB daily dam level data start?", "gold": ["S32"], "state": "kl"}
+{"id": "K05", "question": "Did the drought outlook beat persistence on the test years?", "gold": ["M05"]}
+{"id": "K06", "question": "Why is there no tomato price forecast?", "gold": ["M06"]}
+{"id": "K07", "question": "Which core models did the GATE-CORE report choose?", "gold": ["project/core-gate", "project/decisions"]}
+{"id": "K08", "question": "How often are CAP alerts polled?", "gold": ["S09", "project/feeds"]}
+{"id": "K09", "question": "Are Bengaluru flood complaint records ground truth labels?", "gold": ["S43"]}

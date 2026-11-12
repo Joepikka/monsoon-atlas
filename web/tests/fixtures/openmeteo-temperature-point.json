@@ -1,0 +1,22 @@
+{
+  "id": "329a94cc856abbe9374b0287ea83cad24aeb32f395bd940540c2f09c57765ff1",
+  "title": "ECMWF IFS temperature — Bengaluru grid cell",
+  "longitude": 77.5,
+  "latitude": 13.0,
+  "source_id": "S01",
+  "source_url": "https://api.open-meteo.com/v1/forecast?latitude=12.97&longitude=77.59&hourly=temperature_2m,precipitation,relative_humidity_2m,wind_speed_10m&temperature_unit=celsius&wind_speed_unit=ms&precipitation_unit=mm&timezone=GMT&forecast_days=16&models=ecmwf_ifs025",
+  "provenance": "model",
+  "valid_at": "2026-11-05T13:00:00Z",
+  "fetched_at": "2026-11-05T12:55:01.914727Z",
+  "kind": "weather",
+  "spatial_scope": "point",
+  "issued_at": "2026-11-05T00:00:00Z",
+  "available_at": "2026-11-05T12:55:01.914727Z",
+  "expires_at": null,
+  "severity": null,
+  "unit": "°C",
+  "value": 21.3,
+  "missing_reason": null,
+  "evidence": "forecast",
+  "location_note": "ECMWF IFS 0.25-degree grid-cell centre; not a station observation."
+}

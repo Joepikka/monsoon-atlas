@@ -1,0 +1,9 @@
+source,canonical,upstream,unit_status,detail,evidence
+S38,vehicle_id,,absent,Unresolved: no protobuf field list is published and no feed was read.,e05
+S38,trip_id,,absent,Unresolved: whether positions carry a trip that matches trips.txt was not read.,e05
+S38,route_id,,absent,Unresolved: no route linkage was read.,e05
+S38,position_at,,absent,Unresolved: vehicle timestamp semantics and time zone are not stated.,e05
+S38,lat,,absent,Unresolved: coordinate unit and datum are not stated.,e05
+S38,lon,,absent,Unresolved: coordinate unit and datum are not stated.,e05
+S38,speed_ms,,absent,Unresolved: no speed field or unit is documented.,e05
+S38,feed_version,,absent,Unresolved: no feed version or header timestamp is documented.,e05

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "state": "ka",
+  "rows": [
+    {
+      "model": "M07",
+      "core": "C1",
+      "target": "Kerala dam level seven days ahead",
+      "baseline": null,
+      "test": null,
+      "metric": null,
+      "candidate": null,
+      "baseline_value": null,
+      "improvement": null,
+      "ci95": null,
+      "status": "blocked at data gate (T130); no model",
+      "report": "reports/models/m07-case-study.md"
+    },
+    {
+      "model": "M05",
+      "core": "C2",
+      "target": "District SPI-3 of the issue month; drought is SPI-3 < -1",
+      "baseline": "persistence",
+      "test": "2020-01-01/2024-12-31",
+      "metric": "MAE",
+      "candidate": 0.7320467345749282,
+      "baseline_value": 0.8082546179167789,
+      "improvement": 0.07620788334185077,
+      "ci95": [
+        0.0025687988345464543,
+        0.15024385980322363
+      ],
+      "status": "champion, hindcast (D43)",
+      "report": "reports/models/m05.md"
+    },
+    {
+      "model": "M06",
+      "core": "secondary",
+      "target": "Kolar tomato price spike",
+      "baseline": null,
+      "test": null,
+      "metric": null,
+      "candidate": null,
+      "baseline_value": null,
+      "improvement": null,
+      "ci95": null,
+      "status": "blocked",
+      "report": "reports/models/m06.md"
+    }
+  ]
+}

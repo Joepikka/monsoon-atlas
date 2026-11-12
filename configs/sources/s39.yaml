@@ -1,0 +1,92 @@
+# Discovery record for S39 (plan task T083). Evidence IDs refer to tests/fixtures/s39/manifest.json;
+# the files stay in data/raw/S39. See docs/sources/s39.md.
+source_id: S39
+state: ka
+name: "Telegram Bot API"
+verify_task: T083
+discovered_at: "2026-11-09T11:03:39Z"
+outcome: blocked
+landing_url: "https://core.telegram.org/bots/api"
+publisher: "Telegram (Bot Platform)"
+no_card: true
+account_required: true
+
+access:
+  status: token_required_owner_step
+  detail: >-
+    Every request goes to https://api.telegram.org/bot<token>/METHOD_NAME over HTTPS, and "Each
+    bot is given a unique authentication token when it is created" (e01, e04). Creating the bot
+    and the public channel is owner step H08 (amendments A5); no token is configured, so nothing
+    was sent.
+  evidence: [e01, e04]
+
+licence:
+  status: restricted
+  detail: >-
+    The Bot Developer Terms say continued use of the Bot Platform "shall constitute your
+    acceptance" of them and of the Telegram Terms of Service and Privacy Policy, and require a
+    privacy policy for any personal data handled (e03). Accepting terms is an owner step; the
+    project posts only its own public alert briefs and collects no user data.
+  evidence: [e03]
+
+provider_quota:
+  status: published
+  detail: >-
+    "In a single chat, avoid sending more than one message per second"; groups allow 20 messages
+    per minute; free broadcasts about 30 messages per second; beyond that 429 errors (e02). Flood
+    control answers carry retry_after, the seconds to wait (e01).
+  evidence: [e01, e02]
+
+history:
+  status: not_public
+  detail: "An output channel: the project sends messages and reads no history (e01)."
+  evidence: [e01]
+earliest_date: null
+latest_date: null
+
+units:
+  status: not_applicable
+  detail: "Messages and delivery results, not measurements (e01)."
+  evidence: [e01]
+
+source_check:
+  status: blocked
+  detail: >-
+    Plan rule: public channels only; no subscriber or chat history collection; retry 429 per
+    retry_after. The limits and retry_after are documented (e01, e02); the bot would post only to
+    one public channel and never call history or member methods. Without the owner's bot, channel
+    and acceptance of the developer terms (e03), nothing can be checked live.
+  evidence: [e01, e02, e03]
+
+field_map:
+  - canonical: message_key
+    upstream: null
+    unit_status: not_applicable
+    detail: "Project-side key: alert ID plus brief version; not a Telegram field."
+    evidence: [e01]
+  - canonical: public_channel_id
+    upstream: "chat_id (@channelusername)"
+    unit_status: not_applicable
+    detail: "The owner's public channel, from H08."
+    evidence: [e01]
+  - canonical: content_hash
+    upstream: null
+    unit_status: not_applicable
+    detail: "SHA256 of the sent text, computed by the project."
+    evidence: [e01]
+  - canonical: sent_at
+    upstream: "Message.date"
+    unit_status: labelled
+    detail: "Unix time returned for a sent message."
+    evidence: [e01]
+  - canonical: delivery_status
+    upstream: "ok / error_code / parameters.retry_after"
+    unit_status: not_applicable
+    detail: "Sent, retry after N seconds, or failed."
+    evidence: [e01]
+
+dependents: [T084]
+retry_condition: >-
+  The owner creates the bot with BotFather and a public channel (H08), accepts Telegram's
+  developer terms, and stores TELEGRAM_BOT_TOKEN in .env; then T083 runs again.
+failed_fetches: []

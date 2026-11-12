@@ -54,14 +54,16 @@ units:
     (mm); alert levels, MWL, FRL and spillway crest (metre); live storage at FRL (MCM) (e02). Some
     cells override the header with an "ft" suffix: for Idukki and Sholayar the alert, MWL, FRL and
     spillway values are in feet ("2403ft"), so units are read per cell. Inflow MU is energy
-    (million units, GWh), not a water volume or flow. No datum is stated: levels are compared only
-    within each dam (e02). The earliest reports break the header units. On 26-Oct-2023 the Idukki
+    (million units, GWh), not a water volume or flow. The daily reports state no datum (e02). KSEB's dam manuals
+    state levels above mean sea level only for the Idukki reservoir (Survey of India benchmarks, e81, e82),
+    Sengulam (e83), Kakki-Anathode (e96) and Pamba (e97); the others give elevations with no
+    named datum (e84-e95, e98), so those dams stay datum-unknown (D103). The earliest reports break the header units. On 26-Oct-2023 the Idukki
     and Sholayar levels are in feet (2353.98 and 2659.6, against about 719 and 811 m from
     15-Nov-2023). On 26-Oct-2023 and 15-Nov-2023 the % storage is 100 times too large (4921 for
     49.21). From 1-Dec-2023 every sampled value is consistent (e03, e09, e10). So T114 checks
     each row: level within the dam's own range in metres, and % storage equal to live storage
     divided by live storage at FRL; failing rows are quarantined, never rescaled silently.
-  evidence: [e02, e03, e09, e10]
+  evidence: [e02, e03, e09, e10, e81, e82, e83, e84, e85, e86, e87, e88, e89, e90, e91, e92, e93, e94, e95, e96, e97, e98]
 
 source_check:
   status: pass
@@ -112,4 +114,5 @@ dependents: [T114, T130, T131, T132]
 retry_condition: >-
   Before T130: check the other Kerala dam sources for 2017 to 2023 daily history, S34 KSDMA dam
   level reports (T118) and S33 KSEB monthly statistics (T116), and confirm the Aug 2024 to Jul 2026
-  gap day by day in T114.
+    gap against the completed T227 census (docs/sources/s32-history.md). It must not be
+    interpolated or treated as zero readings. T130 still requires known datum and verified history.

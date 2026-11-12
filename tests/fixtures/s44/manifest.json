@@ -1,0 +1,82 @@
+{
+  "source_id": "S44",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://data.opencity.in/dataset/karnataka-crime-data-2024",
+      "fetched_at": "2026-11-09T11:06:01.802928Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "5fc61018ecab7438f317bba5aafab5548255bd66de016c2b65e16abdb374093a",
+      "bytes": 24508,
+      "raw_path": "S44/2026-11-09/5fc61018ecab7438f317bba5aafab5548255bd66de016c2b65e16abdb374093a.html",
+      "shows": "OpenCity dataset page: Karnataka crime data 2024"
+    },
+    {
+      "id": "e02",
+      "url": "https://data.opencity.in/dataset/karnataka-crime-data-2023",
+      "fetched_at": "2026-11-09T11:06:12.680487Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "65b1671e8fd4a307a5d7df11c80426a587585b6f5979b7db99ced69c80c3eaba",
+      "bytes": 21497,
+      "raw_path": "S44/2026-11-09/65b1671e8fd4a307a5d7df11c80426a587585b6f5979b7db99ced69c80c3eaba.html",
+      "shows": "OpenCity dataset page: Karnataka crime data 2023"
+    },
+    {
+      "id": "e03",
+      "url": "https://ksp.karnataka.gov.in/robots.txt",
+      "fetched_at": "2026-11-09T11:06:22.962604Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "969aa0f074a1f203e3fe14cad996b06d3c6bc299660ab9bbf36193dd5720b125",
+      "bytes": 3273,
+      "raw_path": "S44/2026-11-09/969aa0f074a1f203e3fe14cad996b06d3c6bc299660ab9bbf36193dd5720b125.html",
+      "shows": "Karnataka State Police robots.txt"
+    },
+    {
+      "id": "e04",
+      "url": "https://data.opencity.in/dataset/e2efa3e0-cb3a-4d5b-91ae-e08dcb471267/resource/3f1bbc2e-e7a0-450f-8831-6b31c140859c/download/2a1e057f-3b0b-42e4-ae4b-6cdb49902d31.csv",
+      "fetched_at": "2026-11-09T11:06:43.664700Z",
+      "status": 200,
+      "media_type": "text/csv",
+      "sha256": "e08b3e7ce8b2617273ffc7e01043d019c0ba90b3e43a618ba9ff5c1556831da0",
+      "bytes": 3965,
+      "raw_path": "S44/2026-11-09/e08b3e7ce8b2617273ffc7e01043d019c0ba90b3e43a618ba9ff5c1556831da0.csv",
+      "shows": "District-wise IPC crimes in Karnataka, 2024 (CSV)"
+    },
+    {
+      "id": "e05",
+      "url": "https://data.opencity.in/dataset/e8f4a688-6afa-4a69-b7ba-3c99dd4abb62/resource/3c92405a-36e2-495e-8abd-ccebafb3cbb9/download/ffce2bf3-1202-489d-8af5-f156c2e9b793.csv",
+      "fetched_at": "2026-11-09T11:06:53.852676Z",
+      "status": 200,
+      "media_type": "text/csv",
+      "sha256": "c1997f7505dbc1260dfe483b6fbcf6abc02e75200a58f1d356a73605164461d5",
+      "bytes": 1080,
+      "raw_path": "S44/2026-11-09/c1997f7505dbc1260dfe483b6fbcf6abc02e75200a58f1d356a73605164461d5.csv",
+      "shows": "District and city-wise total crimes registered, 2023 (CSV)"
+    },
+    {
+      "id": "e06",
+      "url": "https://data.opencity.in/dataset/karnataka-crime-data-2022",
+      "fetched_at": "2026-11-09T11:07:04.779718Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "e7d4dc29c014881bf7ce90f4c82fb6d484e8001f50e4d1931f3960e1fcbdc511",
+      "bytes": 21497,
+      "raw_path": "S44/2026-11-09/e7d4dc29c014881bf7ce90f4c82fb6d484e8001f50e4d1931f3960e1fcbdc511.html",
+      "shows": "OpenCity dataset page: Karnataka crime data 2022"
+    },
+    {
+      "id": "e07",
+      "url": "https://data.opencity.in/dataset/karnataka-crime-data-2025",
+      "fetched_at": "2026-11-09T11:07:15.779225Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "498caeba92762f419b1e3b508ee2af80f77c3cd02a99d0e3b21837f95cdaaa18",
+      "bytes": 22825,
+      "raw_path": "S44/2026-11-09/498caeba92762f419b1e3b508ee2af80f77c3cd02a99d0e3b21837f95cdaaa18.html",
+      "shows": "OpenCity dataset page: Karnataka crime data 2025"
+    }
+  ]
+}

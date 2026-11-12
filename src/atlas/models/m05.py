@@ -82,6 +82,36 @@ class Fit:
         return out
 
 
+def _climatology(train: pa.Table, y_train: np.ndarray) -> dict[tuple[str, int], float]:
+    sums: dict[tuple[str, int], list[float]] = {}
+    for p, m, y in zip(
+        train["place_id"].to_pylist(), train["month_of_year"].to_pylist(), y_train, strict=True
+    ):
+        sums.setdefault((p, m), []).append(y)
+    return {k: float(np.mean(v)) for k, v in sums.items()}
+
+
+def refit(train: pa.Table, alpha: float, test_split: DatasetSplit) -> Fit:
+    """M05 v2 (D170): v1's selected ridge alpha on a longer train window; no tune, no new choice."""
+    from sklearn.linear_model import Ridge
+
+    if any(m > test_split.train_end for m in train["target_month"].to_pylist()):
+        raise LeakageError(f"train rows run past {test_split.train_end} (purge before the test)")
+    y_train = np.asarray(train[TARGET].to_pylist(), dtype=float)
+    x_train, mean, std = _design(train)
+    ridge = Ridge(alpha=alpha).fit(x_train, y_train)
+    return Fit(
+        climatology=_climatology(train, y_train),
+        scaler=(mean.tolist(), std.tolist()),
+        ridge_alpha=alpha,
+        ridge_coef=ridge.coef_.tolist(),
+        ridge_intercept=float(ridge.intercept_),
+        lgbm_params=None,
+        lgbm_model=None,
+        choice="ridge",
+    )
+
+
 def fit(train: pa.Table, tune: pa.Table, test_split: DatasetSplit, *, lgbm_trials: int = 30) -> Fit:
     """Fit baselines and candidates on train, select on tune. Test rows are refused."""
     import lightgbm as lgb
@@ -96,12 +126,7 @@ def fit(train: pa.Table, tune: pa.Table, test_split: DatasetSplit, *, lgbm_trial
 
     y_train = np.asarray(train[TARGET].to_pylist(), dtype=float)
     y_tune = np.asarray(tune[TARGET].to_pylist(), dtype=float)
-    sums: dict[tuple[str, int], list[float]] = {}
-    for p, m, y in zip(
-        train["place_id"].to_pylist(), train["month_of_year"].to_pylist(), y_train, strict=True
-    ):
-        sums.setdefault((p, m), []).append(y)
-    climatology = {k: float(np.mean(v)) for k, v in sums.items()}
+    climatology = _climatology(train, y_train)
 
     x_train, mean, std = _design(train)
     x_tune, _, _ = _design(tune, mean, std)
@@ -332,3 +357,91 @@ def evaluate(result: Fit, calibrate: pa.Table, test: pa.Table) -> dict:
         if status != "candidate_eligible"
         else "all gates pass; needs owner approval",
     }
+
+
+# T262 (D97): interval recalibration. Point forecasts stay the approved v1 ridge.
+ORIGINS = tuple(date(year, 1, 1) for year in (2000, 2005, 2010, 2015))
+RULES = tuple((years, seasonal) for years in (1, 5, 10) for seasonal in (False, True))
+PURGE_DAYS = 92  # v1: tune starts 2017-01-01, train ends 2016-09-30
+
+
+def rolling_residuals(rows: pa.Table, alpha: float, *, end: date = date(2019, 12, 31)) -> dict:
+    """Out-of-sample ridge and persistence residuals (y - forecast) from 5-year rolling origins."""
+    from datetime import timedelta
+
+    from sklearn.linear_model import Ridge
+
+    first = min(rows["target_month"].to_pylist())
+    parts = []
+    for origin in ORIGINS:
+        train = rows_in(rows, first, origin - timedelta(days=PURGE_DAYS + 1))
+        stop = min(date(origin.year + 5, 1, 1) - timedelta(days=1), end)
+        window = rows_in(rows, origin, stop)
+        x, mean, std = _design(train)
+        model = Ridge(alpha=alpha).fit(x, np.asarray(train[TARGET].to_pylist(), dtype=float))
+        y = np.asarray(window[TARGET].to_pylist(), dtype=float)
+        parts.append(
+            (
+                np.asarray([m.year for m in window["target_month"].to_pylist()]),
+                np.asarray(window["month_of_year"].to_pylist()),
+                y - model.predict(_design(window, mean, std)[0]),
+                y - np.asarray(window["spi3_lag1"].to_pylist(), dtype=float),
+                np.asarray(window["place_id"].to_pylist()),
+            )
+        )
+    year, month, ridge, persistence, place = (np.concatenate(p) for p in zip(*parts, strict=True))
+    return {
+        "year": year,
+        "month": month,
+        "ridge": ridge,
+        "persistence": persistence,
+        "place_id": place,
+    }
+
+
+def _offsets(cal_resid, cal_month, month, seasonal: bool) -> tuple[np.ndarray, np.ndarray]:
+    """Per-row [q10, q90] residual offsets; seasonal rules calibrate Jun-Sep and the rest apart."""
+    from atlas.models.uncertainty import conformal_interval
+
+    lower, upper = np.empty(len(month)), np.empty(len(month))
+    if seasonal:
+        wet, cal_wet = np.isin(month, list(MONSOON)), np.isin(cal_month, list(MONSOON))
+        pairs = ((wet, cal_wet), (~wet, ~cal_wet))
+    else:
+        pairs = ((np.ones(len(month), bool), np.ones(len(cal_month), bool)),)
+    for target, cal in pairs:
+        lower[target], upper[target] = conformal_interval(cal_resid[cal], 0.8)
+    return lower, upper
+
+
+def interval_score(cal_resid, cal_month, y, forecast, month, seasonal: bool) -> dict:
+    lower, upper = _offsets(cal_resid, cal_month, month, seasonal)
+    inside = (y >= forecast + lower) & (y <= forecast + upper)
+    return {"coverage": float(inside.mean()), "width": float((upper - lower).mean())}
+
+
+def choose_rule(res: dict, years: range = range(2010, 2020), key: str = "ridge") -> list[dict]:
+    """Mean yearly coverage and width of each D97 rule on pre-test years, best rule first."""
+    table = []
+    for window, seasonal in RULES:
+        scores = []
+        for year in years:
+            cal = (res["year"] >= year - window) & (res["year"] < year)
+            now = res["year"] == year
+            y = res[key][now]  # residual as outcome with a zero forecast: same coverage
+            scores.append(
+                interval_score(
+                    res[key][cal],
+                    res["month"][cal],
+                    y,
+                    np.zeros(len(y)),
+                    res["month"][now],
+                    seasonal,
+                )
+            )
+        coverage = float(np.mean([s["coverage"] for s in scores]))
+        width = float(np.mean([s["width"] for s in scores]))
+        table.append(
+            {"window_years": window, "seasonal": seasonal, "coverage": coverage, "width": width}
+        )
+    return sorted(table, key=lambda r: (abs(r["coverage"] - 0.8), r["width"]))

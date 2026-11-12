@@ -1,0 +1,33 @@
+{
+  "price_sources": {
+    "S22": {
+      "enabled": false,
+      "verify_task": "T023"
+    },
+    "S23": {
+      "enabled": false,
+      "verify_task": "T025"
+    }
+  },
+  "n_price_rows": 0,
+  "n_markets": 0,
+  "n_rain_events": 0,
+  "estimate": "not computable",
+  "pretrend": "not computable",
+  "placebo": "not computable",
+  "clustered_se": "not computable",
+  "identification": {
+    "pretrend_pass": false,
+    "placebo_pass": false,
+    "label": "association only"
+  },
+  "charts": [],
+  "method": {
+    "design": "unit and period fixed effects, event-time dummies, reference -1",
+    "se": "CR1 cluster-robust by market, 95% CI with t(G-1)",
+    "pretrend": "every lead's 95% CI covers 0",
+    "placebo": "same design on event dates moved to non-event years; CI covers 0",
+    "label_rule": "association only unless both checks pass"
+  },
+  "retry": "when S22 or S23 gives weekly modal prices for 30 markets with a stated unit (D126)"
+}

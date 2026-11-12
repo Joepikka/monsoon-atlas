@@ -1,0 +1,18 @@
+{
+  "$comment": "S25 NASA FIRMS active fires (T076). Measure columns added to the common envelope (common.json). Field map: configs/sources/s25.yaml. Fetched with the owner's MAP_KEY (H09, D176); recorded URLs keep the literal MAP_KEY segment.",
+  "source_id": "S25",
+  "schema_version": 1,
+  "mapping_version": "s25-v1",
+  "fields": [
+    {"name": "detection_id", "type": "string", "nullable": false, "meaning": "SHA256 of satellite, UTC acquisition minute and position to 5 decimals; no ID is published"},
+    {"name": "acquired_at", "type": "timestamp", "nullable": false, "meaning": "acq_date + acq_time (HHMM), UTC"},
+    {"name": "lat", "type": "float64", "nullable": false, "meaning": "pixel-centre latitude, degrees"},
+    {"name": "lon", "type": "float64", "nullable": false, "meaning": "pixel-centre longitude, degrees"},
+    {"name": "confidence", "type": "string", "nullable": false, "meaning": "low, nominal or high (CSV l, n, h)"},
+    {"name": "frp_mw", "type": "float64", "nullable": true, "meaning": "fire radiative power, megawatts"},
+    {"name": "sensor", "type": "string", "nullable": false, "meaning": "satellite code: N, N20 or N21"},
+    {"name": "latency_minutes", "type": "float64", "nullable": false, "meaning": "fetch time minus acquisition time, minutes"}
+  ],
+  "clip": "detections whose pixel centre lies in the state polygon; repeats of the same detection are dropped",
+  "not_included": "no confirmed-fire or structure-fire label: a hotspot is a satellite thermal anomaly"
+}

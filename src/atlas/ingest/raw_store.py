@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import os
 import tempfile
+from collections.abc import Iterable
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -50,6 +51,41 @@ class RawStore:
             Path(tmp).unlink(missing_ok=True)
             raise
         return target, sha
+
+    def put_stream(
+        self,
+        chunks: Iterable[bytes],
+        source_id: str,
+        fetched_at: datetime,
+        ext: str,
+        expected_size: int = 0,
+    ) -> tuple[Path, str, int]:
+        """Stream chunks to disk under their SHA256 without holding the file in memory.
+        Returns (path, sha256, bytes). Raises ArchiveOnly before writing if the quota is short."""
+        if self.quota is not None and expected_size:
+            self.quota.ensure_can_ingest(expected_size)
+        day = self.root / source_id / fetched_at.date().isoformat()
+        day.mkdir(parents=True, exist_ok=True)
+        fd, tmp = tempfile.mkstemp(dir=day, prefix=".tmp-", suffix=f".{ext}")
+        digest, size = hashlib.sha256(), 0
+        try:
+            with os.fdopen(fd, "wb") as f:
+                for chunk in chunks:
+                    digest.update(chunk)
+                    size += len(chunk)
+                    f.write(chunk)
+                f.flush()
+                os.fsync(f.fileno())
+            sha = digest.hexdigest()
+            target = day / f"{sha}.{ext}"
+            if target.exists():
+                Path(tmp).unlink()
+            else:
+                os.replace(tmp, target)
+        except BaseException:
+            Path(tmp).unlink(missing_ok=True)
+            raise
+        return target, sha, size
 
     def record(self, artifact: RawArtifact, http: dict[str, Any]) -> None:
         """Append one ledger entry. `http` must already be free of credentials."""

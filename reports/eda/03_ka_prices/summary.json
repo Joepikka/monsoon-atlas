@@ -1,0 +1,72 @@
+{
+  "price_rows": 0,
+  "sources": {
+    "S22": {
+      "source": "S22",
+      "discovered_at": "2026-11-05T16:00:42Z",
+      "outcome": "blocked",
+      "licence": "unverified",
+      "history": "not_public",
+      "earliest_date": null,
+      "latest_date": null,
+      "units": "not_checked",
+      "retry_condition": "Re-run T023 with a working browser render of https://indiadataportal.com/p/agmarknet (or the owner opens it and notes the download button, file format and licence shown). If downloads need a sign-in, that is an owner step. Meanwhile T025 (data.gov.in mandi prices, free API key) is the other route to the same Agmarknet prices.",
+      "fields": 5,
+      "fields_by_unit_status": {
+        "absent": 5
+      },
+      "adapter_error": "S22 is blocked (T023): no verified download, field mapping, units or dataset licence; retry the conditions in configs/sources/s22.yaml"
+    },
+    "S23": {
+      "source": "S23",
+      "discovered_at": "2026-11-06T06:47:05.964Z",
+      "outcome": "blocked",
+      "licence": "open",
+      "history": "partial",
+      "earliest_date": "2026-11-05",
+      "latest_date": "2026-11-05",
+      "units": "unlabelled",
+      "retry_condition": "Capture a publisher statement tied to resource 9ef84268-d588-465a-a308-a864a43d0070 establishing the denominator of min_price, max_price and modal_price (including commodity-specific exceptions if units vary). Then re-run T025 and validate the mapping before enabling S23 or implementing ingestion in T026. GODL is verified; no new API key or licence confirmation is needed.",
+      "fields": 5,
+      "fields_by_unit_status": {
+        "absent": 1,
+        "labelled": 1,
+        "not_applicable": 2,
+        "unlabelled": 1
+      },
+      "adapter_error": "S23 is blocked (T025): price units/denominator are unverified despite the open GODL licence; retry the conditions in configs/sources/s23.yaml"
+    }
+  },
+  "market_season": {
+    "n": 0,
+    "by_month": null,
+    "status": "not computable: source blocked, no price rows (S22, S23)"
+  },
+  "measures": [
+    {
+      "measure": "future_label_coverage",
+      "count": 0,
+      "n": 0,
+      "share": null,
+      "status": "not computable: source blocked, no price rows (S22, S23)"
+    },
+    {
+      "measure": "spike_prevalence",
+      "count": 0,
+      "n": 0,
+      "share": null,
+      "status": "not computable: source blocked, no price rows (S22, S23)"
+    }
+  ],
+  "charts": [
+    "field_unit_status.png"
+  ],
+  "caption": "S22 and S23 discovery records (price sources, blocked): price fields by unit status (fields), 2026-11-05 to 2026-11-06; coverage 10 fields; 0 price rows.",
+  "limits": [
+    "Zero price rows: S22 and S23 are blocked, so no market, season or spike is measured.",
+    "S23 units are unlabelled: price per quintal vs per kg stays unverified (T025).",
+    "S23 history is one current-day snapshot (5 Nov 2026), not the 2021-2026 history planned.",
+    "Measures with n = 0 are not computable; no 0% share and no label is filled.",
+    "No feature is built, so none can use data after the frozen discovery dates."
+  ]
+}

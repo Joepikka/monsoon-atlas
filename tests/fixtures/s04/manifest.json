@@ -1,0 +1,137 @@
+{
+  "source_id": "S04",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://air-quality-api.open-meteo.com/robots.txt",
+      "fetched_at": "2026-11-09T04:50:49.909302Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "efdb5938a9736727f5cce2b60355588e4fa541d19d022d222d8a09b8efd5dcce",
+      "bytes": 25,
+      "raw_path": "S04/2026-11-09/efdb5938a9736727f5cce2b60355588e4fa541d19d022d222d8a09b8efd5dcce.bin",
+      "shows": "Air-quality API host robots.txt"
+    },
+    {
+      "id": "e02",
+      "url": "https://open-meteo.com/en/terms",
+      "fetched_at": "2026-11-09T04:50:52.214745Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "ed615d416b404ab2ec3de944c897b4df7fbaaa13c0b0596406ca84613c48315a",
+      "bytes": 38673,
+      "raw_path": "S04/2026-11-09/ed615d416b404ab2ec3de944c897b4df7fbaaa13c0b0596406ca84613c48315a.html",
+      "shows": "Open-Meteo terms of use"
+    },
+    {
+      "id": "e03",
+      "url": "https://open-meteo.com/en/licence",
+      "fetched_at": "2026-11-09T04:50:54.446873Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "080d43d9ece181c6c03c546a7481a0652bf6372cb16ae3f644b392124d6de16a",
+      "bytes": 40502,
+      "raw_path": "S04/2026-11-09/080d43d9ece181c6c03c546a7481a0652bf6372cb16ae3f644b392124d6de16a.html",
+      "shows": "Open-Meteo licence page"
+    },
+    {
+      "id": "e04",
+      "url": "https://open-meteo.com/en/docs/air-quality-api",
+      "fetched_at": "2026-11-09T04:50:56.643451Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "b35a9802975d66ab31cf331869a53c559eba3b16570e4730a12c3553a5a0417f",
+      "bytes": 228924,
+      "raw_path": "S04/2026-11-09/b35a9802975d66ab31cf331869a53c559eba3b16570e4730a12c3553a5a0417f.html",
+      "shows": "Air-quality API documentation"
+    },
+    {
+      "id": "e05",
+      "url": "https://open-meteo.com/en/docs/model-updates",
+      "fetched_at": "2026-11-09T04:51:40.161155Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "9ab70acc1234c9a40b57c5fcc2d61f823dfb08bf1d6ed4677f0d103d72d0060e",
+      "bytes": 51374,
+      "raw_path": "S04/2026-11-09/9ab70acc1234c9a40b57c5fcc2d61f823dfb08bf1d6ed4677f0d103d72d0060e.html",
+      "shows": "Model Updates page"
+    },
+    {
+      "id": "e06",
+      "url": "https://open-meteo.com/_app/immutable/nodes/73.CMtpKCnE.js",
+      "fetched_at": "2026-11-09T04:53:19.437963Z",
+      "status": 304,
+      "media_type": "application/javascript",
+      "sha256": "b5a293253384583203588aaae34554b3d2c6dccf0893d6bfd6d912943c9b7ecf",
+      "bytes": 22932,
+      "raw_path": "S01/2026-11-05/b5a293253384583203588aaae34554b3d2c6dccf0893d6bfd6d912943c9b7ecf.bin",
+      "shows": "Model Updates page script: builds https://air-quality-api.open-meteo.com/data/cams_global/static/meta.json"
+    },
+    {
+      "id": "e07",
+      "url": "https://air-quality-api.open-meteo.com/data/cams_global/static/meta.json",
+      "fetched_at": "2026-11-09T04:53:22.278828Z",
+      "status": 304,
+      "media_type": "application/json",
+      "sha256": "1b58ff9d83a6ddaf6b549a445ab430cf3038cd06c1a01c2ccf6983d393ad34a5",
+      "bytes": 594,
+      "raw_path": "S04/2026-11-09/1b58ff9d83a6ddaf6b549a445ab430cf3038cd06c1a01c2ccf6983d393ad34a5.json",
+      "shows": "CAMS global metadata before the forecast call"
+    },
+    {
+      "id": "e08",
+      "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=12.97&longitude=77.59&hourly=pm2_5,pm10,nitrogen_dioxide&timezone=GMT&forecast_days=5&domains=cams_global",
+      "fetched_at": "2026-11-09T04:53:24.537610Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "6284028044550f652eddb1febf3d63444913283919f32f53bcf2bd0dacea79b7",
+      "bytes": 4366,
+      "raw_path": "S04/2026-11-09/6284028044550f652eddb1febf3d63444913283919f32f53bcf2bd0dacea79b7.json",
+      "shows": "Sample: Bengaluru, CAMS global, 5 days hourly PM2.5, PM10, NO2"
+    },
+    {
+      "id": "e09",
+      "url": "https://air-quality-api.open-meteo.com/data/cams_global/static/meta.json",
+      "fetched_at": "2026-11-09T04:53:26.786390Z",
+      "status": 304,
+      "media_type": "application/json",
+      "sha256": "1b58ff9d83a6ddaf6b549a445ab430cf3038cd06c1a01c2ccf6983d393ad34a5",
+      "bytes": 594,
+      "raw_path": "S04/2026-11-09/1b58ff9d83a6ddaf6b549a445ab430cf3038cd06c1a01c2ccf6983d393ad34a5.json",
+      "shows": "CAMS global metadata after the forecast call"
+    },
+    {
+      "id": "e10",
+      "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=12.97&longitude=77.59&hourly=pm2_5,pm10,nitrogen_dioxide&timezone=GMT&forecast_days=5",
+      "fetched_at": "2026-11-09T04:53:29.055787Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "8b2bc3652c742a85649c42f41deff012c3cd2fa32a02a6b211585b95af777067",
+      "bytes": 4365,
+      "raw_path": "S04/2026-11-09/8b2bc3652c742a85649c42f41deff012c3cd2fa32a02a6b211585b95af777067.json",
+      "shows": "Same request with the default domains=auto"
+    },
+    {
+      "id": "e11",
+      "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=12.97&longitude=77.59&hourly=pm2_5,pm10,nitrogen_dioxide&timezone=GMT&start_date=2022-07-20&end_date=2022-08-10&domains=cams_global",
+      "fetched_at": "2026-11-09T04:53:31.303278Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "f9bef86cdb004c2fcd23ddcddd742416171dda7c167d43f31d6ea3b9c1bf906f",
+      "bytes": 17922,
+      "raw_path": "S04/2026-11-09/f9bef86cdb004c2fcd23ddcddd742416171dda7c167d43f31d6ea3b9c1bf906f.json",
+      "shows": "Start of CAMS global history at Bengaluru"
+    },
+    {
+      "id": "e12",
+      "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=12.97&longitude=77.59&hourly=pm2_5,pm10,nitrogen_dioxide&timezone=GMT&start_date=2022-08-01&end_date=2026-11-08&domains=cams_global",
+      "fetched_at": "2026-11-09T04:53:34.579674Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "472b91ac45c3ec9fc8813c78692e91e22c9f77c7db0e8d1d197718f986b9d152",
+      "bytes": 1241424,
+      "raw_path": "S04/2026-11-09/472b91ac45c3ec9fc8813c78692e91e22c9f77c7db0e8d1d197718f986b9d152.json",
+      "shows": "CAMS global history at Bengaluru, Aug 2022 to Nov 2026"
+    }
+  ]
+}

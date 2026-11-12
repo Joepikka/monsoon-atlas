@@ -1,0 +1,37 @@
+# Planned M15 definition, not a fitted model or a claim that labels exist. T162.
+model_id: M15
+state: dl
+enabled: false
+task: regression
+unit: "district or station x issue day"
+sources: [S01, S02, S16, S18]
+alerts_source: S09
+target: >-
+  next-day daily maximum temperature in C, plus population-weighted exposure above the local
+  historical 95th percentile; official heatwave alerts come only from S09; exposure is an
+  estimate, not a casualty forecast
+data_gate:
+  requires: [archived issue-time weather forecast vintages matched to observed truth]
+  note: historical ERA5 alone supports trends and exposure only, not calibration skill
+baselines: [Open-Meteo raw forecast, seasonal climatology]
+candidates: [linear_bias_correction, lightgbm]
+provisional_candidate: raw weather model until calibration wins
+purge: target horizon
+planned_splits:
+  collect_from: "2028-01-17"
+  train: ["2028-01-17", "2028-03-28"]
+  tune: ["2028-03-29", "2028-04-12"]
+  calibrate: ["2028-04-13", "2028-04-26"]
+  locked_test: ["2028-04-27", "2028-05-26"]
+  note: >-
+    Planned only. Dates assume source approval and readiness pass on schedule; if delayed the
+    whole manifest shifts before training. No observation earlier than collection is invented.
+split_manifest: null
+status: blocked
+reason: >-
+  M15 blocked: no Delhi source is enabled, S01 keeps no issue-time forecast vintages (D07) so no
+  forecast is matched to observed truth, S02 is ERA5 reanalysis, which supports trends and
+  exposure only, and S18 holds only the owner's Southern Zone extract (D174), so no Delhi
+  impervious input exists; calibration skill cannot
+  be claimed (T162).
+fallback: "none: the raw Open-Meteo baseline needs stored Delhi forecast vintages"

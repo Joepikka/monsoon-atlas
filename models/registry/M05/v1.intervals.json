@@ -1,0 +1,84 @@
+{
+  "model_id": "M05",
+  "version": "v1",
+  "decision": "D97",
+  "point_forecast": "approved v1 ridge, unchanged",
+  "dataset_sha256": "91bb4930a3ffa0200e9e12fc87ea503edcd562dfafa4bb87747b2bd496356a42",
+  "git_sha": "ba7b748937751a8245d5f01661d0c5bce69fbf38",
+  "residuals": "out-of-sample ridge refits at origins 2000, 2005, 2010, 2015 (v1 alpha and features, 92-day purge)",
+  "selection_years": "2010/2019",
+  "selection": [
+    {
+      "window_years": 5,
+      "seasonal": true,
+      "coverage": 0.8027777777777778,
+      "width": 1.9103642297790084
+    },
+    {
+      "window_years": 10,
+      "seasonal": true,
+      "coverage": 0.8044444444444444,
+      "width": 1.9253937548707896
+    },
+    {
+      "window_years": 5,
+      "seasonal": false,
+      "coverage": 0.8047222222222222,
+      "width": 1.913602263921342
+    },
+    {
+      "window_years": 10,
+      "seasonal": false,
+      "coverage": 0.8125,
+      "width": 1.9378772686127346
+    },
+    {
+      "window_years": 1,
+      "seasonal": false,
+      "coverage": 0.7711111111111112,
+      "width": 1.918375916083455
+    },
+    {
+      "window_years": 1,
+      "seasonal": true,
+      "coverage": 0.7497222222222223,
+      "width": 1.8720062295997504
+    }
+  ],
+  "rule": {
+    "window_years": 5,
+    "seasonal": true
+  },
+  "calibration_years": "2015/2019",
+  "offsets_q10_q90": {
+    "monsoon (Jun-Sep)": [
+      -0.8908563589954285,
+      0.8458368806554196
+    ],
+    "rest of year": [
+      -1.009713029042242,
+      1.0785072771579396
+    ]
+  },
+  "test": {
+    "period": "2020-01-01/2024-12-31",
+    "rows": 1800,
+    "coverage": 0.7283333333333334,
+    "mean_width": 1.9710446173504033,
+    "coverage_by_season": {
+      "monsoon (Jun-Sep)": 0.6433333333333333,
+      "rest of year": 0.7708333333333334
+    },
+    "persistence_same_rule": {
+      "coverage": 0.7722222222222223,
+      "mean_width": 2.3123611742659764
+    }
+  },
+  "gate": [
+    0.75,
+    0.85
+  ],
+  "publishable": false,
+  "second_look": "The 2020-2024 test was already used once for the v1 intervals (65% coverage). The rule was chosen on 2010-2019 only; this is the second use of the test years, for intervals only.",
+  "v1_interval80_coverage": 0.6522222222222223
+}

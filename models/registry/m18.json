@@ -1,0 +1,21 @@
+{
+  "model_id": "M18",
+  "state": "kl",
+  "status": "blocked",
+  "reason": "M18 blocked: S41 is blocked (T125, no publisher permission to store or classify items), so there are 0 permitted articles; the twenty annotation batches T189 to T208 are recorded as blocked (D155) with 0 articles selected, 0 labelled and 0 owner-reviewed, and owner step H13 has not happened; the gate needs 1000 permitted annotated texts (T209).",
+  "evidence": {
+    "configs/sources/s41.yaml": "837d314d67fdee0370e580a2eea328bbfe708cd9d33d85371263c67e451f5afd",
+    "tests/fixtures/s41/manifest.json": "2ca24cf142939c70b0fdc95f95dfe59ca941476d4dd8aa4ad92e525da17dd90c",
+    "configs/models/m18.yaml": "98fe174f7d8de14d1e9a049737eed55931ac856c2bfd653d6f1edee2092ec244",
+    "eval/news/blocked.json": "5d8033653cc42d6da60d085e3a53234673f82ed28cd44e36add7933566d8cd47"
+  },
+  "source_gate_sha256": "57d815fd9868cfe3103f453f471b177c135097c16f5dc2f68198903b0626b352",
+  "dataset_sha256": null,
+  "split_sha256": null,
+  "weights": null,
+  "baseline_scores": null,
+  "candidate_scores": null,
+  "improvement": null,
+  "prediction_rows": 0,
+  "report": "reports/models/m18.md"
+}

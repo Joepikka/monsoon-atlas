@@ -1,0 +1,104 @@
+{
+  "source_id": "S25",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://firms.modaps.eosdis.nasa.gov/robots.txt",
+      "fetched_at": "2026-11-09T10:34:50.423509Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "ded8513f93964c001bd3e0b8ed5534e03a0fc005840c7927aa607f167e265eb2",
+      "bytes": 1177,
+      "raw_path": "S25/2026-11-09/ded8513f93964c001bd3e0b8ed5534e03a0fc005840c7927aa607f167e265eb2.bin",
+      "shows": "FIRMS robots.txt: content pages allowed, /dist/ and *.json disallowed"
+    },
+    {
+      "id": "e02",
+      "url": "https://www.earthdata.nasa.gov/data/tools/firms",
+      "fetched_at": "2026-11-09T10:34:54.764238Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "c8b39a3b5aec6d135dc39adb8e5ed0cace177c8378d28604b8ce156adbbb1551",
+      "bytes": 242742,
+      "raw_path": "S25/2026-11-09/c8b39a3b5aec6d135dc39adb8e5ed0cace177c8378d28604b8ce156adbbb1551.html",
+      "shows": "NASA Earthdata FIRMS tool page"
+    },
+    {
+      "id": "e03",
+      "url": "https://firms.modaps.eosdis.nasa.gov/active_fire/",
+      "fetched_at": "2026-11-09T10:34:59.170699Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "579ed2ea1cc84624cd441720c1e7437099bac49be3dc46e51190b04cdffc8cbe",
+      "bytes": 3846,
+      "raw_path": "S25/2026-11-09/579ed2ea1cc84624cd441720c1e7437099bac49be3dc46e51190b04cdffc8cbe.html",
+      "shows": "FIRMS active fire data page (HTML shell; content loads by script from /dist/)"
+    },
+    {
+      "id": "e04",
+      "url": "https://firms.modaps.eosdis.nasa.gov/web-services/",
+      "fetched_at": "2026-11-09T10:35:03.567968Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "579ed2ea1cc84624cd441720c1e7437099bac49be3dc46e51190b04cdffc8cbe",
+      "bytes": 3846,
+      "raw_path": "S25/2026-11-09/579ed2ea1cc84624cd441720c1e7437099bac49be3dc46e51190b04cdffc8cbe.html",
+      "shows": "FIRMS web services page (HTML shell)"
+    },
+    {
+      "id": "e05",
+      "url": "https://www.earthdata.nasa.gov/data/instruments/viirs/viirs-i-band-375-m-active-fire-data",
+      "fetched_at": "2026-11-09T10:35:07.562532Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "3d2d1e4f2dea558bb9fb1c6fab44debeb201dd15f7dfca987bc0d285da83fa38",
+      "bytes": 159194,
+      "raw_path": "S25/2026-11-09/3d2d1e4f2dea558bb9fb1c6fab44debeb201dd15f7dfca987bc0d285da83fa38.html",
+      "shows": "Earthdata VIIRS 375 m active fire product page"
+    },
+    {
+      "id": "e06",
+      "url": "https://firms.modaps.eosdis.nasa.gov/api/area/",
+      "fetched_at": "2026-11-12T07:16:52.962551Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "cf7e8c1a26561bd42f4829ae6b45c697195d4ff24798f3be6aa2242ad14fcb64",
+      "bytes": 25596,
+      "raw_path": "S25/2026-11-12/cf7e8c1a26561bd42f4829ae6b45c697195d4ff24798f3be6aa2242ad14fcb64.html",
+      "shows": "FIRMS API area page: URL pattern, sources, day range 1 to 5"
+    },
+    {
+      "id": "e07",
+      "url": "https://firms.modaps.eosdis.nasa.gov/api/data_availability/",
+      "fetched_at": "2026-11-12T07:16:54.626143Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "fc1145f6c4e0a0e2042334a5ffd4b5db9d068701a82ddfbc692b485e65c757f5",
+      "bytes": 17834,
+      "raw_path": "S25/2026-11-12/fc1145f6c4e0a0e2042334a5ffd4b5db9d068701a82ddfbc692b485e65c757f5.html",
+      "shows": "FIRMS API data availability page"
+    },
+    {
+      "id": "e08",
+      "url": "https://firms.modaps.eosdis.nasa.gov/api/data_availability/csv/MAP_KEY/VIIRS_NOAA20_NRT",
+      "fetched_at": "2026-11-12T07:16:56.953029Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "0273651639d116ae7a4d85ae144d9e92a7fe7129dabc119d8e1e5e730b1ff90c",
+      "bytes": 64,
+      "raw_path": "S25/2026-11-12/0273651639d116ae7a4d85ae144d9e92a7fe7129dabc119d8e1e5e730b1ff90c.bin",
+      "shows": "Data availability CSV for VIIRS NOAA-20 NRT (owner MAP_KEY, H09; key not recorded)"
+    },
+    {
+      "id": "e09",
+      "url": "https://firms.modaps.eosdis.nasa.gov/api/area/csv/MAP_KEY/VIIRS_NOAA20_NRT/74,11.5,78.6,18.5/2",
+      "fetched_at": "2026-11-12T07:16:58.411958Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "6e3eb502558d89d06c2d8509ab72bc2fd07975b72233aa4af7551181cf277c71",
+      "bytes": 9465,
+      "raw_path": "S25/2026-11-12/6e3eb502558d89d06c2d8509ab72bc2fd07975b72233aa4af7551181cf277c71.bin",
+      "shows": "Area CSV, VIIRS NOAA-20 NRT, Karnataka box, last 2 days (owner MAP_KEY; key not recorded)"
+    }
+  ]
+}

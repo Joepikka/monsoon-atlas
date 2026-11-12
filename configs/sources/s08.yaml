@@ -64,8 +64,9 @@ source_check:
     not NetCDF. Each file is raw little-endian float32 with no header: 135 x 129 values per day,
     longitude fastest, south to north, one record per day (e03). File sizes match exactly: 69,660
     bytes x 365 days for 1901 and 2025, x 366 for 2024 (e04, e05, e06). Read as little-endian, the
-    2024 totals are plausible: about 990 mm at Bengaluru and 6,457 mm at Agumbe (e04). Days with
-    zero rain at every land cell occur only in December to February (e04, e05, e06). Conversion to
+    2024 totals of the nearest cells were checked and are plausible against the climatological
+    range (values withheld, S08 licence, D166) (e04). Days with zero rain at every land cell occur
+    only in December to February (e04, e05, e06). Conversion to
     Parquet or Zarr happens in T058, after this parse.
   evidence: [e03, e04, e05, e06]
 

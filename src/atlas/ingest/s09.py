@@ -12,11 +12,10 @@ import re
 import struct
 import time
 import xml.etree.ElementTree as ET
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from datetime import UTC, datetime
 
 import pyarrow as pa
-import pyarrow.compute as pc
 
 from atlas.config import SourceConfig
 from atlas.contracts import FetchContext, RawArtifact
@@ -54,12 +53,28 @@ MEASURES = pa.schema(
 
 def feed_identifiers(raw: RawArtifact) -> list[str]:
     """Identifiers of the CAP files the feed links, newest first."""
+    return list(feed_versions(raw))
+
+
+def feed_versions(raw: RawArtifact) -> dict[str, str]:
+    """Local fingerprints of actual RSS items, not provider CAP revision IDs."""
     try:
         root = ET.fromstring(raw.path.read_bytes())
     except ET.ParseError as exc:
         raise IngestError(f"{SOURCE_ID}: feed is not XML") from exc
-    links = [i.findtext("link") or "" for i in root.iter("item")]
-    return [m.group(1) for link in links if (m := re.search(r"identifier=(\d+)$", link))]
+    if root.tag != "rss" or root.find("channel") is None:
+        raise IngestError(f"{SOURCE_ID}: not an RSS channel")
+    versions = {}
+    for item in root.iter("item"):
+        match = re.search(r"identifier=(\d+)$", item.findtext("link") or "")
+        if match is None:
+            raise IngestError(f"{SOURCE_ID}: RSS item has no supported CAP link")
+        ident = match.group(1)
+        version = hashlib.sha256(ET.tostring(item, encoding="utf-8")).hexdigest()
+        if ident in versions and versions[ident] != version:
+            raise IngestError(f"{SOURCE_ID}: conflicting RSS versions for one identifier")
+        versions[ident] = version
+    return versions
 
 
 def rings(raw: RawArtifact | None) -> list[list[tuple[float, float]]]:
@@ -86,7 +101,15 @@ def wkb_multipolygon(polygons: list[list[tuple[float, float]]]) -> bytes:
 
 
 def _time(text: str | None) -> datetime | None:
-    return datetime.fromisoformat(text).astimezone(UTC) if text else None
+    if text is None:
+        return None
+    try:
+        value = datetime.fromisoformat(text)
+    except ValueError as exc:
+        raise IngestError(f"{SOURCE_ID}: invalid CAP timestamp") from exc
+    if value.tzinfo is None or value.utcoffset() is None:
+        raise IngestError(f"{SOURCE_ID}: CAP timestamp requires a UTC offset")
+    return value.astimezone(UTC)
 
 
 class S09:
@@ -95,12 +118,28 @@ class S09:
             raise SourceUnavailable(f"{SOURCE_ID}: no alert filter for state {state}")
         self.state, self.fetcher = state, fetcher
 
-    def fetch(self, ctx: FetchContext, known: Iterable[str] = ()) -> list[RawArtifact]:
-        """[feed, then (CAP, polygon) for each identifier not already known], 1 s apart."""
+    def fetch(self, ctx: FetchContext, known: Mapping[str, str] | None = None) -> list[RawArtifact]:
+        """[feed, then (CAP, polygon) for unknown/changed RSS items], 1 s apart.
+
+        `known` maps numeric identifiers to item fingerprints. The caller expires
+        this cache and checkpoints entries only after successful processing.
+        Bare identifiers cannot establish that linked CAP content is unchanged.
+        """
+        if known is not None and (
+            not isinstance(known, Mapping)
+            or any(
+                not isinstance(ident, str)
+                or not ident.isdigit()
+                or not isinstance(version, str)
+                or not re.fullmatch(r"[a-f0-9]{64}", version)
+                for ident, version in known.items()
+            )
+        ):
+            raise IngestError(f"{SOURCE_ID}: known cache requires RSS version fingerprints")
         feed = self.fetcher.fetch_bytes(ctx, FEED, mapping_version=MAPPING_VERSION)
-        out, skip = [feed], set(known)
-        for ident in feed_identifiers(feed):
-            if ident in skip:
+        out, cache = [feed], known or {}
+        for ident, version in feed_versions(feed).items():
+            if cache.get(ident) == version:
                 continue
             for path in ("FetchXMLFile", "FetchPolygonXMLFile"):
                 time.sleep(1.0)
@@ -124,6 +163,13 @@ class S09:
         self, raw: RawArtifact, config: SourceConfig, *, polygon: RawArtifact | None = None
     ) -> pa.Table:
         """One CAP file to at most one row (English info block); empty if not in the state."""
+        table, _ = self.parse_with_warning_text(raw, config, polygon=polygon)
+        return table
+
+    def parse_with_warning_text(
+        self, raw: RawArtifact, config: SourceConfig, *, polygon: RawArtifact | None = None
+    ) -> tuple[pa.Table, str]:
+        """Return normalized rows and the selected CAP info block's warning text."""
         if not config.enabled:
             raise SourceUnavailable(f"{SOURCE_ID} is disabled; {config.verify_task} must pass")
         try:
@@ -143,6 +189,13 @@ class S09:
             raise IngestError(
                 f"{SOURCE_ID}: CAP fields missing: {sorted(k for k, v in required.items() if not v)}"  # noqa: E501
             )
+        status, scope = get(root, "status"), get(root, "scope")
+        if (
+            status not in {"Actual", "Exercise", "System", "Test", "Draft"}
+            or scope not in {"Public", "Restricted", "Private"}
+            or required["msgType"] not in {"Alert", "Update", "Cancel", "Ack", "Error"}
+        ):
+            raise IngestError(f"{SOURCE_ID}: missing or unsupported CAP lifecycle fields")
         area = info.find("cap:area", NS)
         fields = {
             t: get(info, t) for t in ("event", "severity", "effective", "expires", "instruction")
@@ -151,9 +204,20 @@ class S09:
         if not fields["event"] or not fields["severity"] or not area_text:
             raise IngestError(f"{SOURCE_ID}: event, severity or area text missing")
 
+        warning_text = info.findtext("cap:event", "", NS)
+        for tag in ("headline", "description"):
+            text = info.findtext(f"cap:{tag}", "", NS)
+            if text.strip():
+                warning_text = text
+                break
+
         polygons = rings(polygon)
         rows = []
-        if self.in_state(required["sender"], area_text, polygons):
+        if (
+            status == "Actual"
+            and scope == "Public"
+            and self.in_state(required["sender"], area_text, polygons)
+        ):
             rows.append(
                 {
                     "alert_id": required["identifier"],
@@ -214,19 +278,40 @@ class S09:
             "cap:info/cap:instruction": "instruction",
             "cap:references": "references",
         }
-        return with_mapping(table, mapping, MAPPING_VERSION)
+        return with_mapping(table, mapping, MAPPING_VERSION), warning_text
+
+
+def superseded_identities(rows: Iterable[Mapping]) -> set[tuple[str, str, datetime]]:
+    """Exact predecessor keys; also works with real header-only control metadata."""
+    replaced = set()
+    for row in rows:
+        if row["msg_type"] not in {"Update", "Cancel"}:
+            continue
+        for reference in (row["references"] or "").split():
+            parts = reference.split(",")
+            if len(parts) != 3 or not parts[0] or not parts[1]:
+                continue
+            try:
+                sent = _time(parts[2])
+            except IngestError:
+                continue
+            identity = (parts[0], parts[1], sent)
+            if identity != (row["sender"], row["alert_id"], row["sent_at"]):
+                replaced.add(identity)
+    return replaced
 
 
 def supersede(table: pa.Table) -> pa.Table:
-    """Drop alerts that a later Update or Cancel references, and the Cancel messages themselves."""
-    replaced = {
-        ref.split(",")[1]
-        for refs in table["references"].drop_null().to_pylist()
-        for ref in refs.split()
-        if ref.count(",") == 2
-    }
-    keep = pc.and_(
-        pc.invert(pc.is_in(table["alert_id"], pa.array(sorted(replaced), pa.string()))),
-        pc.not_equal(table["msg_type"], "Cancel"),
-    )
-    return table.filter(keep)
+    """Apply only Update/Cancel references to exact (sender,identifier,sent) targets.
+
+    Unmatched/malformed references stay unresolved; control messages are not
+    active hazard warnings. Input order does not confer authority on a reference.
+    """
+    rows = table.select(["sender", "alert_id", "sent_at", "msg_type", "references"]).to_pylist()
+    replaced = superseded_identities(rows)
+    keep = [
+        row["msg_type"] in {"Alert", "Update"}
+        and (row["sender"], row["alert_id"], row["sent_at"]) not in replaced
+        for row in rows
+    ]
+    return table.filter(pa.array(keep, type=pa.bool_()))

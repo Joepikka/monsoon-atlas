@@ -1,0 +1,49 @@
+{
+  "s29": {
+    "district_years": 123,
+    "compared": 117,
+    "excluded": 6,
+    "missing": 0,
+    "excluded_by_district": {
+      "BALLARI": 3,
+      "VIJAYANAGAR": 3
+    },
+    "years": [
+      2020,
+      2021,
+      2022,
+      2024
+    ],
+    "station_year": 2023,
+    "stations": 5266,
+    "stations_with_value": 5266,
+    "station_districts": 30,
+    "first_fetch": "2026-11-09T10:45:12.404683+00:00",
+    "last_fetch": "2026-11-09T10:45:58.590508+00:00"
+  },
+  "s08": {
+    "year_files": 5,
+    "data_start": "2020-01-01",
+    "data_end": "2024-12-31",
+    "first_fetch": "2026-11-05T17:00:21.642507+00:00",
+    "last_fetch": "2026-11-05T17:02:15.174497+00:00",
+    "grid_district_years": 150,
+    "grid_district_years_null": 0
+  },
+  "ratio_grid_to_gauge": {
+    "median": 1.0384846607558917,
+    "mean": 1.0457451788276673,
+    "min": 0.6595923115605297,
+    "max": 1.3535965955025449,
+    "grid_wetter_share": 0.6495726495726496
+  },
+  "caption": "S29 KSNDMC district totals vs S08 IMD 0.25 deg grid (reconstruction): annual rain, index = grid / gauge (ratio), 2020-01-01 to 2024-12-31 (years 2020, 2021, 2022, 2024); coverage 117 of 123 district-years compared.",
+  "limits": [
+    "Seasonal comparison impossible: S29 is annual only (D113); 2025 file refused by adapter.",
+    "2023 has station totals only (no district rows, no coordinates): no gauge-grid pairs.",
+    "S29 'year' is taken as the calendar year (adapter valid_at 31 Dec).",
+    "Ballari 2021+ and Vijayanagara 2021+ are not like-for-like with S17 and are excluded.",
+    "S08 is a gauge-based analysis (reconstruction), so it is not independent of the gauges.",
+    "S08 is local only (IMD): only ratios, shares and counts are exported, no S08 rain in mm (D166); the two charts show mm and are not tracked."
+  ]
+}

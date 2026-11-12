@@ -1,0 +1,24 @@
+{
+  "model_id": "M09",
+  "state": "kl",
+  "status": "blocked",
+  "reason": "M09 blocked: S37 holds only state-level NRSC counts (no landslide point, date, positional error or survey footprint) and S42 imagery needs an unregistered account, so there is no label and no surveyed absence cell; the 200-landslide gate cannot pass (T136).",
+  "evidence": {
+    "configs/sources/s37.yaml": "264e76bff0d6f604eca9cfdc726e6ccaffeba44ec78de1b243cd853c7c6b5072",
+    "tests/fixtures/s37/manifest.json": "96f694592035f116f86a0456b0794fe064222c5c96b334a712fac75bb95c3f92",
+    "configs/sources/s42.yaml": "dfbb847615023d71d6ad0bf824fa7461b6d502eb67a74a613ddf5143ef220233",
+    "tests/fixtures/s42/manifest.json": "8925cc0bb9f332f5c26750866ce8f8f05f686736f18cb178c9aef14658e6c7dc",
+    "configs/sources/s14.yaml": "4354a703f99d3fe77e5d978c1f870094071f7dc45271fa6ea35df37de952e66f",
+    "tests/fixtures/s14/manifest.json": "4b23d056ae3c28b290e77aedb62586055d82a1706577f24d06263f8de8ae684e",
+    "configs/models/m09.yaml": "0c463616bcb43d6d4a6b7656eae7f623068f1b7cea76bd9072da090b38a2d0d7"
+  },
+  "source_gate_sha256": "86aa8f8e4e61cd8373694351838f4a2fa60b68408785a1650c4215420b31df3a",
+  "dataset_sha256": null,
+  "split_sha256": null,
+  "weights": null,
+  "baseline_scores": null,
+  "candidate_scores": null,
+  "improvement": null,
+  "prediction_rows": 0,
+  "report": "reports/models/m09.md"
+}

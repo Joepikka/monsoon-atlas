@@ -1,0 +1,71 @@
+{
+  "source_id": "S31",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://rera.karnataka.gov.in/",
+      "fetched_at": "2026-11-09T10:50:52.211167Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "5c64218c729d6d994c18e7f6fd9f997c8d0b8393872648d6f01dc127c058cc90",
+      "bytes": 95359,
+      "raw_path": "S31/2026-11-09/5c64218c729d6d994c18e7f6fd9f997c8d0b8393872648d6f01dc127c058cc90.html",
+      "shows": "Karnataka RERA home page"
+    },
+    {
+      "id": "e02",
+      "url": "https://rera.karnataka.gov.in/viewAllProjects",
+      "fetched_at": "2026-11-09T10:50:58.294657Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "1be105c2ec4f345f4cfdbc2a8ccf6af621afd0aeeca795037c27eacde352055a",
+      "bytes": 6485913,
+      "raw_path": "S31/2026-11-09/1be105c2ec4f345f4cfdbc2a8ccf6af621afd0aeeca795037c27eacde352055a.html",
+      "shows": "RERA registered projects page"
+    },
+    {
+      "id": "e03",
+      "url": "https://rera.karnataka.gov.in/copyrightpolicy",
+      "fetched_at": "2026-11-09T10:51:01.789084Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "1101a15df0e7c6ed018370f4a850fac0bfdc83b0afcade46a4211befe22605a4",
+      "bytes": 31312,
+      "raw_path": "S31/2026-11-09/1101a15df0e7c6ed018370f4a850fac0bfdc83b0afcade46a4211befe22605a4.html",
+      "shows": "RERA copyright policy"
+    },
+    {
+      "id": "e04",
+      "url": "https://rera.karnataka.gov.in/termsandconditions",
+      "fetched_at": "2026-11-09T10:51:05.002006Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "61ab12f1401e32a1856891eea9127d9d8c8ca42212a106bc9b015637c930095d",
+      "bytes": 33948,
+      "raw_path": "S31/2026-11-09/61ab12f1401e32a1856891eea9127d9d8c8ca42212a106bc9b015637c930095d.html",
+      "shows": "RERA terms and conditions"
+    },
+    {
+      "id": "e05",
+      "url": "https://rera.karnataka.gov.in/hyperlinkpolicy",
+      "fetched_at": "2026-11-09T10:51:08.192303Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "a95cf0215671a59e7edb40da2a9a5df96b138c2f98d8c555562ecca0d1cf915a",
+      "bytes": 31636,
+      "raw_path": "S31/2026-11-09/a95cf0215671a59e7edb40da2a9a5df96b138c2f98d8c555562ecca0d1cf915a.html",
+      "shows": "RERA hyperlink policy"
+    },
+    {
+      "id": "e06",
+      "url": "https://mahitikanaja.karnataka.gov.in/Rera/GetProjectDetails?ServiceId=5501&Type=WEBAPI&DepartmentId=3160",
+      "fetched_at": "2026-11-09T10:51:11.807203Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "287ac684b035f46f56cf8b8291e69cc2cc8ed97b554ec9667feb4d3fe256800a",
+      "bytes": 112671,
+      "raw_path": "S31/2026-11-09/287ac684b035f46f56cf8b8291e69cc2cc8ed97b554ec9667feb4d3fe256800a.html",
+      "shows": "Mahiti Kanaja RERA project details link from the RERA home page"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "source_id": "S26",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://aisstream.io/",
+      "fetched_at": "2026-11-09T15:17:55.480766Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "956538af433bec686c426f476057804f86f3838153d9aba7bd1e6afe40ff5456",
+      "bytes": 16002,
+      "raw_path": "S26/2026-11-09/956538af433bec686c426f476057804f86f3838153d9aba7bd1e6afe40ff5456.html",
+      "shows": "aisstream.io home page"
+    },
+    {
+      "id": "e02",
+      "url": "https://aisstream.io/robots.txt",
+      "fetched_at": "2026-11-09T15:17:59.359269Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "8fa3036c68bfcbd32365f6225d24333264093b7cd38d306e106b4dbdc934fd5b",
+      "bytes": 1248,
+      "raw_path": "S26/2026-11-09/8fa3036c68bfcbd32365f6225d24333264093b7cd38d306e106b4dbdc934fd5b.bin",
+      "shows": "Website robots.txt"
+    },
+    {
+      "id": "e03",
+      "url": "https://aisstream.io/documentation",
+      "fetched_at": "2026-11-09T15:18:23.166369Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "72e4f4e3c79328974793c98940445131544baf82dd2e8100b92dfb875515e88c",
+      "bytes": 80356,
+      "raw_path": "S26/2026-11-09/72e4f4e3c79328974793c98940445131544baf82dd2e8100b92dfb875515e88c.html",
+      "shows": "aisstream.io documentation (API key, subscription, message types, limits)"
+    },
+    {
+      "id": "e04",
+      "url": "https://aisstream.io/privacypolicy",
+      "fetched_at": "2026-11-09T15:18:27.042682Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "3423f61a2fe19044f52269bf42a130c25d9a683ae02558c7805713d7ad2f2295",
+      "bytes": 6756,
+      "raw_path": "S26/2026-11-09/3423f61a2fe19044f52269bf42a130c25d9a683ae02558c7805713d7ad2f2295.html",
+      "shows": "aisstream.io privacy policy"
+    },
+    {
+      "id": "e05",
+      "url": "https://github.com/aisstream",
+      "fetched_at": "2026-11-09T15:18:31.028523Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "fe6ae57407b6c6cd540fbf5f28a2ed529d1ea44325350dca98c0df2af0c0204f",
+      "bytes": 167550,
+      "raw_path": "S26/2026-11-09/fe6ae57407b6c6cd540fbf5f28a2ed529d1ea44325350dca98c0df2af0c0204f.html",
+      "shows": "aisstream GitHub organisation page linked from the home page"
+    },
+    {
+      "id": "e06",
+      "url": "https://github.com/aisstream/example",
+      "fetched_at": "2026-11-09T15:20:40.987977Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "914f6cca13162be47130b287c6f693d04eb9673e4128ef255dc4947b6a51bb1f",
+      "bytes": 239286,
+      "raw_path": "S26/2026-11-09/914f6cca13162be47130b287c6f693d04eb9673e4128ef255dc4947b6a51bb1f.html",
+      "shows": "aisstream example repository linked from the documentation"
+    },
+    {
+      "id": "e07",
+      "url": "https://github.com/aisstream/ais-message-models",
+      "fetched_at": "2026-11-09T15:20:44.940479Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "dc27ccb5c730a157375cf10d807251bad6c6494421e6fd04ea4bdf78106e0684",
+      "bytes": 220787,
+      "raw_path": "S26/2026-11-09/dc27ccb5c730a157375cf10d807251bad6c6494421e6fd04ea4bdf78106e0684.html",
+      "shows": "aisstream generated message models repository linked from the documentation"
+    }
+  ]
+}

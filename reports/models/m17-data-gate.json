@@ -1,0 +1,56 @@
+{
+  "model_id": "M17",
+  "status": "blocked",
+  "reason": "M17 blocked: S42 Sentinel-1 imagery needs a Copernicus account (proposed owner step H15), so no scene was read, and no independent inundation masks exist (S35 is blocked, S36 holds 2018 district tables and S43 has no official impact labels), so there are not 5 distinct labelled events; training would also need a Kaggle or Colab GPU, not the 2 GB local card (T173).",
+  "sources": {
+    "S42": {
+      "outcome": "blocked",
+      "licence": "open",
+      "units": "checked",
+      "history": "available",
+      "earliest_date": "2014-10-03",
+      "latest_date": "2026-11-08",
+      "retry_condition": "Retry T127 when the owner registers a free Copernicus Data Space Ecosystem account (no card; accepts the terms and verifies the e-mail; a new owner step, proposed H15) and puts the login in the ignored .env as CDSE_USERNAME and CDSE_PASSWORD (read only by variable name; the docs warn against hard-coding them). Then re-verify with a short-lived access token that one small Sentinel-2 L2A band (B04 or B08 of a selected scene) downloads, check the quota against the account, and enable T128 for selected scenes only. If imagery is needed sooner, the owner may approve a keyless open-data mirror in decisions.md, after its own discovery task."
+    },
+    "S43": {
+      "outcome": "blocked",
+      "licence": "unverified",
+      "units": "not_applicable",
+      "history": "not_public",
+      "earliest_date": null,
+      "latest_date": null,
+      "retry_condition": "Re-run T085 when one of these holds: (1) GBA, BBMP, KSNDMC or KSDMA publish dated ward-level flood incident records, for example control-room logs released on OpenCity; (2) the BBMP and GBA websites pass TLS verification, so their releases can be checked; or (3) at T222 the owner decides to accept the I Change My City complaints as non-official, citizen-reported labels with a written coverage rule for negatives, recorded in the decisions log. Without one of these, the C2 fallback applies."
+    },
+    "S35": {
+      "outcome": "blocked",
+      "licence": "unverified",
+      "units": "not_checked",
+      "history": "not_public",
+      "earliest_date": null,
+      "latest_date": null,
+      "retry_condition": "Run T121 (S36 KSDMA post-disaster assessment) next: the official memorandum is public (e06) and may give dated district-level flood labels for August 2018. M08 then uses district resolution only and, without labels before 2018, a descriptive 2018 replay with no predictive accuracy claim. Re-run T119 only if the owner signs in to Kaggle (H10) and \"Kerala Floods 2018\" turns out to have dated rows and a stated licence."
+    },
+    "S36": {
+      "outcome": "available",
+      "licence": "restricted",
+      "units": "labelled",
+      "history": "partial",
+      "earliest_date": "2013-06-01",
+      "latest_date": "2018-08-30",
+      "retry_condition": null
+    }
+  },
+  "evidence": {
+    "configs/sources/s42.yaml": "dfbb847615023d71d6ad0bf824fa7461b6d502eb67a74a613ddf5143ef220233",
+    "tests/fixtures/s42/manifest.json": "8925cc0bb9f332f5c26750866ce8f8f05f686736f18cb178c9aef14658e6c7dc",
+    "configs/sources/s43.yaml": "2ec5a030a12bf2e27268ffc36267a3b36b7accb7202f2cb6d4eb5aca5719af8e",
+    "tests/fixtures/s43/manifest.json": "9eeaa3ba6f50802410539694b0de145b60acf213fecdddfa305307ac23adbfad",
+    "configs/sources/s35.yaml": "9d0224d38a97570d42ce02278eb10f6bd6b3d116b7f0c8f92fdc1eb54a2f68ef",
+    "tests/fixtures/s35/manifest.json": "1f06998d338d63a7f36b44497f6dd6a9a481bc3ab748fae23236c6defc8cf366",
+    "configs/sources/s36.yaml": "1eea5b6e96c89a9f1b6a4103ce574885125c761c489a1da308819286648c65d5",
+    "tests/fixtures/s36/manifest.json": "a2df582cd87c7ccc98349d0909c3fd167f7d57c27c911e54e49d8eab1c8f73aa",
+    "configs/models/m17.yaml": "76c68d46be494b57f0660abeace8b9e097fc05a1e778fbfbd70358cc848f83d3"
+  },
+  "split_manifest": null,
+  "prediction_rows": 0
+}

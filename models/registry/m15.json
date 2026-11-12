@@ -1,0 +1,26 @@
+{
+  "model_id": "M15",
+  "state": "dl",
+  "status": "blocked",
+  "reason": "M15 blocked: no Delhi source is enabled, S01 keeps no issue-time forecast vintages (D07) so no forecast is matched to observed truth, S02 is ERA5 reanalysis, which supports trends and exposure only, and S18 holds only the owner's Southern Zone extract (D174), so no Delhi impervious input exists; calibration skill cannot be claimed (T162).",
+  "evidence": {
+    "configs/sources/s01.yaml": "e3a660ef8222ff7bb7b2447010bb4d13bf2727066ece8ab5f7e014d5965c736d",
+    "tests/fixtures/s01/manifest.json": "116dd16d859db75f94e87ec5446a8dc7eb7dd6ccb2fd1077e40f3365a26d0c1d",
+    "configs/sources/s02.yaml": "811e14499393cac35b9e51913710082c139c29c2fcde5bf397c0c6bef99f5ba7",
+    "tests/fixtures/s02/manifest.json": "22916db841dad611cb2ae64a6be7bbb577ae3ed32fe4aca665147bdc3f569c4f",
+    "configs/sources/s16.yaml": "b301d10c1a198b344ab5464fd442e7d1c7e856314544f61ab35f46a05095fce6",
+    "tests/fixtures/s16/manifest.json": "fa59ee73061b3629cc9fcf27bdc7a10f3ae753b615fac4bf5940dc3f3d24d74e",
+    "configs/sources/s18.yaml": "2fea38ee31381d04a6cc766faa47744facf0e036728a853d2421526c99b19c65",
+    "tests/fixtures/s18/manifest.json": "ea70b8b0fe611c71ea55cba979586e81d04615bdc65cd853f7f472e581747c8b",
+    "configs/models/m15.yaml": "bdd1bb4e042c06a5f3e3c7020856ac8780e6ee4545fbfb68187b996635532ca7"
+  },
+  "source_gate_sha256": "312a9281ce242cf14359aea44d323125b77f1108927292c0afee40bcd3568ef2",
+  "dataset_sha256": null,
+  "split_sha256": null,
+  "weights": null,
+  "baseline_scores": null,
+  "candidate_scores": null,
+  "improvement": null,
+  "prediction_rows": 0,
+  "report": "reports/models/m15.md"
+}

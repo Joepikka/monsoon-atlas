@@ -1,0 +1,126 @@
+{
+  "source_id": "S03",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://flood-api.open-meteo.com/robots.txt",
+      "fetched_at": "2026-11-08T18:39:22.409633Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "efdb5938a9736727f5cce2b60355588e4fa541d19d022d222d8a09b8efd5dcce",
+      "bytes": 25,
+      "raw_path": "S03/2026-11-08/efdb5938a9736727f5cce2b60355588e4fa541d19d022d222d8a09b8efd5dcce.bin",
+      "shows": "Flood API host robots.txt"
+    },
+    {
+      "id": "e02",
+      "url": "https://open-meteo.com/en/terms",
+      "fetched_at": "2026-11-08T18:39:24.678976Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "ed615d416b404ab2ec3de944c897b4df7fbaaa13c0b0596406ca84613c48315a",
+      "bytes": 38673,
+      "raw_path": "S03/2026-11-08/ed615d416b404ab2ec3de944c897b4df7fbaaa13c0b0596406ca84613c48315a.html",
+      "shows": "Open-Meteo terms of use"
+    },
+    {
+      "id": "e03",
+      "url": "https://open-meteo.com/en/licence",
+      "fetched_at": "2026-11-08T18:39:26.838258Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "080d43d9ece181c6c03c546a7481a0652bf6372cb16ae3f644b392124d6de16a",
+      "bytes": 40502,
+      "raw_path": "S03/2026-11-08/080d43d9ece181c6c03c546a7481a0652bf6372cb16ae3f644b392124d6de16a.html",
+      "shows": "Open-Meteo licence page"
+    },
+    {
+      "id": "e04",
+      "url": "https://open-meteo.com/en/docs/flood-api",
+      "fetched_at": "2026-11-08T18:39:29.018124Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "e34564ca680e2c899ed9bfcbc1afcc0462fff5d0414bf04311bbd11b02c46ce1",
+      "bytes": 113955,
+      "raw_path": "S03/2026-11-08/e34564ca680e2c899ed9bfcbc1afcc0462fff5d0414bf04311bbd11b02c46ce1.html",
+      "shows": "Flood API documentation"
+    },
+    {
+      "id": "e05",
+      "url": "https://flood-api.open-meteo.com/v1/flood?latitude=12.42&longitude=76.69&daily=river_discharge&past_days=10&forecast_days=7&timezone=Asia%2FKolkata",
+      "fetched_at": "2026-11-08T18:39:31.908712Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "9d4278527df630697ff2ca6e3f0ef8f4f6587d9257bea590ad3d9d95df88a726",
+      "bytes": 610,
+      "raw_path": "S03/2026-11-08/9d4278527df630697ff2ca6e3f0ef8f4f6587d9257bea590ad3d9d95df88a726.json",
+      "shows": "Recent GloFAS river discharge near the Cauvery at Srirangapatna"
+    },
+    {
+      "id": "e06",
+      "url": "https://flood-api.open-meteo.com/v1/flood?latitude=12.42&longitude=76.69&daily=river_discharge&start_date=1984-01-01&end_date=1984-01-31&timezone=Asia%2FKolkata",
+      "fetched_at": "2026-11-08T18:39:34.174894Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "1f883f6a5530fd578258ebbc21c8c85a7b978a4e04cad0e03fea9a8c5f26e5c0",
+      "bytes": 844,
+      "raw_path": "S03/2026-11-08/1f883f6a5530fd578258ebbc21c8c85a7b978a4e04cad0e03fea9a8c5f26e5c0.json",
+      "shows": "Earliest GloFAS river discharge month near the Cauvery at Srirangapatna"
+    },
+    {
+      "id": "e07",
+      "url": "https://flood-api.open-meteo.com/v1/flood?latitude=12.42&longitude=76.69&daily=river_discharge&start_date=2024-07-01&end_date=2024-07-31&timezone=Asia%2FKolkata",
+      "fetched_at": "2026-11-08T18:39:36.415379Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "74b8fa65655f7765f0f8fa3fb31155109125152041b84dcfc7aa7c3ab897411e",
+      "bytes": 898,
+      "raw_path": "S03/2026-11-08/74b8fa65655f7765f0f8fa3fb31155109125152041b84dcfc7aa7c3ab897411e.json",
+      "shows": "GloFAS river discharge near the Cauvery at Srirangapatna, July 2024"
+    },
+    {
+      "id": "e08",
+      "url": "https://flood-api.open-meteo.com/v1/flood?latitude=13.0&longitude=73.5&daily=river_discharge&start_date=2024-07-01&end_date=2024-07-07&timezone=Asia%2FKolkata",
+      "fetched_at": "2026-11-08T18:39:38.658785Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "89163223a20217659ad436cf5f2f4947cd2953b7d2896a20c4930e015a8c85c9",
+      "bytes": 411,
+      "raw_path": "S03/2026-11-08/89163223a20217659ad436cf5f2f4947cd2953b7d2896a20c4930e015a8c85c9.json",
+      "shows": "GloFAS river discharge request for an Arabian Sea point with no river cell"
+    },
+    {
+      "id": "e09",
+      "url": "https://flood-api.open-meteo.com/v1/flood?latitude=12.42&longitude=76.69&daily=river_discharge&start_date=1984-01-01&end_date=1984-12-31&timezone=Asia%2FKolkata",
+      "fetched_at": "2026-11-08T18:40:04.013487Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "4c5ebbed9cadd91d614f7e8f6cba01908e04ed6ede7af08624978ffc8277e8bb",
+      "bytes": 6874,
+      "raw_path": "S03/2026-11-08/4c5ebbed9cadd91d614f7e8f6cba01908e04ed6ede7af08624978ffc8277e8bb.json",
+      "shows": "GloFAS river discharge near the Cauvery at Srirangapatna, all of 1984"
+    },
+    {
+      "id": "e10",
+      "url": "https://flood-api.open-meteo.com/v1/flood?latitude=12.42&longitude=76.69&daily=river_discharge&start_date=1984-01-01&end_date=2026-11-07&timezone=Asia%2FKolkata",
+      "fetched_at": "2026-11-08T18:40:47.304350Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "4eeb348907e96543af5e961ab0c5108e2dc6578e2d385f52c083ad3b9cc946ec",
+      "bytes": 297115,
+      "raw_path": "S03/2026-11-08/4eeb348907e96543af5e961ab0c5108e2dc6578e2d385f52c083ad3b9cc946ec.json",
+      "shows": "GloFAS river discharge near the Cauvery at Srirangapatna, 1984 to 7 Nov 2026"
+    },
+    {
+      "id": "e11",
+      "url": "https://flood-api.open-meteo.com/v1/flood?latitude=12.42&longitude=76.69&daily=river_discharge&models=seamless_v4&start_date=2024-07-01&end_date=2024-07-31&timezone=Asia%2FKolkata",
+      "fetched_at": "2026-11-08T18:45:54.630967Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "76c4401790ad0e1ea1e71132bc1529e8fa930550ff4c46a62028c18efcc75ba4",
+      "bytes": 899,
+      "raw_path": "S03/2026-11-08/76c4401790ad0e1ea1e71132bc1529e8fa930550ff4c46a62028c18efcc75ba4.json",
+      "shows": "GloFAS river discharge with models=seamless_v4 named, July 2024, Cauvery at Srirangapatna"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "$comment": "S36 KSDMA post-disaster assessment (T122, D123). Measure columns added to the common envelope (common.json). Field map: configs/sources/s36.yaml.",
+  "source_id": "S36",
+  "schema_version": 1,
+  "mapping_version": "s36-v1",
+  "fields": [
+    {"name": "document_id", "type": "string", "nullable": false, "meaning": "PDF file name, for example Memorandum1-Floods-2018.pdf"},
+    {"name": "page", "type": "int64", "nullable": false, "meaning": "PDF page number of the table"},
+    {"name": "district_id", "type": "string", "nullable": false, "meaning": "District name as published (spellings vary, for example Alleppey, Alappuzha); not a district ID"},
+    {"name": "claim_type", "type": "string", "nullable": false, "meaning": "flooded_area_ha or human_fatalities, from the table header"},
+    {"name": "value", "type": "int64", "nullable": false, "meaning": "District total for the table: hectares or persons"},
+    {"name": "unit", "type": "string", "nullable": false, "meaning": "ha or persons, from the header"},
+    {"name": "event_date", "type": "date32", "nullable": true, "meaning": "'as on' date of the table; null for whole-period totals (date_basis=period_total)"},
+    {"name": "date_basis", "type": "string", "nullable": false, "meaning": "as_on (table date) or period_total (whole memorandum period)"},
+    {"name": "period_start", "type": "date32", "nullable": false, "meaning": "First day of the memorandum period"},
+    {"name": "period_end", "type": "date32", "nullable": false, "meaning": "Last day of the memorandum period"},
+    {"name": "excerpt", "type": "string", "nullable": false, "meaning": "Table row text, whitespace normalized, for tracing to document and page"}
+  ],
+  "valid_at": "as_on tables: 00:00 IST of the table date; period totals: 00:00 IST the day after the period",
+  "not_included": "ward or taluk figures, flood-notified ward counts, other tables, the PDNA and the 2013 memorandum; place_id stays null"
+}

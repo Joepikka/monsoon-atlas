@@ -1,0 +1,1070 @@
+{
+  "schema_version": 1,
+  "models": [
+    {
+      "id": "M01",
+      "state": "ka",
+      "status": "blocked",
+      "reason": "M01 blocked: no official dated ward-level inundation records or audited negatives exist (S43, T085), so labels, features and flood probabilities cannot be built (T089).",
+      "links": [
+        "reports/models/m01.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M02",
+      "state": "ka",
+      "status": "blocked",
+      "reason": "M02 blocked: no verified daily reservoir level or storage history (S28 KWRIS, T008), so labels, features and forecasts cannot be built (T092).",
+      "links": [
+        "reports/models/m02.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M03",
+      "state": "ka",
+      "status": "blocked",
+      "reason": "M03 blocked: no verified daily reported reservoir inflow with units (S28 KWRIS, T008); inflow is never inferred from levels (T095).",
+      "links": [
+        "reports/models/m03.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M04",
+      "state": "ka",
+      "status": "blocked",
+      "reason": "M04 blocked: no daily gauge rainfall with coordinates (S27 blocked, T077; S29 annual totals only, D113), so no gauge-day can be withheld (T098).",
+      "links": [
+        "reports/models/m04.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M05",
+      "state": "ka",
+      "status": "champion, hindcast (D43)",
+      "reason": "Ridge v1 beats persistence on the locked 2020 to 2024 test; hindcast. v2 (refit with IMD 2025) is untested and not served (D170).",
+      "links": [
+        "reports/models/m05.md",
+        "reports/models/m05-card.md"
+      ],
+      "score": {
+        "label": "hindcast",
+        "metric": "MAE",
+        "model": "ridge",
+        "baseline": "persistence",
+        "test": "2020-01-01/2024-12-31",
+        "model_value": 0.7320467345749282,
+        "baseline_value": 0.8082546179167789,
+        "improvement": 0.07620788334185077,
+        "ci95": [
+          0.0025687988345464543,
+          0.15024385980322363
+        ],
+        "rows": 1800,
+        "months": 60
+      }
+    },
+    {
+      "id": "M06",
+      "state": "ka",
+      "status": "blocked",
+      "reason": "M06 blocked: verified Karnataka price history, price units and publication timing are required before implementing labels, features or predictions (T035).",
+      "links": [
+        "reports/models/m06.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M07",
+      "state": "kl",
+      "status": "blocked",
+      "reason": "M07 blocked: a known vertical datum exists for 4 of the 8 dams the gate needs (D103, T129), S32 daily history is sampled dates only and S34 awaits the unapproved T118 bulk OCR, so labels, features and forecasts cannot be built (T130).",
+      "links": [
+        "reports/models/m07.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M08",
+      "state": "kl",
+      "status": "blocked",
+      "reason": "M08 blocked: S35 is blocked and S36 holds 2018 district labels only, with no audited pre-2018 positives or negatives, so a forecasting classifier cannot be trained (T133).",
+      "links": [
+        "reports/models/m08.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M09",
+      "state": "kl",
+      "status": "blocked",
+      "reason": "M09 blocked: S37 holds only state-level NRSC counts (no landslide point, date, positional error or survey footprint) and S42 imagery needs an unregistered account, so there is no label and no surveyed absence cell; the 200-landslide gate cannot pass (T136).",
+      "links": [
+        "reports/models/m09.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M10",
+      "state": "kl",
+      "status": "blocked",
+      "reason": "M10 blocked: S22 exposes no price row and S23 is a one-day snapshot (5 Nov 2026) with an unverified price unit, so there is no weekly market-commodity panel, no 30-market sample and no 50 heavy-rain events; no effect can be estimated (T139).",
+      "links": [
+        "reports/models/m10.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M11",
+      "state": "kl",
+      "status": "blocked",
+      "reason": "M11 blocked: it freezes the Karnataka flood model M01 and needs common Kerala flood labels, but M01 is blocked (S43 has no official dated ward-level inundation records, T085) and M08 is blocked (S35 is blocked and S36 holds 2018 district tables only), so there is no frozen Karnataka score, no common 2023-24 labels and no 30 Kerala flood events (T170).",
+      "links": [
+        "reports/models/m11.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M12",
+      "state": "dl",
+      "status": "blocked",
+      "reason": "M12 blocked: S38 is blocked on owner step H04 (D135), so no static GTFS, real-time sample or trip linkage was read and there are 0 vehicle positions and 0 service days; a scheduled-delay label cannot be built and no arrival or delay can be predicted (T153).",
+      "links": [
+        "reports/models/m12.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M13",
+      "state": "dl",
+      "status": "blocked",
+      "reason": "M13 blocked: S38 is blocked on owner step H04 (D135), so there are 0 completed trajectories, 0 service days and no verified scheduled headways; bunching cannot be labelled and no flag or persistence forecast can be made (T156).",
+      "links": [
+        "reports/models/m13.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M14",
+      "state": "dl",
+      "status": "blocked",
+      "reason": "M14 blocked: S24 CPCB station data is blocked (D133, D134): resource ID, licence, fields, units, averaging interval and history are unread and there are 0 station rows, so no PM2.5 label exists; S04 CAMS is a model estimate and baseline input, never a label (T159).",
+      "links": [
+        "reports/models/m14.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M15",
+      "state": "dl",
+      "status": "blocked",
+      "reason": "M15 blocked: no Delhi source is enabled, S01 keeps no issue-time forecast vintages (D07) so no forecast is matched to observed truth, S02 is ERA5 reanalysis, which supports trends and exposure only, and S18 holds only the owner's Southern Zone extract (D174), so no Delhi impervious input exists; calibration skill cannot be claimed (T162).",
+      "links": [
+        "reports/models/m15.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M16",
+      "state": "all",
+      "status": "research_only",
+      "reason": "M16 is research-only: the rule runs on the held S08 daily grids and flag counts are reported (reports/models/m16-flag-counts.json), but 0 of 100 flags are adjudicated (T212, T213 blocked, D159), so precision is not measured and no quality claim is made. S22 and S23 hold zero price rows and S32 has no 28-day window. No IsolationForest challenger was run.",
+      "links": [
+        "reports/models/m16.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M17",
+      "state": "kl",
+      "status": "blocked",
+      "reason": "M17 blocked: S42 Sentinel-1 imagery needs a Copernicus account (proposed owner step H15), so no scene was read, and no independent inundation masks exist (S35 is blocked, S36 holds 2018 district tables and S43 has no official impact labels), so there are not 5 distinct labelled events; training would also need a Kaggle or Colab GPU, not the 2 GB local card (T173).",
+      "links": [
+        "reports/models/m17.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M18",
+      "state": "kl",
+      "status": "blocked",
+      "reason": "M18 blocked: S41 is blocked (T125, no publisher permission to store or classify items), so there are 0 permitted articles; the twenty annotation batches T189 to T208 are recorded as blocked (D155) with 0 articles selected, 0 labelled and 0 owner-reviewed, and owner step H13 has not happened; the gate needs 1000 permitted annotated texts (T209).",
+      "links": [
+        "reports/models/m18.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M19",
+      "state": "ka",
+      "status": "blocked",
+      "reason": "M19 blocked: it must beat the M02 baseline on the same reservoir level target, and M02 is blocked because S28 KWRIS has no verified daily reservoir level history (T092), so there are no reservoirs with 5 years of daily data, no M02 baseline and no target; no free GPU session exists either, as the Kaggle owner step H10 is open (T167).",
+      "links": [
+        "reports/models/m19.md"
+      ],
+      "score": null
+    },
+    {
+      "id": "M20",
+      "state": "all",
+      "status": "blocked",
+      "reason": "M20 blocked: it recomputes an already-approved flood score from the exact M01 or M08 input snapshot, and neither is approved: M01 is blocked (S43 has no labels, T085) and M08 is blocked (S35 is blocked and S36 holds 2018 district tables only). M05 is the only approved model and is a drought model, so it is not a base; the controls stay disabled (T176).",
+      "links": [
+        "reports/models/m20.md"
+      ],
+      "score": null
+    }
+  ],
+  "sources": [
+    {
+      "state": "ka",
+      "id": "S01",
+      "name": "Open-Meteo weather forecast",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s01.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S02",
+      "name": "Open-Meteo historical weather / ERA5",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s02.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S03",
+      "name": "Open-Meteo GloFAS river discharge",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s03.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S04",
+      "name": "Open-Meteo CAMS air-quality estimates",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s04.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S05",
+      "name": "Open-Meteo ensemble",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s05.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S06",
+      "name": "Open-Meteo climate projections",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s06.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S07",
+      "name": "NASA POWER daily point",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s07.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S08",
+      "name": "IMD Pune gridded rainfall 1901-2024",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "restricted",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s08.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S09",
+      "name": "NDMA Sachet CAP alerts",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s09.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S10",
+      "name": "adsb.lol live aircraft",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s10.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S11",
+      "name": "OpenSky flight fallback",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "unverified",
+      "retry": "The owner reads https://opensky-network.org/about/terms-of-use in a browser and decides whether the project accepts the terms for a non-commercial fallback (citation of the OpenSky paper, the data licence model, any limit on public display), and records that decision; then re-run T061. If accepted, anonymous use stays within 400 credits a day; an account and API client (OAuth2) would be a further owner step.",
+      "owner_step": false,
+      "link": "configs/sources/s11.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S12",
+      "name": "CelesTrak orbit elements",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "restricted",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s12.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S13",
+      "name": "NASA GIBS satellite imagery",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s13.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S14",
+      "name": "AWS Terrarium terrain",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s14.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S15",
+      "name": "OpenFreeMap basemap",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s15.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S16",
+      "name": "WorldPop India population",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s16.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S17",
+      "name": "geoBoundaries administrative boundaries",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s17.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S18",
+      "name": "Geofabrik OSM extracts",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s18.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S19",
+      "name": "Google Open Buildings",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s19.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S20",
+      "name": "USGS earthquakes",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "restricted",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s20.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S21",
+      "name": "Datameet railway schedules",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s21.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S22",
+      "name": "India Data Portal Agmarknet / existing price data",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "unverified",
+      "retry": "Re-run T023 with a working browser render of https://indiadataportal.com/p/agmarknet (or the owner opens it and notes the download button, file format and licence shown). If downloads need a sign-in, that is an owner step. Meanwhile T025 (data.gov.in mandi prices, free API key) is the other route to the same Agmarknet prices.",
+      "owner_step": false,
+      "link": "configs/sources/s22.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S23",
+      "name": "data.gov.in mandi prices",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "open",
+      "retry": null,
+      "owner_step": true,
+      "link": "configs/sources/s23.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S25",
+      "name": "NASA FIRMS active fires",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s25.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S27",
+      "name": "KSNDMC gauges",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "unverified",
+      "retry": "KSNDMC serves its gauge data over HTTPS with a published station list, units and terms (on ksndmc.org or the Varunamitra portal), or publishes an equivalent open dataset; then re-run T077. Historical hobli rainfall is covered separately by S29 (T079).",
+      "owner_step": false,
+      "link": "configs/sources/s27.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S28",
+      "name": "KWRIS reservoirs and rainfall",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "restricted",
+      "retry": null,
+      "owner_step": true,
+      "link": "configs/sources/s28.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S29",
+      "name": "OpenCity KSNDMC hobli rainfall 2017-2023",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s29.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S30",
+      "name": "BMTC and Namma Metro static GTFS",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "restricted",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s30.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S31",
+      "name": "Karnataka RERA projects",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "restricted",
+      "retry": "The owner asks K-RERA for permission to reproduce the project list (copyright policy, by email) and records the reply; then T081 is re-run. Promoter names stay excluded either way.",
+      "owner_step": false,
+      "link": "configs/sources/s31.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S39",
+      "name": "Telegram Bot API",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "restricted",
+      "retry": null,
+      "owner_step": true,
+      "link": "configs/sources/s39.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S40",
+      "name": "Ward / taluk polygons and crosswalks",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": "Taluk polygons: run a separate discovery for an official Karnataka taluk boundary source before any taluk-level map; until then taluk outputs use district or H3 views. BBMP 2015/2022/2023 maps: re-check licence before any public use.",
+      "owner_step": false,
+      "link": "configs/sources/s40.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S43",
+      "name": "Official shelters and flood impact labels",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "unverified",
+      "retry": "Re-run T085 when one of these holds: (1) GBA, BBMP, KSNDMC or KSDMA publish dated ward-level flood incident records, for example control-room logs released on OpenCity; (2) the BBMP and GBA websites pass TLS verification, so their releases can be checked; or (3) at T222 the owner decides to accept the I Change My City complaints as non-official, citizen-reported labels with a written coverage rule for negatives, recorded in the decisions log. Without one of these, the C2 fallback applies.",
+      "owner_step": false,
+      "link": "configs/sources/s43.yaml"
+    },
+    {
+      "state": "ka",
+      "id": "S44",
+      "name": "District crime statistics",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s44.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S01",
+      "name": "Open-Meteo weather forecast",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s01.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S02",
+      "name": "Open-Meteo historical weather / ERA5",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s02.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S06",
+      "name": "Open-Meteo climate projections",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s06.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S08",
+      "name": "IMD Pune gridded rainfall",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "restricted",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s08.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S09",
+      "name": "NDMA Sachet CAP alerts",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s09.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S15",
+      "name": "OpenFreeMap basemap",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s15.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S16",
+      "name": "WorldPop India population",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s16.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S17",
+      "name": "geoBoundaries administrative boundaries",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s17.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S26",
+      "name": "aisstream ships",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "unverified",
+      "retry": null,
+      "owner_step": true,
+      "link": "configs/sources/s26.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S32",
+      "name": "KSEB daily water level",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "open",
+      "retry": "Before T130: check the other Kerala dam sources for 2017 to 2023 daily history, S34 KSDMA dam level reports (T118) and S33 KSEB monthly statistics (T116), and confirm the Aug 2024 to Jul 2026\n  gap against the completed T227 census (docs/sources/s32-history.md). It must not be\n  interpolated or treated as zero readings. T130 still requires known datum and verified history.",
+      "owner_step": false,
+      "link": "configs/sources/s32.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S33",
+      "name": "KSEB monthly dam statistics",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "unverified",
+      "retry": "Re-run T115 when the KSEB Dam Safety Organisation restores its Monthly Statistics/Statistics pages or supplies a directly linked monthly reservoir PDF/spreadsheet with dates, units, datum and licence. Verify actual within-file resolution; keep monthly aggregates EDA-only and never interpolate daily observations. Owner OCR review of S34 remains independently required.",
+      "owner_step": false,
+      "link": "configs/sources/s33.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S34",
+      "name": "KSDMA dam level reports",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "restricted",
+      "retry": "Not blocked. To avoid OCR, the owner could ask KSDMA or KSEB for the daily tables as spreadsheets with a licence; if granted, record it and re-run T117.",
+      "owner_step": false,
+      "link": "configs/sources/s34.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S35",
+      "name": "Kerala 2018 flood dataset",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "unverified",
+      "retry": null,
+      "owner_step": true,
+      "link": "configs/sources/s35.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S36",
+      "name": "KSDMA post-disaster assessment",
+      "enabled": true,
+      "outcome": "available",
+      "licence": "restricted",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s36.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S37",
+      "name": "2018 landslide inventory / ISRO Atlas",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "restricted",
+      "retry": "Retry T123 when NRSC links a downloadable landslide inventory (shapefile, GeoJSON or CSV, or a documented Bhuvan data service) from the pages in e02, e03 or e05, with its terms stated. If the owner obtains the Kerala 2018 inventory from NRSC or Bhuvan (an owner step if it needs a sign-in or request form), re-verify its licence, a landslide ID per row, coordinates, the survey footprint and the event date before enabling S37.",
+      "owner_step": false,
+      "link": "configs/sources/s37.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S40",
+      "name": "Kerala ward / taluk polygons and crosswalks",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "open",
+      "retry": "Taluk polygons: run a separate discovery for an official Karnataka taluk boundary source before any taluk-level map; until then taluk outputs use district or H3 views. BBMP 2015/2022/2023 maps: re-check licence before any public use.",
+      "owner_step": false,
+      "link": "configs/sources/s40.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S41",
+      "name": "Permitted news RSS sources",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "restricted",
+      "retry": "Retry T125 when the owner obtains written permission from one publisher (Mathrubhumi English, The Hindu, Onmanorama or Times Internet) that allows storing headline, link and timestamp metadata from its RSS feed for a non-commercial public map and for a classifier (M18), or when a publisher issues an open licence or a terms update that allows this. The owner records the permission text and the permitted feed URLs; then re-verify the item fields, a quota and history, and enable only the permitted feeds.",
+      "owner_step": false,
+      "link": "configs/sources/s41.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S42",
+      "name": "Sentinel-1 / NDVI quantitative imagery",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "open",
+      "retry": null,
+      "owner_step": true,
+      "link": "configs/sources/s42.yaml"
+    },
+    {
+      "state": "kl",
+      "id": "S43",
+      "name": "Kerala official shelters and flood impact labels",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "unverified",
+      "retry": "Re-run T085 when one of these holds: (1) GBA, BBMP, KSNDMC or KSDMA publish dated ward-level flood incident records, for example control-room logs released on OpenCity; (2) the BBMP and GBA websites pass TLS verification, so their releases can be checked; or (3) at T222 the owner decides to accept the I Change My City complaints as non-official, citizen-reported labels with a written coverage rule for negatives, recorded in the decisions log. Without one of these, the C2 fallback applies.",
+      "owner_step": false,
+      "link": "configs/sources/s43.yaml"
+    },
+    {
+      "state": "dl",
+      "id": "S01",
+      "name": "Open-Meteo weather forecast",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s01.yaml"
+    },
+    {
+      "state": "dl",
+      "id": "S02",
+      "name": "Open-Meteo historical weather / ERA5",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s02.yaml"
+    },
+    {
+      "state": "dl",
+      "id": "S09",
+      "name": "NDMA Sachet CAP alerts",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s09.yaml"
+    },
+    {
+      "state": "dl",
+      "id": "S15",
+      "name": "OpenFreeMap basemap",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s15.yaml"
+    },
+    {
+      "state": "dl",
+      "id": "S16",
+      "name": "WorldPop India population",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s16.yaml"
+    },
+    {
+      "state": "dl",
+      "id": "S17",
+      "name": "geoBoundaries administrative boundaries",
+      "enabled": false,
+      "outcome": "available",
+      "licence": "open",
+      "retry": null,
+      "owner_step": false,
+      "link": "configs/sources/s17.yaml"
+    },
+    {
+      "state": "dl",
+      "id": "S24",
+      "name": "CPCB station pollution via data.gov.in",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "unverified",
+      "retry": null,
+      "owner_step": true,
+      "link": "configs/sources/s24.yaml"
+    },
+    {
+      "state": "dl",
+      "id": "S38",
+      "name": "Delhi Open Transit Data",
+      "enabled": false,
+      "outcome": "blocked",
+      "licence": "restricted",
+      "retry": null,
+      "owner_step": true,
+      "link": "configs/sources/s38.yaml"
+    }
+  ],
+  "anomaly_queue": {
+    "model": "M16",
+    "label": "unadjudicated rule output, not incidents",
+    "adjudicated": 0,
+    "required": 100,
+    "states": {
+      "ka": {
+        "evaluated": 2219120,
+        "flags": 417948
+      },
+      "kl": {
+        "evaluated": 935340,
+        "flags": 152086
+      }
+    },
+    "links": [
+      "reports/models/m16.md",
+      "reports/models/m16-flag-counts.json"
+    ]
+  },
+  "drift": {
+    "model": "M05",
+    "period": "2025-01-01/2025-12-31",
+    "rows": 360,
+    "flag": "holds",
+    "mae_ratio": 0.8405000213339571,
+    "ci95": [
+      0.01876490829198819,
+      0.2261396163901586
+    ],
+    "label": "hindcast, provisional",
+    "link": "reports/models/m05-2025.md"
+  },
+  "analyses": [
+    {
+      "link": "reports/eda/01_ka_quality/summary.json",
+      "title": "Karnataka feed quality (T106)",
+      "sources": [
+        "S08",
+        "S10",
+        "S01"
+      ],
+      "restricted": [
+        "S08"
+      ]
+    },
+    {
+      "link": "reports/eda/02_ka_rain/summary.json",
+      "title": "Karnataka gauge and grid rainfall (T107)",
+      "sources": [
+        "S29",
+        "S08"
+      ],
+      "restricted": [
+        "S08"
+      ]
+    },
+    {
+      "link": "reports/eda/03_ka_prices/summary.json",
+      "title": "Karnataka price sources, no price rows",
+      "sources": [
+        "S22",
+        "S23"
+      ],
+      "restricted": []
+    },
+    {
+      "link": "reports/eda/05_kl_flood2018/summary.json",
+      "title": "Kerala 2018 flood replay (T142)",
+      "sources": [
+        "S08",
+        "S32",
+        "S36"
+      ],
+      "restricted": [
+        "S08",
+        "S36"
+      ]
+    },
+    {
+      "link": "reports/eda/06_rain_price/summary.json",
+      "title": "Rain and price event study, blocked",
+      "sources": [
+        "S22",
+        "S23"
+      ],
+      "restricted": []
+    },
+    {
+      "link": "reports/eda/07_climate/summary.json",
+      "title": "Climate trends and projections",
+      "sources": [
+        "S08",
+        "S06"
+      ],
+      "restricted": [
+        "S08"
+      ]
+    },
+    {
+      "link": "reports/eda/08_delhi_transit/summary.json",
+      "title": "Delhi transit audit, blocked",
+      "sources": [
+        "S38"
+      ],
+      "restricted": [
+        "S38"
+      ]
+    },
+    {
+      "link": "reports/eda/09_delhi_air/summary.json",
+      "title": "Delhi air audit, blocked",
+      "sources": [
+        "S24",
+        "S04"
+      ],
+      "restricted": []
+    },
+    {
+      "link": "reports/eda/10_spatial_statistics/summary.json",
+      "title": "Spatial statistics (T109)",
+      "sources": [
+        "S08",
+        "S17"
+      ],
+      "restricted": [
+        "S08"
+      ]
+    },
+    {
+      "link": "reports/sql_insights.md",
+      "title": "SQL insights (T224)",
+      "sources": [
+        "S29",
+        "S08",
+        "S32",
+        "S44"
+      ],
+      "restricted": [
+        "S08"
+      ]
+    }
+  ],
+  "states": {
+    "ka": {
+      "sources": 33,
+      "enabled": 25,
+      "blocked": 8,
+      "models": 7,
+      "models_blocked": 6,
+      "link": "configs/states/ka.yaml",
+      "page": "docs/releases/ka-v1.md"
+    },
+    "kl": {
+      "sources": 19,
+      "enabled": 4,
+      "blocked": 7,
+      "models": 7,
+      "models_blocked": 7,
+      "link": "configs/states/kl.yaml",
+      "page": "docs/releases/kl.md"
+    },
+    "dl": {
+      "sources": 8,
+      "enabled": 0,
+      "blocked": 2,
+      "models": 4,
+      "models_blocked": 4,
+      "link": "configs/states/dl.yaml",
+      "page": "docs/releases/dl.md"
+    }
+  },
+  "series": [
+    {
+      "state": "ka",
+      "name": "M05 MAE",
+      "level": "district",
+      "unit": "SPI-3",
+      "span": [
+        "2020-01-01",
+        "2024-12-31"
+      ],
+      "normalisation": "climate_reference",
+      "coverage": 1.0,
+      "link": "reports/models/m05.md"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+# T129: Kerala dam registry and dam-level source precedence. Kept beside, not inside,
+# configs/states/kl.yaml because StateConfig rejects unknown keys (D122 freezes config.py).
+# reservoir_id is exactly what the S32 adapter publishes for the 16 dams in the 05-Nov-2026
+# KSEB report (tests/fixtures/s32_kseb_e02.html, evidence e02). datum_status is "known" only
+# when that dam's own KSEB O&M manual names the reference (D103, evidence in
+# tests/fixtures/s32/manifest.json); a bare elevation is "unknown". Never assumed.
+state_id: kl
+registry_source: S32
+registry_evidence: e02
+daily_level_precedence:
+  - source_id: S32
+    use: "daily 07:00 IST observations; the only enabled dam-level source"
+  - source_id: S34
+    use: "historical coverage only after T118 reviewed OCR, operator-qualified dam identity and a known datum; disabled until then (D102 approved 8 crops, not bulk OCR)"
+    enabled: false
+  - source_id: S33
+    use: "monthly statistics, EDA only; blocked (T115), never interpolated or labelled as daily"
+    enabled: false
+    daily_label_allowed: false
+datum_gate:
+  required_known_dams: 8
+dams:
+  - {reservoir_id: "kseb:idk:idukki", name: "IDUKKI", district_code: IDK, datum_status: known, datum: MSL, datum_evidence: [e81, e82]}
+  - {reservoir_id: "kseb:ekm:idamalayar", name: "IDAMALAYAR", district_code: EKM, datum_status: unknown, datum_evidence: [e98]}
+  - {reservoir_id: "kseb:ptta:kakki-anathode", name: "KAKKI (ANATHODE )", district_code: PTTA, datum_status: known, datum: MSL, datum_evidence: [e96]}
+  - {reservoir_id: "kseb:wnd:banasurasagar-k-a-scheme", name: "BANASURASAGAR (K A SCHEME)", district_code: WND, datum_status: unknown, datum_evidence: []}
+  - {reservoir_id: "kseb:tsr:sholayar", name: "SHOLAYAR", district_code: TSR, datum_status: unknown, datum_evidence: [e95]}
+  - {reservoir_id: "kseb:idk:madupetty", name: "MADUPETTY", district_code: IDK, datum_status: unknown, datum_evidence: [e87]}
+  - {reservoir_id: "kseb:idk:anayirankal", name: "ANAYIRANKAL", district_code: IDK, datum_status: unknown, datum_evidence: [e91]}
+  - {reservoir_id: "kseb:idk:ponmudi", name: "PONMUDI", district_code: IDK, datum_status: unknown, datum_evidence: [e84]}
+  - {reservoir_id: "kseb:kkd:kuttiyadi-kakkayam", name: "KUTTIYADI (KAKKAYAM)", district_code: KKD, datum_status: unknown, datum_evidence: [e90]}
+  - {reservoir_id: "kseb:ptta:pamba", name: "PAMBA", district_code: PTTA, datum_status: known, datum: MSL, datum_evidence: [e97]}
+  - {reservoir_id: "kseb:tsr:poringalkuthu", name: "PORINGALKUTHU", district_code: TSR, datum_status: unknown, datum_evidence: [e88]}
+  - {reservoir_id: "kseb:idk:kundala", name: "KUNDALA", district_code: IDK, datum_status: unknown, datum_evidence: [e86]}
+  - {reservoir_id: "kseb:idk:kallarkutty", name: "KALLARKUTTY", district_code: IDK, datum_status: unknown, datum_evidence: [e89]}
+  - {reservoir_id: "kseb:idk:lower-periyar", name: "LOWER PERIYAR", district_code: IDK, datum_status: unknown, datum_evidence: [e85]}
+  - {reservoir_id: "kseb:ptta:moozhiyar", name: "MOOZHIYAR", district_code: PTTA, datum_status: unknown, datum_evidence: [e94]}
+  - {reservoir_id: "kseb:idk:sengulam-pumping-storage-dam", name: "SENGULAM (PUMPING STORAGE DAM)", district_code: IDK, datum_status: known, datum: MSL, datum_evidence: [e83]}

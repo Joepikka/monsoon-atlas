@@ -1,0 +1,93 @@
+{
+  "source_id": "S12",
+  "evidence": [
+    {
+      "id": "e01",
+      "url": "https://celestrak.org/robots.txt",
+      "fetched_at": "2026-11-09T07:31:46.091650Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "36599b60f65411c05896bd57345271fceb7908591f6588c3853e73633d5ddd57",
+      "bytes": 852,
+      "raw_path": "S12/2026-11-09/36599b60f65411c05896bd57345271fceb7908591f6588c3853e73633d5ddd57.bin",
+      "shows": "CelesTrak robots.txt: GP query pages and .txt files disallowed for all agents"
+    },
+    {
+      "id": "e02",
+      "url": "https://celestrak.org/",
+      "fetched_at": "2026-11-09T07:31:50.360134Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "1dbae2f362a2c8f3923ab6bf79cbd2def9a14ab45d88c3e1bf36b6c0615c04f0",
+      "bytes": 9418,
+      "raw_path": "S12/2026-11-09/1dbae2f362a2c8f3923ab6bf79cbd2def9a14ab45d88c3e1bf36b6c0615c04f0.html",
+      "shows": "CelesTrak home page"
+    },
+    {
+      "id": "e03",
+      "url": "https://celestrak.org/NORAD/documentation/gp-data-formats.php",
+      "fetched_at": "2026-11-09T07:31:54.597139Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "c1e1ec1ac831c6821828d4b2d7116ec50e5ca610de06e4a115f97bde4eebf5d5",
+      "bytes": 40338,
+      "raw_path": "S12/2026-11-09/c1e1ec1ac831c6821828d4b2d7116ec50e5ca610de06e4a115f97bde4eebf5d5.html",
+      "shows": "CelesTrak GP data formats documentation"
+    },
+    {
+      "id": "e04",
+      "url": "https://celestrak.org/NORAD/elements/",
+      "fetched_at": "2026-11-09T07:31:58.700592Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "c378b054d6aff1f7f8ba2e30e93fb6f9e3e392065ff300eac221f598db9a7602",
+      "bytes": 25302,
+      "raw_path": "S12/2026-11-09/c378b054d6aff1f7f8ba2e30e93fb6f9e3e392065ff300eac221f598db9a7602.html",
+      "shows": "CelesTrak current GP element sets index"
+    },
+    {
+      "id": "e05",
+      "url": "https://celestrak.org/usage-policy.php",
+      "fetched_at": "2026-11-09T07:32:15.625766Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "7325aaf1a25959b409a0bcae08577cdf458ec0fbc6d14ae11d31139e617e1360",
+      "bytes": 13980,
+      "raw_path": "S12/2026-11-09/7325aaf1a25959b409a0bcae08577cdf458ec0fbc6d14ae11d31139e617e1360.html",
+      "shows": "CelesTrak usage policy"
+    },
+    {
+      "id": "e06",
+      "url": "https://celestrak.org/webmaster.php",
+      "fetched_at": "2026-11-09T07:32:20.445114Z",
+      "status": 200,
+      "media_type": "text/html",
+      "sha256": "b4ab2ce173df63366405676ee1d39770cb330205b7fdebade086230926df12c1",
+      "bytes": 20489,
+      "raw_path": "S12/2026-11-09/b4ab2ce173df63366405676ee1d39770cb330205b7fdebade086230926df12c1.html",
+      "shows": "CelesTrak webmaster and contact page"
+    },
+    {
+      "id": "e07",
+      "url": "https://celestrak.org/NORAD/elements/gp.php?GROUP=stations&FORMAT=tle",
+      "fetched_at": "2026-11-09T07:32:24.563886Z",
+      "status": 200,
+      "media_type": "text/plain",
+      "sha256": "27701454e898b94f66c01b44bacb7a07f9f7881e4163e62a1c58a4164eee0a67",
+      "bytes": 2520,
+      "raw_path": "S12/2026-11-09/27701454e898b94f66c01b44bacb7a07f9f7881e4163e62a1c58a4164eee0a67.bin",
+      "shows": "Sample: space stations group, TLE format"
+    },
+    {
+      "id": "e08",
+      "url": "https://celestrak.org/NORAD/elements/gp.php?GROUP=stations&FORMAT=json",
+      "fetched_at": "2026-11-09T07:32:28.652987Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "9caeaaa6a63aff21151db059d56fcbef87cd01e9a0b07d76142f9d0e7b9f975e",
+      "bytes": 8030,
+      "raw_path": "S12/2026-11-09/9caeaaa6a63aff21151db059d56fcbef87cd01e9a0b07d76142f9d0e7b9f975e.json",
+      "shows": "Sample: space stations group, OMM JSON format"
+    }
+  ]
+}

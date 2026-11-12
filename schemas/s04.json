@@ -1,0 +1,17 @@
+{
+  "$comment": "S04 Open-Meteo CAMS air-quality estimates (T050). Measure columns added to the common envelope (common.json). Field map: configs/sources/s04.yaml.",
+  "source_id": "S04",
+  "schema_version": 1,
+  "mapping_version": "s04-v1",
+  "fields": [
+    {"name": "cell_id", "type": "string", "nullable": false, "meaning": "om_cams_global_<lat>N_<lon>E, the CAMS grid point the API snapped to"},
+    {"name": "product", "type": "string", "nullable": false, "meaning": "cams_global, the domain requested by name (a model estimate, not a CPCB observation)"},
+    {"name": "pm25_ugm3", "type": "float64", "nullable": true, "meaning": "pm2_5 in μg/m³, instant value close to the surface"},
+    {"name": "pm10_ugm3", "type": "float64", "nullable": true, "meaning": "pm10 in μg/m³, instant value close to the surface"},
+    {"name": "no2_ugm3", "type": "float64", "nullable": true, "meaning": "nitrogen_dioxide in μg/m³, instant value close to the surface"}
+  ],
+  "valid_at": "hourly.time, UTC (timezone=GMT is requested)",
+  "issued_at": "last_run_initialisation_time from data/cams_global/static/meta.json, read before and after the call",
+  "available_at": "the later of last_run_availability_time + 10 minutes and the fetch time",
+  "missing": "An hour with any pollutant missing becomes an all-null row with missing_reason out_of_coverage; a negative value makes the row quality_rejected"
+}

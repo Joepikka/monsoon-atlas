@@ -1,0 +1,32 @@
+# Planned M11 definition, not a fitted model or a claim that labels exist. T170.
+model_id: M11
+state: kl
+enabled: false
+task: classification
+unit: "Kerala district (as M08) x issue day"
+sources: [S43, S35, S36]
+depends_on: [M01, M08]
+target: >-
+  the same 24 h event definition, spatial aggregation and surveillance completeness as M01 and
+  M08; a frozen Karnataka score (zero-shot) is compared with small-sample recalibration on Kerala
+data_gate:
+  min_kerala_flood_events: 30
+  requires: [frozen M01 model, common labels and matched units for 2023-2024]
+  note: 2018 data cannot validate a model trained on future Karnataka years
+baselines: [Kerala prevalence, Kerala logistic, frozen Karnataka score]
+candidates: [frozen_lightgbm_with_intercept_or_isotonic_recalibration]
+planned_splits:
+  karnataka_frozen_through: "2022-12-31"
+  tune_calibrate: ["2023-01-01", "2023-12-31"]
+  locked_test: ["2024-01-01", "2024-12-31"]
+  note: >-
+    Separate from the 2018 replay. If common 2023-24 labels are absent the plan waits for a
+    prospective 2027 monsoon set.
+split_manifest: null
+status: blocked
+reason: >-
+  M11 blocked: it freezes the Karnataka flood model M01 and needs common Kerala flood labels, but
+  M01 is blocked (S43 has no official dated ward-level inundation records, T085) and M08 is
+  blocked (S35 is blocked and S36 holds 2018 district tables only), so there is no frozen
+  Karnataka score, no common 2023-24 labels and no 30 Kerala flood events (T170).
+fallback: "none: the Kerala prevalence, Kerala logistic and frozen Karnataka baselines all need Kerala labels or the frozen M01 score"

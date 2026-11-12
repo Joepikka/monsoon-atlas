@@ -1,0 +1,35 @@
+# Planned M17 definition, not a fitted model or a claim that labels exist. T173.
+model_id: M17
+state: kl
+enabled: false
+task: segmentation
+unit: "256x256 tile at 10 m"
+sources: [S42, S43, S35, S36]
+target: >-
+  water or flood mask at acquisition time (not a future flood prediction) on a 256x256 tile at
+  10 m; labels are independent event inundation polygons that exclude permanent water, never
+  masks made from the same SAR threshold
+data_gate:
+  min_independent_events: 5
+  requires: [independent inundation masks, verified S42 and S43 licence, S42 imagery access]
+  note: >-
+    if unavailable, publish the data gap and a threshold illustration without a performance
+    claim; the 2 GB local GPU is too small, so a U-Net would train on Kaggle or Colab only
+baselines: [VV change threshold fitted on training, logistic pixel classifier]
+candidates: [small_unet_n1]
+planned_splits:
+  train: ["2015-01-01", "2017-12-31"]
+  tune: ["2018-01-01", "2018-12-31"]
+  locked_test: ["2019-01-01", "2020-12-31"]
+  note: >-
+    Independently labelled events by year of event. The 2018 Kerala event is a tune set only if
+    a separate later test exists; a strict 2018 test needs training before 2018. Events must be
+    spatially disjoint.
+split_manifest: null
+status: blocked
+reason: >-
+  M17 blocked: S42 Sentinel-1 imagery needs a Copernicus account (proposed owner step H15), so no
+  scene was read, and no independent inundation masks exist (S35 is blocked, S36 holds 2018
+  district tables and S43 has no official impact labels), so there are not 5 distinct labelled
+  events; training would also need a Kaggle or Colab GPU, not the 2 GB local card (T173).
+fallback: "none: the VV-change threshold illustration needs Sentinel-1 scenes, which sit behind the S42 account"

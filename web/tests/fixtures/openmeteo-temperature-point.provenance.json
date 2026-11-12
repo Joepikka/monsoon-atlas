@@ -1,0 +1,10 @@
+{
+  "source_id": "S01",
+  "licence": "CC BY 4.0; Open-Meteo and ECMWF attribution",
+  "test_only": true,
+  "derivation": "S01 adapter s01-v1; first non-missing temperature with valid_at >= fetched_at; provider grid-cell coordinates and units preserved",
+  "source_files": {
+    "tests/fixtures/s01_openmeteo_forecast_ecmwf_ifs025_bengaluru_2026-11-05.json": "5f20841e707fecf6ff84049cf0051e04324d9cd9240f962afe940aee61ca08ba",
+    "tests/fixtures/s01_openmeteo_meta_ecmwf_ifs025_2026-11-05.json": "258b5c2081be8263ae7e2afbec787da382d6e017ae3c7a77f46ed398f6151754"
+  }
+}

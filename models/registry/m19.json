@@ -1,0 +1,20 @@
+{
+  "model_id": "M19",
+  "state": "ka",
+  "status": "blocked",
+  "reason": "M19 blocked: it must beat the M02 baseline on the same reservoir level target, and M02 is blocked because S28 KWRIS has no verified daily reservoir level history (T092), so there are no reservoirs with 5 years of daily data, no M02 baseline and no target; no free GPU session exists either, as the Kaggle owner step H10 is open (T167).",
+  "evidence": {
+    "configs/sources/s28.yaml": "04a3df19c26e99eb337b3ad0b154bc045c8db91990952c8516d7b301f6522281",
+    "tests/fixtures/s28/manifest.json": "1dac49892f5e1611e5f72d8e4922a5b7f1a41fc4d4fe58696f0d53c9f599e5b5",
+    "configs/models/m19.yaml": "4ba130cd9d6e13d0501572cfab7c1229a154abe89f86cb4813e11f3459ffd1b1"
+  },
+  "source_gate_sha256": "b0792caf15bb38551cf524d255e7a01313e51c26572c322e032cdcb882f20dde",
+  "dataset_sha256": null,
+  "split_sha256": null,
+  "weights": null,
+  "baseline_scores": null,
+  "candidate_scores": null,
+  "improvement": null,
+  "prediction_rows": 0,
+  "report": "reports/models/m19.md"
+}

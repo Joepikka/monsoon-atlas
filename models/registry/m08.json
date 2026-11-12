@@ -1,0 +1,22 @@
+{
+  "model_id": "M08",
+  "state": "kl",
+  "status": "blocked",
+  "reason": "M08 blocked: S35 is blocked and S36 holds 2018 district labels only, with no audited pre-2018 positives or negatives, so a forecasting classifier cannot be trained (T133).",
+  "evidence": {
+    "configs/sources/s35.yaml": "9d0224d38a97570d42ce02278eb10f6bd6b3d116b7f0c8f92fdc1eb54a2f68ef",
+    "tests/fixtures/s35/manifest.json": "1f06998d338d63a7f36b44497f6dd6a9a481bc3ab748fae23236c6defc8cf366",
+    "configs/sources/s36.yaml": "1eea5b6e96c89a9f1b6a4103ce574885125c761c489a1da308819286648c65d5",
+    "tests/fixtures/s36/manifest.json": "a2df582cd87c7ccc98349d0909c3fd167f7d57c27c911e54e49d8eab1c8f73aa",
+    "configs/models/m08.yaml": "b7b383ed6d48d0b79123225af72588013e085327f2ffbee94b0f46304847b0d6"
+  },
+  "source_gate_sha256": "cb783aeeda7387f518776262f52ba98b6148a958c4319557803fd7af9fd13fb1",
+  "dataset_sha256": null,
+  "split_sha256": null,
+  "weights": null,
+  "baseline_scores": null,
+  "candidate_scores": null,
+  "improvement": null,
+  "prediction_rows": 0,
+  "report": "reports/models/m08.md"
+}

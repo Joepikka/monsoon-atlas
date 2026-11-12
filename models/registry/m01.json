@@ -1,0 +1,20 @@
+{
+  "model_id": "M01",
+  "state": "ka",
+  "status": "blocked",
+  "reason": "M01 blocked: no official dated ward-level inundation records or audited negatives exist (S43, T085), so labels, features and flood probabilities cannot be built (T089).",
+  "evidence": {
+    "configs/sources/s43.yaml": "2ec5a030a12bf2e27268ffc36267a3b36b7accb7202f2cb6d4eb5aca5719af8e",
+    "tests/fixtures/s43/manifest.json": "9eeaa3ba6f50802410539694b0de145b60acf213fecdddfa305307ac23adbfad",
+    "configs/models/m01.yaml": "22a8ce6836964dad21960af33d1b579b5cb379b752b4ad53fe9df066c5f6f60f"
+  },
+  "source_gate_sha256": "d3c97d9fea6ba6f8c580efd2dab090a692373b349a1a0c29c47e46ed3cf4b06b",
+  "dataset_sha256": null,
+  "split_sha256": null,
+  "weights": null,
+  "baseline_scores": null,
+  "candidate_scores": null,
+  "improvement": null,
+  "prediction_rows": 0,
+  "report": "reports/models/m01.md"
+}

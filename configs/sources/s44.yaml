@@ -1,0 +1,98 @@
+# Discovery record for S44 (plan task T087). Evidence IDs refer to tests/fixtures/s44/manifest.json;
+# the files stay in data/raw/S44. See docs/sources/s44.md.
+source_id: S44
+state: ka
+name: "District crime statistics"
+verify_task: T087
+discovered_at: "2026-11-09T11:06:01Z"
+outcome: available
+landing_url: "https://data.opencity.in/dataset/karnataka-crime-data-2024"
+publisher: "OpenCity (data.opencity.in), republishing Karnataka State Police crime statistics"
+no_card: true
+account_required: false
+
+access:
+  status: public_download_no_key
+  detail: >-
+    OpenCity publishes one Karnataka crime dataset per year from 2022 to 2025, each with the
+    police report (PDF) and CSV tables (e01, e02, e06, e07); the CSVs download without a key
+    (e04, e05). The police site's robots.txt URL returns an "Unauthorized Action" page instead of
+    rules (e03), so the police site itself is not crawled. OpenCity asks for 10 seconds between
+    requests (S29, T079).
+  evidence: [e01, e02, e03, e04, e05, e06, e07]
+
+licence:
+  status: open
+  detail: >-
+    The OpenCity dataset page says "License Other (Public Domain)" with source
+    ksp.karnataka.gov.in (e01). Credit Karnataka State Police and OpenCity.
+  evidence: [e01]
+
+provider_quota:
+  status: published
+  detail: "OpenCity's robots.txt sets a 10-second crawl delay (recorded for S29); no other limit (e01)."
+  evidence: [e01]
+
+history:
+  status: available
+  detail: >-
+    Annual totals: 2024 by offence head for 40 police units plus a state total, under range headings (e04); 2023 IPC,
+    SLL and total cases for 38 units plus a total (e05); 2022 and 2025 datasets list district and
+    city-wise totals and, for 2025, "IPC and BNS Crimes" (e06, e07).
+  evidence: [e04, e05, e06, e07]
+earliest_date: "2022-01-01"
+latest_date: "2025-12-31"
+
+units:
+  status: labelled
+  detail: >-
+    Counts of registered cases per police unit and year. 2024 columns are offence heads (MURDER,
+    ROBBERY, THEFT, CYBER CRIME, POCSO and others, e04); 2023 columns are IPC Cases, SLL Cases and
+    Total (e05).
+  evidence: [e04, e05]
+
+source_check:
+  status: pass
+  detail: >-
+    Plan rule: published totals only; no names or case locations; harmonize boundaries;
+    under-reporting caveat. The tables hold counts per police unit only, with no names or case
+    locations (e04, e05). Units are police jurisdictions, not revenue districts: six city
+    commissionerates (Bengaluru, Mysuru, Hubballi Dharwad, Mangaluru, Belagavi, Kalaburagi) are
+    split from their districts, range rows are empty section headings, and Karnataka Railways,
+    Coastal Security Police and CID have no area (e04); 2023 spells names differently (Shimoga, Kalaburgi, KRailways,
+    e05). T088 keeps the published unit, skips the headings, marks non-area units, and maps to districts
+    only where one unit equals one district. Registered cases are not incidence: every display
+    carries an under-reporting caveat. Offence heads change between years, and from July 2024 the
+    BNS replaced the IPC (e07), so heads are not compared across that break.
+  evidence: [e04, e05, e07]
+
+field_map:
+  - canonical: district_id
+    upstream: "DISTRICT/UNITS (2024) / Districts (2023)"
+    unit_status: not_applicable
+    detail: "Published police unit name; mapped to a district only where one unit is one district."
+    evidence: [e04, e05]
+  - canonical: year
+    upstream: "the dataset year"
+    unit_status: not_applicable
+    detail: "Calendar year named by the dataset."
+    evidence: [e01, e02]
+  - canonical: offence_category
+    upstream: "column headers (offence heads, or IPC Cases / SLL Cases / Total)"
+    unit_status: not_applicable
+    detail: "As published; not harmonised across years or the IPC to BNS change."
+    evidence: [e04, e05, e07]
+  - canonical: count
+    upstream: "cell values"
+    unit_status: labelled
+    detail: "Registered cases, an integer count."
+    evidence: [e04, e05]
+  - canonical: population_year
+    upstream: null
+    unit_status: absent
+    detail: "No population is published with the tables; rates are not computed from this source."
+    evidence: [e04, e05]
+
+dependents: [T088]
+retry_condition: null
+failed_fetches: []
