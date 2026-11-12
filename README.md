@@ -22,7 +22,7 @@ M05 is the only model with an evaluated, owner-approved result. The other 19 hav
 
 | Area | State |
 |---|---|
-| Source records | 44 (27 available, 17 blocked); see [data licences](#data-licences) |
+| Source records | 44 (28 available, 16 blocked); see [data licences](#data-licences) |
 | Ask (cited answers) | Research-only (D101). Extractive answers with citations; no language model is connected (owner step H05). Its scores do not reproduce, see the lessons below. |
 | Karnataka, Kerala, Delhi gate pages | [ka-v1.md](docs/releases/ka-v1.md), [kl.md](docs/releases/kl.md), [dl.md](docs/releases/dl.md) |
 | Hosted service worker, offline cache | Not registered (D162) |
@@ -180,7 +180,7 @@ One row per source record in `configs/sources/`. "Available" means the discovery
 | S22 | India Data Portal Agmarknet / existing price data | ka | unverified | blocked | [s22.yaml](configs/sources/s22.yaml) |
 | S23 | data.gov.in mandi prices | ka | open | blocked | [s23.yaml](configs/sources/s23.yaml) |
 | S24 | CPCB station pollution via data.gov.in | dl | unverified | blocked | [s24.yaml](configs/sources/s24.yaml) |
-| S25 | NASA FIRMS active fires | ka | open | blocked | [s25.yaml](configs/sources/s25.yaml) |
+| S25 | NASA FIRMS active fires | ka | open | available | [s25.yaml](configs/sources/s25.yaml) |
 | S26 | aisstream ships | kl | unverified | blocked | [s26.yaml](configs/sources/s26.yaml) |
 | S27 | KSNDMC gauges | ka | unverified | blocked | [s27.yaml](configs/sources/s27.yaml) |
 | S28 | KWRIS reservoirs and rainfall | ka | restricted | blocked | [s28.yaml](configs/sources/s28.yaml) |

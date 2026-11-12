@@ -11,7 +11,7 @@ proposed feature for an achieved result. A negative finding that can be reproduc
 ## Usable now
 
 - **Data engineering:** "Documented access, licence and history for 44 public data sources for
-  Karnataka, Kerala and Delhi (3 states) in versioned, tested source records: 27 available and 17
+  Karnataka, Kerala and Delhi (3 states) in versioned, tested source records: 28 available and 16
   blocked, where a blocked source raises an error and never returns synthetic rows."
   - Source: [configs/sources/](../../configs/sources/s01.yaml) (44 records, count by `outcome`),
     [configs/states/](../../configs/states/ka.yaml) (3 state configs), [AGENTS.md](../../AGENTS.md)

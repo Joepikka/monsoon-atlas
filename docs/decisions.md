@@ -2,6 +2,20 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D176 — S25 FIRMS available with the owner's MAP_KEY (12 Nov 2026).**
+  The owner saved `NASA_FIRMS_MAP_KEY` (H09); its status service showed 5,000 transactions per
+  10 minutes. The FIRMS API puts the key in the URL path, which the frozen `Fetcher` cannot hide
+  (it adds secrets as query parameters), so `src/atlas/ingest/s25.py` adds `KeyPathFetcher`, a
+  subclass that substitutes the key into the outgoing request only and refuses a redirect;
+  recorded URLs, raw files, the ledger and manifests keep the literal segment `MAP_KEY` (tested;
+  `http.py` is unchanged). T075 retry: area page (e06), data availability page (e07) and CSV
+  (e08, NRT 2026-08-01 to 2026-11-12), and a Karnataka area CSV (e09): 113 VIIRS NOAA-20
+  detections, 0 duplicates, confidence 101 nominal, 8 low, 4 high. S25 is enabled; the adapter
+  keeps detections inside the state polygon, maps l/n/h to low/nominal/high, and stores per-row
+  latency. Rows are `provenance=model`. The fire context layer is now available but stays
+  built-not-mounted until a public snapshot carries detections (T045, H11). The committed test
+  fixture is that real CSV (NASA open data; credit FIRMS, LANCE and ESDIS).
+
 - **D175 — S18 facilities exported for the Nearby tab (12 Nov 2026).**
   `src/atlas/ingest/s18_prepare.py` turns S18 rows into the browser's Facility shape:
   hospitals, police and fire stations only, the nearest 10 of each kind within 25 km of

@@ -8,8 +8,8 @@ const fixture = JSON.parse(readFileSync(new URL('../../tests/fixtures/context-la
 describe('context layer controls', () => {
   it('disables blocked layers with their reason and evidence', () => {
     const layers = parseContextLayers(fixture);
-    expect(layers.filter(l => !l.available).map(l => l.layer)).toEqual(['fire', 'rera']);
-    expect(layers.find(l => l.layer === 'fire')?.reason).toContain('MAP_KEY');
+    expect(layers.filter(l => !l.available).map(l => l.layer)).toEqual(['rera']);
+    expect(layers.find(l => l.layer === 'fire')?.note).toContain('not a confirmed fire');
     expect(buildingShown(0.74)).toBe(false);
     expect(buildingShown(0.75)).toBe(true);
   });

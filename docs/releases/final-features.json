@@ -369,7 +369,7 @@
       "states": "ALL",
       "tier": "v1",
       "plan_task": "T105",
-      "status": "blocked",
+      "status": "built-not-mounted",
       "tasks": [
         "T075",
         "T076",
@@ -377,16 +377,19 @@
       ],
       "evidence": [
         "configs/sources/s25.yaml",
+        "src/atlas/ingest/s25.py",
         "docs/sources/s25.md"
       ],
       "tests": [
-        "tests/test_context_layers.py"
+        "tests/test_context_layers.py",
+        "tests/sources/test_s25.py"
       ],
-      "blocker": "S25 needs a FIRMS MAP_KEY (H09).",
+      "blocker": "S25 is available with the owner's MAP_KEY (D176); not mounted until a public snapshot carries detections (T045).",
       "owner_steps": [
-        "H09"
+        "H11",
+        "H05"
       ],
-      "notes": ""
+      "notes": "Hotspots are thermal anomalies, never confirmed fires."
     },
     {
       "id": "F016",

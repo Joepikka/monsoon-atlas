@@ -15,7 +15,7 @@ synthetic rows.
 
 ## Sources
 
-24 of 33 sources enabled; 9 blocked and disabled (outcome `blocked`, retry
+25 of 33 sources enabled; 8 blocked and disabled (outcome `blocked`, retry
 condition recorded in each `configs/sources/sNN.yaml`). Every row has a
 discovery record that passes the discovery contract
 (`atlas.ingest.discovery.check`), a manifest of stored evidence, and a source
@@ -47,7 +47,7 @@ adapter by design: T008 ended at discovery.
 | S21 | Datameet railway schedules | available | yes | open | [s21](../sources/s21.md) |  |
 | S22 | India Data Portal Agmarknet / existing price data | blocked | no | unverified | [s22](../sources/s22.md) | Working browser render of the Agmarknet page, or owner notes the download button, format and licence. |
 | S23 | data.gov.in mandi prices | blocked | no | open | [s23](../sources/s23.md) | Publisher statement of the min/modal/max price denominator for the resource; GODL is already verified. |
-| S25 | NASA FIRMS active fires | blocked | no | open | [s25](../sources/s25.md) | Owner gets a FIRMS MAP_KEY (H09), or a key-free FIRMS download link is recorded with its terms. |
+| S25 | NASA FIRMS active fires | available | yes | open | [s25](../sources/s25.md) |  |
 | S27 | KSNDMC gauges | blocked | no | unverified | [s27](../sources/s27.md) | KSNDMC serves gauge data over HTTPS with station list, units and terms, or an equivalent open dataset appears. |
 | S28 | KWRIS reservoirs and rainfall | blocked | no | restricted | [s28](../sources/s28.md) | KWRIS account (owner step) with API terms allowing research, or ACIWRM sends daily history with units and licence, or the site publishes an export. |
 | S29 | OpenCity KSNDMC hobli rainfall 2017-2023 | available | yes | open | [s29](../sources/s29.md) |  |
@@ -97,7 +97,7 @@ and its tests exist, but no public snapshot carries the layer (D116, D117).
 | Feature | Layer | Depends on | Status | Evidence |
 |---|---|---|---|---|
 | F011 | Transit stations and scheduled positions | S30 | built, not mounted pending H11 | D116, [web-layers.md](../web-layers.md), `tests/test_schedule.py` |
-| F015 | Fire hotspots | S25 | blocked | [s25](../sources/s25.md), D117 |
+| F015 | Fire hotspots | S25 | built, not mounted pending H11 | [s25](../sources/s25.md), D117, D176 |
 | F019 | Public RERA projects | S31 | blocked | [s31](../sources/s31.md), D117 |
 | F020 | Building outlines | S19 | built, not mounted pending H11 | D117, `tests/test_context_layers.py` |
 | F022 | District crime totals (stretch) | S44 | built, not mounted pending H11 | D114, D117, `tests/test_context_layers.py` |
@@ -164,7 +164,7 @@ From `docs/HANDOFF.md` section 8, "Pending human-only steps" (not edited here):
   reproduction, so only derived outputs), S12 and S20 display terms, boundary
   map guidance, OpenFreeMap 18+ confirmation, WorldPop undercount label.
 - H05 and H06 tokens (deferred by the owner on 6 Nov); T045 needs them.
-- H09 FIRMS key (S25), H08 Telegram bot (S39), K-RERA permission (S31), OpenSky
+- H08 Telegram bot (S39), K-RERA permission (S31), OpenSky
   terms (S11), KWRIS request (S28), S23 denominator
   statement.
 - H04 Delhi Open Transit Data registration (needed in P4).

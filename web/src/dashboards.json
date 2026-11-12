@@ -476,11 +476,11 @@
       "state": "ka",
       "id": "S25",
       "name": "NASA FIRMS active fires",
-      "enabled": false,
-      "outcome": "blocked",
+      "enabled": true,
+      "outcome": "available",
       "licence": "open",
       "retry": null,
-      "owner_step": true,
+      "owner_step": false,
       "link": "configs/sources/s25.yaml"
     },
     {
@@ -1026,8 +1026,8 @@
   "states": {
     "ka": {
       "sources": 33,
-      "enabled": 24,
-      "blocked": 9,
+      "enabled": 25,
+      "blocked": 8,
       "models": 7,
       "models_blocked": 6,
       "link": "configs/states/ka.yaml",

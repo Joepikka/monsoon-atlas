@@ -280,6 +280,7 @@ and a YAML block `- id: T057`.
 | T074 | D111 | S21 adapter `src/atlas/ingest/s21.py`: pinned-commit stations + streamed schedules; stops at state stations (station_id, train_id, stop_sequence, arrival/departure text, journey_day, lat/lon); None to null; imputed flag when ids disagree; provenance reconstructed; real CC0 subset fixtures. S21 enabled. Acceptance 12 passed. |
 | T075 | A5 | S25 NASA FIRMS: **blocked** on owner step H09 (MAP_KEY). Data open (NASA full and open sharing; acknowledge FIRMS/LANCE/ESDIS), within 3 hours; download pages are script shells and robots closes /dist/; browser pane unavailable. VIIRS units recorded. Acceptance 6 passed. |
 | T076 | A5 | S25 disabled contract `src/atlas/ingest/s25.py` (no I/O even if force-enabled; empty schema). Acceptance 3 passed. |
+| T075-T076 retry | D176 | Owner MAP_KEY (H09): 113 Karnataka detections checked (0 duplicates); `KeyPathFetcher` puts the key only in the request path; adapter parses the area CSV with latency; fire layer available, not mounted (T045) |
 | T077 | D112 | S27 KSNDMC: **blocked**. HTTPS refused (ksndmc.org), www name unresolved, Varunamitra unreachable. Over plain HTTP (read once under D112) only an ASP.NET template with three undocumented TRG endpoints (no station list, units, licence). Acceptance 5 passed. |
 | T078 | D112 | S27 disabled contract `src/atlas/ingest/s27.py`. Acceptance 3 passed. |
 | T079 | D113 | S29 OpenCity KSNDMC: available, "Other (Public Domain)", crawl delay 10 s. **Annual only**: district/taluk/hobli CSVs 2020-2025 (layouts differ; 2025 lacks the D/T/H marker) and 2023 station totals (5,266); no daily series, so D113. Acceptance 6 passed. |
@@ -644,7 +645,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 | S31 Karnataka RERA | T081, T082 | blocked (reproduction needs emailed permission) | 10,106 applications; promoter names include individuals; no location |
 | S29 OpenCity KSNDMC rainfall | T079, T080 | available (annual only), enabled | district/taluk/hobli annual 2020-2024, stations 2023; 2025 refused; D113 |
 | S27 KSNDMC gauges | T077, T078 | blocked (no HTTPS; undocumented template endpoints) | D112; disabled contract |
-| S25 NASA FIRMS | T075, T076 | blocked (owner step H09 MAP_KEY) | open data; pages script-rendered; disabled contract |
+| S25 NASA FIRMS | T075, T076 | available (D176) | owner MAP_KEY; recorded URLs keep the literal MAP_KEY |
 | S21 Datameet railways | T073, T074 | available, enabled | CC0; pinned 2016 commit; historical timetable only, never ETAs; D111 |
 | S20 USGS earthquakes | T071, T072 | available (licence restricted until read), enabled | feed hourly; history needs starttime; id+updated versioning; D110 |
 | S19 Google Open Buildings | T069, T070 | available, enabled | CC BY 4.0 branch; Karnataka = cell 3bb (4.8 GB), streamed to disk; display confidence >= 0.75 |
@@ -680,8 +681,7 @@ M08 is a non-core descriptive 2018 replay (P3).
 - **S31 Karnataka RERA (T081):** optional: email K-RERA (per its copyright policy) for permission
   to reproduce the registered-projects list; record the reply, then T081 runs again.
 
-- **H09 NASA FIRMS (S25, T075):** get a FIRMS MAP_KEY and store it as `NASA_FIRMS_MAP_KEY` in
-  `.env`; then T075/T076 run again. Optional for the MVP.
+- **H09 NASA FIRMS (S25, T075):** done 12 Nov 2026 (D176). The key is in `.env`; S25 is available.
 
 - **USGS licence (S20, D110) and CelesTrak (S12, D109):** at H11, confirm the USGS copyright
   statement (https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits,
@@ -865,7 +865,7 @@ Amendments A8 order, with the D17 and D29 fallbacks:
    entry for the local preview. T220 is done (D164). Run `tests/test_dl_poll.py` with any change
    that adds text under `web/` or `worker/`. **T221 is done (D165): every plan task T001-T221
    is walked; the product is not released.** `docs/releases/final.md` audits all 64 plan
-   features (now 20 shipped-local, 12 built not mounted, 4 research-only, 27 blocked, 1 deferred
+   features (now 20 shipped-local, 13 built not mounted, 4 research-only, 26 blocked, 1 deferred
    after D172 mounted climate, wall, terrain, globe and place watches)
    and pins 88 evidence files in `final-manifest.json` (regenerate with
    `.\.venv\Scripts\python tests/test_final.py --manifest` after changing any of them).

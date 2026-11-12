@@ -68,9 +68,9 @@ catalogue, with names, states and tiers as the plan gives them). Status counts b
 | Status | MVP | v1 | stretch | Total |
 |---|---|---|---|---|
 | shipped-local | 9 | 7 | 4 | 20 |
-| built-not-mounted | 0 | 9 | 3 | 12 |
+| built-not-mounted | 0 | 10 | 3 | 13 |
 | research-only | 0 | 3 | 1 | 4 |
-| blocked | 3 | 17 | 7 | 27 |
+| blocked | 3 | 16 | 7 | 26 |
 | deferred | 0 | 0 | 1 | 1 |
 | total | 12 | 36 | 16 | 64 |
 
@@ -97,7 +97,7 @@ status; the note says why this one was chosen.
 | F012 | Live buses | DL | v1 | blocked | T148, T151, T165 (plan T165) | `configs/sources/s38.yaml`, `web/src/components/Transit.tsx`, `worker/src/transit.ts`, `docs/releases/dl.md` | `tests/test_dl_poll.py`, `web/src/components/Transit.test.ts` | S38 blocked on owner step H04; live mode unavailable (D135, D138). Owner: H04. | none |
 | F013 | Historical train routes/stations | ALL | stretch | built-not-mounted | T073, T074, T104 (plan T104) | `src/atlas/transit/schedule.py`, `configs/sources/s21.yaml` | `tests/test_schedule.py`, `tests/sources/test_s21.py` | Not mounted with the transit layer (D116). Owner: H11. | S21 is a 2016 reference: clock text only, no position or ETA. |
 | F014 | Flights and optional coastal ships | ALL/KL | stretch | built-not-mounted | T059, T060, T187 (plan T187) | `web/src/map/Movement.tsx`, `web/tests/fixtures/movement-layers.json`, `configs/sources/s10.yaml` | `web/src/map/Movement.test.ts`, `tests/test_movement.py` | Not mounted (D153); ships need S26, blocked on H12. Owner: H12, H11. | Aircraft (S10) is the only layer that qualifies; S11 is blocked on terms. |
-| F015 | Fire hotspots | ALL | v1 | blocked | T075, T076, T105 (plan T105) | `configs/sources/s25.yaml`, `docs/sources/s25.md` | `tests/test_context_layers.py` | S25 needs a FIRMS MAP_KEY (H09). Owner: H09. | none |
+| F015 | Fire hotspots | ALL | v1 | built-not-mounted | T075, T076, T105 (plan T105) | `configs/sources/s25.yaml`, `src/atlas/ingest/s25.py`, `docs/sources/s25.md` | `tests/test_context_layers.py`, `tests/sources/test_s25.py` | S25 is available with the owner's MAP_KEY (D176); not mounted until a public snapshot carries detections (T045). Owner: H11, H05. | Hotspots are thermal anomalies, never confirmed fires. |
 | F016 | Sachet alerts including provider-issued lightning | ALL | MVP | shipped-local | T013, T014, T039 (plan T039) | `configs/sources/s09.yaml`, `web/src/App.tsx`, `docs/feeds.md` | `tests/sources/test_s09.py`, `web/tests/area.spec.ts`, `web/tests/live-data.spec.ts` | none | Judgement call: local capture and display only; partial CAP coverage, no hosted feed. Lightning shows only when Sachet issues it; none is inferred from rain. |
 | F017 | News-derived preliminary event pins | KL then ALL | stretch | blocked | T125, T189-T208, T209, T211 (plan T211) | `configs/sources/s41.yaml`, `eval/news/blocked.json`, `reports/models/m18.md` | `tests/labels/test_news_blocked.py` | S41 has no publisher permission; 0 labelled texts; H13 review not done (D155, D156). Owner: H13. | none |
 | F018 | Flood-exposed roads | KA/KL | v1 | blocked | T143 (plan T143) | `src/atlas/spatial/exposure.py`, `configs/sources/s18.yaml`, `configs/sources/s43.yaml` | none | No road graph is built from S18 yet (S18 available, D174) and no flood labels or polygons (S43) (D128). | S18 roads come from the owner's browser download (D174). |
@@ -266,7 +266,7 @@ Open steps with an H number, from [ka.md](ka.md), [ka-v1.md](ka-v1.md), [kl.md](
 | H05 | Creates the Cloudflare API token and records free, no-card status | T042 to T045, Workers AI for Ask, F053, F056, F057, F058, F064 | ka.md, account-setup.md |
 | H06 | Creates a Hugging Face write token for the archive repository | T045 (archive), F053, F057 | ka.md, account-setup.md |
 | H08 | Creates the Telegram bot and public channel, stores the token | S39, T083, T084, F050 | ka-v1.md, HANDOFF section 8 |
-| H09 | Gets a NASA FIRMS MAP_KEY | S25, T075, T076, F015 | ka-v1.md, HANDOFF section 8 |
+| H09 | Done 12 Nov 2026 (D176): NASA FIRMS MAP_KEY saved in `.env` | S25, T075, T076, F015 | ka-v1.md, HANDOFF section 8 |
 | H10 | Kaggle sign-in (optional) | S35 re-check, M08, free GPU for M17 and M19 | kl.md, HANDOFF section 8 |
 | H11 | Karnataka sheet answered on 11 Nov 2026 (D166): six items, 18+ OpenFreeMap terms, boundary disclaimer, S08 files. Still open: the Malayalam strings, S12 and S20 display terms, the WorldPop undercount label, and the review of the Kerala and Delhi layers | T046, publication of any layer, mounting the 19 built-not-mounted rows that list H11 | h11-ka.md, ka.md, kl.md, dl.md |
 | H12 | Gets an aisstream key | S26, T111, T112, ships in F014 | kl.md |

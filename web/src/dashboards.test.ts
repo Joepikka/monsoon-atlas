@@ -63,7 +63,7 @@ describe('dashboard pages render the committed data', () => {
   it('compares nothing it cannot compare and ranks no state', () => {
     const out = html(() => createElement(Compare));
     expect(out).toContain('KA and KL: unavailable. At least one of the two states has no released metric.');
-    expect(out).toContain('(coverage 0.727)');
+    expect(out).toContain('(coverage 0.758)');
     expect(out).not.toMatch(/rank(ed)? (first|1)|best state/i);
   });
 });

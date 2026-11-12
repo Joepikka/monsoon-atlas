@@ -126,7 +126,7 @@ files local: `data/raw` is not tracked, and git holds only each source's `manife
 
 | Check | Result | Test |
 |---|---|---|
-| Karnataka gate | 24 of 33 sources enabled; M05 approved; frozen interfaces unchanged | `tests/test_ka_v1.py`, `tests/test_ka_release.py` |
+| Karnataka gate | 25 of 33 sources enabled; M05 approved; frozen interfaces unchanged | `tests/test_ka_v1.py`, `tests/test_ka_release.py` |
 | Kerala gate | 4 of 19 Kerala sources enabled; M07 to M10 blocked | `tests/test_kl_release.py` |
 | Delhi isolation | `dl.yaml` keeps its own raw, clean and publish roots; S28 and S32 are not Delhi sources | `tests/test_dl_study.py` |
 | Delhi poll and collection | Live mode unavailable; readiness gate failed (not run) | `tests/test_dl_poll.py`, `tests/test_dl_collection.py` |

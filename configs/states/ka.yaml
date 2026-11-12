@@ -190,7 +190,8 @@ sources:
     storage_crs: EPSG:4326
     secret_env: NASA_FIRMS_MAP_KEY
     schedule: "every 6 hours"
-    enabled: false
+    verified_by: configs/sources/s25.yaml
+    enabled: true
   - source_id: S27
     name: "KSNDMC gauges"
     verify_task: T077

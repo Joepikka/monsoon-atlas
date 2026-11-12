@@ -1,6 +1,6 @@
-"""T075 acceptance: the S25 (NASA FIRMS) discovery record passes the discovery contract as a
-blocked result: the API needs the owner's MAP_KEY (H09) and the download pages are script-rendered;
-licence, latency and field units are checked against the evidence."""
+"""T075 acceptance: the S25 (NASA FIRMS) discovery record passes the discovery contract. First
+blocked on the owner's MAP_KEY (H09); retried 12 Nov 2026 with the key (D176): available, with the
+key never recorded. Licence, latency and field units are checked against the evidence."""
 
 import html
 import re
@@ -15,11 +15,21 @@ def test_s25_discovery_contract(record):
     assert record("S25").problems() == []
 
 
-def test_s25_is_blocked_on_the_owner_key(record):
+def test_s25_is_available_with_the_owner_key(record):
     d = record("S25").discovery
-    assert (d.outcome, d.licence.status, d.source_check.status) == ("blocked", "open", "blocked")
-    assert d.account_required and "MAP_KEY (H09)" in d.retry_condition
-    assert d.dependents == ["T076"]
+    assert (d.outcome, d.licence.status, d.source_check.status) == ("available", "open", "pass")
+    assert d.account_required and d.access.status == "owner_key" and d.retry_condition is None
+    assert d.dependents == ["T076"] and "not a confirmed building fire" in d.source_check.detail
+
+
+def test_recorded_urls_and_files_never_carry_the_key(record):
+    rec = record("S25")
+    keyed = [e for e in rec.manifest.evidence if "/csv/" in e.url]
+    assert [e.id for e in keyed] == ["e08", "e09"]
+    assert all("/csv/MAP_KEY/" in e.url for e in keyed)
+    header = rec.raw("e09").read_text("utf-8").splitlines()[0]
+    assert header.startswith("latitude,longitude,bright_ti4") and header.endswith("frp,daynight")
+    assert "VIIRS_NOAA20_NRT,2026-08-01,2026-11-12" in rec.raw("e08").read_text("utf-8")
 
 
 def test_no_data_committed(record):

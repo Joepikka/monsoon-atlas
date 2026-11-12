@@ -49,12 +49,11 @@ def status():
 def test_unavailable_layers_are_disabled_with_reason_and_evidence():
     layers = status()
     assert {k: v["available"] for k, v in layers.items()} == {
-        "fire": False,
+        "fire": True,
         "rera": False,
         "buildings": True,
         "crime": True,
     }
-    assert "MAP_KEY" in layers["fire"]["reason"] and "H09" in layers["fire"]["reason"]
     assert "K-RERA" in layers["rera"]["reason"]
     for layer in layers.values():
         assert (ROOT / layer["evidence"]).exists() and layer["landing_url"].startswith("https://")
@@ -67,8 +66,9 @@ def test_no_firms_hotspot_becomes_a_confirmed_structure_fire():
     for category in ("fire", "confirmed_fire", "structure_fire"):
         with pytest.raises(ValueError, match="thermal_anomaly"):
             fire_kind(category)
-    with pytest.raises(SourceUnavailable, match="fire layer unavailable"):
-        require("fire")
+    require("fire")  # available since the owner's MAP_KEY (D176)
+    with pytest.raises(SourceUnavailable, match="rera layer unavailable"):
+        require("rera")
 
 
 def test_rera_keeps_only_public_project_fields():
