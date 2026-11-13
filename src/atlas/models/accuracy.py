@@ -5,6 +5,7 @@ Unavailable metrics stay null; they are never shown as zero.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -404,7 +405,32 @@ def dashboard_json() -> str:
     return json.dumps(dashboard_data(), indent=2, ensure_ascii=False) + "\n"
 
 
+def publish(out: Path) -> Path:
+    """D207: the owner-approved accuracy table (H11, D166) as an immutable release plus pointer,
+    at the paths the Accuracy page reads; `out` is the site root (it gets data/ka/accuracy/)."""
+    body = release_json().encode("utf-8")
+    digest = hashlib.sha256(body).hexdigest()
+    folder = Path(out) / "data/ka/accuracy"
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / f"{digest}.json").write_bytes(body)
+    pointer = {
+        "schema_version": 1,
+        "state": "ka",
+        "approval": "approved",
+        "sha256": digest,
+        "manifest_url": f"/data/ka/accuracy/{digest}.json",
+    }
+    path = folder / "latest.json"
+    path.write_text(json.dumps(pointer, sort_keys=True) + "\n", "utf-8", newline="\n")
+    return path
+
+
 def main() -> None:
+    import sys
+
+    if sys.argv[1:2] == ["--publish"]:
+        print(json.dumps({"written": str(publish(Path(sys.argv[2])))}))
+        return
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(render(), "utf-8", newline="\n")
     # The browser fixture mirrors the committed records; it is test data, not a publication.

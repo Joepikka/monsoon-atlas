@@ -2,6 +2,13 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D207 — Accuracy table published with the site (13 Nov 2026).**
+  Owner, in chat, reported pages that show nothing. Audit: `?page=accuracy` showed "Unexpected
+  token '<'" because no deploy wrote `/data/ka/accuracy/latest.json`, so Pages served the HTML
+  shell. `python -m atlas.models.accuracy --publish <site>` now writes the owner-approved table
+  (H11, D166) as `data/ka/accuracy/<sha256>.json` plus an approved pointer, in both `daily.yml` and
+  `scripts/deploy_site.py` (tested). The monsoon tracker already works since D202's deploy.
+
 - **D206 — Weather forecast for all 30 districts (13 Nov 2026).**
   Owner, in chat: "Yes, all 30". S01 now captures the 30 district representative points
   (`configs/static/ka/places.json`, 2 dp) in one Open-Meteo request, 3 forecast days instead of 16
