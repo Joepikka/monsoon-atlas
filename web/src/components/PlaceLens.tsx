@@ -3,6 +3,8 @@ import type { Facility, FacilityKind, MapRecord, Snapshot } from '../data';
 import { buildReport, shareUrl, sourceNames, type PlaceReport, type ShareIdentity } from '../report';
 import { localTime } from '../time';
 import SourceBadge from './SourceBadge';
+import { data as findings, type Findings } from '../pages/Findings';
+import { parseTracker, type Tracker } from '../pages/Monsoon';
 
 const tabs = ['Now', 'Risk', 'Forecast', 'History', 'Nearby', 'Sources'] as const;
 type Tab = typeof tabs[number];
@@ -24,7 +26,35 @@ function Records({ records, snapshot, now }: { records: MapRecord[]; snapshot: S
   </li>)}</ul>;
 }
 
-function ReportSection({ tab, report, snapshot, now }: { tab: Tab; report: PlaceReport; snapshot: Snapshot; now: number }) {
+export type Fact = { label: string; value: string; note: string; href: string };
+
+/** D205: committed analyses for one district, so every district report has content (no new number). */
+export function districtFacts(name: string, tracker: Tracker | null, f: Findings = findings): Fact[] {
+  const out: Fact[] = [];
+  for (const r of tracker?.rows.filter(r => r.district === name && r.pct_of_median != null) ?? [])
+    out.push({ label: `${r.season === 'southwest' ? 'Southwest' : 'Northeast'} monsoon ${tracker!.year}`,
+      value: `${r.pct_of_median}% of normal (${r.band})`,
+      note: `ERA5 reanalysis to ${r.through} against ${tracker!.reference}; a model, not a gauge total`, href: '?page=monsoon' });
+  const ranked = [...f.hospital.districts].sort((a, b) => b.share_beyond_10km - a.share_beyond_10km);
+  const i = ranked.findIndex(d => d.district === name);
+  if (i >= 0) out.push({ label: 'Hospital access', value: `${ranked[i].share_beyond_10km < 0.001 ? "under 0.1" : (ranked[i].share_beyond_10km * 100).toFixed(1)}% of people more than 10 km away`,
+    note: `Mean ${ranked[i].mean_km} km; rank ${i + 1} of ${ranked.length} (1 = farthest from hospitals; straight line, OpenStreetMap)`, href: '?page=findings#hospital-h' });
+  const tr = f.trends.rows.find(r => r.district === name);
+  if (tr) out.push({ label: 'Annual rain trend since 1981', value: `${tr.sen_pct_per_decade > 0 ? '+' : ''}${tr.sen_pct_per_decade}% of normal per decade`,
+    note: `${tr.significance}; Benjamini-Hochberg q ${tr.fdr_q.toFixed(3)}`, href: '?page=findings#trends-h' });
+  if (name === f.bus.district) out.push({ label: 'Bus access', value: `${(f.bus.covered_share * 100).toFixed(1)}% within a 500 m walk of a served stop`,
+    note: `BMTC weekday service of ${f.bus.service_date}; derived shares only`, href: '?page=transit' });
+  return out;
+}
+
+function DistrictFacts({ facts }: { facts: Fact[] }) {
+  if (!facts.length) return null;
+  return <><h4>District profile</h4><ul className="lens-records">{facts.map(fact => <li key={fact.label}>
+    <h4>{fact.label}</h4><p><strong>{fact.value}</strong></p><p>{fact.note}</p><a href={fact.href}>Details</a>
+  </li>)}</ul><h4>Records at the cutoff</h4></>;
+}
+
+function ReportSection({ tab, report, snapshot, now, facts = [] }: { tab: Tab; report: PlaceReport; snapshot: Snapshot; now: number; facts?: Fact[] }) {
   if (tab === 'Risk') return <>
     <p>Scores are specific to a versioned place and model release. They do not guarantee safety.</p>
     {report.modelOutputs.length ? <Records records={report.modelOutputs} snapshot={snapshot} now={now} /> : <p>No released risk score for this place.</p>}
@@ -51,6 +81,7 @@ function ReportSection({ tab, report, snapshot, now }: { tab: Tab; report: Place
   </>;
   const records = tab === 'History' ? report.records.filter(record => Date.parse(record.valid_at) <= Date.parse(report.as_of)) : report.records;
   return <>
+    {tab === 'Now' && <DistrictFacts facts={facts} />}
     <p>{tab === 'History' ? 'Past validity times included in this snapshot. This is not a complete historical archive.' : 'Known at the report cutoff. This dated view is not a statement of current conditions.'}</p>
     <p>Point records are within 25 km of the place representative point. Area warnings remain statewide context.</p>
     {records.length ? <Records records={records} snapshot={snapshot} now={now} /> : <p>No matching records are included.</p>}
@@ -69,6 +100,11 @@ export default function PlaceLens({ snapshot, shared, now, onNearby }: { snapsho
     catch (error) { return { report: null, error: error instanceof Error ? error.message : 'The report could not be built.' }; }
   }, [snapshot, selection]);
   const { report, error } = result;
+  const [tracker, setTracker] = useState<Tracker | null>(null);
+  useEffect(() => { // missing tracker just leaves the monsoon facts out
+    fetch('/data/ka/monsoon.json', { cache: 'no-store' }).then(r => r.json()).then(v => setTracker(parseTracker(v))).catch(() => {});
+  }, []);
+  const facts = useMemo(() => report ? districtFacts(report.place.name, tracker) : [], [report, tracker]);
   // The map shows these facilities only while the Nearby tab is open (D188).
   useEffect(() => { onNearby?.(tab === 'Nearby' && report ? report.facilities : null); }, [tab, report, onNearby]);
   const selectedIndex = snapshot?.places.findIndex(place => place.place_id === selection?.place && place.boundary_version === selection?.boundary) ?? -1;
@@ -96,7 +132,7 @@ export default function PlaceLens({ snapshot, shared, now, onNearby }: { snapsho
             }}>{name}</button>)}
         </div>
         <div id="lens-panel" role="tabpanel" aria-labelledby={`lens-tab-${tab}`} tabIndex={0}>
-          <ReportSection tab={tab} report={report} snapshot={snapshot!} now={now} />
+          <ReportSection tab={tab} report={report} snapshot={snapshot!} now={now} facts={facts} />
         </div>
         <div className="report-actions"><a href={shareUrl(window.location.href, report)}>Open frozen report</a>
           <button type="button" onClick={() => window.print()}>Print / Save PDF</button></div>
@@ -107,7 +143,7 @@ export default function PlaceLens({ snapshot, shared, now, onNearby }: { snapsho
       <p>Report cutoff <time dateTime={report.as_of}>{localTime(report.as_of)}</time></p>
       <p>State: {report.state} · Place ID: {report.place.place_id}</p><p>Boundary: <span>{report.place.boundary_version}</span></p>
       <p>{report.place.location_note}</p><p>Release: {report.release_id}</p><p className="report-hash">SHA256: {report.release_hash}</p>
-      {tabs.map(name => <section key={name}><h2>{name}</h2><ReportSection tab={name} report={report} snapshot={snapshot!} now={now} /></section>)}
+      {tabs.map(name => <section key={name}><h2>{name}</h2><ReportSection tab={name} report={report} snapshot={snapshot!} now={now} facts={facts} /></section>)}
       <p>Official reports, model outputs, inferred and reconstructed items remain separately labelled. A missing feed does not mean there are no hazards. No routing is promised to be safe.</p>
     </article>}
   </>;
