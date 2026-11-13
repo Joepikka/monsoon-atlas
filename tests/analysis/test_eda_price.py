@@ -61,12 +61,13 @@ def test_audit_rows_equal_the_discovery_field_map(sid):
         )["evidence"]
     }
     assert all(set(r["evidence"].split()) <= ids for r in rows)
-    assert rec["outcome"] == "blocked"
+    assert rec["outcome"] == {"S22": "blocked", "S23": "available"}[sid]
 
 
-def test_s23_modal_price_unit_stays_unverified():
+def test_s23_modal_price_unit_is_verified_for_onion_only():
     modal = next(r for r in audit_rows(RECORDS["S23"]) if r["canonical"] == "modal_inr_quintal")
-    assert modal["unit_status"] == "unlabelled"
+    assert modal["unit_status"] == "labelled" and "Onion only" in modal["detail"]
+    assert RECORDS["S23"]["enabled_scope"]["Commodity"] == ["Onion"]
 
 
 @pytest.mark.parametrize("adapter, sid", [(S22, "S22"), (S23, "S23")])
