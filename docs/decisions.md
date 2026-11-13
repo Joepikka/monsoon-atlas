@@ -2,6 +2,30 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D202 — District monsoon tracker normals committed (13 Nov 2026).**
+  The ERA5 (S02) backfill finished: 25 reference years, 2001-2025, June to December, one grid
+  point per district (`data/clean/S02/ka-districts/`, local). `configs/static/ka/monsoon-normals.json`
+  is written by `python -m atlas.analysis.district_monsoon normals`, so `daily.yml` and
+  `scripts/deploy_site.py` now build `?page=monsoon` (D192). Sanity check before commit: the 2026
+  request uses the same `models=era5` as the history and has no missing day in 160 days; the
+  2026 southwest season ranks below normal in 29 of 30 districts (statewide mean about 530 mm
+  June to September against about 914 mm in 2025). This is reanalysis, not a gauge total, and is
+  labelled so on the page; no gauge cross-check exists yet (S29 is annual only).
+
+- **D201 — Karnataka price history found; M06 can move from blocked to a verify task (13 Nov 2026).**
+  Owner, in chat, opened the AGMARKNET daily price and arrival report (captcha solved by the
+  owner) for Onion, Karnataka, 12 Nov 2026: each row carries a "Price Unit" column, here
+  "Rs./Quintal". This is the publisher statement the S23 retry condition asks for, and it is per
+  commodity, so the unit must be read per commodity (livestock, eggs and fish are not per quintal).
+  A second data.gov.in resource from the same catalogue and publisher, "Variety-wise Daily Market
+  Prices Data of Commodity" (API resource 35985678-0d79-46b4-9ed6-6f13308a1d24, GODL), holds
+  83,029,616 rows with the same fields; Karnataka onion alone has 103,423 rows back to 2014, and
+  the Arrival_Date filter works (14 Karnataka onion rows on 02/01/2019). Probe responses are in
+  `data/raw/S23/probe/` (raw, local only). S23 stays blocked until a verify task records this
+  resource as evidence, maps each commodity's unit from AGMARKNET and checks the history for gaps;
+  then the T026 adapter and the M06 price-spike model can follow the honest-ML rules. The key went
+  only into API requests from `.env`; no form was filled by the agent.
+
 - **D200 — H14 owner review file and gate check (12 Nov 2026).**
   Owner, in chat: "ok continue with thise work". `reports/models/owner-review.md` holds three
   sections (M05, M07, Ask) for the owner's own summaries, with guidance comments only; the agent
