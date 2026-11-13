@@ -76,6 +76,19 @@ def _exists(path: str) -> bool:
     return (ROOT / path).is_file()
 
 
+OWNER_REVIEW = "reports/models/owner-review.md"  # H14: written by the owner only
+OWNER_MIN_WORDS = 40
+
+
+def owner_review_done(text: str | None = None) -> bool:
+    """H14: each of the three sections holds the owner's own summary (comments do not count)."""
+    if text is None:
+        path = ROOT / OWNER_REVIEW
+        text = path.read_text("utf-8") if path.exists() else ""
+    sections = re.split(r"(?m)^## .*$", re.sub(r"<!--.*?-->", "", text, flags=re.S))[1:]
+    return len(sections) == 3 and all(len(s.split()) >= OWNER_MIN_WORDS for s in sections)
+
+
 def release_checks() -> list[dict]:
     """Each T046/A3 check with its current evidence; only 'pass' counts toward release."""
     rag = (ROOT / "reports/rag.md").read_text("utf-8")
@@ -107,8 +120,13 @@ def release_checks() -> list[dict]:
         ),
         (
             "Case study per core model (H14 review)",
-            "pending" if all(_exists(f"reports/models/{n}") for n in studies) else "missing",
-            "three case studies written; owner review pending",
+            (
+                ("pass" if owner_review_done() else "pending")
+                if all(_exists(f"reports/models/{n}") for n in studies)
+                else "missing"
+            ),
+            "three case studies written; owner review "
+            + (f"done ({OWNER_REVIEW})" if owner_review_done() else "pending"),
         ),
         (
             "Accuracy page shows C1, C2 and M06",

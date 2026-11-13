@@ -161,6 +161,7 @@ def test_daily_workflow_archives_then_deploys_the_approved_release():
     text = (ROOT / ".github/workflows/daily.yml").read_text("utf-8")
     flow = yaml.safe_load(text)
     assert flow[True]["schedule"] == [{"cron": "17 2 * * *"}]
+    assert flow[True]["push"] == {"branches": ["main"]}  # D204: a merge goes live
     assert flow["permissions"] == {"contents": "read"}
     assert "--approval approved" in text and "--alerts" in text and "--hf-repo" in text
     assert "::add-mask::$HF_ARCHIVE_REPO" in text

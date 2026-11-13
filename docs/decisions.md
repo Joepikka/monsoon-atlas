@@ -2,6 +2,54 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D204 — Merge when CI passes; deploy on every merge (13 Nov 2026).**
+  Owner, in chat: chose standing approval to merge each PR once CI passes ("a"), then "turn on"
+  auto-merge. `main` requires the two `ci` checks (`test` on Ubuntu and Windows; `web` runs only when site files change, so it cannot be required;
+  admins not enforced, no review rule), so GitHub auto-merge can wait for them. `daily.yml` also
+  runs on every push to `main`, so a merged PR deploys without waiting for GitHub's irregular
+  schedule (feeds ran on schedule only twice in 12 hours on 12-13 Nov).
+
+- **D203 — H15 Copernicus account done; S3 keys verified (13 Nov 2026).**
+  The owner registered a Copernicus Data Space Ecosystem account in their own browser (the
+  built-in browser failed the site's Captcha.eu check) and created S3 keys, saved in `.env` as
+  `CDSE_S3_ACCESS_KEY` and `CDSE_S3_SECRET_KEY`. The agent never signs in with the account
+  password: a read-only, SigV4-signed ListObjectsV2 on `eodata` (Sentinel-1 GRD prefix) returned
+  HTTP 200, so the keys work. S42 stays blocked until its verify task re-runs with the keys
+  (Kerala phase, M17); nothing was downloaded.
+
+- **D202 — District monsoon tracker normals committed (13 Nov 2026).**
+  The ERA5 (S02) backfill finished: 25 reference years, 2001-2025, June to December, one grid
+  point per district (`data/clean/S02/ka-districts/`, local). `configs/static/ka/monsoon-normals.json`
+  is written by `python -m atlas.analysis.district_monsoon normals`, so `daily.yml` and
+  `scripts/deploy_site.py` now build `?page=monsoon` (D192). Sanity check before commit: the 2026
+  request uses the same `models=era5` as the history and has no missing day in 160 days; the
+  2026 southwest season ranks below normal in 29 of 30 districts (statewide mean about 530 mm
+  June to September against about 914 mm in 2025). This is reanalysis, not a gauge total, and is
+  labelled so on the page; no gauge cross-check exists yet (S29 is annual only).
+
+- **D201 — Karnataka price history found; M06 can move from blocked to a verify task (13 Nov 2026).**
+  Owner, in chat, opened the AGMARKNET daily price and arrival report (captcha solved by the
+  owner) for Onion, Karnataka, 12 Nov 2026: each row carries a "Price Unit" column, here
+  "Rs./Quintal". This is the publisher statement the S23 retry condition asks for, and it is per
+  commodity, so the unit must be read per commodity (livestock, eggs and fish are not per quintal).
+  A second data.gov.in resource from the same catalogue and publisher, "Variety-wise Daily Market
+  Prices Data of Commodity" (API resource 35985678-0d79-46b4-9ed6-6f13308a1d24, GODL), holds
+  83,029,616 rows with the same fields; Karnataka onion alone has 103,423 rows back to 2014, and
+  the Arrival_Date filter works (14 Karnataka onion rows on 02/01/2019). Probe responses are in
+  `data/raw/S23/probe/` (raw, local only). S23 stays blocked until a verify task records this
+  resource as evidence, maps each commodity's unit from AGMARKNET and checks the history for gaps;
+  then the T026 adapter and the M06 price-spike model can follow the honest-ML rules. The key went
+  only into API requests from `.env`; no form was filled by the agent.
+
+- **D200 — H14 owner review file and gate check (12 Nov 2026).**
+  Owner, in chat: "ok continue with thise work". `reports/models/owner-review.md` holds three
+  sections (M05, M07, Ask) for the owner's own summaries, with guidance comments only; the agent
+  writes nothing under the headings. `release_checks()` turns "Case study per core model (H14
+  review)" from pending to pass only when each section has at least 40 words outside comments
+  (tested). Also: Data findings page deployed by a manual `daily` run (D199 live), and the ERA5
+  backfill reached 20 of 25 reference years (2018-2020 added); 2021-2025 wait for the next daily
+  API allowance.
+
 - **D199 — Karnataka data findings page on the site (12 Nov 2026).**
   Owner, in chat: "continue the work", after asking for the data, science and ML work to be shown.
   `?page=findings` ("Data findings", linked in the masthead) presents six analyses: hospital
