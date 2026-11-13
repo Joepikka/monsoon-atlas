@@ -68,3 +68,35 @@ Rule (written into the gate before the networks were scored): Fixed before the n
 ## Runs
 
 MLflow experiment M21, 15 runs (one per network and seed, with the inner-validation loss curve), git e904e3697829 (the commit before T283).
+
+# M21 spatial lags and spatial checks (T282)
+
+**Comparison only: never the candidate, and the test is not opened.** Spatial lags are the mean over a district's queen neighbours of the anomaly, SPI-1 and SPI-3 of month t-1 (a neighbour's month t value is never a feature). LightGBM is refitted with the T281 procedure with and without them; tune 2015-2017 scored once. Notebook `notebooks/15_ka_spatial_ml.ipynb`, outputs in `reports/eda/15_ka_spatial_ml/`.
+
+**The spatial lag does not help on tune**: MAE improvement of the lags over plain LightGBM +0.008 [-0.020, +0.037] (paired block bootstrap by month, 95% interval).
+
+| Model | Tune MAE | MAE improvement over climatology (95% interval) |
+|---|---|---|
+| LightGBM, T281 features (refit) | 0.878 | +0.029 [-0.029, +0.086] |
+| LightGBM + spatial lags | 0.870 | +0.037 [-0.014, +0.092] |
+
+## Moran's I of tune residuals
+
+27 of 36 tune months have every district scored (999 permutations, BH at q = 0.05). Median I 0.52 before and 0.50 after the lags; significant months 25 and 26. Intra-month correlation of residuals 0.49, so a month of 30 districts carries about 2.0 independent values: every interval here resamples whole months.
+
+## Cross-validation inside train (2005-01 to 2014-11 inside train, 2966 district-months)
+
+Improvement over climatology (MAE, 95% interval); overstatement = this scheme minus leave-one-region-out with rolling origins (the honest one).
+
+| Scheme | Folds | Without lags | With lags | Overstatement without / with |
+|---|---|---|---|---|
+| random 5-fold over district-months | 5 | +0.039 [+0.020, +0.061] | +0.044 [+0.023, +0.066] | +0.077 / +0.080 |
+| leave one region out, all months | 5 | +0.024 [+0.004, +0.045] | +0.025 [+0.007, +0.046] | +0.062 / +0.061 |
+| yearly rolling origins, all districts | 10 | -0.034 [-0.065, -0.002] | -0.034 [-0.063, -0.002] | +0.004 / +0.001 |
+| leave one region out with yearly rolling origins | 50 | -0.038 [-0.066, -0.008] | -0.036 [-0.063, -0.006] | +0.000 / +0.000 |
+
+## M05 spatial challenger (research-only)
+
+v1 ridge (alpha 0.1) with and without neighbour SPI-1 and SPI-3 at t-1, D97 rolling origins, 2000-01 to 2019-12 (7200 district-months; 2020-2024 was the v1 test and is not re-scored). MAE 0.611 without and 0.611 with the lags; improvement -0.000 [-0.001, +0.001]. Median Moran's I of residuals 0.49 without and 0.49 with. Not promotable: it waits for the 2026-2027 test defined for M05 v2.
+
+MLflow: M21 run `c556aea57e78425982e8e5ade5db116e`, M05 run `7f373cc52f114891be8c5bead53bb72f`.

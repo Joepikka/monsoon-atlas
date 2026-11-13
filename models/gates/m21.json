@@ -795,6 +795,194 @@
         ]
       },
       "total_seconds": 281.3
+    },
+    "spatial": {
+      "task": "T282",
+      "role": "comparison only; never the candidate",
+      "dataset_sha256": "7035ecaa7a2b674395119f4986fabb813cef93805c82af30842591f7351353f3",
+      "split_sha256": "a4092dd453c691ad40198208f55d7c8d97357942b2e3b83adb504c116e28c8c0",
+      "git_sha": "58cc74c9f7852e95ad579586457f598f8d99ffea",
+      "tune": {
+        "rows": 897,
+        "months": 36,
+        "climatology_mae": 0.9066889219349421,
+        "models": {
+          "base": {
+            "mae": 0.8776011940269953,
+            "improvement_over_climatology": {
+              "mean": 0.02908772790794684,
+              "lower95": -0.028866248677502343,
+              "upper95": 0.08643405470312236
+            },
+            "params": {
+              "learning_rate": 0.1,
+              "num_leaves": 31,
+              "max_depth": 8,
+              "min_child_samples": 50,
+              "feature_fraction": 1.0,
+              "lambda_l2": 0.0,
+              "objective": "regression_l1",
+              "seed": 42,
+              "deterministic": true,
+              "num_threads": 4,
+              "verbose": -1,
+              "num_boost_round": 21,
+              "trials": 30,
+              "inner_valid_mae": 0.7688684953179528
+            }
+          },
+          "lags": {
+            "mae": 0.8699530378770488,
+            "improvement_over_climatology": {
+              "mean": 0.03673588405789349,
+              "lower95": -0.01405529352693506,
+              "upper95": 0.09229403631751569
+            },
+            "params": {
+              "learning_rate": 0.1,
+              "num_leaves": 31,
+              "max_depth": 8,
+              "min_child_samples": 20,
+              "feature_fraction": 1.0,
+              "lambda_l2": 1.0,
+              "objective": "regression_l1",
+              "seed": 42,
+              "deterministic": true,
+              "num_threads": 4,
+              "verbose": -1,
+              "num_boost_round": 20,
+              "trials": 30,
+              "inner_valid_mae": 0.7663848351977806
+            }
+          }
+        },
+        "lags_over_base": {
+          "mean": 0.007648156149946641,
+          "lower95": -0.0196030885559577,
+          "upper95": 0.03705265489333758
+        },
+        "lag_helps": false
+      },
+      "moran": {
+        "before": {
+          "months": 36,
+          "months_tested": 27,
+          "significant_bh": 25,
+          "significant_bh_positive": 25,
+          "moran_i_median": 0.5206046904468921,
+          "moran_i_min": -0.050634403290056446,
+          "moran_i_max": 0.840391568800196
+        },
+        "after": {
+          "months": 36,
+          "months_tested": 27,
+          "significant_bh": 26,
+          "significant_bh_positive": 26,
+          "moran_i_median": 0.4959190242446388,
+          "moran_i_min": 0.022806560220603418,
+          "moran_i_max": 0.8353858100521507
+        },
+        "effective_size": {
+          "months": 27,
+          "districts": 30,
+          "icc": 0.4868830687377406,
+          "n_eff_per_month": 1.984178295424606
+        }
+      },
+      "cv": {
+        "random": {
+          "base": {
+            "mae": 0.7625612075817182,
+            "improvement_over_climatology": {
+              "mean": 0.039220985683935325,
+              "lower95": 0.019553501939499472,
+              "upper95": 0.061443061701025085
+            }
+          },
+          "lags": {
+            "mae": 0.75804269572624,
+            "improvement_over_climatology": {
+              "mean": 0.043739497539413544,
+              "lower95": 0.02281587004895488,
+              "upper95": 0.06624517643003082
+            }
+          },
+          "overstatement": {
+            "base": 0.07713652312114684,
+            "lags": 0.07969840929263897
+          }
+        },
+        "region": {
+          "base": {
+            "mae": 0.7779307345895753,
+            "improvement_over_climatology": {
+              "mean": 0.023851458676078144,
+              "lower95": 0.004147049852753375,
+              "upper95": 0.044709846847279945
+            }
+          },
+          "lags": {
+            "mae": 0.7764063074681707,
+            "improvement_over_climatology": {
+              "mean": 0.02537588579748283,
+              "lower95": 0.006515142162634085,
+              "upper95": 0.04605382056993398
+            }
+          },
+          "overstatement": {
+            "base": 0.06176699611328966,
+            "lags": 0.06133479755070826
+          }
+        },
+        "temporal": {
+          "base": {
+            "mae": 0.8359822678899619,
+            "improvement_over_climatology": {
+              "mean": -0.03420007462430827,
+              "lower95": -0.06480681289719795,
+              "upper95": -0.0018807714583906423
+            }
+          },
+          "lags": {
+            "mae": 0.8362568427836258,
+            "improvement_over_climatology": {
+              "mean": -0.03447464951797228,
+              "lower95": -0.06281329679930185,
+              "upper95": -0.002179534693439891
+            }
+          },
+          "overstatement": {
+            "base": 0.0037154628129032474,
+            "lags": 0.0014842622352531504
+          }
+        },
+        "region_temporal": {
+          "base": {
+            "mae": 0.839697730702865,
+            "improvement_over_climatology": {
+              "mean": -0.037915537437211516,
+              "lower95": -0.06589638958285118,
+              "upper95": -0.007593671471396724
+            }
+          },
+          "lags": {
+            "mae": 0.837741105018879,
+            "improvement_over_climatology": {
+              "mean": -0.03595891175322543,
+              "lower95": -0.06349646356230214,
+              "upper95": -0.005701251147083371
+            }
+          },
+          "overstatement": {
+            "base": 0.0,
+            "lags": 0.0
+          }
+        }
+      },
+      "mlflow_run_ids": {
+        "m21": "c556aea57e78425982e8e5ade5db116e",
+        "m05": "7f373cc52f114891be8c5bead53bb72f"
+      }
     }
   }
 }

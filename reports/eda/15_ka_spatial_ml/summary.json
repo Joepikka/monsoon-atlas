@@ -1,0 +1,887 @@
+{
+  "task": "T282",
+  "evidence": "hindcast (D39); research and comparison only, never the M21 candidate",
+  "inputs": {
+    "m21_dataset_sha256": "7035ecaa7a2b674395119f4986fabb813cef93805c82af30842591f7351353f3",
+    "m21_split_sha256": "a4092dd453c691ad40198208f55d7c8d97357942b2e3b83adb504c116e28c8c0",
+    "m05_dataset_sha256": "91bb4930a3ffa0200e9e12fc87ea503edcd562dfafa4bb87747b2bd496356a42",
+    "neighbours": "reports/eda/10_spatial_statistics/district_neighbours.csv"
+  },
+  "spatial_features": {
+    "nbr_anom_lag1": "mean M21 anomaly of month t-1 over queen neighbours with a value",
+    "nbr_spi1_lag1": "mean SPI-1 of month t-1 over queen neighbours",
+    "nbr_spi3_lag1": "mean SPI-3 of month t-1 over queen neighbours",
+    "rule": "month t-1 only; a neighbour's month t value is never a feature"
+  },
+  "regions": {
+    "rule": "5 contiguous blocks: Ward on district centroids with queen connectivity (fixed before any CV score)",
+    "members": {
+      "R1": [
+        "Bagalkot",
+        "Bidar",
+        "Bijapur",
+        "Gulbarga",
+        "Raichur",
+        "Yadgir"
+      ],
+      "R2": [
+        "Chamarajanagar",
+        "Chikmagalur",
+        "Dakshina Kannada",
+        "Hassan",
+        "Kodagu",
+        "Mandya",
+        "Mysore",
+        "Ramanagara"
+      ],
+      "R3": [
+        "Bangalore",
+        "Bangalore Rural",
+        "Chikkaballapura",
+        "Kolar",
+        "Tumkur"
+      ],
+      "R4": [
+        "Belgaum",
+        "Bellary",
+        "Chitradurga",
+        "Davanagere",
+        "Dharwad",
+        "Gadag",
+        "Koppal"
+      ],
+      "R5": [
+        "Haveri",
+        "Shimoga",
+        "Udupi",
+        "Uttara Kannada"
+      ]
+    }
+  },
+  "tune": {
+    "rows": 897,
+    "months": 36,
+    "climatology_mae": 0.9066889219349421,
+    "models": {
+      "base": {
+        "mae": 0.8776011940269953,
+        "improvement_over_climatology": {
+          "mean": 0.02908772790794684,
+          "lower95": -0.028866248677502343,
+          "upper95": 0.08643405470312236
+        },
+        "params": {
+          "learning_rate": 0.1,
+          "num_leaves": 31,
+          "max_depth": 8,
+          "min_child_samples": 50,
+          "feature_fraction": 1.0,
+          "lambda_l2": 0.0,
+          "objective": "regression_l1",
+          "seed": 42,
+          "deterministic": true,
+          "num_threads": 4,
+          "verbose": -1,
+          "num_boost_round": 21,
+          "trials": 30,
+          "inner_valid_mae": 0.7688684953179528
+        }
+      },
+      "lags": {
+        "mae": 0.8699530378770488,
+        "improvement_over_climatology": {
+          "mean": 0.03673588405789349,
+          "lower95": -0.01405529352693506,
+          "upper95": 0.09229403631751569
+        },
+        "params": {
+          "learning_rate": 0.1,
+          "num_leaves": 31,
+          "max_depth": 8,
+          "min_child_samples": 20,
+          "feature_fraction": 1.0,
+          "lambda_l2": 1.0,
+          "objective": "regression_l1",
+          "seed": 42,
+          "deterministic": true,
+          "num_threads": 4,
+          "verbose": -1,
+          "num_boost_round": 20,
+          "trials": 30,
+          "inner_valid_mae": 0.7663848351977806
+        }
+      }
+    },
+    "lags_over_base": {
+      "mean": 0.007648156149946641,
+      "lower95": -0.0196030885559577,
+      "upper95": 0.03705265489333758
+    },
+    "lag_helps": false
+  },
+  "moran": {
+    "residuals": "tune target minus LightGBM forecast (anomaly units)",
+    "permutations": 999,
+    "seed": 282,
+    "q": 0.05,
+    "rule": "months with a dry (unscored) district are not tested",
+    "before": {
+      "months": 36,
+      "months_tested": 27,
+      "significant_bh": 25,
+      "significant_bh_positive": 25,
+      "moran_i_median": 0.5206046904468921,
+      "moran_i_min": -0.050634403290056446,
+      "moran_i_max": 0.840391568800196
+    },
+    "after": {
+      "months": 36,
+      "months_tested": 27,
+      "significant_bh": 26,
+      "significant_bh_positive": 26,
+      "moran_i_median": 0.4959190242446388,
+      "moran_i_min": 0.022806560220603418,
+      "moran_i_max": 0.8353858100521507
+    },
+    "by_month": [
+      {
+        "month": "2015-01",
+        "districts": 2
+      },
+      {
+        "month": "2015-02",
+        "districts": 3
+      },
+      {
+        "month": "2015-03",
+        "districts": 30,
+        "before_i": 0.43820606359671255,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.4123254427032598,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2015-04",
+        "districts": 30,
+        "before_i": 0.6032830766875625,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.5956013035413017,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2015-05",
+        "districts": 30,
+        "before_i": 0.5212820250930355,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.49092404598398254,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2015-06",
+        "districts": 30,
+        "before_i": 0.4396465271101265,
+        "before_p": 0.004,
+        "before_q": 0.0046956521739130435,
+        "after_i": 0.4913855594160283,
+        "after_p": 0.002,
+        "after_q": 0.0025714285714285713
+      },
+      {
+        "month": "2015-07",
+        "districts": 30,
+        "before_i": 0.28958863087941045,
+        "before_p": 0.011,
+        "before_q": 0.012374999999999999,
+        "after_i": 0.42575387291055117,
+        "after_p": 0.003,
+        "after_q": 0.0035217391304347826
+      },
+      {
+        "month": "2015-08",
+        "districts": 30,
+        "before_i": 0.48909887840688254,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.46562335337394195,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2015-09",
+        "districts": 30,
+        "before_i": 0.35764704599041736,
+        "before_p": 0.002,
+        "before_q": 0.0024545454545454545,
+        "after_i": 0.3070804178569133,
+        "after_p": 0.004,
+        "after_q": 0.0045
+      },
+      {
+        "month": "2015-10",
+        "districts": 30,
+        "before_i": 0.5303470250983374,
+        "before_p": 0.002,
+        "before_q": 0.0024545454545454545,
+        "after_i": 0.533021940071156,
+        "after_p": 0.002,
+        "after_q": 0.0025714285714285713
+      },
+      {
+        "month": "2015-11",
+        "districts": 30,
+        "before_i": 0.840391568800196,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.8353858100521507,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2015-12",
+        "districts": 24
+      },
+      {
+        "month": "2016-01",
+        "districts": 2
+      },
+      {
+        "month": "2016-02",
+        "districts": 3
+      },
+      {
+        "month": "2016-03",
+        "districts": 30,
+        "before_i": 0.16453407588730137,
+        "before_p": 0.072,
+        "before_q": 0.07476923076923077,
+        "after_i": 0.2512348518544595,
+        "after_p": 0.016,
+        "after_q": 0.01728
+      },
+      {
+        "month": "2016-04",
+        "districts": 30,
+        "before_i": 0.5533706204127542,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.5432465410500942,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2016-05",
+        "districts": 30,
+        "before_i": 0.5769033135346041,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.5854940988583941,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2016-06",
+        "districts": 30,
+        "before_i": 0.3626856788807747,
+        "before_p": 0.002,
+        "before_q": 0.0024545454545454545,
+        "after_i": 0.3740936569004526,
+        "after_p": 0.002,
+        "after_q": 0.0025714285714285713
+      },
+      {
+        "month": "2016-07",
+        "districts": 30,
+        "before_i": 0.7339978660106166,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.729418743384912,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2016-08",
+        "districts": 30,
+        "before_i": 0.25258539007914177,
+        "before_p": 0.021,
+        "before_q": 0.022680000000000002,
+        "after_i": 0.2300351758624632,
+        "after_p": 0.028,
+        "after_q": 0.029076923076923077
+      },
+      {
+        "month": "2016-09",
+        "districts": 30,
+        "before_i": 0.7248271807388602,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.7337515179140892,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2016-10",
+        "districts": 30,
+        "before_i": 0.3230217272102919,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.3114913410738138,
+        "after_p": 0.003,
+        "after_q": 0.0035217391304347826
+      },
+      {
+        "month": "2016-11",
+        "districts": 30,
+        "before_i": 0.5206046904468921,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.5839837938207143,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2016-12",
+        "districts": 24
+      },
+      {
+        "month": "2017-01",
+        "districts": 2
+      },
+      {
+        "month": "2017-02",
+        "districts": 3
+      },
+      {
+        "month": "2017-03",
+        "districts": 30,
+        "before_i": 0.5551734208914462,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.5217120220367888,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2017-04",
+        "districts": 30,
+        "before_i": 0.36982742542936975,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.36047840097749645,
+        "after_p": 0.002,
+        "after_q": 0.0025714285714285713
+      },
+      {
+        "month": "2017-05",
+        "districts": 30,
+        "before_i": 0.7694124007886068,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.7763926999829074,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2017-06",
+        "districts": 30,
+        "before_i": 0.7167622424185481,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.6854307619182873,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2017-07",
+        "districts": 30,
+        "before_i": -0.050634403290056446,
+        "before_p": 0.902,
+        "before_q": 0.902,
+        "after_i": 0.022806560220603418,
+        "after_p": 0.62,
+        "after_q": 0.62
+      },
+      {
+        "month": "2017-08",
+        "districts": 30,
+        "before_i": 0.5207627727424698,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.5548208114393415,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2017-09",
+        "districts": 30,
+        "before_i": 0.4949111885609615,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.48440344021254145,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2017-10",
+        "districts": 30,
+        "before_i": 0.5408972158224259,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.5656526000276574,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2017-11",
+        "districts": 30,
+        "before_i": 0.458520335168027,
+        "before_p": 0.001,
+        "before_q": 0.0014210526315789472,
+        "after_i": 0.4959190242446388,
+        "after_p": 0.001,
+        "after_q": 0.001588235294117647
+      },
+      {
+        "month": "2017-12",
+        "districts": 24
+      }
+    ],
+    "effective_size": {
+      "months": 27,
+      "districts": 30,
+      "icc": 0.4868830687377406,
+      "n_eff_per_month": 1.984178295424606
+    }
+  },
+  "districts": [
+    {
+      "place_id": "gb-IND-ADM2-76128533B1083016608278",
+      "name": "Gulbarga",
+      "region": "R1",
+      "rows": 30,
+      "improvement_base": 0.046130644367035956,
+      "improvement_lags": 0.03431770175547033
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B15550697205080",
+      "name": "Chikmagalur",
+      "region": "R2",
+      "rows": 30,
+      "improvement_base": 0.08764964865669878,
+      "improvement_lags": 0.06877703744425745
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B16628456658675",
+      "name": "Chamarajanagar",
+      "region": "R2",
+      "rows": 30,
+      "improvement_base": 0.03700169353195626,
+      "improvement_lags": 0.04940449730348906
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B284680734793",
+      "name": "Raichur",
+      "region": "R1",
+      "rows": 27,
+      "improvement_base": 0.0291449749547662,
+      "improvement_lags": 0.01707427224118241
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B29292403538801",
+      "name": "Kolar",
+      "region": "R3",
+      "rows": 33,
+      "improvement_base": -0.03256914044767667,
+      "improvement_lags": -0.017586555701792683
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B33966968116377",
+      "name": "Gadag",
+      "region": "R4",
+      "rows": 30,
+      "improvement_base": 0.06787582483900756,
+      "improvement_lags": 0.0932794569795326
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B40495457052818",
+      "name": "Bijapur",
+      "region": "R1",
+      "rows": 30,
+      "improvement_base": 0.055180249205035725,
+      "improvement_lags": 0.07148335149070861
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B43335986553000",
+      "name": "Mandya",
+      "region": "R2",
+      "rows": 30,
+      "improvement_base": -0.02650408115665126,
+      "improvement_lags": -0.005998110452447358
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B47594161132413",
+      "name": "Chitradurga",
+      "region": "R4",
+      "rows": 30,
+      "improvement_base": 0.06683371684465456,
+      "improvement_lags": 0.05153765981956504
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B48075109668277",
+      "name": "Bangalore Rural",
+      "region": "R3",
+      "rows": 30,
+      "improvement_base": -0.038717061910881645,
+      "improvement_lags": -0.009951424592752334
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B4839184447445",
+      "name": "Udupi",
+      "region": "R5",
+      "rows": 30,
+      "improvement_base": 0.06174573903838371,
+      "improvement_lags": 0.0331786338979006
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B49597693387243",
+      "name": "Davanagere",
+      "region": "R4",
+      "rows": 30,
+      "improvement_base": 0.04934397938372659,
+      "improvement_lags": 0.045302497654803875
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B54396396829952",
+      "name": "Dakshina Kannada",
+      "region": "R2",
+      "rows": 30,
+      "improvement_base": 0.09526050631900607,
+      "improvement_lags": 0.1030169187784824
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B54775433755383",
+      "name": "Hassan",
+      "region": "R2",
+      "rows": 30,
+      "improvement_base": 0.0024358459638998964,
+      "improvement_lags": 0.014862060641798736
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B57609583882472",
+      "name": "Kodagu",
+      "region": "R2",
+      "rows": 30,
+      "improvement_base": 0.048411965851630545,
+      "improvement_lags": 0.04930590508119237
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B64905184636422",
+      "name": "Tumkur",
+      "region": "R3",
+      "rows": 30,
+      "improvement_base": -0.04200552885980002,
+      "improvement_lags": -0.00903598289255303
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B74319098136622",
+      "name": "Belgaum",
+      "region": "R4",
+      "rows": 30,
+      "improvement_base": 0.06508096613428171,
+      "improvement_lags": 0.0909874800568029
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B75110579117636",
+      "name": "Dharwad",
+      "region": "R4",
+      "rows": 30,
+      "improvement_base": 0.05465550176251932,
+      "improvement_lags": 0.0836291139042129
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B76927648517269",
+      "name": "Bangalore",
+      "region": "R3",
+      "rows": 30,
+      "improvement_base": -0.0786018111532556,
+      "improvement_lags": -0.057421108863900505
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B79180273895456",
+      "name": "Uttara Kannada",
+      "region": "R5",
+      "rows": 30,
+      "improvement_base": 0.11154822819028831,
+      "improvement_lags": 0.11899857687807336
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B79600797037735",
+      "name": "Ramanagara",
+      "region": "R2",
+      "rows": 30,
+      "improvement_base": -0.01605680137874632,
+      "improvement_lags": 0.020120567744321916
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B79601545186231",
+      "name": "Koppal",
+      "region": "R4",
+      "rows": 30,
+      "improvement_base": 0.0030420319937822793,
+      "improvement_lags": -0.0015053943325007424
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B80772392204057",
+      "name": "Chikkaballapura",
+      "region": "R3",
+      "rows": 30,
+      "improvement_base": -0.007340384218326834,
+      "improvement_lags": 0.01673176591880976
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B83278580643229",
+      "name": "Bagalkot",
+      "region": "R1",
+      "rows": 30,
+      "improvement_base": 0.053144554895795615,
+      "improvement_lags": 0.05062618327254087
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B84927972855096",
+      "name": "Yadgir",
+      "region": "R1",
+      "rows": 27,
+      "improvement_base": 0.04238581577317013,
+      "improvement_lags": 0.031913814563453324
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B85389886560116",
+      "name": "Shimoga",
+      "region": "R5",
+      "rows": 30,
+      "improvement_base": 0.0813930188695059,
+      "improvement_lags": 0.07156126859031242
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B86721175299079",
+      "name": "Haveri",
+      "region": "R5",
+      "rows": 30,
+      "improvement_base": 0.0641647336327339,
+      "improvement_lags": 0.0671003320342386
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B92621859299479",
+      "name": "Bellary",
+      "region": "R4",
+      "rows": 30,
+      "improvement_base": 0.010441931289180362,
+      "improvement_lags": 0.025190972564906655
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B95879808095476",
+      "name": "Mysore",
+      "region": "R2",
+      "rows": 30,
+      "improvement_base": 0.010947731754449297,
+      "improvement_lags": 0.02644468827563462
+    },
+    {
+      "place_id": "gb-IND-ADM2-76128533B9794868259401",
+      "name": "Bidar",
+      "region": "R1",
+      "rows": 30,
+      "improvement_base": -0.0218914365609979,
+      "improvement_lags": -0.02828578247408542
+    }
+  ],
+  "cv": {
+    "scored": "2005-01 to 2014-11 inside train",
+    "rows": 2966,
+    "months": 119,
+    "climatology_mae": 0.8017821932656536,
+    "schemes": {
+      "random": {
+        "label": "random 5-fold over district-months",
+        "folds": 5,
+        "base": {
+          "mae": 0.7625612075817182,
+          "improvement_over_climatology": {
+            "mean": 0.039220985683935325,
+            "lower95": 0.019553501939499472,
+            "upper95": 0.061443061701025085
+          }
+        },
+        "lags": {
+          "mae": 0.75804269572624,
+          "improvement_over_climatology": {
+            "mean": 0.043739497539413544,
+            "lower95": 0.02281587004895488,
+            "upper95": 0.06624517643003082
+          }
+        },
+        "lags_over_base": {
+          "mean": 0.004518511855478221,
+          "lower95": -0.003405703110534895,
+          "upper95": 0.014139135116073261
+        },
+        "overstatement": {
+          "base": 0.07713652312114684,
+          "lags": 0.07969840929263897
+        }
+      },
+      "region": {
+        "label": "leave one region out, all months",
+        "folds": 5,
+        "base": {
+          "mae": 0.7779307345895753,
+          "improvement_over_climatology": {
+            "mean": 0.023851458676078144,
+            "lower95": 0.004147049852753375,
+            "upper95": 0.044709846847279945
+          }
+        },
+        "lags": {
+          "mae": 0.7764063074681707,
+          "improvement_over_climatology": {
+            "mean": 0.02537588579748283,
+            "lower95": 0.006515142162634085,
+            "upper95": 0.04605382056993398
+          }
+        },
+        "lags_over_base": {
+          "mean": 0.0015244271214046852,
+          "lower95": -0.00471560548583465,
+          "upper95": 0.008456656739051912
+        },
+        "overstatement": {
+          "base": 0.06176699611328966,
+          "lags": 0.06133479755070826
+        }
+      },
+      "temporal": {
+        "label": "yearly rolling origins, all districts",
+        "folds": 10,
+        "base": {
+          "mae": 0.8359822678899619,
+          "improvement_over_climatology": {
+            "mean": -0.03420007462430827,
+            "lower95": -0.06480681289719795,
+            "upper95": -0.0018807714583906423
+          }
+        },
+        "lags": {
+          "mae": 0.8362568427836258,
+          "improvement_over_climatology": {
+            "mean": -0.03447464951797228,
+            "lower95": -0.06281329679930185,
+            "upper95": -0.002179534693439891
+          }
+        },
+        "lags_over_base": {
+          "mean": -0.00027457489366401413,
+          "lower95": -0.007598799394138407,
+          "upper95": 0.007956714039112705
+        },
+        "overstatement": {
+          "base": 0.0037154628129032474,
+          "lags": 0.0014842622352531504
+        }
+      },
+      "region_temporal": {
+        "label": "leave one region out with yearly rolling origins",
+        "folds": 50,
+        "base": {
+          "mae": 0.839697730702865,
+          "improvement_over_climatology": {
+            "mean": -0.037915537437211516,
+            "lower95": -0.06589638958285118,
+            "upper95": -0.007593671471396724
+          }
+        },
+        "lags": {
+          "mae": 0.837741105018879,
+          "improvement_over_climatology": {
+            "mean": -0.03595891175322543,
+            "lower95": -0.06349646356230214,
+            "upper95": -0.005701251147083371
+          }
+        },
+        "lags_over_base": {
+          "mean": 0.0019566256839860926,
+          "lower95": -0.004644072987930093,
+          "upper95": 0.008511287780457939
+        },
+        "overstatement": {
+          "base": 0.0,
+          "lags": 0.0
+        }
+      }
+    }
+  },
+  "m05_challenger": {
+    "origins": [
+      "2000-01-01",
+      "2005-01-01",
+      "2010-01-01",
+      "2015-01-01"
+    ],
+    "first_month": "2000-01",
+    "last_month": "2019-12",
+    "rows": 7200,
+    "months": 240,
+    "alpha": 0.1,
+    "features_added": [
+      "nbr_spi1_lag1",
+      "nbr_spi3_lag1"
+    ],
+    "mae": {
+      "ridge": 0.6109220232341976,
+      "ridge_spatial": 0.6110960059571223,
+      "persistence": 0.7003359002803677
+    },
+    "spatial_over_ridge": {
+      "mean": -0.00017398272292452028,
+      "lower95": -0.0010075678794772159,
+      "upper95": 0.00064123255249316
+    },
+    "ridge_over_persistence": {
+      "mean": 0.08941387704616997,
+      "lower95": 0.06085778731701803,
+      "upper95": 0.11810551710613872
+    },
+    "moran": {
+      "ridge": {
+        "months": 240,
+        "months_tested": 240,
+        "significant_bh": 217,
+        "significant_bh_positive": 217,
+        "moran_i_median": 0.4923269053452969,
+        "moran_i_min": -0.03238555186231112,
+        "moran_i_max": 0.8775554569095434
+      },
+      "ridge_spatial": {
+        "months": 240,
+        "months_tested": 240,
+        "significant_bh": 219,
+        "significant_bh_positive": 219,
+        "moran_i_median": 0.4946275160752899,
+        "moran_i_min": -0.02604701530157032,
+        "moran_i_max": 0.8794261412668789
+      }
+    },
+    "status": "research-only"
+  },
+  "limits": [
+    "Hindcast (D39); tune is 36 months, so intervals are wide.",
+    "The CV reuses each model's config chosen on the inner slice 2012-01..2014-11, which lies inside the scored CV months: all schemes share that optimism.",
+    "Regions come from centroids and the adjacency; another partition gives other numbers.",
+    "Neighbours outside Karnataka are not in the weights (30 S17 districts).",
+    "M05 challenger: pre-2020 rolling origins only, research-only; it waits for the 2026-2027 test defined for M05 v2."
+  ]
+}

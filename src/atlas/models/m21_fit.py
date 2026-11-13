@@ -73,11 +73,9 @@ def _y(rows: pa.Table) -> np.ndarray:
     return np.asarray(rows["target_anom"].to_pylist(), dtype=float)
 
 
-def _x(rows: pa.Table) -> np.ndarray:
+def _x(rows: pa.Table, features: tuple[str, ...] = m21_data.FEATURES) -> np.ndarray:
     """Features as floats; a lag that is a dry month stays NaN (LightGBM handles it natively)."""
-    return np.column_stack(
-        [np.asarray(rows[f].to_pylist(), dtype=float) for f in m21_data.FEATURES]
-    )
+    return np.column_stack([np.asarray(rows[f].to_pylist(), dtype=float) for f in features])
 
 
 def _ridge_x(rows: pa.Table) -> np.ndarray:
@@ -144,7 +142,9 @@ def _lgbm_params(rng: np.random.Generator) -> dict:
     return params | {"seed": SEED, "deterministic": True, "num_threads": 4, "verbose": -1}
 
 
-def fit_lightgbm(train: pa.Table, trials: int = LGBM_TRIALS) -> dict:
+def fit_lightgbm(
+    train: pa.Table, trials: int = LGBM_TRIALS, features: tuple[str, ...] = m21_data.FEATURES
+) -> dict:
     """Seeded random search; early stopping and selection on the inner validation slice of train.
     The chosen config is refitted on all train rows with its early-stopped number of rounds."""
     import lightgbm as lgb
@@ -152,7 +152,7 @@ def fit_lightgbm(train: pa.Table, trials: int = LGBM_TRIALS) -> dict:
     train = train_only(train)
     inner = rows_in(train, TRAIN[0], date(INNER_VALID[0].year - 1, 11, 30))  # 31-day purge
     valid = rows_in(train, *INNER_VALID)
-    xi, yi, xv, yv = _x(inner), _y(inner), _x(valid), _y(valid)
+    xi, yi, xv, yv = _x(inner, features), _y(inner), _x(valid, features), _y(valid)
     rng, best = np.random.default_rng(SEED), None
     for _ in range(trials):
         params = _lgbm_params(rng)
@@ -171,11 +171,11 @@ def fit_lightgbm(train: pa.Table, trials: int = LGBM_TRIALS) -> dict:
     rounds = params["num_boost_round"]
     booster = lgb.train(
         {k: v for k, v in params.items() if k != "num_boost_round"},
-        lgb.Dataset(_x(train), _y(train)),
+        lgb.Dataset(_x(train, features), _y(train)),
         num_boost_round=rounds,
     )
     return {
-        "predict": lambda rows, history=None: booster.predict(_x(rows)),
+        "predict": lambda rows, history=None: booster.predict(_x(rows, features)),
         "residuals": resid,
         "params": params | {"trials": trials, "inner_valid_mae": mae},
         "model": booster.model_to_string(),
