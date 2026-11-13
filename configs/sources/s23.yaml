@@ -1,110 +1,140 @@
-# Discovery record for S23 (plan task T025). Evidence IDs refer to tests/fixtures/s23/manifest.json;
-# the files stay in data/raw/S23. The API key is sent only in requests (secret parameter), never
-# stored. See docs/sources/s23.md.
+# Discovery record for S23 (plan task T025, re-run as T269 for the variety-wise history resource).
+# Evidence IDs refer to tests/fixtures/s23/manifest.json; the files stay in data/raw/S23. The API key
+# is sent only in requests (secret parameter), never stored. e01 to e06 are the T025 evidence for
+# the one-day resource 9ef84268; e07 onwards are T269. See docs/sources/s23.md.
 source_id: S23
 state: ka
 name: "data.gov.in mandi prices"
-verify_task: T025
-discovered_at: "2026-11-06T06:47:05.964Z"
-outcome: blocked
-landing_url: "https://www.data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi"
-publisher: "Ministry of Agriculture and Farmers Welfare, Department of Agriculture and Farmers Welfare, on data.gov.in"
+verify_task: T269
+discovered_at: "2026-11-13T10:03:51.323987Z"
+outcome: available
+landing_url: "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24"
+publisher: "Ministry of Agriculture and Farmers Welfare, Department of Agriculture and Farmers Welfare, Directorate of Marketing and Inspection (DMI), on data.gov.in"
 no_card: true
 account_required: true
+
+# Only these upstream filter values are verified. Every other commodity stays disabled until its
+# AGMARKNET "Price Unit" is recorded (owner step H16) and this record is updated.
+enabled_scope:
+  State: [Karnataka]
+  Commodity: [Onion]
 
 access:
   status: api_key
   detail: >-
-    The owner signed up, generated a free API key and read the resource ID
-    9ef84268-d588-465a-a308-a864a43d0070 from the dataset's API tab (OAS 2.0) on 5 Nov 2026. The API
-    confirms it: index_name is that ID and the title is "Current Daily Price of Various Commodities
-    from Various Markets (Mandi)" (e01). Without a key the API answers "Authorization field missing";
-    with the key it returned 502 twice at 16:30 UTC, then 200 (e01 to e03). Automated website
-    requests received Akamai 403 on 5 Nov (failed_fetches). On 6 Nov a fresh browser rendered
-    the public resource and licence pages without login or challenge, and its public metadata
-    response returned 200 (e04 to e06). No key was entered in any web form.
-  evidence: [e01, e02, e03, e04, e05, e06]
+    Resource 35985678-0d79-46b4-9ed6-6f13308a1d24 ("Variety-wise Daily Market Prices Data of
+    Commodity") answers with the owner's free key from .env: index_name echoes the ID and the
+    catalog_uuid 6141ea17-a69d-4713-b600-0a43c8fd9a6c is the same catalogue as the T025 resource
+    9ef84268 (e07, e05). Filters filters[State], filters[Commodity] and filters[Arrival_Date]
+    (DD/MM/YYYY) are honoured: every returned row matches them (e07 to e26). limit 1000, 5000 and
+    10000 all return full pages (e07, e08, e09); 10000 rows are about 4 MB. About 150 requests at one
+    per 2 s on 13 Nov 2026 met no 429 or 5xx. The key is never stored: recorded URLs carry only
+    public parameters. No key was entered in any web form. (T025 evidence for 9ef84268: e01 to e06.)
+  evidence: [e05, e07, e08, e09, e20, e26]
 
 licence:
   status: open
   detail: >-
-    The actual resource page says published datasets/resources and metadata are licensed under
-    Government Open Data License-India; Catalog Info identifies this AGMARKNET dataset as
-    released under NDSAP and the page links to /Godl (e04). The public GODL text permits lawful
-    commercial and non-commercial reuse subject to attribution, non-endorsement and its
-    exclusions (e06). Cite provider, dataset, publication/version date, resource URL and licence
-    URL in any use. The numeric field_license value in e05 is not interpreted as a licence.
-    Evidence e04 to e06 is explicitly labelled browser-derived metadata, not original responses
-    (D53). No data redistribution is introduced by this retry.
-  evidence: [e04, e05, e06]
+    Same catalogue (catalog_uuid 6141ea17-a69d-4713-b600-0a43c8fd9a6c, e07) and publisher as the
+    T025 resource, whose resource page states GODL-India for published datasets/resources and
+    metadata (e04, e05). The public GODL text permits lawful commercial and non-commercial reuse
+    subject to attribution, non-endorsement and its exclusions (e06). Cite provider, dataset,
+    publication/version date, resource URL and licence URL in any use. Evidence e04 to e06 is
+    labelled browser-derived metadata, not original responses (D53).
+  evidence: [e04, e05, e06, e07]
 
 provider_quota:
   status: not_published
-  detail: "The responses publish no rate limit (e01, e02)."
-  evidence: [e01, e02]
+  detail: >-
+    No quota in the response body (e07). Response headers seen in the session, not kept in the raw
+    store, were x-ratelimit-limit -1 and x-ratelimit-remaining 0 on every request; about 150
+    requests at one per 2 s met no refusal (e07 to e27). Polite rate for the backfill: at most one
+    request per 2 s, sequential, with the Fetcher's retry and circuit breaker.
+  evidence: [e07, e09, e19]
 
 history:
-  status: partial
+  status: available
   detail: >-
-    A current-day snapshot: on 5 Nov 2026 all 17,718 records were dated 05/11/2026, updated
-    2026-11-05T17:00:45Z (e01); Karnataka had 565 (e02, e03). History exists only by polling daily.
-  evidence: [e01, e02, e03]
-earliest_date: "2026-11-05"
-latest_date: "2026-11-05"
+    Karnataka onion total is 103,423 rows on every page (e07 to e19), updated 2026-11-12T23:34:52Z;
+    the earliest row seen is 10/01/2001 and the latest 12/11/2026 (e09 to e19, e24). Offset paging
+    is NOT reliable: the 11 pages at limit 10000 returned 103,423 rows but only 93,423 distinct
+    (page offset 0 shares 9,271 rows with offset 20000, which shares 729 with offset 40000; e09,
+    e11, e13), and the limit-1000 first page shares no row with the limit-10000 first page (e07,
+    e09). Sampled days queried with filters[Arrival_Date] return complete, stable sets that include
+    rows the paging missed (e22, e23, e26); a backfill must therefore query one Arrival_Date per
+    request. Distinct rows per year from the paging (a lower bound): 2001 14, 2002 3382, 2003 3300,
+    2004 2665, 2005 2490, 2006 2132, 2007 3211, 2008 3467, 2009 3809, 2010 3944, 2011 4737, 2012
+    5699, 2013 3186, 2014 3152, 2015 3810, 2016 3916, 2017 4046, 2018 4087, 2019 3890, 2020 4166,
+    2021 3996, 2022 4496, 2023 4025, 2024 4356, 2025 2553, 2026 4894. Only Feb to Oct 2001 have no
+    rows; 2025 is thin
+    (105 to 195 distinct rows in each of Mar to Aug and Oct). Some days have no report (e21).
+    Publication: 12/11/2026 is the latest day at capture (13 Nov, 10:00 UTC) while the daily
+    resource already had 13/11/2026 rows, so the history lags by about one day (e24, e25, e27).
+  evidence: [e07, e09, e11, e13, e19, e21, e22, e23, e24, e25, e26, e27]
+earliest_date: "2001-01-10"
+latest_date: "2026-11-12"
 
 units:
-  status: unlabelled
+  status: onion_only
   detail: >-
-    Fields are min_price, max_price and modal_price as numbers with no unit in the response (e01);
-    the resource's rendered Catalog Info describes daily wholesale prices without a denominator
-    (e04). Selected metadata description/note/field definitions are empty (e05). Rs per quintal
-    remains unverified for this API resource; do not convert or expose modal_inr_quintal until a
-    publisher statement establishes the applicable unit. No arrivals field is exposed (e01).
-  evidence: [e01, e04, e05]
+    The API carries no unit field (e09). The owner read AGMARKNET's daily price and arrival report
+    for Onion, Karnataka on 12 Nov 2026: its "Price Unit" column says "Rs./Quintal" (owner-observed,
+    decision D201). Units are per commodity, so only Onion is enabled at Rs./Quintal; every other
+    commodity stays unverified and disabled until owner step H16 records its unit. Within onion,
+    some rows look like per-kg entries (for example Shimoga 2023-24 modal 15 to 50, e09 to e19);
+    these are a cleaning rule for T271, not a second unit.
+  evidence: [e09, e19]
 
 source_check:
   status: pass
   detail: >-
-    Plan rule: pagination counts, date parsing, late reports, no invented resource UUID. The ID comes
-    from the publisher's API tab and the API echoes it (e01). Pagination: total 565 on both pages,
-    count 100 each, 200 distinct rows (e02, e03). Dates parse as DD/MM/YYYY, all 05/11/2026 (e02,
-    e03). 0 < min <= modal <= max holds in all 200 Karnataka rows (e02, e03). Late reports cannot be
-    seen in a one-day snapshot; daily polling must keep each day's snapshot.
-  evidence: [e01, e02, e03]
+    Plan rule: pagination counts, date parsing, late reports, no invented resource UUID. The ID is
+    echoed by the API (e07). Total stable at 103,423 across all pages (e07 to e19); duplicates come
+    from unstable offset paging, so per-day queries are required (history). Dates parse as
+    DD/MM/YYYY. In the 93,423 distinct paged rows: 20 break min <= modal <= max, 31 have a zero
+    min or max, no modal is <= 0, modal ranges 1 to 20000 (26 below 100, 39 above 10000, 30 of
+    them in the 2019 onion spike), 3 keys (date, district, market, variety, grade) repeat with
+    different prices. Prices and Commodity_Code are strings in older rows and integers from
+    Nov 2025 (both types appear 1 to 4 Nov 2025; e09 to e19). Names vary: 41 district spellings (Bangalore/Bengaluru,
+    Belgaum/Belagavi, Mysore/Mysuru, Shimoga/Shivamogga, Tumkur/Tumakuru, Kalburgi/Kalaburagi
+    and others), 164 market names (an "APMC" suffix appears from Nov 2025) and 11 markets filed
+    under two district names. These are T271 cleaning and crosswalk rules, not blockers.
+  evidence: [e07, e09, e10, e11, e12, e13, e14, e15, e16, e17, e18, e19]
 
 field_map:
   - canonical: market_id
-    upstream: "state + district + market"
+    upstream: "State + District + Market"
     unit_status: not_applicable
-    detail: "Names only; a versioned crosswalk maps them to IDs (T026)."
-    evidence: [e02]
+    detail: "Names only, with spelling variants; a versioned crosswalk maps them to IDs (T271)."
+    evidence: [e09]
   - canonical: commodity_id
-    upstream: "commodity + variety + grade"
+    upstream: "Commodity + Commodity_Code + Variety + Grade"
     unit_status: not_applicable
-    detail: "Names only, for example Green Chilli / Green Chilly / FAQ."
-    evidence: [e01]
+    detail: "Onion is Commodity_Code 23; 15 varieties and 8 grades in Karnataka onion rows."
+    evidence: [e09]
   - canonical: date_local
-    upstream: "arrival_date (DD/MM/YYYY)"
+    upstream: "Arrival_Date (DD/MM/YYYY)"
     unit_status: labelled
-    detail: "Day of the market report."
-    evidence: [e02]
+    detail: "Day of the market report; also the per-day query filter."
+    evidence: [e20, e24]
   - canonical: modal_inr_quintal
-    upstream: "modal_price"
-    unit_status: unlabelled
-    detail: "No unit in the response; unit must be confirmed before use."
-    evidence: [e01, e04, e05]
+    upstream: "Modal_Price"
+    unit_status: labelled
+    detail: >-
+      Rs./Quintal for Onion only (owner-observed AGMARKNET Price Unit, D201); other commodities
+      are unverified (H16) and must not be mapped. Min_Price and Max_Price share the unit.
+    evidence: [e09]
   - canonical: arrivals_tonnes
     upstream: null
     unit_status: absent
     detail: "Not exposed by this API resource."
-    evidence: [e01]
+    evidence: [e09]
 
-dependents: [T026, T035, T036, T037]
+dependents: [T026, T035, T036, T037, T270]
 retry_condition: >-
-  Capture a publisher statement tied to resource 9ef84268-d588-465a-a308-a864a43d0070 establishing
-  the denominator of min_price, max_price and modal_price (including commodity-specific exceptions
-  if units vary). Then re-run T025 and validate the mapping before enabling S23 or implementing
-  ingestion in T026. GODL is verified; no new API key or licence confirmation is needed.
+  Onion is enabled. For any other commodity, record the AGMARKNET "Price Unit" for that commodity
+  (owner step H16) with its date, add it to enabled_scope and re-run this verify task. A backfill
+  must query one Arrival_Date per request (offset paging duplicates and drops rows).
 
 failed_fetches:
   - url: "https://www.data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi"

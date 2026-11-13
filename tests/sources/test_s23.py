@@ -1,4 +1,4 @@
-"""T026: an open licence does not enable prices whose units are unknown."""
+"""T026/T269: the adapter stays disabled until T270; only onion has a verified price unit."""
 
 import importlib
 import json

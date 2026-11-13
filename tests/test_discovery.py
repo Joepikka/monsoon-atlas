@@ -54,6 +54,16 @@ def test_rejects_available_without_licence_or_history(base):
     assert any("known licence" in p for p in check(bad, manifest, source_enabled=False))
 
 
+def test_rejects_empty_enabled_scope_filter(base):
+    d, manifest = base
+    bad = _with(d, enabled_scope={"Commodity": []})
+    assert any("enabled_scope" in p for p in check(bad, manifest, source_enabled=False))
+    assert (
+        check(_with(d, enabled_scope={"Commodity": ["Onion"]}), manifest, source_enabled=False)
+        == []
+    )
+
+
 def test_rejects_claim_without_evidence(base):
     d, _ = base
     with pytest.raises(ValueError):

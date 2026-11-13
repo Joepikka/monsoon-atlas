@@ -1,4 +1,4 @@
-"""S23 data.gov.in: T026 disabled contract while T025 price units are unverified."""
+"""S23 data.gov.in: disabled contract until the T270 adapter; T269 verified onion units only."""
 
 from __future__ import annotations
 
@@ -9,8 +9,8 @@ from atlas.contracts import FetchContext, RawArtifact
 from atlas.ingest.base import SourceUnavailable
 
 REASON = (
-    "S23 is blocked (T025): price units/denominator are unverified despite the open GODL licence; "
-    "retry the conditions in configs/sources/s23.yaml"
+    "S23 is blocked for ingestion until the T270 adapter: only Onion has a verified price unit "
+    "(Rs./Quintal, T269); other commodities stay disabled until H16 (configs/sources/s23.yaml)"
 )
 
 

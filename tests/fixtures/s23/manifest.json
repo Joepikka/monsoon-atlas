@@ -66,6 +66,237 @@
       "bytes": 10994,
       "raw_path": "S23/2026-11-06/efd1b685b0e39851ed54b032e375aeac06d6732dd6cb819354a96b602dc7c4a5.json",
       "shows": "Browser DOM projection: public GODL licence tabs, including reuse, attribution, exemptions and termination; not an unmodified HTTP response (D53)"
+    },
+    {
+      "id": "e07",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=1000&offset=0",
+      "fetched_at": "2026-11-13T10:03:51.323987Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "ea3f0979829105f4fc764d5b19bcafb248d0d82d519a3fc66dabc1814f483aea",
+      "bytes": 405871,
+      "raw_path": "S23/2026-11-13/ea3f0979829105f4fc764d5b19bcafb248d0d82d519a3fc66dabc1814f483aea.json",
+      "shows": "Karnataka onion, variety-wise resource: limit 1000 offset 0; metadata (title, catalog_uuid, updated_date, total 103,423) and page-size check"
+    },
+    {
+      "id": "e08",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=5000&offset=0",
+      "fetched_at": "2026-11-13T10:03:57.098989Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "2e4159c3bb334069dc731c8b65f25d8229a5336ae99be7968648c425e1005fd4",
+      "bytes": 2009367,
+      "raw_path": "S23/2026-11-13/2e4159c3bb334069dc731c8b65f25d8229a5336ae99be7968648c425e1005fd4.json",
+      "shows": "Karnataka onion, variety-wise resource: limit 5000 offset 0; page-size check (5,000 rows returned)"
+    },
+    {
+      "id": "e09",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=10000&offset=0",
+      "fetched_at": "2026-11-13T10:04:18.922436Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "b1fe2d11302dc5663b57f9d8f8cef8c65aa7044a27f27d698943c06e4821a575",
+      "bytes": 4006165,
+      "raw_path": "S23/2026-11-13/b1fe2d11302dc5663b57f9d8f8cef8c65aa7044a27f27d698943c06e4821a575.json",
+      "shows": "Karnataka onion, variety-wise resource: limit 10000 offset 0; full offset pagination (11 pages) for counts, overlap and quality checks"
+    },
+    {
+      "id": "e10",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=10000&offset=10000",
+      "fetched_at": "2026-11-13T10:04:27.177693Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "eeecd31155641d99754a96d912c1de0a7b68b637b3988d3dd5a30ba76374950a",
+      "bytes": 4011518,
+      "raw_path": "S23/2026-11-13/eeecd31155641d99754a96d912c1de0a7b68b637b3988d3dd5a30ba76374950a.json",
+      "shows": "Karnataka onion, variety-wise resource: limit 10000 offset 10000; full offset pagination (11 pages) for counts, overlap and quality checks"
+    },
+    {
+      "id": "e11",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=10000&offset=20000",
+      "fetched_at": "2026-11-13T10:04:36.835997Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "d7d6192951da8d98dd5df38108850d6f49e7bbbb750a3f27d2bd570cbb10d9d3",
+      "bytes": 4007146,
+      "raw_path": "S23/2026-11-13/d7d6192951da8d98dd5df38108850d6f49e7bbbb750a3f27d2bd570cbb10d9d3.json",
+      "shows": "Karnataka onion, variety-wise resource: limit 10000 offset 20000; full offset pagination (11 pages) for counts, overlap and quality checks"
+    },
+    {
+      "id": "e12",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=10000&offset=30000",
+      "fetched_at": "2026-11-13T10:04:44.958537Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "5b3aeb97dd047295ae31d697ed70ba5b9dbe39d981a374ba755405d60d35ddcc",
+      "bytes": 4007679,
+      "raw_path": "S23/2026-11-13/5b3aeb97dd047295ae31d697ed70ba5b9dbe39d981a374ba755405d60d35ddcc.json",
+      "shows": "Karnataka onion, variety-wise resource: limit 10000 offset 30000; full offset pagination (11 pages) for counts, overlap and quality checks"
+    },
+    {
+      "id": "e13",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=10000&offset=40000",
+      "fetched_at": "2026-11-13T10:04:54.580516Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "b82422f8a339a4e3b2091e1bc24b6a69bafd82395b4acc2f9780a8c9a855823f",
+      "bytes": 4009207,
+      "raw_path": "S23/2026-11-13/b82422f8a339a4e3b2091e1bc24b6a69bafd82395b4acc2f9780a8c9a855823f.json",
+      "shows": "Karnataka onion, variety-wise resource: limit 10000 offset 40000; full offset pagination (11 pages) for counts, overlap and quality checks"
+    },
+    {
+      "id": "e14",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=10000&offset=50000",
+      "fetched_at": "2026-11-13T10:05:04.237054Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "47be97c629c7aa0798ec4ef23f9fdb99aebaa2e32c2682b0158222b0da7d3c6d",
+      "bytes": 4009674,
+      "raw_path": "S23/2026-11-13/47be97c629c7aa0798ec4ef23f9fdb99aebaa2e32c2682b0158222b0da7d3c6d.json",
+      "shows": "Karnataka onion, variety-wise resource: limit 10000 offset 50000; full offset pagination (11 pages) for counts, overlap and quality checks"
+    },
+    {
+      "id": "e15",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=10000&offset=60000",
+      "fetched_at": "2026-11-13T10:05:13.500826Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "a1bc71e3222eea5f3bb0e7dc2d3f50ef7dddbe99e649df4ec3d4091631f2af7b",
+      "bytes": 4010291,
+      "raw_path": "S23/2026-11-13/a1bc71e3222eea5f3bb0e7dc2d3f50ef7dddbe99e649df4ec3d4091631f2af7b.json",
+      "shows": "Karnataka onion, variety-wise resource: limit 10000 offset 60000; full offset pagination (11 pages) for counts, overlap and quality checks"
+    },
+    {
+      "id": "e16",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=10000&offset=70000",
+      "fetched_at": "2026-11-13T10:05:22.389219Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "436926c3eb7a00567d1c1a086778659e8be7e08f5e642c41dffde76ca05ab895",
+      "bytes": 4008354,
+      "raw_path": "S23/2026-11-13/436926c3eb7a00567d1c1a086778659e8be7e08f5e642c41dffde76ca05ab895.json",
+      "shows": "Karnataka onion, variety-wise resource: limit 10000 offset 70000; full offset pagination (11 pages) for counts, overlap and quality checks"
+    },
+    {
+      "id": "e17",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=10000&offset=80000",
+      "fetched_at": "2026-11-13T10:05:32.647526Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "4a0ba9c9687f56846e61087a2eb08cb05f03ef1368d02ae4be86a8a76c91a3c8",
+      "bytes": 4007974,
+      "raw_path": "S23/2026-11-13/4a0ba9c9687f56846e61087a2eb08cb05f03ef1368d02ae4be86a8a76c91a3c8.json",
+      "shows": "Karnataka onion, variety-wise resource: limit 10000 offset 80000; full offset pagination (11 pages) for counts, overlap and quality checks"
+    },
+    {
+      "id": "e18",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=10000&offset=90000",
+      "fetched_at": "2026-11-13T10:05:41.348227Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "b8615a8ae786d544c60df09ee693c73f868aa43605d36a1b4917115f2c0c232a",
+      "bytes": 4008632,
+      "raw_path": "S23/2026-11-13/b8615a8ae786d544c60df09ee693c73f868aa43605d36a1b4917115f2c0c232a.json",
+      "shows": "Karnataka onion, variety-wise resource: limit 10000 offset 90000; full offset pagination (11 pages) for counts, overlap and quality checks"
+    },
+    {
+      "id": "e19",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=10000&offset=100000",
+      "fetched_at": "2026-11-13T10:05:45.716942Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "167d86ca1c73edbe80a9541f8bc1dabf356fcd0c8345dcd08950b2c377486714",
+      "bytes": 1377129,
+      "raw_path": "S23/2026-11-13/167d86ca1c73edbe80a9541f8bc1dabf356fcd0c8345dcd08950b2c377486714.json",
+      "shows": "Karnataka onion, variety-wise resource: limit 10000 offset 100000; full offset pagination (11 pages) for counts, overlap and quality checks"
+    },
+    {
+      "id": "e20",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BArrival_Date%5D=02%2F01%2F2019&filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=1000&offset=0",
+      "fetched_at": "2026-11-13T10:11:13.584378Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "16f34839eec7724a997f4e6f49702c4e6f39306a6fd4a347bbfa523a59d53ec2",
+      "bytes": 8902,
+      "raw_path": "S23/2026-11-13/16f34839eec7724a997f4e6f49702c4e6f39306a6fd4a347bbfa523a59d53ec2.json",
+      "shows": "Karnataka onion, variety-wise resource: Arrival_Date filter repeats the D201 probe (14 rows)"
+    },
+    {
+      "id": "e21",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BArrival_Date%5D=15%2F07%2F2004&filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=1000&offset=0",
+      "fetched_at": "2026-11-13T10:07:12.670586Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "3637928f56f1cd37966d1e8f19f3100a0f9738338e3efbab2dd5255cec3d5697",
+      "bytes": 3317,
+      "raw_path": "S23/2026-11-13/3637928f56f1cd37966d1e8f19f3100a0f9738338e3efbab2dd5255cec3d5697.json",
+      "shows": "Karnataka onion, variety-wise resource: Arrival_Date filter on a day with no report (total 0)"
+    },
+    {
+      "id": "e22",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BArrival_Date%5D=15%2F07%2F2026&filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=1000&offset=0",
+      "fetched_at": "2026-11-13T10:10:36.314511Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "27b4f8de7014acffc03759b0c844de115c39e2c9071570444745a54a2d8cd5b2",
+      "bytes": 12963,
+      "raw_path": "S23/2026-11-13/27b4f8de7014acffc03759b0c844de115c39e2c9071570444745a54a2d8cd5b2.json",
+      "shows": "Karnataka onion, variety-wise resource: Arrival_Date filter: 24 rows, 7 of them absent from the offset pagination"
+    },
+    {
+      "id": "e23",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BArrival_Date%5D=04%2F11%2F2026&filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=1000&offset=0",
+      "fetched_at": "2026-11-13T10:11:02.396408Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "1cce5179a53be9033def10c9d353ac8cd61a1d8a747fde6528de0f36192baf98",
+      "bytes": 12562,
+      "raw_path": "S23/2026-11-13/1cce5179a53be9033def10c9d353ac8cd61a1d8a747fde6528de0f36192baf98.json",
+      "shows": "Karnataka onion, variety-wise resource: Arrival_Date filter: 23 rows, 10 of them absent from the offset pagination"
+    },
+    {
+      "id": "e24",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BArrival_Date%5D=12%2F11%2F2026&filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=1000&offset=0",
+      "fetched_at": "2026-11-13T10:10:43.519552Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "c53ea0f076395d9e2ef0ba79030b5384f37e59d3cb9050bdb6419cd5be0a3868",
+      "bytes": 10531,
+      "raw_path": "S23/2026-11-13/c53ea0f076395d9e2ef0ba79030b5384f37e59d3cb9050bdb6419cd5be0a3868.json",
+      "shows": "Karnataka onion, variety-wise resource: Arrival_Date filter on the latest published day (18 rows)"
+    },
+    {
+      "id": "e25",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BArrival_Date%5D=13%2F11%2F2026&filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=1000&offset=0",
+      "fetched_at": "2026-11-13T10:10:41.276866Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "3637928f56f1cd37966d1e8f19f3100a0f9738338e3efbab2dd5255cec3d5697",
+      "bytes": 3317,
+      "raw_path": "S23/2026-11-13/3637928f56f1cd37966d1e8f19f3100a0f9738338e3efbab2dd5255cec3d5697.json",
+      "shows": "Karnataka onion, variety-wise resource: Arrival_Date filter on the capture day: no rows yet (publication delay)"
+    },
+    {
+      "id": "e26",
+      "url": "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?filters%5BArrival_Date%5D=04%2F11%2F2026&filters%5BCommodity%5D=Onion&filters%5BState%5D=Karnataka&format=json&limit=1000&offset=0",
+      "fetched_at": "2026-11-13T10:13:41.377560Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "d1b20dec0430f5af965469a7bb10f56390a3b6186d37d0e6499c3d4192aa3ae0",
+      "bytes": 12562,
+      "raw_path": "S23/2026-11-13/d1b20dec0430f5af965469a7bb10f56390a3b6186d37d0e6499c3d4192aa3ae0.json",
+      "shows": "Karnataka onion, variety-wise resource: Arrival_Date 04/11/2026 repeated; same 23-row set in a different order"
+    },
+    {
+      "id": "e27",
+      "url": "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?filters%5Bcommodity%5D=Onion&filters%5Bstate.keyword%5D=Karnataka&format=json&limit=1000&offset=0",
+      "fetched_at": "2026-11-13T10:13:38.421030Z",
+      "status": 200,
+      "media_type": "application/json",
+      "sha256": "7fba8f3a7b3dfcf1ddd4099dfbc1071de0781233db98c04ed4f1ac2eaee8154a",
+      "bytes": 4109,
+      "raw_path": "S23/2026-11-13/7fba8f3a7b3dfcf1ddd4099dfbc1071de0781233db98c04ed4f1ac2eaee8154a.json",
+      "shows": "Daily resource 9ef84268, Karnataka onion: 3 rows dated 13/11/2026 at capture (publication-delay comparison)"
     }
   ]
 }
