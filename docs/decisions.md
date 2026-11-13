@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D213 — District segmentation, Karnataka (T285, 13 Nov 2026).**
+  Six committed per-district features: ERA5 southwest-season rain level, variability and
+  northeast share (S02), the IMD Sen trend as an index, hospital mean km (D195) and log
+  population; robust-scaled, no pair above |r| 0.9. Rule fixed before looking: k-means for
+  k = 2..6, highest silhouette among k whose smallest segment has at least 3 districts; publish as
+  a descriptive typology only if the median bootstrap ARI over 1,000 resamples is at least 0.6.
+  Result: k = 2, silhouette 0.686, median ARI 1.0 (p10 0.83), Ward ARI 1.0, ARI 1.0 without
+  Bangalore, so published as a descriptive typology: 5 "wet, steady rain" districts (Dakshina
+  Kannada, Kodagu, Shimoga, Udupi, Uttara Kannada) and 25 near the state middle. k = 3..6 each
+  leave a one-district segment and are excluded. Limits: n = 30, ERA5 reanalysis at one point
+  per district, straight-line OSM distance; rain level drives the split. Outputs in
+  `reports/eda/14_ka_district_segments/`; no IMD mm is published.
+
 - **D211 — Karnataka ML showcase plan registered (13 Nov 2026).**
   Owner, in chat: "plan using fable and do using opus for hard task and sonnet for simple task";
   the goal is to show data, ML and neural-network skills on real Karnataka data. The plan is
