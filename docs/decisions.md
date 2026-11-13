@@ -2,6 +2,14 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D203 — H15 Copernicus account done; S3 keys verified (13 Nov 2026).**
+  The owner registered a Copernicus Data Space Ecosystem account in their own browser (the
+  built-in browser failed the site's Captcha.eu check) and created S3 keys, saved in `.env` as
+  `CDSE_S3_ACCESS_KEY` and `CDSE_S3_SECRET_KEY`. The agent never signs in with the account
+  password: a read-only, SigV4-signed ListObjectsV2 on `eodata` (Sentinel-1 GRD prefix) returned
+  HTTP 200, so the keys work. S42 stays blocked until its verify task re-runs with the keys
+  (Kerala phase, M17); nothing was downloaded.
+
 - **D202 — District monsoon tracker normals committed (13 Nov 2026).**
   The ERA5 (S02) backfill finished: 25 reference years, 2001-2025, June to December, one grid
   point per district (`data/clean/S02/ka-districts/`, local). `configs/static/ka/monsoon-normals.json`
