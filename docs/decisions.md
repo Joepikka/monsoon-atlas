@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D217 — M21 neural networks on train/tune; LightGBM named as the candidate (T283, 13 Nov 2026).**
+  `src/atlas/models/nn_graph.py`, plain torch on CPU: an MLP on the ridge features and a GCN-GRU
+  (two graph convolutions with the row-normalised queen adjacency plus self loops, a GRU over 12
+  months, about 5.2k parameters), plus the same GCN-GRU with the identity matrix as an ablation;
+  five seeds each. Departures from plan item 8: early stopping on the inner train slice
+  2012-01..2014-11 (stricter than tune), then a refit on all train; dropout, weight decay and sizes
+  fixed in advance; tune scored once per seed. Tune MAE (5-seed mean, sd): MLP 0.902 (0.007),
+  GCN-GRU 0.907 (0.009), identity 0.891 (0.002), against climatology 0.907 and LightGBM 0.878; no
+  lower 95% bound above 0 against either. Ablation, identity minus graph: -0.015 [-0.033, +0.002],
+  so the adjacency adds nothing here. A rule written into the gate before scoring named LightGBM
+  as the M21 candidate for T284's single test opening; it is expected to be research-only.
+
 - **D216 — M21 classical models on train/tune, no candidate (T281, 13 Nov 2026).**
   `src/atlas/models/m21_fit.py`: per-district SARIMA (6 small orders, AIC on train), ridge for all
   districts (alpha by 10 yearly rolling origins inside train) and LightGBM for all districts (30
