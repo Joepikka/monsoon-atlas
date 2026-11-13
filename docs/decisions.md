@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D206 — Weather forecast for all 30 districts (13 Nov 2026).**
+  Owner, in chat: "Yes, all 30". S01 now captures the 30 district representative points
+  (`configs/static/ka/places.json`, 2 dp) in one Open-Meteo request, 3 forecast days instead of 16
+  to keep the relayed checkpoint small (about 90 KB raw per capture). Probe on 13 Nov: 30 distinct
+  ECMWF IFS 0.25-degree cells, each within 18.6 km of its point, so every district's Place Lens
+  (25 km radius) gets its own next-hour temperature. Each grid centre is pinned in
+  `s01_collect.DISTRICTS` and a moved cell is refused, as before. Receipts carry a profile, and the
+  T009 Bengaluru profile stays valid in collect, prepare and the checkpoint check, so receipts
+  already in the hosted chain keep verifying (no new bootstrap). Prepare emits one record per
+  district with a usable hour (none is filled) and `mapping_version` becomes `s01-prepared-v2`.
+  Tests replay genuine fixtures: the old single-point pair (now pinned in `tests/conftest.py`) and a
+  new 30-point response with its model metadata.
+
 - **D205 — District profile in the Place Lens (13 Nov 2026).**
   Owner, in chat: after picking Bengaluru, "only really helpful is nearby". Cause: the live
   release held one S01 forecast point (Bengaluru only) and no active warning, so Now, Risk,

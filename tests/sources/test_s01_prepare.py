@@ -136,7 +136,7 @@ def test_real_pair_matches_adapter_and_actual_browser_fixture_point(tmp_path):
     assert "grid" in record["location_note"].lower()
     assert value["sources"][0]["status"] == "partial"
     assert value["sources"][0]["last_success_at"] == pair["captured_at"]
-    assert "single" in value["sources"][0]["detail"].lower()
+    assert "1 of 1 points" in value["sources"][0]["detail"]  # D206: T009 profile
     pointer = json.loads((tmp_path / "weather/prepared/prepared.json").read_bytes())
     assert pointer["status"] == "prepared_only" and "approval" not in pointer
     assert not list(tmp_path.rglob("*.approval.json"))
