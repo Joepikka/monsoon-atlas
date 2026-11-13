@@ -2,6 +2,15 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D210 — Model accuracy page leads with working models (13 Nov 2026).**
+  Owner, in chat: 18 of 20 cards said BLOCKED and read as weakness. The Model accuracy page
+  now opens with one framing line (a model counts as working only if it beats the strongest simple
+  baseline on held-out data; no labels means roadmap, never invented data), a state switch
+  (Karnataka default, Kerala, Delhi, All; Kerala and Delhi say their phase has not started), a hero
+  card for M05 with every number read from `dashboards.json`, and M16 labelled research-only.
+  Blocked models move, unchanged, into a collapsed "Roadmap: models waiting for data" list with
+  their reasons and report links; none is removed or scored. The approved table stays below.
+
 - **D209 — Redesign step 2: Overview landing page with a 3D district map (13 Nov 2026).**
   Owner, in chat: "Start step 2". A bare address now opens `Overview` (hero, four headline
   numbers, a 3D map, district panel, links to every analysis); the map workspace moves to
