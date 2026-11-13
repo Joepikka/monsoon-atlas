@@ -22,8 +22,8 @@ from atlas.ingest.base import IngestError
 from atlas.ingest.http import EXT
 from atlas.ingest.prepared import MAX_BYTES, ROOT, canonical, utc
 from atlas.ingest.raw_store import LEDGER
-from atlas.ingest.s01_collect import POINTS, RETURNED_POINT, ROLES, latest_pair
-from atlas.ingest.s01_prepare import MODEL, PROFILE, receipt_time
+from atlas.ingest.s01_collect import PROFILES, ROLES, latest_pair
+from atlas.ingest.s01_prepare import MODEL, receipt_time
 from atlas.ingest.s09_prepare import CAP_URL
 
 HASH = r"[0-9a-f]{64}"
@@ -343,10 +343,12 @@ def _check_references(stage: Path, entries: dict, original: Path) -> None:
             requests = pair["requests"]
             roles = tuple(item["role"] for item in requests)
             outcome = pair["outcome"]
+            profile = PROFILES.get(pair["profile"])  # D206: each receipt checks its own grid
             if (
                 (pair["schema_version"], pair["source_id"], pair["state"]) != (1, "S01", "ka")
-                or (pair["profile"], pair["requested_model"]) != (PROFILE, MODEL)
-                or pair["requested_points"] != [list(point) for point in POINTS]
+                or profile is None
+                or pair["requested_model"] != MODEL
+                or pair["requested_points"] != [list(point) for point in profile[1]]
                 or roles != ROLES[: len(roles)]
                 or outcome not in {"validated", "deferred", "unavailable", "failed"}
                 or (outcome == "validated" and roles != ROLES)
@@ -374,7 +376,8 @@ def _check_references(stage: Path, entries: dict, original: Path) -> None:
                     receipt_time(pair["captured_at"]),
                 ]
                 receipt_time(pair["model_initialization"])
-                if clocks != sorted(clocks) or pair["returned_points"] != [list(RETURNED_POINT)]:
+                returned = [tuple(point) for point in pair["returned_points"]]
+                if clocks != sorted(clocks) or returned != list(profile[2]):
                     raise IngestError("Checkpoint weather receipt has invalid clocks or grid")
                 receipts[name] = {
                     "receipt_path": name,

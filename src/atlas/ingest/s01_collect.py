@@ -1,4 +1,4 @@
-"""T237 paired weather capture for one verified Bengaluru model grid point."""
+"""T237 paired weather capture at verified model grid points (D206: all 30 districts)."""
 
 from __future__ import annotations
 
@@ -27,8 +27,54 @@ from atlas.ingest.s01 import HOSTS, S01
 from atlas.ingest.schedule import AdmittedTransport, Deferred, admit, open_control, run_bounded
 
 ROOT = Path(__file__).resolve().parents[3]
-POINTS = ((12.97, 77.59),)  # T009 verified query, not a statewide sampling grid.
-RETURNED_POINT = (13.0, 77.5)  # Actual ecmwf_ifs025 grid centre in the captured response.
+# D206: the 30 district representative points (configs/static/ka/places.json, 2 dp) and the
+# ecmwf_ifs025 grid centre Open-Meteo returned for each on 13 Nov 2026 (30 distinct cells, all
+# within 18.6 km of their point, inside the Place Lens 25 km radius).
+DISTRICTS = (
+    ("Bagalkot", (16.29, 75.58), (16.25, 75.5)),
+    ("Bangalore", (12.94, 77.53), (13, 77.5)),
+    ("Bangalore Rural", (13.18, 77.34), (13.25, 77.25)),
+    ("Belgaum", (16.16, 74.89), (16.25, 75)),
+    ("Bellary", (15.2, 76.74), (15.25, 76.75)),
+    ("Bidar", (18.02, 77.26), (18, 77.25)),
+    ("Bijapur", (16.82, 75.89), (16.75, 76)),
+    ("Chamarajanagar", (11.95, 77.1), (12, 77)),
+    ("Chikkaballapura", (13.6, 77.78), (13.5, 77.75)),
+    ("Chikmagalur", (13.43, 75.65), (13.5, 75.75)),
+    ("Chitradurga", (14.31, 76.53), (14.25, 76.5)),
+    ("Dakshina Kannada", (12.82, 75.26), (12.75, 75.25)),
+    ("Davanagere", (14.37, 75.89), (14.25, 76)),
+    ("Dharwad", (15.37, 75.13), (15.25, 75.25)),
+    ("Gadag", (15.42, 75.68), (15.5, 75.75)),
+    ("Gulbarga", (17.24, 76.77), (17.25, 76.75)),
+    ("Hassan", (13.03, 76.17), (13, 76.25)),
+    ("Haveri", (14.72, 75.39), (14.75, 75.5)),
+    ("Kodagu", (12.38, 75.66), (12.5, 75.75)),
+    ("Kolar", (13.18, 78.26), (13.25, 78.25)),
+    ("Koppal", (15.57, 76.31), (15.5, 76.25)),
+    ("Mandya", (12.64, 76.73), (12.75, 76.75)),
+    ("Mysore", (12.17, 76.5), (12.25, 76.5)),
+    ("Raichur", (16.05, 76.9), (16, 77)),
+    ("Ramanagara", (12.72, 77.32), (12.75, 77.25)),
+    ("Shimoga", (14.06, 75.12), (14, 75)),
+    ("Tumkur", (13.42, 76.88), (13.5, 77)),
+    ("Udupi", (13.56, 74.88), (13.5, 75)),
+    ("Uttara Kannada", (14.73, 74.64), (14.75, 74.75)),
+    ("Yadgir", (16.57, 76.93), (16.5, 77)),
+)
+# profile -> (names, requested points, returned grid centres, forecast days). The T009 Bengaluru
+# profile stays valid so receipts already in the relayed checkpoint keep verifying.
+PROFILES = {
+    "bengaluru-ecmwf_ifs025-v1": (("Bengaluru",), ((12.97, 77.59),), ((13.0, 77.5),), 16),
+    "ka-districts-ecmwf_ifs025-v1": (
+        tuple(d[0] for d in DISTRICTS),
+        tuple(d[1] for d in DISTRICTS),
+        tuple(d[2] for d in DISTRICTS),
+        3,
+    ),
+}
+PROFILE = "ka-districts-ecmwf_ifs025-v1"
+NAMES, POINTS, RETURNED_POINTS, FORECAST_DAYS = PROFILES[PROFILE]
 ROLES = ("metadata_before", "forecast", "metadata_after")
 
 
@@ -76,6 +122,8 @@ def collect_weather(
     clock: Callable[[], datetime] = lambda: datetime.now(UTC),
     sleep: Callable[[float], None] = time.sleep,
 ) -> dict:
+    profile = PROFILE  # read at call time, so tests can pin the T009 Bengaluru profile
+    _, points, cells, days = PROFILES[profile]
     now = clock()
     if now.utcoffset() != timedelta(0):
         raise ValueError("weather clock must be aware UTC")
@@ -100,7 +148,7 @@ def collect_weather(
         fetcher = RecordingFetcher(
             RawStore(root / "weather/raw", quota), HOSTS, transport=paced, clock=clock, sleep=sleep
         )
-        adapter = S01("ka", POINTS, fetcher=fetcher)
+        adapter = S01("ka", points, fetcher=fetcher, forecast_days=days)
         context = FetchContext(
             source_id="S01",
             state="ka",
@@ -134,7 +182,7 @@ def collect_weather(
             body = json.loads(forecast.path.read_bytes())
             locations = body if isinstance(body, list) else [body]
             returned = [[location["latitude"], location["longitude"]] for location in locations]
-            if len(returned) != 1 or tuple(returned[0]) != RETURNED_POINT:
+            if [tuple(point) for point in returned] != list(cells):
                 raise SourceUnavailable("Verified weather grid mapping changed")
             checked = clock()
             if checked < max(raw.fetched_at for raw in fetcher.artifacts):
@@ -149,7 +197,7 @@ def collect_weather(
                 for row in rows
             ):
                 raise SourceUnavailable(
-                    "No quality-passed future temperature at the verified point"
+                    "No quality-passed future temperature at the verified points"
                 )
             issued, outcome = rows[0]["issued_at"], "validated"
         except Deferred as error:
@@ -163,9 +211,9 @@ def collect_weather(
             "schema_version": 1,
             "source_id": "S01",
             "state": "ka",
-            "profile": "bengaluru-ecmwf_ifs025-v1",
+            "profile": profile,
             "requested_model": adapter.model,
-            "requested_points": [list(point) for point in POINTS],
+            "requested_points": [list(point) for point in points],
             "returned_points": returned,
             "capture_started_at": stamp(now),
             "captured_at": stamp(checked),

@@ -1,4 +1,4 @@
-"""T238: offline prepared-only temperature at the single verified model grid point."""
+"""T238: offline prepared-only temperature at verified model grid points (D206: 30 districts)."""
 
 from __future__ import annotations
 
@@ -16,10 +16,9 @@ from atlas.contracts import RawArtifact
 from atlas.ingest.base import IngestError, SourceUnavailable
 from atlas.ingest.prepared import MAX_BYTES, canonical, materialize, utc
 from atlas.ingest.s01 import API, MAPPING_VERSION, S01, SETTLE, meta_url
-from atlas.ingest.s01_collect import POINTS, RETURNED_POINT, ROLES, latest_pair
+from atlas.ingest.s01_collect import PROFILES, ROLES, latest_pair
 
 ROOT = Path(__file__).resolve().parents[3]
-PROFILE = "bengaluru-ecmwf_ifs025-v1"
 MODEL = "ecmwf_ifs025"
 
 
@@ -64,12 +63,6 @@ def qualified_receipts(root: Path, as_of: datetime, config) -> list[tuple]:
             or Path(pointer["path"]).stem != pointer["sha256"]
         ):
             raise IngestError("Weather paired-capture pointer has invalid identity")
-    adapter = S01("ka", POINTS, model=MODEL)
-    urls = (
-        meta_url(MODEL),
-        f"{API}/v1/forecast?{urlencode(sorted(adapter.params().items()))}",
-        meta_url(MODEL),
-    )
     eligible = []
     for path in sorted((root / "weather/pairs").rglob("*.json")):
         try:
@@ -78,22 +71,28 @@ def qualified_receipts(root: Path, as_of: datetime, config) -> list[tuple]:
             if path.stem != digest or not path.resolve().is_relative_to(root / "weather/pairs"):
                 raise ValueError("Receipt hash/path mismatch")
             pair = json.loads(encoded)
+            names, points, cells, days = PROFILES[pair["profile"]]  # unknown profile: KeyError
             if (
                 pair["schema_version"] != 1
                 or pair["source_id"] != "S01"
                 or pair["state"] != "ka"
-                or pair["profile"] != PROFILE
                 or pair["requested_model"] != MODEL
-                or pair["requested_points"] != [list(point) for point in POINTS]
+                or pair["requested_points"] != [list(point) for point in points]
             ):
                 raise ValueError("Receipt source/profile mismatch")
+            adapter = S01("ka", points, model=MODEL, forecast_days=days)
+            urls = (
+                meta_url(MODEL),
+                f"{API}/v1/forecast?{urlencode(sorted(adapter.params().items()))}",
+                meta_url(MODEL),
+            )
             captured = receipt_time(pair["captured_at"])
             started = receipt_time(pair["capture_started_at"])
             if started > captured:
                 raise ValueError("Receipt capture clocks regressed")
             if pair["outcome"] != "validated" or captured > as_of:
                 continue
-            if pair["returned_points"] != [list(RETURNED_POINT)]:
+            if [tuple(point) for point in pair["returned_points"]] != list(cells):
                 raise ValueError("Returned grid changed")
             if [item["role"] for item in pair["requests"]] != list(ROLES):
                 raise ValueError("Receipt requires exactly three ordered input roles")
@@ -127,12 +126,12 @@ def qualified_receipts(root: Path, as_of: datetime, config) -> list[tuple]:
                     raise ValueError("Weather model run mismatched or unsettled at retrieval")
             body = json.loads(forecast.path.read_bytes())
             locations = body if isinstance(body, list) else [body]
-            if (
-                len(locations) != 1
-                or not isinstance(locations[0], dict)
-                or (locations[0]["latitude"], locations[0]["longitude"]) != RETURNED_POINT
-                or not isinstance(locations[0].get("hourly"), dict)
-                or not isinstance(locations[0].get("hourly_units"), dict)
+            if len(locations) != len(cells) or any(
+                not isinstance(location, dict)
+                or (location["latitude"], location["longitude"]) != cell
+                or not isinstance(location.get("hourly"), dict)
+                or not isinstance(location.get("hourly_units"), dict)
+                for location, cell in zip(locations, cells, strict=True)
             ):
                 raise ValueError("Actual returned grid or forecast shape changed")
             rows = adapter.parse(forecast, config, meta=after).to_pylist()
@@ -153,7 +152,8 @@ def qualified_receipts(root: Path, as_of: datetime, config) -> list[tuple]:
                     for role, raw in zip(ROLES, artifacts, strict=True)
                 ],
             }
-            eligible.append((issued, captured, forecast, rows, locations[0], item))
+            located = list(zip(names, locations, strict=True))
+            eligible.append((issued, captured, forecast, rows, located, item))
         except (OSError, KeyError, TypeError, ValueError, OverflowError) as error:
             raise IngestError(
                 "Weather receipt or raw input failed integrity verification"
@@ -170,6 +170,31 @@ def usable(row: dict, cutoff: datetime) -> bool:
         and row["temperature_c"] is not None
         and math.isfinite(row["temperature_c"])
     )
+
+
+def weather_record(name, row, location, issued, first_fetch, available) -> dict:
+    return {
+        "id": row["record_id"],
+        "title": f"ECMWF IFS temperature — {name} grid cell",
+        "source_id": "S01",
+        "source_url": row["source_url"],
+        "provenance": "model",
+        "kind": "weather",
+        "spatial_scope": "point",
+        "latitude": location["latitude"],
+        "longitude": location["longitude"],
+        "issued_at": utc(issued),
+        "valid_at": utc(row["valid_at"]),
+        "fetched_at": utc(first_fetch),
+        "available_at": utc(available),
+        "expires_at": None,
+        "severity": None,
+        "value": row["temperature_c"],
+        "unit": location["hourly_units"]["temperature_2m"],
+        "missing_reason": None,
+        "evidence": "forecast",
+        "location_note": "ECMWF IFS 0.25-degree model grid-cell centre; not a station observation.",
+    }
 
 
 def prepare_weather(
@@ -192,7 +217,7 @@ def prepare_weather(
     if not receipts:
         raise SourceUnavailable("S01: no complete validated weather receipt at this cutoff")
     selected = max(receipts, key=lambda receipt: (receipt[0], receipt[1]))
-    issued, _, forecast, rows, location, _ = selected
+    issued, _, forecast, rows, located, _ = selected
     cohort = [
         r
         for r in receipts
@@ -203,37 +228,27 @@ def prepare_weather(
     available = min(r[1] for r in cohort)
     if available < first_fetch:
         raise IngestError("Weather availability precedes retrieval")
-    row = next(
-        (row for row in sorted(rows, key=lambda r: r["valid_at"]) if usable(row, as_of)), None
-    )
-    if row is None or available > as_of:
+    if available > as_of:
         raise SourceUnavailable("S01: no quality-passed future temperature at this cutoff")
-    record = {
-        "id": row["record_id"],
-        "title": "ECMWF IFS temperature — Bengaluru grid cell",
-        "source_id": "S01",
-        "source_url": row["source_url"],
-        "provenance": "model",
-        "kind": "weather",
-        "spatial_scope": "point",
-        "latitude": location["latitude"],
-        "longitude": location["longitude"],
-        "issued_at": utc(issued),
-        "valid_at": utc(row["valid_at"]),
-        "fetched_at": utc(first_fetch),
-        "available_at": utc(available),
-        "expires_at": None,
-        "severity": None,
-        "value": row["temperature_c"],
-        "unit": location["hourly_units"]["temperature_2m"],
-        "missing_reason": None,
-        "evidence": "forecast",
-        "location_note": "ECMWF IFS 0.25-degree model grid-cell centre; not a station observation.",
-    }
+    records = []
+    for name, location in located:
+        cell = f"om_{MODEL}_{location['latitude']:.4f}N_{location['longitude']:.4f}E"
+        row = next(
+            (
+                row
+                for row in sorted(rows, key=lambda r: r["valid_at"])
+                if row["cell_id"] == cell and usable(row, as_of)
+            ),
+            None,
+        )
+        if row is not None:  # a district without a usable hour is left out, never filled
+            records.append(weather_record(name, row, location, issued, first_fetch, available))
+    if not records:
+        raise SourceUnavailable("S01: no quality-passed future temperature at this cutoff")
     manifest = canonical(
         {
             "schema_version": 1,
-            "mapping_version": "s01-prepared-v1",
+            "mapping_version": "s01-prepared-v2",
             "source_id": "S01",
             "state": "ka",
             "as_of": utc(as_of),
@@ -250,7 +265,7 @@ def prepare_weather(
             "release_id": f"S01-{revision[:20]}",
             "data_revision": revision,
             "as_of": utc(as_of),
-            "records": [record],
+            "records": records,
             "places": [],
             "facilities": [],
             "sources": [
@@ -259,8 +274,8 @@ def prepare_weather(
                     "status": "partial",
                     "last_success_at": utc(max(r[1] for r in cohort)),
                     "detail": (
-                        "Single-point Bengaluru model-grid temperature only; "
-                        "statewide coverage is unverified."
+                        f"Model-grid temperature at {len(records)} of {len(located)} "
+                        "points, one ECMWF IFS cell each; not a station observation."
                     ),
                 }
             ],

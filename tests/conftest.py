@@ -41,3 +41,12 @@ def web_check():
         return result.stdout
 
     return run
+
+
+@pytest.fixture(autouse=True)
+def _s01_bengaluru_profile(monkeypatch):
+    """D206: the recorded S01 fixtures are the genuine T009 single Bengaluru point, so tests pin
+    that profile; tests/sources/test_s01_districts.py covers the 30-district profile."""
+    import atlas.ingest.s01_collect as collect
+
+    monkeypatch.setattr(collect, "PROFILE", "bengaluru-ecmwf_ifs025-v1")
