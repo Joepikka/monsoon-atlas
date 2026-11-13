@@ -75,7 +75,7 @@ def test_model_dependencies_come_from_the_configs():
     deps = model_sources(ROOT)
     assert deps["M05"] == ["S08"] and deps["M07"] == ["S32", "S34", "S33"]
     assert deps["M16"] == ["S08"]  # only the source M16 reads, not the ones it records as unused
-    assert len(deps) == 20
+    assert deps["M21"] == ["S08"] and len(deps) == 21
 
 
 def test_missingness_and_schema_alerts():  # test input: counts and field maps

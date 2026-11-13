@@ -2,6 +2,63 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D214 — M21 rain-anomaly dataset, split and baselines, no fit (T280, 13 Nov 2026).**
+  Target: z-score of month t district rain against the 1981-2010 mean and sd for that district and
+  calendar month; tercile class secondary. Dry rule, fixed on 1981-2010 only: a district-month with
+  reference sd below 10 mm has no anomaly and is left out, never scored as 0 (61 of 360: Jan 28,
+  Feb 27, Dec 6), so the locked test has 1,794 rows, not the plan's 2,160. Train 1982-01 to 2014-11
+  (31-day purge), tune 2015-2017, calibrate 2018-2019, locked test 2020-2025 (not scored; gate
+  `models/gates/m21.json`, candidate not yet named). Tune MAE: climatology 0.907, persistence
+  1.114, last year 1.351, so climatology is the bar. Persistence falls back to 0 when t-1 is dry.
+  Hindcast (D39); 2025 provisional (D98). `tests/test_monitor.py` now counts 21 model configs.
+
+- **D215 — Karnataka hospital siting, illustrative (T286, 13 Nov 2026).**
+  `src/atlas/analysis/siting.py` and notebook 16: greedy maximal coverage over the S16 1 km cells
+  inside the S17 districts; a pick covers cells within 10 km (straight line) that are more than
+  10 km from every S18 OSM hospital (D195 distances). Greedy guarantees at least (1 - 1/e), about
+  63%, of the best possible coverage; it is not proven optimal. Ten sites bring 0.96 M of the
+  8.17 M people beyond 10 km within reach (11.8%); the people-weighted mean falls from 4.75 to
+  4.63 km. That is 2.1 times the 10 most populous uncovered cells (0.45 M) and one site in each
+  of the 10 worst districts (0.46 M), and above all 200 random draws (best 0.32 M); greedy also
+  wins at 5/10/20 sites and 5/10/15 km. Dropping 10% of OSM hospitals keeps only 3 to 7 of the
+  ten picks within 10 km, so the cells show gap areas, not sites. No district-headquarters
+  baseline (no place points in the local inputs). `access.py` was split into `load_inputs()` and
+  `build()` for reuse; notebook 11 outputs are byte-identical. Not a recommendation.
+
+- **D213 — District segmentation, Karnataka (T285, 13 Nov 2026).**
+  Six committed per-district features: ERA5 southwest-season rain level, variability and
+  northeast share (S02), the IMD Sen trend as an index, hospital mean km (D195) and log
+  population; robust-scaled, no pair above |r| 0.9. Rule fixed before looking: k-means for
+  k = 2..6, highest silhouette among k whose smallest segment has at least 3 districts; publish as
+  a descriptive typology only if the median bootstrap ARI over 1,000 resamples is at least 0.6.
+  Result: k = 2, silhouette 0.686, median ARI 1.0 (p10 0.83), Ward ARI 1.0, ARI 1.0 without
+  Bangalore, so published as a descriptive typology: 5 "wet, steady rain" districts (Dakshina
+  Kannada, Kodagu, Shimoga, Udupi, Uttara Kannada) and 25 near the state middle. k = 3..6 each
+  leave a one-district segment and are excluded. Limits: n = 30, ERA5 reanalysis at one point
+  per district, straight-line OSM distance; rain level drives the split. Outputs in
+  `reports/eda/14_ka_district_segments/`; no IMD mm is published.
+
+- **D211 — Karnataka ML showcase plan registered (13 Nov 2026).**
+  Owner, in chat: "plan using fable and do using opus for hard task and sonnet for simple task";
+  the goal is to show data, ML and neural-network skills on real Karnataka data. The plan is
+  `docs/plans/karnataka-ml-showcase.md` and its tasks T268 to T289 are in amendments A51. Five
+  deviations from plan section 5: (1) new models M21 and M22 and tasks T268 to T289 sit outside the
+  4 Nov plan and amendments v1; (2) M06 starts with onion in all Karnataka markets, not Kolar
+  tomato, until H16 confirms tomato's unit, and its training window may start before 2021 (decided
+  in T273 before any fit); (3) small networks train locally on CPU with the `dl` lock, which
+  `dl.in` describes as for export and inference checks; (4) S23 is enabled per commodity on a
+  second resource of the same catalogue, not the resource the original record describes; (5) a
+  new owner step H16 (read price units on AGMARKNET) is added. Honest-ML rules are unchanged.
+
+- **D210 — Model accuracy page leads with working models (13 Nov 2026).**
+  Owner, in chat: 18 of 20 cards said BLOCKED and read as weakness. The Model accuracy page
+  now opens with one framing line (a model counts as working only if it beats the strongest simple
+  baseline on held-out data; no labels means roadmap, never invented data), a state switch
+  (Karnataka default, Kerala, Delhi, All; Kerala and Delhi say their phase has not started), a hero
+  card for M05 with every number read from `dashboards.json`, and M16 labelled research-only.
+  Blocked models move, unchanged, into a collapsed "Roadmap: models waiting for data" list with
+  their reasons and report links; none is removed or scored. The approved table stays below.
+
 - **D209 — Redesign step 2: Overview landing page with a 3D district map (13 Nov 2026).**
   Owner, in chat: "Start step 2". A bare address now opens `Overview` (hero, four headline
   numbers, a 3D map, district panel, links to every analysis); the map workspace moves to
