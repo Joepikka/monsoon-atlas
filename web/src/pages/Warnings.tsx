@@ -50,7 +50,6 @@ export default function Warnings({ load = fetchArchive }: { load?: () => Promise
     .map(w => w.severity).filter((s): s is string => !!s))), [state.archive]);
   const archive = state.archive;
   return <main className="dashboard" aria-labelledby="archive-heading">
-    <p><a href="./">{t('ask.back')}</a></p>
     <h1 id="archive-heading">{t('archive.title')}</h1>
     <p>{t('archive.intro')}</p>
     <p className="notice">{t('archive.emergency')}</p>

@@ -7,7 +7,6 @@ const yesNo = (value: boolean): string => value ? t('dash.yes') : t('dash.no');
 export default function Quality() {
   const { anomaly_queue: queue, drift } = data;
   return <main className="dashboard" aria-labelledby="quality-heading">
-    <p><a href="./">{t('ask.back')}</a></p>
     <h1 id="quality-heading">{t('q.heading')}</h1>
     <p>{t('q.intro')}</p>
     <section aria-labelledby="source-health-heading">

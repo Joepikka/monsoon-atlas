@@ -112,7 +112,6 @@ export default function Findings() {
   const locked = m.mae.filter(r => r.period.startsWith('2020'));
   const months = data.spatial.moran;
   return <main className="dashboard findings" aria-labelledby="findings-heading">
-    <p><a href="./">Back to the map</a></p>
     <h1 id="findings-heading">Karnataka data findings</h1>
     <p>What the open data says about Karnataka, with the method and the limits of each result. Every number
       comes from a committed, tested analysis; nothing here is an official statement or an emergency service.

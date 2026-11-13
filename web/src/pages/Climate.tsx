@@ -41,13 +41,12 @@ export default function Climate({ load = () => Promise.resolve<unknown>(data) }:
   if (!p) return <main className="climate"><h1>{t('climate.title')}</h1>
     <p role="status">{state.error ?? t('climate.loading')}</p></main>;
   return <main className="climate" aria-labelledby="climate-heading">
-    <p><a href="./">{t('ask.back')}</a></p>
     <h1 id="climate-heading">{t('climate.title')}</h1>
     <p role="note">{t('climate.note')}</p>
 
     <h2>{t('climate.tracker_h', { year: p.tracker.year })}</h2>
     <p>{t('climate.tracker_intro', { reference: p.tracker.reference })}</p>
-    <table><thead><tr><th scope="col">{t('climate.col_date')}</th><th scope="col">{t('climate.col_pct')}</th><th scope="col">{t('climate.col_rank')}</th>
+    <table tabIndex={0}><thead><tr><th scope="col">{t('climate.col_date')}</th><th scope="col">{t('climate.col_pct')}</th><th scope="col">{t('climate.col_rank')}</th>
       <th scope="col">{t('climate.col_range')}</th></tr></thead>
       <tbody>{p.tracker.checkpoints.map(c => <tr key={c.date}><th scope="row">{c.date}</th>
         <td>{num(c.value_pct_of_median, '%')}</td><td>{num(c.rank_percentile)}</td>
@@ -56,13 +55,13 @@ export default function Climate({ load = () => Promise.resolve<unknown>(data) }:
       label: p.onset.inferred.label, inferred: p.onset.inferred.onset ?? t('climate.onset_notfound'), method: p.onset.inferred.method })}</p>
 
     <h2>{t('climate.trend_h')}</h2>
-    <table><thead><tr><th scope="col">{t('climate.col_area')}</th><th scope="col">{t('climate.col_years')}</th><th scope="col">{t('climate.col_trend')}</th></tr></thead>
+    <table tabIndex={0}><thead><tr><th scope="col">{t('climate.col_area')}</th><th scope="col">{t('climate.col_years')}</th><th scope="col">{t('climate.col_trend')}</th></tr></thead>
       <tbody>{p.trend.map(r => <tr key={r.area}><th scope="row">{r.area}</th>
         <td>{t('climate.years', { first: r.first_year, last: r.last_year, n: r.n_years })}</td><td>{r.slope_pct_per_decade}</td></tr>)}</tbody></table>
 
     <h2>{t('climate.proj_h', { label: t('climate.proj_label') })}</h2>
     <p>{t('climate.proj_intro', { baseline: p.projection.baseline })}</p>
-    {Object.entries(p.projection.by_point).map(([point, models]) => <table key={point}>
+    {Object.entries(p.projection.by_point).map(([point, models]) => <table key={point} tabIndex={0}>
       <caption>{point}</caption><thead><tr><th scope="col">{t('climate.col_model')}</th><th scope="col">{t('climate.col_change')}</th></tr></thead>
       <tbody>{Object.entries(models).map(([m, v]) => <tr key={m}><th scope="row">{m}</th><td>{v}</td></tr>)}</tbody></table>)}
 

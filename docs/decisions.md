@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D208 — Redesign step 1: one site shell (13 Nov 2026).**
+  Owner, in chat: the site "is not impressive"; approved a four-step redesign and "start step 1".
+  `web/src/components/SiteShell.tsx` gives every page the same dark header with grouped navigation
+  (Explore: Map, Monsoon tracker, Bus access, Warning archive; Analysis: Data findings, Model
+  accuracy, Climate; Tools: Ask, Wall display; Official warnings as an outlined button), the
+  current page marked with `aria-current`, a breadcrumb back to the map and a footer with the
+  emergency note and the GitHub link. The map keeps its workspace and uses the same header (its
+  h1 stays "Monsoon Atlas"); wall and widget modes stay bare. Shared page styles: system fonts
+  (no external font request), tabular numbers, carded tables, 44 px nav targets, visible amber
+  focus rings, reduced motion. On phones the nav is one scrollable row and wide tables scroll
+  inside themselves (focusable). The per-page "Back to the map" links are removed. All 87
+  Playwright tests (with axe WCAG 2.2 AA checks) and 144 unit tests pass.
+
 - **D207 — Accuracy table published with the site (13 Nov 2026).**
   Owner, in chat, reported pages that show nothing. Audit: `?page=accuracy` showed "Unexpected
   token '<'" because no deploy wrote `/data/ka/accuracy/latest.json`, so Pages served the HTML

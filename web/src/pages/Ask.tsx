@@ -47,7 +47,6 @@ export default function Ask({ fetcher }: { fetcher?: typeof fetch }) {
   function readAloud() { if (result) speak(speech(), result.answer, 'en-IN'); }
 
   return <main className="ask" aria-labelledby="ask-heading">
-    <p><a href="./">{t('ask.back')}</a></p>
     <h1 id="ask-heading">{t('ask.heading')}</h1>
     <p>{t('ask.intro')} <a href="https://sachet.ndma.gov.in/" target="_blank"
       rel="noopener noreferrer">{t('ask.official')} <span aria-hidden="true">↗</span></a>.</p>
