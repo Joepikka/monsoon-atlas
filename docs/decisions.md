@@ -2,6 +2,16 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D214 — M21 rain-anomaly dataset, split and baselines, no fit (T280, 13 Nov 2026).**
+  Target: z-score of month t district rain against the 1981-2010 mean and sd for that district and
+  calendar month; tercile class secondary. Dry rule, fixed on 1981-2010 only: a district-month with
+  reference sd below 10 mm has no anomaly and is left out, never scored as 0 (61 of 360: Jan 28,
+  Feb 27, Dec 6), so the locked test has 1,794 rows, not the plan's 2,160. Train 1982-01 to 2014-11
+  (31-day purge), tune 2015-2017, calibrate 2018-2019, locked test 2020-2025 (not scored; gate
+  `models/gates/m21.json`, candidate not yet named). Tune MAE: climatology 0.907, persistence
+  1.114, last year 1.351, so climatology is the bar. Persistence falls back to 0 when t-1 is dry.
+  Hindcast (D39); 2025 provisional (D98). `tests/test_monitor.py` now counts 21 model configs.
+
 - **D215 — Karnataka hospital siting, illustrative (T286, 13 Nov 2026).**
   `src/atlas/analysis/siting.py` and notebook 16: greedy maximal coverage over the S16 1 km cells
   inside the S17 districts; a pick covers cells within 10 km (straight line) that are more than
