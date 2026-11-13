@@ -2,6 +2,16 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D205 — District profile in the Place Lens (13 Nov 2026).**
+  Owner, in chat: after picking Bengaluru, "only really helpful is nearby". Cause: the live
+  release held one S01 forecast point (Bengaluru only) and no active warning, so Now, Risk,
+  Forecast and History were near empty for most districts. The Now tab now opens with a district
+  profile built from committed results: this year's southwest and northeast monsoon (% of the
+  2001-2025 ERA5 normal, from `/data/ka/monsoon.json`), hospital access (share over 10 km, mean km,
+  rank of 30), the 1981 rain trend (Sen slope, BH q) and, for Bangalore only, bus access. Each
+  fact links to its page; no new number. All 30 place names match the findings and tracker
+  names (checked). Next: S01 forecasts for all 30 district points.
+
 - **D204 — Merge when CI passes; deploy on every merge (13 Nov 2026).**
   Owner, in chat: chose standing approval to merge each PR once CI passes ("a"), then "turn on"
   auto-merge. `main` requires the two `ci` checks (`test` on Ubuntu and Windows; `web` runs only when site files change, so it cannot be required;
