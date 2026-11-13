@@ -74,6 +74,7 @@ def main() -> int:
     if (ROOT / "configs/static/ka/monsoon-normals.json").exists():  # D192
         out = str(data / "data/ka/monsoon.json")
         step([py, "-m", "atlas.analysis.district_monsoon", "current", "--out", out], ROOT, env)
+    step([py, "-m", "atlas.models.accuracy", "--publish", str(data)], ROOT, env)  # D207
     step([py, "-m", "atlas.rag.index"], ROOT, env)
     step([py, "-m", "atlas.rag.manifest", "--public", str(ask / "data/ask")], ROOT, env)
     worker.DEPLOY.write_text(

@@ -64,3 +64,18 @@ def test_h14_passes_only_with_the_owners_own_words_in_all_three_sections():
     assert owner_review_done(filled)
     short = filled.replace(words, "too short", 1)
     assert not owner_review_done(short)
+
+
+def test_accuracy_release_is_published_where_the_page_reads_it(tmp_path):
+    """D207: the Accuracy page failed with a JSON error because no release was deployed."""
+    import hashlib
+    import json
+
+    from atlas.models.accuracy import publish, release_json
+
+    pointer = json.loads(publish(tmp_path).read_text("utf-8"))
+    body = (tmp_path / pointer["manifest_url"].lstrip("/")).read_bytes()
+    assert pointer["approval"] == "approved" and pointer["state"] == "ka"
+    assert hashlib.sha256(body).hexdigest() == pointer["sha256"] and body.decode() == release_json()
+    flow = (ROOT / ".github/workflows/daily.yml").read_text("utf-8")
+    assert flow.index("atlas.models.accuracy --publish") < flow.index("cp -r")

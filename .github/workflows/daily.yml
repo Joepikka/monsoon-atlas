@@ -69,6 +69,7 @@ jobs:
             python -m atlas.analysis.district_monsoon current --out "$out" \
               || echo "::warning::district monsoon tracker not refreshed today"
           fi
+          python -m atlas.models.accuracy --publish "$RUNNER_TEMP/site"  # D207
           cp -r "$RUNNER_TEMP/site/data" "$RUNNER_TEMP/site/api" web/dist/
           cp -r "$RUNNER_TEMP/ask/data/ask" web/dist/data/
       - name: Load Ask chunks into D1 and deploy the site
