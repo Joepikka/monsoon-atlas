@@ -23,7 +23,7 @@ test.beforeEach(async ({ page }) => {
     manifest_url: `/data/ka/releases/${sha}.json`,
   } }));
   await page.route(`**/data/ka/releases/${sha}.json`, route => route.fulfill({ body, contentType: 'application/json' }));
-  await page.goto('/');
+  await page.goto('/?page=map');
 });
 
 test('layer toggles update the same map and list while official links remain', async ({ page }) => {

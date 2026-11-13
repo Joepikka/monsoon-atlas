@@ -5,7 +5,8 @@ import { t } from '../i18n';
 type Item = { id: string; label: string; href: string };
 export const NAV: { group: string; items: Item[] }[] = [
   { group: 'Explore', items: [
-    { id: 'map', label: 'Map', href: './' },
+    { id: 'overview', label: 'Overview', href: './' },
+    { id: 'map', label: 'Map', href: '?page=map' },
     { id: 'monsoon', label: t('nav.monsoon'), href: '?page=monsoon' },
     { id: 'transit', label: t('nav.transit'), href: '?page=transit' },
     { id: 'warnings', label: t('nav.warnings'), href: '?page=warnings' },
@@ -57,7 +58,7 @@ export function SiteFooter() {
 export default function SiteShell({ current, children }: { current: string; children: ReactNode }) {
   return <div className="site-page">
     <SiteHeader current={current} />
-    <nav className="site-crumb" aria-label="Breadcrumb"><a href="./">Back to the map</a></nav>
+    {current !== 'overview' && <nav className="site-crumb" aria-label="Breadcrumb"><a href="?page=map">Back to the map</a></nav>}
     {children}
     <SiteFooter />
   </div>;

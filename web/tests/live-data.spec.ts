@@ -80,7 +80,7 @@ test('the visible map and list poll by source, retain a partial empty feed, and 
   const active = page.getByRole('region', { name: 'Active source updates' });
   const alerts = active.getByTestId('current-S09');
   const forecast = active.getByTestId('current-S01');
-  await page.goto('/');
+  await page.goto('/?page=map');
   await expect(page.getByTestId('snapshot-time')).toHaveAttribute('datetime', release.as_of);
   await page.clock.runFor(100);
   await expect(alerts).toContainText('partial');
@@ -146,7 +146,7 @@ test('Place Lens, print and frozen links keep the daily warning and verified rel
     return route.fulfill({ json: source === 'S09' ? packet('S09', [area], capCutoff, capCheck)
       : packet('S01', [weather], weatherCutoff, weatherCheck) });
   });
-  await page.goto('/');
+  await page.goto('/?page=map');
   await expect(page.getByTestId('snapshot-time')).toHaveAttribute('datetime', release.as_of);
   await page.clock.runFor(100);
   await expect(page.getByTestId('record-list').getByText(area.location_note, { exact: true })).toBeVisible();
@@ -198,7 +198,7 @@ test('unreleased and invalid shared views never poll, and absent daily warning r
 
   const noRelease = (route: Route) => route.fulfill({ status: 404 });
   await page.route('**/data/ka/latest.json', noRelease);
-  await page.goto('/');
+  await page.goto('/?page=map');
   await expect(page.getByRole('status')).toContainText('No released snapshot yet');
   await page.clock.runFor(100);
   expect(calls).toEqual([]);

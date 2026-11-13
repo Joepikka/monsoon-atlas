@@ -76,7 +76,7 @@ test('an unavailable Worker shows labelled local results, and a tampered corpus 
 
 test('the map header links to the Ask page', async ({ page }) => {
   await page.route('https://tiles.openfreemap.org/**', route => route.abort());
-  await page.goto('/');
+  await page.goto('/?page=map');
   await page.getByRole('link', { name: 'Ask', exact: true }).click();
   await expect(page).toHaveURL(/page=ask/);
   await expect(page.getByRole('heading', { name: 'Ask the project documents' })).toBeVisible();

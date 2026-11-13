@@ -905,112 +905,6 @@ h1,h2,h3,p{
   }
 }
 
-/* T188: wall mode. State is always also written as text, never by colour alone. */
-.wall-mode { position: fixed; inset: 0; z-index: 50; overflow: auto; padding: 32px 48px; background: var(--paper); color: var(--teal); }
-.wall-head { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
-.wall-head h1 { font-size: 28px; font-weight: 600; }
-.wall-head button { min-height: 44px; padding: 8px 16px; font-size: 16px; color: var(--teal); background: var(--paper); border: 1px solid #a6baab; }
-.wall-state { margin: 24px 0 8px; font-size: 32px; font-weight: 700; }
-.wall-time { font-size: 56px; line-height: 1.2; font-weight: 600; }
-.wall-time span { font-size: 24px; font-weight: 400; color: var(--muted); }
-.wall-mode h2 { margin: 32px 0 12px; font-size: 22px; font-weight: 600; }
-.wall-sources { display: grid; gap: 16px; list-style: none; padding: 0; }
-.wall-source { display: flex; flex-direction: column; gap: 4px; padding: 16px; font-size: 22px; border: 2px solid #a6baab; }
-.wall-source small { font-size: 16px; color: var(--muted); }
-.wall-stale .wall-state, .wall-disconnected .wall-state, .wall-source-stale, .wall-source-disconnected, .wall-source-unavailable, .wall-source-partial { color: #744824; border-style: dashed; border-color: #8d512d; }
-.wall-stale .wall-time, .wall-disconnected .wall-time { color: #744824; }
-.wall-ticker .event-ticker p { font-size: 20px; }
-.wall-ticker .event-ticker button { min-height: 44px; font-size: 16px; }
-.wall-alerts-hidden, .wall-note { margin-top: 24px; font-size: 18px; }
-.dashboard{
-  max-width:1200px;
-  margin:0 auto;
-  padding:24px 16px
-}
-.dash-cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:12px;
-  list-style:none;
-  padding:0
-}
-.dash-card{
-  border:1px solid var(--line);
-  background:var(--paper);
-  padding:12px
-}
-.dash-state{
-  color:var(--muted);
-  font-size:13px
-}
-
-/* D188: Nearby facilities on the map (letter + colour, not colour alone) */
-.facility-pin {
-  display: grid; place-items: center;
-  width: 24px; height: 24px; border-radius: 4px;
-  color: white; font: 700 13px/1 system-ui, sans-serif;
-  border: 2px solid white; box-shadow: 0 1px 3px rgb(0 0 0 / 35%);
-}
-.facility-pin.hospital { background: #b3261e; }
-.facility-pin.police { background: #1f4e8c; }
-.facility-pin.fire_station { background: #b35c00; }
-
-/* D191: transit access page */
-.transit-map { height: 480px; margin: 12px 0; }
-.legend { display: flex; flex-wrap: wrap; gap: 14px; list-style: none; padding: 0; }
-.legend .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 2px; vertical-align: -2px; }
-.headline { font-size: 1.15rem; font-weight: 600; }
-.credit { font-size: .85rem; }
-
-/* D192: district monsoon tracker */
-.monsoon-table { border-collapse: collapse; width: 100%; margin-top: 12px; font-size: .92rem; }
-.monsoon-table th, .monsoon-table td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: left; }
-.band-chip { color: white; padding: 2px 8px; border-radius: 10px; white-space: nowrap; font-size: .82rem; }
-
-/* D194: opt-in bus-access squares */
-.layer-toggle { padding: 8px 14px; border-radius: 6px; border: 1px solid #216b54; background: white; color: #216b54; font-weight: 600; cursor: pointer; }
-.layer-toggle[aria-pressed=true] { background: #216b54; color: white; }
-.hint { font-size: .85rem; }
-
-/* D199: Karnataka data findings page */
-.findings { max-width: 1100px; line-height: 1.5; }
-.find-toc { display: flex; flex-wrap: wrap; gap: 8px 18px; list-style: none; padding: 0; }
-.find-section { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 8px; }
-.find-lead { max-width: 75ch; }
-.find-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 16px 0; }
-.find-kpis div { background: var(--paper); border: 1px solid var(--line); padding: 10px 12px; }
-.find-kpis dt { color: var(--muted); font-size: 13px; }
-.find-kpis dd { margin: 2px 0 0; font-size: 26px; font-weight: 700; color: var(--teal); }
-.find-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: 16px; align-items: start; }
-.find-figure { margin: 12px 0; background: var(--paper); border: 1px solid var(--line); padding: 12px; overflow-x: auto; }
-.find-figure figcaption { font-weight: 600; margin-bottom: 8px; }
-.find-chart { width: 100%; min-width: 540px; height: auto; display: block; } /* phones scroll the chart, not the page */
-.find-label { font-size: 12px; fill: #233c35; }
-.find-value { font-size: 11px; fill: var(--muted); }
-.find-axis { stroke: #8a948c; }
-.find-grid { stroke: var(--line); }
-.find-bar { fill: var(--teal); }
-.find-bar.weak { fill: #a9c4bc; }
-.find-line { stroke-width: 2.5; }
-.find-line.s0 { stroke: var(--teal); }
-.find-line.s1 { stroke: #a14a20; }
-.find-line.dashed { stroke-dasharray: 6 5; stroke-width: 1.5; }
-.find-legend { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
-.find-legend .key { display: inline-block; width: 22px; height: 0; border-top: 3px solid var(--teal); }
-.find-legend .key.s1 { border-top-color: #a14a20; }
-.find-legend .key.dashed { border-top-style: dashed; }
-.find-legend .key.bar { height: 12px; border: 0; background: var(--teal); }
-.find-legend .key.bar.weak { background: #a9c4bc; }
-.find-table { max-height: 320px; overflow: auto; }
-.find-table table { border-collapse: collapse; font-size: 13px; width: 100%; }
-.find-table th, .find-table td { border-bottom: 1px solid var(--line); padding: 4px 8px; text-align: left; }
-.find-gates { list-style: none; padding: 0; margin: 0; }
-.find-gates li { padding: 8px 0; border-bottom: 1px solid var(--line); }
-.find-gates .pass strong { color: #1f6b3a; }
-.find-gates .fail strong { color: #a1261e; }
-.find-limits { color: var(--muted); font-size: 14px; }
-.find-source { font-size: 13px; color: var(--muted); }
-
 /* D208: site shell (redesign step 1) */
 :root{
   --night:#0b2730;
@@ -1154,3 +1048,183 @@ h1,h2,h3,p{
   .site-page>main>table,.site-page .monsoon-table{ display:block; overflow-x:auto }
 }
 @media(prefers-reduced-motion:reduce){ .site-nav a{ transition:none } }
+
+/* D209: Overview landing page */
+.site-page>main.overview{ max-width:1200px; padding-top:0 }
+.ov-hero{
+  margin:0 -16px;
+  padding:42px 28px 34px;
+  color:#e8f3f1;
+  background:radial-gradient(circle at 85% 20%,#1f6672 0%,transparent 55%),linear-gradient(160deg,var(--night) 0%,var(--night-2) 100%);
+  border-radius:0 0 26px 26px
+}
+.site-page>main .ov-hero h1{ color:#fff; max-width:22ch; font-size:clamp(28px,4.4vw,48px) }
+.ov-eyebrow{ font-size:12px; letter-spacing:1.6px; text-transform:uppercase; color:var(--sky); margin:0 }
+.ov-lead{ max-width:68ch; color:#cfe2de; font-size:17px }
+.ov-kpis{ display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin:26px 0 0 }
+.ov-kpis div{ background:rgb(255 255 255 / 7%); border:1px solid rgb(255 255 255 / 14%); border-radius:var(--radius); padding:14px 16px }
+.ov-kpis dt{ font-size:12px; color:#a9c9c4 }
+.ov-kpis dd{ margin:4px 0 0; font-size:30px; font-weight:700; color:#fff; font-variant-numeric:tabular-nums }
+.ov-map-wrap{ margin-top:30px }
+.ov-map-head{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px }
+.site-page>main .ov-map-head h2{ margin:0 }
+.ov-switch{ display:flex; flex-wrap:wrap; gap:6px; background:#e6ece7; padding:4px; border-radius:999px }
+.site-page>main .ov-switch button{ background:transparent; color:var(--night); border-radius:999px; min-height:40px; padding:6px 14px; font-size:14px }
+.site-page>main .ov-switch button.on{ background:var(--night); color:#fff }
+.site-page>main .ov-switch button:focus-visible{ outline:3px solid var(--amber); outline-offset:2px }
+.ov-note{ color:#4e5d57; font-size:14px }
+.ov-grid{ display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:16px; align-items:stretch }
+.ov-map{ position:relative; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); background:#dfe7e4; min-height:520px }
+.ov-canvas{ height:520px }
+.ov-map-fail{ padding:24px }
+.ov-legend{
+  position:absolute; left:12px; bottom:12px; z-index:2;
+  display:grid; grid-template-columns:auto auto; gap:2px 10px; align-items:center;
+  background:rgb(255 255 255 / 92%); border-radius:10px; padding:8px 10px; font-size:12px
+}
+.ov-legend span:first-child{ grid-column:1 / -1; font-weight:600 }
+.ov-legend i{ grid-column:1 / -1; display:block; width:180px; height:10px; border-radius:6px }
+.ov-legend span:last-child{ text-align:right }
+.ov-panel{ background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px; display:flex; flex-direction:column; gap:10px }
+.ov-panel label{ display:flex; flex-direction:column; gap:4px; font-size:13px; color:#4e5d57 }
+.site-page>main .ov-panel h3{ margin:4px 0 0; font-size:22px; color:var(--night) }
+.ov-panel ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px }
+.ov-panel li{ display:flex; flex-direction:column; border-top:1px solid var(--line); padding-top:8px }
+.ov-panel li span{ font-size:12px; text-transform:uppercase; letter-spacing:.5px; color:#4e5d57 }
+.ov-panel li strong{ font-size:16px; color:var(--night) }
+.ov-panel li small{ font-size:12px; color:#4e5d57 }
+.ov-cta{ margin-top:auto; align-self:flex-start; background:var(--teal); color:#fff; text-decoration:none; padding:10px 16px; border-radius:10px; min-height:44px; display:inline-flex; align-items:center }
+.ov-cta:hover{ background:#0f4a42 }
+.ov-table{ margin-top:12px }
+.ov-table summary{ cursor:pointer; min-height:44px; display:flex; align-items:center }
+.ov-credit{ font-size:12px; color:#4e5d57 }
+.ov-cards{ list-style:none; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px }
+.ov-cards a{
+  display:flex; flex-direction:column; gap:6px; height:100%;
+  padding:18px; text-decoration:none; color:var(--ink);
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow);
+  transition:transform .2s,box-shadow .2s
+}
+.ov-cards a:hover{ transform:translateY(-2px); box-shadow:0 10px 24px rgb(16 40 36 / 12%) }
+.ov-cards strong{ color:var(--night); font-size:17px }
+.ov-cards span{ font-size:14px; color:#4e5d57 }
+@media(max-width:900px){
+  .ov-grid{ grid-template-columns:1fr }
+  .ov-map{ min-height:420px }
+  .ov-canvas{ height:420px }
+  .ov-hero{ padding:28px 16px 24px }
+}
+@media(prefers-reduced-motion:reduce){ .ov-cards a{ transition:none } .ov-cards a:hover{ transform:none } }
+.site-page>main .maplibregl-ctrl button{ background:#fff; color:#333; min-height:29px; padding:0; border-radius:0 }
+.site-page>main .maplibregl-ctrl button:hover{ background:#f0f0f0 }
+/* D209: on wide screens the map stays one screen tall and in view while the side panel scrolls,
+   so it opens centred on Karnataka instead of showing the top of a very tall panel. */
+@media(min-width:681px){
+  .map-panel{ position:sticky; top:0; align-self:start; height:100vh; min-height:560px }
+}
+
+/* T188: wall mode. State is always also written as text, never by colour alone. */
+.wall-mode { position: fixed; inset: 0; z-index: 50; overflow: auto; padding: 32px 48px; background: var(--paper); color: var(--teal); }
+.wall-head { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+.wall-head h1 { font-size: 28px; font-weight: 600; }
+.wall-head button { min-height: 44px; padding: 8px 16px; font-size: 16px; color: var(--teal); background: var(--paper); border: 1px solid #a6baab; }
+.wall-state { margin: 24px 0 8px; font-size: 32px; font-weight: 700; }
+.wall-time { font-size: 56px; line-height: 1.2; font-weight: 600; }
+.wall-time span { font-size: 24px; font-weight: 400; color: var(--muted); }
+.wall-mode h2 { margin: 32px 0 12px; font-size: 22px; font-weight: 600; }
+.wall-sources { display: grid; gap: 16px; list-style: none; padding: 0; }
+.wall-source { display: flex; flex-direction: column; gap: 4px; padding: 16px; font-size: 22px; border: 2px solid #a6baab; }
+.wall-source small { font-size: 16px; color: var(--muted); }
+.wall-stale .wall-state, .wall-disconnected .wall-state, .wall-source-stale, .wall-source-disconnected, .wall-source-unavailable, .wall-source-partial { color: #744824; border-style: dashed; border-color: #8d512d; }
+.wall-stale .wall-time, .wall-disconnected .wall-time { color: #744824; }
+.wall-ticker .event-ticker p { font-size: 20px; }
+.wall-ticker .event-ticker button { min-height: 44px; font-size: 16px; }
+.wall-alerts-hidden, .wall-note { margin-top: 24px; font-size: 18px; }
+.dashboard{
+  max-width:1200px;
+  margin:0 auto;
+  padding:24px 16px
+}
+.dash-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:12px;
+  list-style:none;
+  padding:0
+}
+.dash-card{
+  border:1px solid var(--line);
+  background:var(--paper);
+  padding:12px
+}
+.dash-state{
+  color:var(--muted);
+  font-size:13px
+}
+
+/* D188: Nearby facilities on the map (letter + colour, not colour alone) */
+.facility-pin {
+  display: grid; place-items: center;
+  width: 24px; height: 24px; border-radius: 4px;
+  color: white; font: 700 13px/1 system-ui, sans-serif;
+  border: 2px solid white; box-shadow: 0 1px 3px rgb(0 0 0 / 35%);
+}
+.facility-pin.hospital { background: #b3261e; }
+.facility-pin.police { background: #1f4e8c; }
+.facility-pin.fire_station { background: #b35c00; }
+
+/* D191: transit access page */
+.transit-map { height: 480px; margin: 12px 0; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; list-style: none; padding: 0; }
+.legend .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 2px; vertical-align: -2px; }
+.headline { font-size: 1.15rem; font-weight: 600; }
+.credit { font-size: .85rem; }
+
+/* D192: district monsoon tracker */
+.monsoon-table { border-collapse: collapse; width: 100%; margin-top: 12px; font-size: .92rem; }
+.monsoon-table th, .monsoon-table td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: left; }
+.band-chip { color: white; padding: 2px 8px; border-radius: 10px; white-space: nowrap; font-size: .82rem; }
+
+/* D194: opt-in bus-access squares */
+.layer-toggle { padding: 8px 14px; border-radius: 6px; border: 1px solid #216b54; background: white; color: #216b54; font-weight: 600; cursor: pointer; }
+.layer-toggle[aria-pressed=true] { background: #216b54; color: white; }
+.hint { font-size: .85rem; }
+
+/* D199: Karnataka data findings page */
+.findings { max-width: 1100px; line-height: 1.5; }
+.find-toc { display: flex; flex-wrap: wrap; gap: 8px 18px; list-style: none; padding: 0; }
+.find-section { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 8px; }
+.find-lead { max-width: 75ch; }
+.find-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 16px 0; }
+.find-kpis div { background: var(--paper); border: 1px solid var(--line); padding: 10px 12px; }
+.find-kpis dt { color: var(--muted); font-size: 13px; }
+.find-kpis dd { margin: 2px 0 0; font-size: 26px; font-weight: 700; color: var(--teal); }
+.find-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: 16px; align-items: start; }
+.find-figure { margin: 12px 0; background: var(--paper); border: 1px solid var(--line); padding: 12px; overflow-x: auto; }
+.find-figure figcaption { font-weight: 600; margin-bottom: 8px; }
+.find-chart { width: 100%; min-width: 540px; height: auto; display: block; } /* phones scroll the chart, not the page */
+.find-label { font-size: 12px; fill: #233c35; }
+.find-value { font-size: 11px; fill: var(--muted); }
+.find-axis { stroke: #8a948c; }
+.find-grid { stroke: var(--line); }
+.find-bar { fill: var(--teal); }
+.find-bar.weak { fill: #a9c4bc; }
+.find-line { stroke-width: 2.5; }
+.find-line.s0 { stroke: var(--teal); }
+.find-line.s1 { stroke: #a14a20; }
+.find-line.dashed { stroke-dasharray: 6 5; stroke-width: 1.5; }
+.find-legend { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.find-legend .key { display: inline-block; width: 22px; height: 0; border-top: 3px solid var(--teal); }
+.find-legend .key.s1 { border-top-color: #a14a20; }
+.find-legend .key.dashed { border-top-style: dashed; }
+.find-legend .key.bar { height: 12px; border: 0; background: var(--teal); }
+.find-legend .key.bar.weak { background: #a9c4bc; }
+.find-table { max-height: 320px; overflow: auto; }
+.find-table table { border-collapse: collapse; font-size: 13px; width: 100%; }
+.find-table th, .find-table td { border-bottom: 1px solid var(--line); padding: 4px 8px; text-align: left; }
+.find-gates { list-style: none; padding: 0; margin: 0; }
+.find-gates li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.find-gates .pass strong { color: #1f6b3a; }
+.find-gates .fail strong { color: #a1261e; }
+.find-limits { color: var(--muted); font-size: 14px; }
+.find-source { font-size: 13px; color: var(--muted); }

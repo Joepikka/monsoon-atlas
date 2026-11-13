@@ -13,6 +13,7 @@ import BusAccess from './pages/BusAccess';
 import Monsoon from './pages/Monsoon';
 import Findings from './pages/Findings';
 import SiteShell from './components/SiteShell';
+import Overview from './pages/Overview';
 import Widget from './pages/Widget';
 
 // T259: a query switch keeps the single-page build without a router dependency (D94).
@@ -23,7 +24,9 @@ const PAGES: Record<string, () => ReactElement> = {
   climate: () => <Climate />, wall: () => <Wall />, warnings: () => <Warnings />, transit: () => <BusAccess />, monsoon: () => <Monsoon />, findings: () => <Findings />,
 };
 const known = name !== null && Object.hasOwn(PAGES, name);
+// D209: a bare address opens the Overview; ?page=map and shared place links open the map.
 // D208: every page but the map, the wall display and the embeddable widget gets the site shell.
-const page = !known ? <App /> : name === 'wall' || name === 'widget' ? PAGES[name!]()
+const page = !window.location.search ? <SiteShell current="overview"><Overview /></SiteShell>
+  : !known ? <App /> : name === 'wall' || name === 'widget' ? PAGES[name!]()
   : <SiteShell current={name!}>{PAGES[name!]()}</SiteShell>;
 createRoot(document.getElementById('root')!).render(<StrictMode>{page}</StrictMode>);

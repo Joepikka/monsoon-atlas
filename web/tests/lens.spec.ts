@@ -22,7 +22,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('place tabs keep the boundary and report cutoff, without unavailable scores or facilities', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/?page=map');
   await page.getByLabel('Place', { exact: true }).selectOption({ label: 'Bangalore · district' });
   const lens = page.getByRole('region', { name: 'Place Lens' });
   await expect(lens.getByTestId('report-cutoff')).toHaveAttribute('datetime', release.as_of);
@@ -38,7 +38,7 @@ test('place tabs keep the boundary and report cutoff, without unavailable scores
 });
 
 test('shared URL reopens the frozen release even when latest is unavailable', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/?page=map');
   await page.getByLabel('Place', { exact: true }).selectOption({ label: 'Bangalore · district' });
   const link = page.getByRole('link', { name: 'Open frozen report' });
   const href = await link.getAttribute('href');
@@ -50,7 +50,7 @@ test('shared URL reopens the frozen release even when latest is unavailable', as
 });
 
 test('print view contains all report sections, source attribution and original warning text', async ({ page }, testInfo) => {
-  await page.goto('/');
+  await page.goto('/?page=map');
   await page.getByLabel('Place', { exact: true }).selectOption({ label: 'Bangalore · district' });
   await page.emulateMedia({ media: 'print' });
   const report = page.getByTestId('print-report');
@@ -70,7 +70,7 @@ test('an incomplete shared identity never silently substitutes the latest report
 });
 
 test('place tabs support keyboard navigation and accessible report content', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/?page=map');
   await page.getByLabel('Place', { exact: true }).selectOption({ label: 'Bangalore · district' });
   const lens = page.getByRole('region', { name: 'Place Lens' });
   await lens.getByRole('tab', { name: 'Now', exact: true }).focus();
@@ -89,7 +89,7 @@ test('Nearby lists real S18 facilities with kind, distance and an OSM link, no o
   await page.clock.setFixedTime(new Date('2026-11-12T06:00:00Z'));
   await page.route('**/data/ka/latest.json', route => route.fulfill({ json: current }));
   await page.route(`**/data/ka/releases/${digest}.json`, route => route.fulfill({ body: withFacilities, contentType: 'application/json' }));
-  await page.goto('/');
+  await page.goto('/?page=map');
   await page.getByLabel('Place', { exact: true }).selectOption({ label: 'Bangalore · district' });
   const lens = page.getByRole('region', { name: 'Place Lens' });
   await lens.getByRole('tab', { name: 'Nearby', exact: true }).click();
