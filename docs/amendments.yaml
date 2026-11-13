@@ -1,6 +1,268 @@
 amendments_version: 1
 date: 2026-11-05
 new_tasks:
+  - id: T289
+    title: "Showcase case studies and interview map"
+    phase: P2
+    state: KA
+    depends_on: [T288]
+    files: [reports/models/m06-case-study.md, reports/models/m21-case-study.md, reports/models/m22-case-study.md, docs/portfolio/interview-map.md, tests/test_case_studies.py]
+    steps:
+      - "Write case studies from the template"
+      - "Write a one-page interview map (skill, item, number, limit)"
+      - "Show owner review (H14) as pending"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_case_studies.py -q'
+  - id: T288
+    title: "Leaderboard, Accuracy-page rows and Power BI pages"
+    phase: P2
+    state: KA
+    depends_on: [T287]
+    files: [src/atlas/models/accuracy.py, powerbi/, docs/findings/, tests/test_leaderboard.py]
+    steps:
+      - "Export the leaderboard with an MLflow run ID for every published number"
+      - "Add Accuracy-page rows and findings sections"
+      - "Add Power BI pages Market data, Price spike, Forecast lab, Segments and Model lab; validate PBIR JSON"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_leaderboard.py -q'
+  - id: T287
+    title: "Explainability report"
+    phase: P2
+    state: KA
+    depends_on: [T275, T278, T284]
+    files: [reports/models/explain.md, src/atlas/models/explain.py, tests/models/test_explain.py]
+    steps:
+      - "Compute grouped importances for each of M06, M21, M22 that exists"
+      - "Add two local explanations"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_explain.py -q'
+  - id: T286
+    title: "Hospital siting analysis"
+    phase: P2
+    state: KA
+    depends_on: [T268]
+    files: [notebooks/16_hospital_siting.ipynb, reports/eda/16_hospital_siting/summary.json, tests/test_siting.py]
+    steps:
+      - "Run greedy siting with baselines and a sensitivity run"
+      - "Check greedy gain is at least each baseline's"
+      - "Make summary.json reproducible from input hashes"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_siting.py -q'
+  - id: T285
+    title: "District segmentation"
+    phase: P2
+    state: KA
+    depends_on: [T268]
+    files: [notebooks/14_district_segments.ipynb, reports/eda/14_district_segments/summary.json, tests/test_segments.py]
+    steps:
+      - "Cluster districts and test stability by bootstrap"
+      - "Publish only if bootstrap ARI is at least 0.6"
+      - "Record k, silhouette, ARI and the publish decision"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_segments.py -q'
+  - id: T284
+    title: "M21 locked test with conformal intervals, report and card"
+    phase: P2
+    state: KA
+    depends_on: [T282, T283]
+    files: [reports/models/m21.md, models/registry/m21.json, docs/model_cards/m21.md, tests/models/test_m21_test.py]
+    steps:
+      - "Open the test once for the named candidate; score the others as comparisons"
+      - "Add conformal intervals, shown only if coverage is 75-85%"
+      - "Write report and card"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_m21_test.py -q'
+  - id: T283
+    title: "M21 graph network and MLP, tune only"
+    phase: P2
+    state: KA
+    depends_on: [T281]
+    files: [src/atlas/models/nn_graph.py, tests/models/test_nn_graph.py]
+    steps:
+      - "Train GCN-GRU and MLP with five seeds"
+      - "Run the identity-matrix ablation"
+      - "Name the M21 candidate in the gate file"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_nn_graph.py -q'
+  - id: T282
+    title: "Spatial lag features and spatial checks"
+    phase: P2
+    state: KA
+    depends_on: [T281]
+    files: [notebooks/15_spatial_ml.ipynb, src/atlas/models/spatial.py, tests/models/test_spatial.py]
+    steps:
+      - "Add spatial lag features and a leave-one-region-out check"
+      - "Compute Moran's I of tune residuals before and after"
+      - "Run an M05 spatial challenger on pre-2020 rolling origins, research-only"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_spatial.py -q'
+  - id: T281
+    title: "M21 SARIMA/ETS, ridge and LightGBM on train and tune"
+    phase: P2
+    state: KA
+    depends_on: [T280]
+    files: [src/atlas/models/m21_fit.py, tests/models/test_m21_fit.py]
+    steps:
+      - "Fit the three model families on train/tune only"
+      - "Log MLflow runs"
+      - "Report a tune table with bootstrap intervals"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_m21_fit.py -q'
+  - id: T280
+    title: "M21 rain-anomaly dataset, data gate and baselines"
+    phase: P2
+    state: KA
+    depends_on: [T268]
+    files: [src/atlas/models/m21_data.py, configs/models/m21.yaml, models/gates/m21.json, tests/models/test_m21_data.py]
+    steps:
+      - "Build the dataset from the M05 monthly table with a target rule for dry months"
+      - "Write split manifest and gate JSON with hashes"
+      - "Score climatology, persistence and last-year baselines on tune years"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_m21_data.py -q'
+  - id: T279
+    title: "Rain-shock price event study"
+    phase: P2
+    state: KA
+    depends_on: [T271]
+    files: [notebooks/06_rain_price.ipynb, reports/eda/06_rain_price/summary.json, tests/test_rain_price.py]
+    steps:
+      - "Pre-write the event definition"
+      - "Estimate effects with pre-trend and placebo checks"
+      - "Label the result in summary.json"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_rain_price.py -q'
+  - id: T278
+    title: "M22 locked test with intervals, report and card"
+    phase: P2
+    state: KA
+    depends_on: [T277]
+    files: [reports/models/m22.md, models/registry/m22.json, docs/model_cards/m22.md, tests/models/test_m22_test.py]
+    steps:
+      - "Open the test once for the named candidate"
+      - "Report MASE, pinball loss and interval coverage against the 75-85% gate"
+      - "Write report and card"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_m22_test.py -q'
+  - id: T277
+    title: "M22 global GRU or TCN, tune only"
+    phase: P2
+    state: KA
+    depends_on: [T276]
+    files: [src/atlas/models/nn_seq.py, tests/models/test_nn_seq.py]
+    steps:
+      - "Train a global GRU/TCN with five seeds on CPU"
+      - "Log loss curves to MLflow and report seed spread"
+      - "Name the candidate; do not read the test"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_nn_seq.py -q'
+  - id: T276
+    title: "M22 weekly dataset, split manifest and baselines"
+    phase: P2
+    state: KA
+    depends_on: [T271]
+    files: [src/atlas/models/m22_data.py, configs/models/m22.yaml, models/gates/m22.json, tests/models/test_m22_data.py]
+    steps:
+      - "Build the weekly dataset and split manifest"
+      - "Fit ETS and LightGBM quantile on train/tune"
+      - "Report a tune-set MASE table"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_m22_data.py -q'
+  - id: T275
+    title: "M06 locked test, report and card"
+    phase: P2
+    state: KA
+    depends_on: [T274]
+    files: [reports/models/m06.md, models/registry/m06.json, docs/model_cards/m06.md, tests/models/test_m06_test.py]
+    steps:
+      - "Open the test once for the named candidate"
+      - "Write report, card and registry record"
+      - "Ask the owner for approval only if eligible"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_m06_test.py -q'
+  - id: T274
+    title: "M06 baselines, logistic and LightGBM on train and tune"
+    phase: P2
+    state: KA
+    depends_on: [T273]
+    files: [src/atlas/models/m06_fit.py, reports/models/m06.md, tests/models/test_m06_fit.py]
+    steps:
+      - "Fit baselines, logistic and LightGBM on train/tune only"
+      - "Calibrate on its own window and log MLflow runs"
+      - "Name the candidate in the gate file before any test read"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_m06_fit.py -q'
+  - id: T273
+    title: "M06 labels, features, split manifest and data gate"
+    phase: P2
+    state: KA
+    depends_on: [T271]
+    files: [src/atlas/models/m06_features.py, configs/models/m06.yaml, models/gates/m06.json, tests/models/test_m06_features.py]
+    steps:
+      - "Build labels and issue-time features; no fit"
+      - "Write the split manifest and gate JSON with dataset and split hashes"
+      - "Mutation test: changing a future row never changes an earlier feature"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_m06_features.py -q'
+  - id: T272
+    title: "SQL insights q13 to q18 and price EDA"
+    phase: P2
+    state: KA
+    depends_on: [T271]
+    files: [sql/insights/, reports/sql_insights.md, src/atlas/analysis/sql_insights.py, tests/test_sql_insights.py]
+    steps:
+      - "Add queries q13 to q18 on seasonality, volatility and coverage"
+      - "Write the findings section and Power BI CSVs"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_sql_insights.py -q'
+  - id: T271
+    title: "Mandi price cleaning, crosswalk and quarantine"
+    phase: P2
+    state: KA
+    depends_on: [T270]
+    files: [src/atlas/analysis/mandi_clean.py, notebooks/12_ka_mandi_quality.ipynb, reports/eda/12_ka_mandi_quality/summary.json, tests/test_mandi_clean.py]
+    steps:
+      - "Apply cleaning rules with reason codes and a district and market crosswalk"
+      - "Quarantine rejected rows so clean plus quarantined equals raw"
+      - "Write notebook 12 and summary.json with every rule count"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_mandi_clean.py -q'
+  - id: T270
+    title: "Resumable Karnataka mandi price backfill"
+    phase: P2
+    state: KA
+    depends_on: [T269]
+    files: [src/atlas/sources/s23_history.py, data/raw/S23/, data/clean/S23/, tests/sources/test_s23_history.py]
+    steps:
+      - "Download history for confirmed commodities into a raw ledger"
+      - "Write clean parquet per commodity"
+      - "Make a re-run download nothing"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/sources/test_s23_history.py -q'
+  - id: T269
+    title: "S23 verify re-run for the second price resource"
+    phase: P2
+    state: KA
+    depends_on: [T268]
+    files: [configs/sources/s23.yaml, tests/fixtures/s23/manifest.json, docs/sources/s23.md, tests/test_discovery.py, tests/models/test_m06_features.py]
+    steps:
+      - "Record evidence: page-size limit, safe request rate, Karnataka rows per commodity and year"
+      - "Map units (onion from D201; others stay disabled until H16) and estimate publication delay against the daily resource"
+      - "Enable S23 for confirmed commodities only; update the blocked-branch M06 and price-EDA tests"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_discovery.py tests/sources tests/models/test_m06_features.py -q'
+  - id: T268
+    title: "Register the Karnataka ML showcase plan"
+    phase: P2
+    state: KA
+    depends_on: []
+    files: [docs/amendments.md, docs/amendments.yaml, docs/decisions.md, docs/plans/karnataka-ml-showcase.md, docs/releases/final.md, tests/test_final.py]
+    steps:
+      - "Add A51, tasks T268 to T289 and decision D211"
+      - "Add owner step H16"
+      - "Planned model definitions configs/models/m21.yaml and m22.yaml (enabled false) are created by the first task that fits M21 or M22"
+    acceptance:
+      command: '.\.venv\Scripts\python -m pytest tests/test_final.py tests/test_case_studies.py -q'
   - id: T267
     parent: T130
     title: "Vertical datum evidence for KSEB dams"

@@ -2,6 +2,18 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D211 — Karnataka ML showcase plan registered (13 Nov 2026).**
+  Owner, in chat: "plan using fable and do using opus for hard task and sonnet for simple task";
+  the goal is to show data, ML and neural-network skills on real Karnataka data. The plan is
+  `docs/plans/karnataka-ml-showcase.md` and its tasks T268 to T289 are in amendments A51. Five
+  deviations from plan section 5: (1) new models M21 and M22 and tasks T268 to T289 sit outside the
+  4 Nov plan and amendments v1; (2) M06 starts with onion in all Karnataka markets, not Kolar
+  tomato, until H16 confirms tomato's unit, and its training window may start before 2021 (decided
+  in T273 before any fit); (3) small networks train locally on CPU with the `dl` lock, which
+  `dl.in` describes as for export and inference checks; (4) S23 is enabled per commodity on a
+  second resource of the same catalogue, not the resource the original record describes; (5) a
+  new owner step H16 (read price units on AGMARKNET) is added. Honest-ML rules are unchanged.
+
 - **D210 — Model accuracy page leads with working models (13 Nov 2026).**
   Owner, in chat: 18 of 20 cards said BLOCKED and read as weakness. The Model accuracy page
   now opens with one framing line (a model counts as working only if it beats the strongest simple
