@@ -2,6 +2,34 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D209 — Redesign step 2: Overview landing page with a 3D district map (13 Nov 2026).**
+  Owner, in chat: "Start step 2". A bare address now opens `Overview` (hero, four headline
+  numbers, a 3D map, district panel, links to every analysis); the map workspace moves to
+  `?page=map`, and shared place links (which carry query parameters) still open the map. The 3D
+  map uses MapLibre `fill-extrusion` (no new dependency) over a plain background with no basemap
+  tiles, so no third-party tile failure can blank it and no international border is drawn. The
+  30 district outlines are `web/src/ka-districts.json` (61 KB), written by
+  `scripts/ka_districts.py` from the local S17 geoBoundaries file (ODbL, simplified about 1 km,
+  credited under the map). Measures: southwest monsoon % of the ERA5 normal, % of people over
+  10 km from a hospital, rain trend per decade (significant districts outlined); a district
+  without a value stays grey, never zero. The district panel reuses the Place Lens profile, and a
+  ranked table is the accessible fallback. Also: on wide screens the map panel is now one screen
+  tall and sticky, so `?page=map` opens on Karnataka instead of the top of a tall panel. Browser
+  tests now open `/?page=map` for the map; a new Overview test runs axe WCAG 2.2 AA.
+
+- **D208 — Redesign step 1: one site shell (13 Nov 2026).**
+  Owner, in chat: the site "is not impressive"; approved a four-step redesign and "start step 1".
+  `web/src/components/SiteShell.tsx` gives every page the same dark header with grouped navigation
+  (Explore: Map, Monsoon tracker, Bus access, Warning archive; Analysis: Data findings, Model
+  accuracy, Climate; Tools: Ask, Wall display; Official warnings as an outlined button), the
+  current page marked with `aria-current`, a breadcrumb back to the map and a footer with the
+  emergency note and the GitHub link. The map keeps its workspace and uses the same header (its
+  h1 stays "Monsoon Atlas"); wall and widget modes stay bare. Shared page styles: system fonts
+  (no external font request), tabular numbers, carded tables, 44 px nav targets, visible amber
+  focus rings, reduced motion. On phones the nav is one scrollable row and wide tables scroll
+  inside themselves (focusable). The per-page "Back to the map" links are removed. All 87
+  Playwright tests (with axe WCAG 2.2 AA checks) and 144 unit tests pass.
+
 - **D207 — Accuracy table published with the site (13 Nov 2026).**
   Owner, in chat, reported pages that show nothing. Audit: `?page=accuracy` showed "Unexpected
   token '<'" because no deploy wrote `/data/ka/accuracy/latest.json`, so Pages served the HTML

@@ -38,7 +38,6 @@ export default function Monsoon({ load = fetchTracker }: { load?: () => Promise<
   useEffect(() => { load().then(v => setTracker(parseTracker(v)), () => setFailed(true)); }, [load]);
   const rows = useMemo(() => tracker ? seasonRows(tracker, season) : [], [tracker, season]);
   return <main className="dashboard" aria-labelledby="monsoon-heading">
-    <p><a href="./">{t('ask.back')}</a></p>
     <h1 id="monsoon-heading">{t('monsoon.title')}</h1>
     <p>{t('monsoon.intro')}</p>
     {failed && <p role="alert">{t('monsoon.unavailable')}</p>}
@@ -46,7 +45,7 @@ export default function Monsoon({ load = fetchTracker }: { load?: () => Promise<
       <p className="notice">{tracker.label}. {t('monsoon.reference', { reference: tracker.reference })}</p>
       <label>{t('monsoon.season')} <select value={season} onChange={e => setSeason(e.target.value as MonsoonRow['season'])}>
         <option value="southwest">{t('monsoon.southwest')}</option><option value="northeast">{t('monsoon.northeast')}</option></select></label>
-      {rows.length ? <table className="monsoon-table"><thead><tr>
+      {rows.length ? <table className="monsoon-table" tabIndex={0} aria-label={t('monsoon.district')}><thead><tr>
         <th scope="col">{t('monsoon.district')}</th><th scope="col">{t('monsoon.through')}</th>
         <th scope="col">{t('monsoon.rain')}</th><th scope="col">{t('monsoon.median')}</th>
         <th scope="col">{t('monsoon.pct')}</th><th scope="col">{t('monsoon.rank')}</th><th scope="col">{t('monsoon.status')}</th>

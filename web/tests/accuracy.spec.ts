@@ -48,7 +48,7 @@ test('a tampered or unapproved release is refused', async ({ page }) => {
 
 test('the map header links to the accuracy page', async ({ page }) => {
   await page.route('https://tiles.openfreemap.org/**', route => route.abort());
-  await page.goto('/');
+  await page.goto('/?page=map');
   await page.getByRole('link', { name: 'Model accuracy' }).click();
   await expect(page).toHaveURL(/page=accuracy/);
   await expect(page.getByRole('heading', { name: 'Model accuracy' })).toBeVisible();

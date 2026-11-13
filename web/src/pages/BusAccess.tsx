@@ -78,7 +78,6 @@ export default function BusAccess({ load = loadCoverage }: { load?: () => Promis
   }, [shown, ready]);
   const pct = (v: number) => `${(v * 100).toFixed(1)}%`;
   return <main className="dashboard" aria-labelledby="transit-heading">
-    <p><a href="./">{t('ask.back')}</a></p>
     <h1 id="transit-heading">{t('transit.title')}</h1>
     {data && <>
       <p className="headline">{t('transit.headline', { share: pct(data.population.covered_share),

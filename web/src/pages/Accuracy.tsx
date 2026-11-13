@@ -30,7 +30,6 @@ export default function Accuracy({ fetcher }: { fetcher?: typeof fetch }) {
   useEffect(() => { loadAccuracy(fetcher).then(setView); }, [fetcher]);
 
   return <main className="accuracy" aria-labelledby="accuracy-heading">
-    <p><a href="./">Back to the map</a></p>
     <h1 id="accuracy-heading">Model accuracy</h1>
     <p>Each model is compared with its strongest simple baseline on held-out test dates.
       Unavailable means no evaluated value exists; it is not zero.</p>

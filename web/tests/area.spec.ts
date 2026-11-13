@@ -12,7 +12,7 @@ test('an area-only official warning stays readable without a fake map marker or 
   await page.route('https://tiles.openfreemap.org/**',route=>route.abort());
   await page.route('**/data/ka/latest.json',route=>route.fulfill({json:{schema_version:1,state:'ka',approval:'approved',sha256:hash,manifest_url:`/data/ka/releases/${hash}.json`}}));
   await page.route(`**/data/ka/releases/${hash}.json`,route=>route.fulfill({body,contentType:'application/json'}));
-  await page.goto('/');
+  await page.goto('/?page=map');
   const list=page.getByTestId('record-list');
   await expect(list.getByText(area.warning_text,{exact:true})).toBeVisible();
   await expect(list.getByText(area.area_text,{exact:true})).toBeVisible();

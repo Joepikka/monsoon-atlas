@@ -4,7 +4,6 @@ import { t } from '../i18n';
 
 export default function Analysis() {
   return <main className="dashboard" aria-labelledby="analysis-heading">
-    <p><a href="./">{t('ask.back')}</a></p>
     <h1 id="analysis-heading">{t('an.heading')}</h1>
     <p>{t('an.intro')}</p>
     <ul className="dash-cards">{data.analyses.map(report => <li key={report.link} className="dash-card" data-testid={`analysis-${report.link}`}>

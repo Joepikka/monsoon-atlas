@@ -18,12 +18,12 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('the real server shows an honest empty state before any release exists', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/?page=map');
   await expect(page.getByText('No released snapshot yet')).toBeVisible();
 });
 
 test('the basemap canvas has usable dimensions', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/?page=map');
   const canvas = page.locator('.maplibregl-canvas');
   await expect(canvas).toBeAttached();
   const bounds = await canvas.boundingBox();
@@ -43,7 +43,7 @@ test('a genuine CAP sample has matching list and map entries with original prove
     ...pointer, sha256: sha, manifest_url: `/data/ka/releases/${sha}.json`,
   } }));
   await page.route(`**/data/ka/releases/${sha}.json`, route => route.fulfill({ body: sample, contentType: 'application/json' }));
-  await page.goto('/');
+  await page.goto('/?page=map');
   const list = page.getByTestId('record-list');
   await expect(list.getByRole('button', { name: record.title, exact: true })).toBeVisible();
   await expect(list.getByText('official', { exact: true })).toBeVisible();
@@ -55,7 +55,7 @@ test('a genuine CAP sample has matching list and map entries with original prove
 
 test('missing data is explicit, controls work, layout fits and keyboard access remains', async ({ page }) => {
   await page.route('**/data/ka/latest.json', route => route.fulfill({ status: 404 }));
-  await page.goto('/');
+  await page.goto('/?page=map');
   await expect(page.getByRole('heading', { name: 'Monsoon Atlas' })).toBeVisible();
   await expect(page.getByText('No released snapshot yet')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Official warnings' })).toHaveAttribute('href', 'https://sachet.ndma.gov.in/');
@@ -74,7 +74,7 @@ test('failed refresh retains the exact dated last-good snapshot', async ({ page 
     return failNext ? route.abort() : route.fulfill({ json: pointer });
   });
   await page.route(`**/data/ka/releases/${digest}.json`, route => route.fulfill({ body, contentType: 'application/json' }));
-  await page.goto('/');
+  await page.goto('/?page=map');
   await expect(page.getByTestId('snapshot-time')).toHaveAttribute('datetime', release.as_of);
   failNext = true;
   await page.getByRole('button', { name: 'Refresh data' }).click();
@@ -90,7 +90,7 @@ test('loading and unapproved data have distinct visible states', async ({ page }
     await held;
     await route.fulfill({ json: { ...pointer, approval: 'pending' } });
   });
-  await page.goto('/');
+  await page.goto('/?page=map');
   await expect(page.getByText('Loading snapshot')).toBeVisible();
   finish();
   await expect(page.getByText('Snapshot unavailable')).toBeVisible();

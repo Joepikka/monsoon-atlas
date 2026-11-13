@@ -885,7 +885,7 @@ h1,h2,h3,p{
 @media print {
   @page { size: A4; margin: 18mm; }
   body { background: white; color: #202c27; }
-  .masthead, .toolbar, .event-ticker, .map-panel, .site-footer, .skip-link, .record-panel> :not(.print-report) { display: none !important; }
+  .masthead, .site-header, .toolbar, .event-ticker, .map-panel, .site-footer, .skip-link, .record-panel> :not(.print-report) { display: none !important; }
   .atlas, .workspace, .record-panel { display: block; margin: 0; border: 0; box-shadow: none; }
   .print-report { display: block; font-size: 10pt; line-height: 1.6; }
   .print-report h1 { font-size: 21pt; margin-bottom: 12pt; }
@@ -903,6 +903,224 @@ h1,h2,h3,p{
   .event-ticker p {
     font-size: 10px;
   }
+}
+
+/* D208: site shell (redesign step 1) */
+:root{
+  --night:#0b2730;
+  --night-2:#12404a;
+  --sky:#8fd3e8;
+  --amber:#f2b84b;
+  --ink:#1d2f2a;
+  --radius:14px;
+  --shadow:0 1px 2px rgb(16 40 36 / 6%),0 6px 18px rgb(16 40 36 / 7%)
+}
+.site-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:14px 28px;
+  color:#e8f3f1;
+  background:linear-gradient(120deg,var(--night) 0%,var(--night-2) 70%,#1b5560 100%);
+  border-bottom:1px solid #0a1f25
+}
+.site-brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:inherit;
+  text-decoration:none;
+  flex-shrink:0
+}
+.site-mark{ color:var(--sky) }
+.site-brand strong,.site-brand h1{ display:block; margin:0; font-size:20px; font-weight:700; letter-spacing:-.4px }
+.site-brand small{ display:block; font-size:11px; letter-spacing:.6px; color:#a9c9c4 }
+.site-nav{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:4px 18px
+}
+.site-nav-group{ display:flex; align-items:center; gap:4px 14px; flex-wrap:wrap }
+.site-nav-label{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  color:#7fa7a1
+}
+.site-nav a{
+  color:#e8f3f1;
+  font-size:14px;
+  text-decoration:none;
+  padding:8px 2px;
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  border-bottom:2px solid transparent;
+  transition:border-color .2s,color .2s
+}
+.site-nav a:hover{ color:#fff; border-bottom-color:#5d8f88 }
+.site-nav a[aria-current="page"]{ color:#fff; border-bottom-color:var(--sky); font-weight:600 }
+.site-nav a:focus-visible,.site-brand:focus-visible{ outline:3px solid var(--amber); outline-offset:3px }
+.site-nav .site-official{
+  border:1px solid var(--amber);
+  border-radius:999px;
+  padding:6px 14px;
+  min-height:36px;
+  color:var(--amber);
+  font-weight:600
+}
+.site-nav .site-official:hover{ background:var(--amber); color:var(--night) }
+.site-crumb{ width:100%; max-width:1100px; margin:14px auto 0; padding:0 16px; font-size:14px; text-align:left }
+.site-page{ min-height:100vh; display:flex; flex-direction:column; background:#f4f2eb }
+.site-page>main{
+  width:100%;
+  max-width:1100px;
+  margin:0 auto;
+  padding:12px 16px 40px;
+  flex:1;
+  line-height:1.55;
+  color:var(--ink)
+}
+.site-page>main h1{ font-size:clamp(26px,3.4vw,36px); letter-spacing:-.6px; line-height:1.15; margin:8px 0 10px; color:var(--night) }
+.site-page>main h2{ font-size:21px; letter-spacing:-.3px; margin:28px 0 8px; color:var(--night) }
+.site-page>main>p{ max-width:78ch }
+.site-page>main table{
+  border-collapse:collapse;
+  width:100%;
+  margin:12px 0 20px;
+  font-size:14px;
+  font-variant-numeric:tabular-nums;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow)
+}
+.site-page>main th,.site-page>main td{ padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top }
+.site-page>main thead th{ background:#e9efe9; font-size:12px; letter-spacing:.4px; text-transform:uppercase; color:#46564f }
+.site-page>main tbody tr:hover{ background:#f6faf6 }
+.site-page>main select,.site-page>main input,.site-page>main textarea{
+  font:inherit;
+  padding:8px 10px;
+  border:1px solid #b9c7bf;
+  border-radius:10px;
+  background:#fff;
+  min-height:40px
+}
+.site-page>main button{
+  font:inherit;
+  min-height:42px;
+  padding:8px 18px;
+  border-radius:10px;
+  border:0;
+  background:var(--teal);
+  color:#fff;
+  cursor:pointer
+}
+.site-page>main button:hover{ background:#0f4a42 }
+.site-page .dash-card,.site-page .find-figure,.site-page .find-kpis div{ border-radius:var(--radius); box-shadow:var(--shadow) }
+.site-foot{
+  margin-top:auto;
+  padding:22px 28px;
+  color:#c9dcd8;
+  background:var(--night);
+  font-size:13px;
+  line-height:1.6
+}
+.site-foot p{ max-width:1100px; margin:4px auto }
+.site-foot a{ color:var(--sky) }
+@media(max-width:900px){
+  .site-header{ flex-direction:column; align-items:flex-start; padding:12px 16px; gap:8px }
+  .site-nav{
+    width:100%;
+    flex-wrap:nowrap;
+    justify-content:flex-start;
+    overflow-x:auto;
+    scrollbar-width:thin;
+    padding-bottom:4px
+  }
+  .site-nav-group{ flex-wrap:nowrap; flex-shrink:0 }
+  .site-nav a{ white-space:nowrap }
+  .site-page>main>table,.site-page .monsoon-table{ display:block; overflow-x:auto }
+}
+@media(prefers-reduced-motion:reduce){ .site-nav a{ transition:none } }
+
+/* D209: Overview landing page */
+.site-page>main.overview{ max-width:1200px; padding-top:0 }
+.ov-hero{
+  margin:0 -16px;
+  padding:42px 28px 34px;
+  color:#e8f3f1;
+  background:radial-gradient(circle at 85% 20%,#1f6672 0%,transparent 55%),linear-gradient(160deg,var(--night) 0%,var(--night-2) 100%);
+  border-radius:0 0 26px 26px
+}
+.site-page>main .ov-hero h1{ color:#fff; max-width:22ch; font-size:clamp(28px,4.4vw,48px) }
+.ov-eyebrow{ font-size:12px; letter-spacing:1.6px; text-transform:uppercase; color:var(--sky); margin:0 }
+.ov-lead{ max-width:68ch; color:#cfe2de; font-size:17px }
+.ov-kpis{ display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin:26px 0 0 }
+.ov-kpis div{ background:rgb(255 255 255 / 7%); border:1px solid rgb(255 255 255 / 14%); border-radius:var(--radius); padding:14px 16px }
+.ov-kpis dt{ font-size:12px; color:#a9c9c4 }
+.ov-kpis dd{ margin:4px 0 0; font-size:30px; font-weight:700; color:#fff; font-variant-numeric:tabular-nums }
+.ov-map-wrap{ margin-top:30px }
+.ov-map-head{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px }
+.site-page>main .ov-map-head h2{ margin:0 }
+.ov-switch{ display:flex; flex-wrap:wrap; gap:6px; background:#e6ece7; padding:4px; border-radius:999px }
+.site-page>main .ov-switch button{ background:transparent; color:var(--night); border-radius:999px; min-height:40px; padding:6px 14px; font-size:14px }
+.site-page>main .ov-switch button.on{ background:var(--night); color:#fff }
+.site-page>main .ov-switch button:focus-visible{ outline:3px solid var(--amber); outline-offset:2px }
+.ov-note{ color:#4e5d57; font-size:14px }
+.ov-grid{ display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:16px; align-items:stretch }
+.ov-map{ position:relative; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); background:#dfe7e4; min-height:520px }
+.ov-canvas{ height:520px }
+.ov-map-fail{ padding:24px }
+.ov-legend{
+  position:absolute; left:12px; bottom:12px; z-index:2;
+  display:grid; grid-template-columns:auto auto; gap:2px 10px; align-items:center;
+  background:rgb(255 255 255 / 92%); border-radius:10px; padding:8px 10px; font-size:12px
+}
+.ov-legend span:first-child{ grid-column:1 / -1; font-weight:600 }
+.ov-legend i{ grid-column:1 / -1; display:block; width:180px; height:10px; border-radius:6px }
+.ov-legend span:last-child{ text-align:right }
+.ov-panel{ background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px; display:flex; flex-direction:column; gap:10px }
+.ov-panel label{ display:flex; flex-direction:column; gap:4px; font-size:13px; color:#4e5d57 }
+.site-page>main .ov-panel h3{ margin:4px 0 0; font-size:22px; color:var(--night) }
+.ov-panel ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px }
+.ov-panel li{ display:flex; flex-direction:column; border-top:1px solid var(--line); padding-top:8px }
+.ov-panel li span{ font-size:12px; text-transform:uppercase; letter-spacing:.5px; color:#4e5d57 }
+.ov-panel li strong{ font-size:16px; color:var(--night) }
+.ov-panel li small{ font-size:12px; color:#4e5d57 }
+.ov-cta{ margin-top:auto; align-self:flex-start; background:var(--teal); color:#fff; text-decoration:none; padding:10px 16px; border-radius:10px; min-height:44px; display:inline-flex; align-items:center }
+.ov-cta:hover{ background:#0f4a42 }
+.ov-table{ margin-top:12px }
+.ov-table summary{ cursor:pointer; min-height:44px; display:flex; align-items:center }
+.ov-credit{ font-size:12px; color:#4e5d57 }
+.ov-cards{ list-style:none; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px }
+.ov-cards a{
+  display:flex; flex-direction:column; gap:6px; height:100%;
+  padding:18px; text-decoration:none; color:var(--ink);
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow);
+  transition:transform .2s,box-shadow .2s
+}
+.ov-cards a:hover{ transform:translateY(-2px); box-shadow:0 10px 24px rgb(16 40 36 / 12%) }
+.ov-cards strong{ color:var(--night); font-size:17px }
+.ov-cards span{ font-size:14px; color:#4e5d57 }
+@media(max-width:900px){
+  .ov-grid{ grid-template-columns:1fr }
+  .ov-map{ min-height:420px }
+  .ov-canvas{ height:420px }
+  .ov-hero{ padding:28px 16px 24px }
+}
+@media(prefers-reduced-motion:reduce){ .ov-cards a{ transition:none } .ov-cards a:hover{ transform:none } }
+.site-page>main .maplibregl-ctrl button{ background:#fff; color:#333; min-height:29px; padding:0; border-radius:0 }
+.site-page>main .maplibregl-ctrl button:hover{ background:#f0f0f0 }
+/* D209: on wide screens the map stays one screen tall and in view while the side panel scrolls,
+   so it opens centred on Karnataka instead of showing the top of a very tall panel. */
+@media(min-width:681px){
+  .map-panel{ position:sticky; top:0; align-self:start; height:100vh; min-height:560px }
 }
 
 /* T188: wall mode. State is always also written as text, never by colour alone. */

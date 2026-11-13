@@ -5,6 +5,7 @@ import Layers, { layerConfigs, visibleRecords, type Coordinates } from './map/La
 import SourceBadge from './components/SourceBadge';
 import EventTicker from './components/EventTicker';
 import PlaceLens, { type NearbyFacility } from './components/PlaceLens';
+import { SiteHeader } from './components/SiteShell';
 import Watches, { signalsFrom } from './components/Watches';
 import type { Want } from './map/Terrain';
 import { t } from './i18n';
@@ -93,28 +94,7 @@ export default function App() {
 
   return <>
     <a className="skip-link" href="#records">Skip to the record list</a>
-    <header className="masthead">
-      <div className="brand">
-        <svg className="brand-mark" width="36" height="36" viewBox="0 0 36 36" aria-hidden="true">
-          <circle cx="18" cy="18" r="15" fill="none" stroke="currentColor" />
-          <path d="M18 5v7m0 12v7M5 18h7m12 0h7M18 11l5 12-5-3-5 3z" fill="currentColor" />
-        </svg>
-        <div><h1>Monsoon Atlas</h1><p>Weather, place &amp; evidence</p></div>
-      </div>
-      <nav className="masthead-links" aria-label="Site">
-        <a className="official-link" href="?page=ask">Ask</a>
-        <a className="official-link" href="?page=findings">{t('nav.findings')}</a>
-        <a className="official-link" href="?page=accuracy">Model accuracy</a>
-        <a className="official-link" href="?page=climate">{t('nav.climate')}</a>
-        <a className="official-link" href="?page=wall">{t('wall.title')}</a>
-        <a className="official-link" href="?page=warnings">{t('nav.warnings')}</a>
-        <a className="official-link" href="?page=transit">{t('nav.transit')}</a>
-        <a className="official-link" href="?page=monsoon">{t('nav.monsoon')}</a>
-        <a className="official-link" href="https://sachet.ndma.gov.in/" target="_blank" rel="noopener noreferrer">
-          Official warnings <span aria-hidden="true">↗</span>
-        </a>
-      </nav>
-    </header>
+    <SiteHeader current="map" />
 
     <main className="atlas" aria-label="Atlas workspace">
       <div className="toolbar">

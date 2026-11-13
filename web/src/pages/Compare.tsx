@@ -9,7 +9,6 @@ const ofState = (state: string): Series | null => data.series.find(s => s.state 
 export default function Compare() {
   const pairs = STATES.flatMap((a, i) => STATES.slice(i + 1).map(b => ({ a, b, result: comparable(ofState(a), ofState(b)) })));
   return <main className="dashboard" aria-labelledby="compare-heading">
-    <p><a href="./">{t('ask.back')}</a></p>
     <h1 id="compare-heading">{t('cmp.heading')}</h1>
     <p>{t('cmp.intro')}</p>
     <section aria-labelledby="counts-heading">
