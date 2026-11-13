@@ -21,16 +21,18 @@ import numpy as np
 EARTH_KM = 6371.0088
 
 
+def unit(lonlat: np.ndarray) -> np.ndarray:
+    """(lon, lat) degrees to 3-D unit vectors; chord order there equals great-circle order."""
+    lon, lat = np.radians(lonlat[:, 0]), np.radians(lonlat[:, 1])
+    return np.column_stack([np.cos(lat) * np.cos(lon), np.cos(lat) * np.sin(lon), np.sin(lat)])
+
+
 def nearest_km(cells: np.ndarray, sites: np.ndarray) -> np.ndarray:
     """Great-circle km from each (lon, lat) cell to its nearest site (exact for the KD-tree pick).
 
     The KD-tree runs on 3-D unit vectors, where the chord order equals the great-circle order,
     so the nearest site is exact everywhere, not only near one latitude."""
     from scipy.spatial import cKDTree
-
-    def unit(lonlat: np.ndarray) -> np.ndarray:
-        lon, lat = np.radians(lonlat[:, 0]), np.radians(lonlat[:, 1])
-        return np.column_stack([np.cos(lat) * np.cos(lon), np.cos(lat) * np.sin(lon), np.sin(lat)])
 
     chord, _ = cKDTree(unit(sites)).query(unit(cells))
     return 2 * EARTH_KM * np.arcsin(np.clip(chord / 2, 0, 1))
@@ -100,10 +102,8 @@ def km_between(lon1: float, lat1: float, lon2: float, lat2: float) -> float:
     return 2 * EARTH_KM * math.asin(math.sqrt(a))
 
 
-def build(out) -> dict:  # pragma: no cover - needs local raw files (data/raw)
-    """Write the report files into `out` (a Path); returns the summary."""
-    import csv
-    import json
+def load_inputs() -> dict:  # pragma: no cover - needs local raw files (data/raw)
+    """S16 cells (lon/lat, people, district) and S18 hospital sites, with the input hashes."""
     from pathlib import Path
 
     import pyarrow as pa
@@ -119,7 +119,6 @@ def build(out) -> dict:  # pragma: no cover - needs local raw files (data/raw)
     from atlas.ingest.s18_prepare import evidence
 
     root = Path(__file__).resolve().parents[3]
-    out = Path(out)
     state = load_state(root / "configs/states/ka.yaml")
     adm1, adm2 = evidence("s17", "e05"), evidence("s17", "e06")
     districts = S17("ka").parse(adm2, state.source("S17"), adm1=adm1).to_pylist()
@@ -154,18 +153,35 @@ def build(out) -> dict:  # pragma: no cover - needs local raw files (data/raw)
     district = [None] * len(ids)
     for c, s in zip(hit_cell, hit_shape, strict=True):
         district[c] = districts[s]["name"]
+    return {
+        "lonlat": lonlat,
+        "people": people,
+        "district": district,
+        "sites": sites,
+        "inputs": {"S16": worldpop.sha256, "S17": adm2.sha256, "S18": pbf.sha256},
+    }
 
+
+def build(out) -> dict:  # pragma: no cover - needs local raw files (data/raw)
+    """Write the report files into `out` (a Path); returns the summary."""
+    import csv
+    import json
+    from pathlib import Path
+
+    data = load_inputs()
+    lonlat, people, district, sites = (data[k] for k in ("lonlat", "people", "district", "sites"))
+    out = Path(out)
     km = nearest_km(lonlat, sites)
     state_row = summarise(km, people)
     rows = by_district(km, people, district)
     summary = {
         "state": "ka",
         "hospitals": int(len(sites)),
-        "cells": int(len(ids)),
+        "cells": int(len(people)),
         "unassigned_people": round(float(people[[d is None for d in district]].sum())),
         "statewide": state_row | {"gini": round(weighted_gini(km, people), 4)},
         "lorenz": lorenz(km, people),
-        "inputs": {"S16": worldpop.sha256, "S17": adm2.sha256, "S18": pbf.sha256},
+        "inputs": data["inputs"],
         "limits": [
             "Straight-line distance from the 1 km cell centre, not road distance or travel time.",
             "OpenStreetMap hospitals are volunteer-mapped and thinner in rural areas, so remote "

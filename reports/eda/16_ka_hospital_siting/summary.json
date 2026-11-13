@@ -1,0 +1,267 @@
+{
+ "state": "ka",
+ "question": "Which ten 1 km cells, if each had a hospital, would bring the most people within 10 km (straight line) of a hospital?",
+ "status": "Illustrative siting under stated assumptions; not a recommendation.",
+ "method": "Greedy maximal coverage over populated S16 cells inside an S17 district (within 63% of the optimum; not guaranteed optimal). Objective: people newly within the threshold of a hospital. Secondary: people-weighted mean straight-line km.",
+ "inputs": {
+  "S16": "e188723030087fb8e90e1741199bd476a181c00b046fab7dd8e8358adb136b64",
+  "S17": "8bef6929fd65432e7dc775e7c44473e84efff064ebddbfd6b834e6291546db40",
+  "S18": "81f355bdfb7925a5aae68552bfb53dd558891bddbcd88e07a29765567bdf0693"
+ },
+ "hospitals": 3581,
+ "candidates": 203006,
+ "people": 70800564,
+ "headline": {
+  "sites": 10,
+  "threshold_km": 10.0,
+  "people_beyond_10km_before": 8166036,
+  "greedy_newly_within_10km": 964469,
+  "share_of_gap_closed": 0.1181,
+  "mean_km_before": 4.745,
+  "mean_km_after": 4.626
+ },
+ "sites": [
+  {
+   "rank": 1,
+   "district": "Tumkur",
+   "lon": 76.95,
+   "lat": 13.48,
+   "people_newly_within_10km": 116663
+  },
+  {
+   "rank": 2,
+   "district": "Ramanagara",
+   "lon": 77.47,
+   "lat": 12.42,
+   "people_newly_within_10km": 111041
+  },
+  {
+   "rank": 3,
+   "district": "Bijapur",
+   "lon": 75.51,
+   "lat": 16.51,
+   "people_newly_within_10km": 102333
+  },
+  {
+   "rank": 4,
+   "district": "Bijapur",
+   "lon": 75.79,
+   "lat": 16.48,
+   "people_newly_within_10km": 99624
+  },
+  {
+   "rank": 5,
+   "district": "Tumkur",
+   "lon": 76.8,
+   "lat": 13.23,
+   "people_newly_within_10km": 99420
+  },
+  {
+   "rank": 6,
+   "district": "Haveri",
+   "lon": 75.3,
+   "lat": 14.59,
+   "people_newly_within_10km": 93215
+  },
+  {
+   "rank": 7,
+   "district": "Bijapur",
+   "lon": 75.75,
+   "lat": 17.16,
+   "people_newly_within_10km": 87239
+  },
+  {
+   "rank": 8,
+   "district": "Haveri",
+   "lon": 75.57,
+   "lat": 14.4,
+   "people_newly_within_10km": 86138
+  },
+  {
+   "rank": 9,
+   "district": "Uttara Kannada",
+   "lon": 74.85,
+   "lat": 14.28,
+   "people_newly_within_10km": 85476
+  },
+  {
+   "rank": 10,
+   "district": "Hassan",
+   "lon": 76.55,
+   "lat": 13.05,
+   "people_newly_within_10km": 83319
+  }
+ ],
+ "baselines": {
+  "most_populous_gap_cells": {
+   "newly_within_10km": 450873,
+   "mean_km_after": 4.677,
+   "greedy_minus_baseline": 513597,
+   "greedy_over_baseline": 2.14
+  },
+  "one_per_worst_district": {
+   "newly_within_10km": 459844,
+   "mean_km_after": 4.654,
+   "greedy_minus_baseline": 504625,
+   "greedy_over_baseline": 2.1
+  },
+  "random_populated_cells": {
+   "draws": 200,
+   "seed": 0,
+   "newly_within_10km_mean": 123951,
+   "newly_within_10km_p95": 222605,
+   "newly_within_10km_max": 316450,
+   "greedy_minus_mean": 840518
+  }
+ },
+ "baseline_not_run": "District headquarters or town points: no place points in the local inputs (S18 holds amenities only); the most populous gap cell per worst district stands in.",
+ "sensitivity": [
+  {
+   "sites": 5,
+   "threshold_km": 5.0,
+   "people_beyond_before": 28504796,
+   "greedy_newly_within": 403961,
+   "most_populous_gap_cells_newly_within": 188733,
+   "one_per_worst_district_newly_within": 169162,
+   "random_mean_newly_within": 60348,
+   "random_max_newly_within": 123007,
+   "greedy_mean_km_after": 4.707
+  },
+  {
+   "sites": 10,
+   "threshold_km": 5.0,
+   "people_beyond_before": 28504796,
+   "greedy_newly_within": 708972,
+   "most_populous_gap_cells_newly_within": 276621,
+   "one_per_worst_district_newly_within": 312823,
+   "random_mean_newly_within": 123230,
+   "random_max_newly_within": 209396,
+   "greedy_mean_km_after": 4.687
+  },
+  {
+   "sites": 20,
+   "threshold_km": 5.0,
+   "people_beyond_before": 28504796,
+   "greedy_newly_within": 1246193,
+   "most_populous_gap_cells_newly_within": 533197,
+   "one_per_worst_district_newly_within": 656026,
+   "random_mean_newly_within": 246358,
+   "random_max_newly_within": 352840,
+   "greedy_mean_km_after": 4.646
+  },
+  {
+   "sites": 5,
+   "threshold_km": 10.0,
+   "people_beyond_before": 8166036,
+   "greedy_newly_within": 529082,
+   "most_populous_gap_cells_newly_within": 196483,
+   "one_per_worst_district_newly_within": 225232,
+   "random_mean_newly_within": 61329,
+   "random_max_newly_within": 178932,
+   "greedy_mean_km_after": 4.678
+  },
+  {
+   "sites": 10,
+   "threshold_km": 10.0,
+   "people_beyond_before": 8166036,
+   "greedy_newly_within": 964469,
+   "most_populous_gap_cells_newly_within": 450873,
+   "one_per_worst_district_newly_within": 459844,
+   "random_mean_newly_within": 123951,
+   "random_max_newly_within": 316450,
+   "greedy_mean_km_after": 4.626
+  },
+  {
+   "sites": 20,
+   "threshold_km": 10.0,
+   "people_beyond_before": 8166036,
+   "greedy_newly_within": 1687276,
+   "most_populous_gap_cells_newly_within": 716345,
+   "one_per_worst_district_newly_within": 908438,
+   "random_mean_newly_within": 248896,
+   "random_max_newly_within": 469201,
+   "greedy_mean_km_after": 4.531
+  },
+  {
+   "sites": 5,
+   "threshold_km": 15.0,
+   "people_beyond_before": 1761877,
+   "greedy_newly_within": 454835,
+   "most_populous_gap_cells_newly_within": 197059,
+   "one_per_worst_district_newly_within": 257951,
+   "random_mean_newly_within": 26372,
+   "random_max_newly_within": 147396,
+   "greedy_mean_km_after": 4.669
+  },
+  {
+   "sites": 10,
+   "threshold_km": 15.0,
+   "people_beyond_before": 1761877,
+   "greedy_newly_within": 772140,
+   "most_populous_gap_cells_newly_within": 291119,
+   "one_per_worst_district_newly_within": 449797,
+   "random_mean_newly_within": 53271,
+   "random_max_newly_within": 223207,
+   "greedy_mean_km_after": 4.606
+  },
+  {
+   "sites": 20,
+   "threshold_km": 15.0,
+   "people_beyond_before": 1761877,
+   "greedy_newly_within": 1133792,
+   "most_populous_gap_cells_newly_within": 556663,
+   "one_per_worst_district_newly_within": 662351,
+   "random_mean_newly_within": 102519,
+   "random_max_newly_within": 299248,
+   "greedy_mean_km_after": 4.537
+  }
+ ],
+ "osm_completeness_check": {
+  "drop_share": 0.1,
+  "runs": [
+   {
+    "seed": 100,
+    "hospitals_kept": 3216,
+    "people_beyond_10km_before": 9630880,
+    "greedy_newly_within_10km": 1089826,
+    "main_sites_with_a_pick_within_10km": 7
+   },
+   {
+    "seed": 101,
+    "hospitals_kept": 3220,
+    "people_beyond_10km_before": 9589734,
+    "greedy_newly_within_10km": 1076643,
+    "main_sites_with_a_pick_within_10km": 5
+   },
+   {
+    "seed": 102,
+    "hospitals_kept": 3206,
+    "people_beyond_10km_before": 9455845,
+    "greedy_newly_within_10km": 1024373,
+    "main_sites_with_a_pick_within_10km": 7
+   },
+   {
+    "seed": 103,
+    "hospitals_kept": 3216,
+    "people_beyond_10km_before": 9896365,
+    "greedy_newly_within_10km": 1056830,
+    "main_sites_with_a_pick_within_10km": 6
+   },
+   {
+    "seed": 104,
+    "hospitals_kept": 3214,
+    "people_beyond_10km_before": 10481996,
+    "greedy_newly_within_10km": 1098143,
+    "main_sites_with_a_pick_within_10km": 3
+   }
+  ]
+ },
+ "limits": [
+  "Straight-line distance from the 1 km cell centre, not road distance or travel time.",
+  "OpenStreetMap hospitals are volunteer-mapped and thinner in rural areas; a gap cell may already have an unmapped hospital, which would change the picks.",
+  "No capacity, staffing, hospital size or demand model; every hospital counts the same.",
+  "No land, cost, road, terrain or ownership data; a picked cell is a 1 km area, not a buildable site.",
+  "WorldPop 2025 is a modelled 1 km population estimate.",
+  "Not an emergency service and no claim that any location is safe or adequate."
+ ]
+}
