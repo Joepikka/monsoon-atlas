@@ -101,13 +101,13 @@ new_tasks:
     phase: P2
     state: KA
     depends_on: [T280]
-    files: [src/atlas/models/m21_fit.py, tests/models/test_m21_fit.py]
+    files: [src/atlas/models/m21_fit.py, tests/models/test_m21_models.py]
     steps:
       - "Fit the three model families on train/tune only"
       - "Log MLflow runs"
       - "Report a tune table with bootstrap intervals"
     acceptance:
-      command: '.\.venv\Scripts\python -m pytest tests/models/test_m21_fit.py -q'
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_m21_models.py -q'
   - id: T280
     title: "M21 rain-anomaly dataset, data gate and baselines"
     phase: P2

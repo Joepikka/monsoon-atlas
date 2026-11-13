@@ -2,6 +2,17 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D216 — M21 classical models on train/tune, no candidate (T281, 13 Nov 2026).**
+  `src/atlas/models/m21_fit.py`: per-district SARIMA (6 small orders, AIC on train), ridge for all
+  districts (alpha by 10 yearly rolling origins inside train) and LightGBM for all districts (30
+  seeded configs, early stopping on an inner 2012-01..2014-11 slice of train, refit on train). Tune
+  2015-2017 scored once (897 rows, 36 months); calibrate and test refused; candidate still null.
+  Tune MAE: climatology 0.907, train median 0.900, SARIMA 0.911, ridge 0.914, LightGBM 0.878
+  (+0.029 [-0.029, +0.086]). No lower bound above 0 on MAE, RPS or CRPS, so nothing beats
+  climatology on tune. ETS not fitted (dry-month gaps); added baselines: train median per district
+  and month (MAE), terciles at 1/3 (RPS), train anomalies (CRPS). MLflow experiment M21 in
+  `data/models/mlflow.db`. T281's acceptance file is `tests/models/test_m21_models.py`.
+
 - **D214 — M21 rain-anomaly dataset, split and baselines, no fit (T280, 13 Nov 2026).**
   Target: z-score of month t district rain against the 1981-2010 mean and sd for that district and
   calendar month; tercile class secondary. Dry rule, fixed on 1981-2010 only: a district-month with
