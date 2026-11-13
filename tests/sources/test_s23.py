@@ -1,4 +1,4 @@
-"""T026/T269: the adapter stays disabled until T270; only onion has a verified price unit."""
+"""T026/T269: S23 stays blocked until the T270 adapter; only onion has a verified price unit."""
 
 import importlib
 import json

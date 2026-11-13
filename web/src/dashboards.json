@@ -71,7 +71,7 @@
       "id": "M06",
       "state": "ka",
       "status": "blocked",
-      "reason": "M06 blocked: verified Karnataka price history, price units and publication timing are required before implementing labels, features or predictions (T035).",
+      "reason": "M06 blocked: no price rows yet. S23 is blocked until the T270 adapter; Karnataka onion is verified (Rs./Quintal, T269). Labels, features and predictions wait for the backfilled rows and the T273 data gate (T035).",
       "links": [
         "reports/models/m06.md"
       ],
@@ -111,7 +111,7 @@
       "id": "M10",
       "state": "kl",
       "status": "blocked",
-      "reason": "M10 blocked: S22 exposes no price row and S23 is a one-day snapshot (5 Nov 2026) with an unverified price unit, so there is no weekly market-commodity panel, no 30-market sample and no 50 heavy-rain events; no effect can be estimated (T139).",
+      "reason": "M10 blocked: S22 exposes no price row and S23 is blocked until the T270 adapter (Karnataka onion verified, T269), so there is no weekly market-commodity panel, no 30-market sample and no 50 heavy-rain events; no effect can be estimated (T139).",
       "links": [
         "reports/models/m10.md"
       ],
@@ -171,7 +171,7 @@
       "id": "M16",
       "state": "all",
       "status": "research_only",
-      "reason": "M16 is research-only: the rule runs on the held S08 daily grids and flag counts are reported (reports/models/m16-flag-counts.json), but 0 of 100 flags are adjudicated (T212, T213 blocked, D159), so precision is not measured and no quality claim is made. S22 and S23 hold zero price rows and S32 has no 28-day window. No IsolationForest challenger was run.",
+      "reason": "M16 is research-only: the rule runs on the held S08 daily grids and flag counts are reported (reports/models/m16-flag-counts.json), but 0 of 100 flags are adjudicated (T212, T213 blocked, D159), so precision is not measured and no quality claim is made. S22 is blocked, S23 is blocked until the T270 adapter (Karnataka onion verified, T269), so there are zero price rows, and S32 has no 28-day window. No IsolationForest challenger was run.",
       "links": [
         "reports/models/m16.md"
       ],

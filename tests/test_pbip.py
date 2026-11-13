@@ -21,17 +21,13 @@ FOLDER = re.search(
 ).group(1)
 
 
-NOT_INGESTED = {"S23"}  # T269 verified onion only; no rows until the T270 backfill
-
-
 def blocked_sources() -> set[str]:
-    """Sources that are blocked or verified but not yet ingested: never used as data."""
     out = set()
     for p in (ROOT / "configs/sources").glob("s*.yaml"):
         record = yaml.safe_load(p.read_text("utf-8"))
         if record.get("outcome") == "blocked":
             out.add(record["source_id"])
-    return out | NOT_INGESTED
+    return out
 
 
 def files(base: Path) -> set[str]:

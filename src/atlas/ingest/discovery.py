@@ -99,9 +99,6 @@ class Discovery(Strict):
     dependents: list[str]
     retry_condition: str | None
     failed_fetches: list[FailedFetch] = Field(default_factory=list)
-    # Upstream filter -> the only verified values; anything outside stays disabled (S23: units are
-    # per commodity). Empty means the outcome covers the whole source.
-    enabled_scope: dict[str, list[str]] = Field(default_factory=dict)
 
 
 LICENCE = {"open", "restricted", "unverified"}
@@ -195,6 +192,4 @@ def check(d: Discovery, manifest: EvidenceManifest, *, source_enabled: bool) -> 
             problems.append(f"{d.source_id} is blocked but enabled in the state config")
     elif d.licence.status == "unverified" or d.history.status == "not_public":
         problems.append("an available source needs a known licence and published history")
-    if any(not values for values in d.enabled_scope.values()):
-        problems.append("an enabled_scope filter must list at least one verified value")
     return problems

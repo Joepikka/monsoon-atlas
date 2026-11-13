@@ -24,10 +24,10 @@ def test_gate_reports_real_source_failures_and_evidence_hashes():
     assert gate["prediction_rows"] == 0
     assert gate["sources"]["S22"]["outcome"] == "blocked"
     assert gate["sources"]["S23"]["licence"] == "open"
-    # T269: onion verified, but no price row is ingested until T270, so M06 stays blocked.
-    assert gate["sources"]["S23"]["outcome"] == "available"
+    # T269: onion verified, but S23 is blocked until the T270 adapter, so M06 stays blocked.
+    assert gate["sources"]["S23"]["outcome"] == "blocked"
     assert gate["sources"]["S23"]["units"] == "onion_only"
-    assert "no price rows" in gate["reason"] and "T270" in gate["reason"]
+    assert "blocked until the T270 adapter" in gate["reason"]
     assert gate["split_manifest"] is None
     for name, sha in gate["evidence"].items():
         assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == sha

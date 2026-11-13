@@ -1,5 +1,6 @@
 """T025 and T269 acceptance: the S23 (data.gov.in mandi prices) discovery record passes the
-discovery contract only with cited evidence; T269 enables Karnataka onion only."""
+discovery contract only with cited evidence; T269 verifies Karnataka onion only and S23 stays
+blocked until the T270 adapter."""
 
 import json
 from datetime import datetime
@@ -22,9 +23,7 @@ def test_s23_discovery_contract(record):
 def test_s23_status_and_no_key_in_evidence(record):
     rec = record("S23")
     d = rec.discovery
-    assert (
-        d.outcome == "available" and d.licence.status == "open" and d.source_check.status == "pass"
-    )
+    assert d.outcome == "blocked" and d.licence.status == "open" and d.source_check.status == "pass"
     assert (
         d.units.status == "onion_only"
         and "Rs./Quintal" in d.units.detail
@@ -40,11 +39,13 @@ def test_s23_status_and_no_key_in_evidence(record):
             assert b"api-key" not in path.read_bytes(), e.id
 
 
-def test_only_karnataka_onion_is_enabled(record):
+def test_only_karnataka_onion_is_verified_and_s23_stays_blocked(record):
     """Units are per commodity; nothing but Onion may be read until H16 records another unit."""
     d = record("S23").discovery
-    assert d.enabled_scope == {"State": ["Karnataka"], "Commodity": ["Onion"]}
+    assert d.outcome == "blocked" and d.retry_condition.startswith("T270: adapter")
+    assert "State=Karnataka, Commodity=Onion only" in d.units.detail
     assert "H16" in d.units.detail and "H16" in d.retry_condition
+    assert "T270" in d.dependents
 
 
 def test_resource_licence_is_tied_to_publisher_evidence(record):

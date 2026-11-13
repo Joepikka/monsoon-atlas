@@ -1,23 +1,21 @@
-# Discovery record for S23 (plan task T025, re-run as T269 for the variety-wise history resource).
+# Discovery record for S23 (plan task T025, re-run as T269 for the variety-wise history resource;
+# verify_task stays T025 to match configs/states/ka.yaml).
 # Evidence IDs refer to tests/fixtures/s23/manifest.json; the files stay in data/raw/S23. The API key
 # is sent only in requests (secret parameter), never stored. e01 to e06 are the T025 evidence for
 # the one-day resource 9ef84268; e07 onwards are T269. See docs/sources/s23.md.
 source_id: S23
 state: ka
 name: "data.gov.in mandi prices"
-verify_task: T269
+verify_task: T025
 discovered_at: "2026-11-13T10:03:51.323987Z"
-outcome: available
+outcome: blocked
 landing_url: "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24"
 publisher: "Ministry of Agriculture and Farmers Welfare, Department of Agriculture and Farmers Welfare, Directorate of Marketing and Inspection (DMI), on data.gov.in"
 no_card: true
 account_required: true
 
-# Only these upstream filter values are verified. Every other commodity stays disabled until its
-# AGMARKNET "Price Unit" is recorded (owner step H16) and this record is updated.
-enabled_scope:
-  State: [Karnataka]
-  Commodity: [Onion]
+# Verified scope (T269): State=Karnataka, Commodity=Onion, prices in Rs./Quintal (owner-observed,
+# D201). S23 stays blocked until the T270 adapter can fetch rows; other commodities need H16.
 
 access:
   status: api_key
@@ -55,7 +53,7 @@ provider_quota:
 history:
   status: available
   detail: >-
-    Karnataka onion total is 103,423 rows on every page (e07 to e19), updated 2026-11-12T23:34:52Z;
+    Scope State=Karnataka, Commodity=Onion. Karnataka onion total is 103,423 rows on every page (e07 to e19), updated 2026-11-12T23:34:52Z;
     the earliest row seen is 10/01/2001 and the latest 12/11/2026 (e09 to e19, e24). Offset paging
     is NOT reliable: the 11 pages at limit 10000 returned 103,423 rows but only 93,423 distinct
     (page offset 0 shares 9,271 rows with offset 20000, which shares 729 with offset 40000; e09,
@@ -77,10 +75,12 @@ latest_date: "2026-11-12"
 units:
   status: onion_only
   detail: >-
-    The API carries no unit field (e09). The owner read AGMARKNET's daily price and arrival report
+    Verified scope: State=Karnataka, Commodity=Onion only. The API carries no unit field (e09).
+    The owner read AGMARKNET's daily price and arrival report
     for Onion, Karnataka on 12 Nov 2026: its "Price Unit" column says "Rs./Quintal" (owner-observed,
-    decision D201). Units are per commodity, so only Onion is enabled at Rs./Quintal; every other
-    commodity stays unverified and disabled until owner step H16 records its unit. Within onion,
+    decision D201). Units are per commodity, so only Onion is verified, at Rs./Quintal; every
+    other commodity stays unverified until owner step H16 records its unit. S23 stays blocked
+    until the T270 adapter; no row is ingested yet. Within onion,
     some rows look like per-kg entries (for example Shimoga 2023-24 modal 15 to 50, e09 to e19);
     these are a cleaning rule for T271, not a second unit.
   evidence: [e09, e19]
@@ -132,9 +132,9 @@ field_map:
 
 dependents: [T026, T035, T036, T037, T270]
 retry_condition: >-
-  Onion is enabled. For any other commodity, record the AGMARKNET "Price Unit" for that commodity
-  (owner step H16) with its date, add it to enabled_scope and re-run this verify task. A backfill
-  must query one Arrival_Date per request (offset paging duplicates and drops rows).
+  T270: adapter and per-day backfill for Karnataka onion; other commodities need H16. The backfill
+  must query one Arrival_Date per request (offset paging duplicates and drops rows) and match each
+  day's API total.
 
 failed_fetches:
   - url: "https://www.data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi"

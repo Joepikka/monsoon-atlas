@@ -11,17 +11,13 @@ from atlas.analysis import sql_insights as si
 REPORT = si.REPORT.read_text("utf-8")
 
 
-NOT_INGESTED = {"S23"}  # T269 verified onion only; no rows until the T270 backfill
-
-
 def blocked_sources() -> set[str]:
-    """Sources that are blocked or verified but not yet ingested: never used as data."""
     out = set()
     for p in (si.ROOT / "configs/sources").glob("s*.yaml"):
         record = yaml.safe_load(p.read_text("utf-8"))
         if record.get("outcome") == "blocked":
             out.add(record["source_id"])
-    return out | NOT_INGESTED
+    return out
 
 
 def test_ten_queries_with_full_captions():

@@ -40,7 +40,7 @@ def test_status_and_gate_files_are_what_the_code_writes_and_bind_their_evidence(
     assert STATUS["source_gate_sha256"] == hashlib.sha256(gate_bytes).hexdigest()
     for name, sha in gate["evidence"].items():
         assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == sha, name
-    assert gate["sources"]["S22"]["outcome"] == "blocked"
+    assert gate["sources"]["S22"]["outcome"] == gate["sources"]["S23"]["outcome"] == "blocked"
     assert gate["sources"]["S23"]["units"] == "onion_only" and "zero price rows" in gate["reason"]
     assert gate["split_manifest"] is None
 
