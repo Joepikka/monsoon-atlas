@@ -1,0 +1,37 @@
+# M21 Karnataka monthly district rain-anomaly forecast (plan docs/plans/karnataka-ml-showcase.md
+# item 3). Planned definition written by T280: dataset, split manifest, data gate and baselines
+# only; no model is fitted yet (T281 to T284).
+model_id: M21
+state: ka
+enabled: false
+task: regression
+unit: district            # S17 geoBoundaries 2021 lines, 30 districts (as M05)
+rain_source: S08          # the M05 monthly district table, 1981-2025; indices only, never mm
+target: >-
+  standardised anomaly of month t district rain: (rain - mean) / sd, mean and sample sd per
+  district and calendar month from 1981-2010 only
+secondary_target: tercile class (-1 below, 0 near, 1 above) against 1981-2010 33rd and 67th percentiles
+dry_rule: >-
+  a district and calendar month whose 1981-2010 sd of monthly rain is below 10 mm has no anomaly;
+  those rows are left out (61 of 360 district-months: Jan 28, Feb 27, Dec 6), never scored as 0
+features:                 # months up to t-1 only; issue at 00:00 IST on day 1 of month t
+  - anom_lag1 .. anom_lag12   # missing where the lag month is a dry district-month
+  - spi1_lag1
+  - spi3_lag1
+  - spi6_lag1
+  - state_anom_lag1           # mean anomaly of the districts that have one at t-1
+  - month_of_year
+optional_later: "ENSO and IOD indices need a new source S45 and its verify task; not assumed"
+baselines:
+  climatology: anomaly 0
+  persistence: anomaly of month t-1 (0 if t-1 is a dry district-month)
+  last_year: anomaly of month t-12
+  rule: the strongest of the three on the test rows is the comparison at T284
+candidates: [per-district SARIMA or ETS, ridge (provisional), LightGBM, spatial and graph challengers (T282, T283)]
+metrics: [MAE of the anomaly, ranked probability skill score for terciles, CRPS with intervals]
+splits: src/atlas/models/m21_data.py splits()  # train 1982-01..2014-11 (31-day purge), tune 2015-2017, calibrate 2018-2019, locked test 2020-2025
+split_manifest: models/gates/m21_splits.json
+data_gate: models/gates/m21.json
+promotion: lower 95% paired block bootstrap bound (blocks = months) of the MAE improvement above 0
+evidence: hindcast        # D39; 2025 is provisional (D98); M05 was tested on 2020-2024, so choices are fixed on tune only
+status: planned

@@ -1,0 +1,98 @@
+{
+  "model_id": "M21",
+  "task": "T280",
+  "status": "ok",
+  "reasons": [],
+  "unit": "district (no verified taluk polygons; geoBoundaries 2021 lines)",
+  "years": [
+    1981,
+    2025
+  ],
+  "evidence": "hindcast (D39); 2025 is provisional (D98)",
+  "target": "z-score of month t district rain vs 1981-2010 mean and sd per calendar month",
+  "dry_rule": {
+    "rule": "1981-2010 sd of monthly rain below 10 mm: no anomaly, not scored",
+    "excluded_district_months": 61,
+    "by_calendar_month": {
+      "1": 28,
+      "2": 27,
+      "12": 6
+    }
+  },
+  "features": [
+    "anom_lag1",
+    "anom_lag2",
+    "anom_lag3",
+    "anom_lag4",
+    "anom_lag5",
+    "anom_lag6",
+    "anom_lag7",
+    "anom_lag8",
+    "anom_lag9",
+    "anom_lag10",
+    "anom_lag11",
+    "anom_lag12",
+    "spi1_lag1",
+    "spi3_lag1",
+    "spi6_lag1",
+    "state_anom_lag1",
+    "month_of_year"
+  ],
+  "dataset_sha256": "7035ecaa7a2b674395119f4986fabb813cef93805c82af30842591f7351353f3",
+  "split_sha256": "a4092dd453c691ad40198208f55d7c8d97357942b2e3b83adb504c116e28c8c0",
+  "source_sha256": "09d3c89a084f13f3,0b8f4b5884f6e9e5,0c5cd53892cbea7e,1023548bcc409d95,1db12d8eb5a471d3,1e89531d9772acbd,1f656dc6498b8bcb,23119ee55f78cd4b,28ddc49f8af38bd9,2f2b20a58c883e11,34445bd00b098c85,3f007292029a212e,405e89cc3c835b39,5542e3441278325c,5b8f542bd1ae1792,6056e795aaa11f26,72a9c97f58fb12d8,73eb61027f0373e4,78060465e12dacbf,78ae74184b0ece2a,79d1d9acb4da5614,7d47dd937eb68d3e,7f5128e82aa6d362,81bbab9f686bcd0c,83185ebbab190a95,8c22bbde0d4753cd,8d671a7b4eeeb218,8e22a50a30c92d9c,9cd1654631ed918f,a13672034666d04b,a3cf9d4dd08ac504,acf30d074c16b440,ae11b700154013b3,b138efce173261e6,b1cb4b43da4434b8,b41b0c095335638f,b4fa5ffb389496c0,bd24f975f5d2c64f,dc9109fc3c4c2dbc,dfb714184e16624c,e19532760221e687,ea431a0940e329e7,eaed86f9bfd2e65f,f308b916a4a2a57a,f481d8619e164381",
+  "rows": {
+    "train": 9843,
+    "tune": 897,
+    "calibrate": 598,
+    "test": 1794
+  },
+  "baselines": {
+    "train": {
+      "rows": 9843,
+      "months": 395,
+      "mae": {
+        "climatology": 0.7556398514346923,
+        "persistence": 1.0072342009148547,
+        "last_year": 1.0160134631331375
+      },
+      "improvement_over_climatology": {
+        "persistence": {
+          "mean": -0.2515943494801626,
+          "lower95": -0.3072137139709327,
+          "upper95": -0.20133159029466072
+        },
+        "last_year": {
+          "mean": -0.2603736116984453,
+          "lower95": -0.318383035218293,
+          "upper95": -0.20859296179397488
+        }
+      },
+      "strongest": "climatology"
+    },
+    "tune": {
+      "rows": 897,
+      "months": 36,
+      "mae": {
+        "climatology": 0.9066889219349421,
+        "persistence": 1.1135212217268136,
+        "last_year": 1.3512095053395943
+      },
+      "improvement_over_climatology": {
+        "persistence": {
+          "mean": -0.20683229979187148,
+          "lower95": -0.3838963795071226,
+          "upper95": -0.0393529221113051
+        },
+        "last_year": {
+          "mean": -0.444520583404652,
+          "lower95": -0.6466873762904296,
+          "upper95": -0.25654892126498985
+        }
+      },
+      "strongest": "climatology"
+    }
+  },
+  "candidate": null,
+  "test_opened": false
+}
