@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D215 — Karnataka hospital siting, illustrative (T286, 13 Nov 2026).**
+  `src/atlas/analysis/siting.py` and notebook 16: greedy maximal coverage over the S16 1 km cells
+  inside the S17 districts; a pick covers cells within 10 km (straight line) that are more than
+  10 km from every S18 OSM hospital (D195 distances). Greedy guarantees at least (1 - 1/e), about
+  63%, of the best possible coverage; it is not proven optimal. Ten sites bring 0.96 M of the
+  8.17 M people beyond 10 km within reach (11.8%); the people-weighted mean falls from 4.75 to
+  4.63 km. That is 2.1 times the 10 most populous uncovered cells (0.45 M) and one site in each
+  of the 10 worst districts (0.46 M), and above all 200 random draws (best 0.32 M); greedy also
+  wins at 5/10/20 sites and 5/10/15 km. Dropping 10% of OSM hospitals keeps only 3 to 7 of the
+  ten picks within 10 km, so the cells show gap areas, not sites. No district-headquarters
+  baseline (no place points in the local inputs). `access.py` was split into `load_inputs()` and
+  `build()` for reuse; notebook 11 outputs are byte-identical. Not a recommendation.
+
 - **D213 — District segmentation, Karnataka (T285, 13 Nov 2026).**
   Six committed per-district features: ERA5 southwest-season rain level, variability and
   northeast share (S02), the IMD Sen trend as an index, hospital mean km (D195) and log
