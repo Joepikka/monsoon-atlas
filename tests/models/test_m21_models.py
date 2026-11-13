@@ -113,7 +113,7 @@ def test_seeds_make_runs_repeatable():
 
 def test_report_and_gate_agree():
     tune = GATE["tune"]
-    assert GATE["candidate"] is None and GATE["test_opened"] is False
+    assert GATE["test_opened"] is False  # the candidate is named by T283 (test_nn_graph.py)
     assert tune["task"] == "T281" and tune["rows"] == GATE["rows"]["tune"] == 897
     assert tune["dataset_sha256"] == GATE["dataset_sha256"]
     assert tune["split_sha256"] == GATE["split_sha256"]
@@ -136,7 +136,7 @@ def test_report_and_gate_agree():
     assert sorted(beat) == tune["beat_climatology_mae"]
     if not beat:
         assert "nothing beats climatology on tune" in REPORT
-    assert "no candidate is named" in REPORT
+    assert "T281 named no candidate" in REPORT
 
 
 def test_real_dataset_reproduces_the_gate():

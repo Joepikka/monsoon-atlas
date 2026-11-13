@@ -430,8 +430,8 @@ def render(tune: dict) -> str:
         "# M21 classical models on the tune years (T281)",
         "",
         "**Tune only (2015-2017). Calibrate (2018-2019) and the locked test (2020-2025) are not "
-        "scored, and no candidate is named** (T283 adds networks; T284 names the candidate before "
-        "the test is opened). Hindcast (D39).",
+        "scored. T281 named no candidate**; T283 (below) adds networks and names it, and T284 "
+        "opens the test once. Hindcast (D39).",
         "",
         "Every choice was made inside train (1982-01 to 2014-11): SARIMA order by AIC per "
         "district, ridge alpha by mean MAE over ten yearly rolling origins (31-day purge), "

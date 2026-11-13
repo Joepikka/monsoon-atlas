@@ -93,7 +93,13 @@
       "strongest": "climatology"
     }
   },
-  "candidate": null,
+  "candidate": {
+    "model": "lightgbm",
+    "reason": "lowest classical tune MAE; no network beat it with a lower 95% bound above 0; tune MAE 0.878, lower 95% bound vs climatology -0.029, so expected research-only.",
+    "expected": "research-only",
+    "named_by": "T283"
+  },
+  "candidate_rule": "Fixed before the networks were scored on tune. Eligible: SARIMA, ridge, LightGBM, MLP and GCN-GRU (the identity-matrix GCN-GRU is an ablation, not eligible). The default candidate is the classical model with the lowest tune MAE. A network replaces it only if the sd of its tune MAE over the five seeds is at most 0.01 and the lower 95% bound of its MAE improvement over that classical model (seed-mean errors, paired block bootstrap by month) is above 0; among such networks the lowest mean tune MAE wins. If the candidate's lower 95% bound of MAE improvement over climatology is not above 0, it is still named for the single test opening in T284 and is expected to be research-only.",
   "test_opened": false,
   "tune": {
     "task": "T281",
@@ -249,6 +255,546 @@
       "sarima": "12579710acde4baebbf8db2d1abcc2a2",
       "ridge": "1d0a69ec859a41d1a910965cd86d8c7f",
       "lightgbm": "99b78376d18f452db770586a53caf693"
+    },
+    "networks": {
+      "task": "T283",
+      "rows": 897,
+      "months": 36,
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "best_classical": "lightgbm",
+      "settings": {
+        "window": 12,
+        "node_features": [
+          "anom",
+          "observed",
+          "spi1",
+          "spi3",
+          "spi6",
+          "month_sin",
+          "month_cos"
+        ],
+        "gcn_hidden": 16,
+        "gru_hidden": 32,
+        "mlp_hidden": 32,
+        "dropout": 0.1,
+        "weight_decay": 0.0001,
+        "lr": 0.003,
+        "max_epochs": 150,
+        "patience": 15,
+        "batch": {
+          "mlp": 256,
+          "gcn": 16
+        },
+        "loss": "L1"
+      },
+      "models": {
+        "mlp": {
+          "seeds": [
+            {
+              "seed": 0,
+              "mae": 0.8977717583369165,
+              "improvement_over_climatology": {
+                "mean": 0.008917163598025633,
+                "lower95": -0.04410230442463527,
+                "upper95": 0.06724693429717898
+              },
+              "rps": 0.23812395717211898,
+              "rpss": -0.021181782868800347,
+              "rps_improvement": {
+                "mean": -0.00493926746569016,
+                "lower95": -0.025996133247147658,
+                "upper95": 0.015484090538535023
+              },
+              "crps": 0.6687130926272825,
+              "crps_improvement": {
+                "mean": -0.012796742734725202,
+                "lower95": -0.04493306037252153,
+                "upper95": 0.01655428276549716
+              },
+              "train_seconds": 6.8,
+              "best_epoch": 2,
+              "inner_valid_mae": 0.7824808769760827,
+              "parameters": 1697
+            },
+            {
+              "seed": 1,
+              "mae": 0.9022727189516746,
+              "improvement_over_climatology": {
+                "mean": 0.004416202983267653,
+                "lower95": -0.0485767984162444,
+                "upper95": 0.06320545594571676
+              },
+              "rps": 0.24084913787239087,
+              "rpss": -0.03286857372845242,
+              "rps_improvement": {
+                "mean": -0.007664448165962032,
+                "lower95": -0.028240611784392435,
+                "upper95": 0.012169595306868092
+              },
+              "crps": 0.6701585225178542,
+              "crps_improvement": {
+                "mean": -0.014242172625296826,
+                "lower95": -0.045594178528288995,
+                "upper95": 0.015390604217957744
+              },
+              "train_seconds": 1.7,
+              "best_epoch": 1,
+              "inner_valid_mae": 0.7791667433775229,
+              "parameters": 1697
+            },
+            {
+              "seed": 2,
+              "mae": 0.9017230605058705,
+              "improvement_over_climatology": {
+                "mean": 0.004965861429071733,
+                "lower95": -0.04184047628843681,
+                "upper95": 0.05313688690695809
+              },
+              "rps": 0.24086852775517087,
+              "rpss": -0.03295172619787223,
+              "rps_improvement": {
+                "mean": -0.007683838048742042,
+                "lower95": -0.031061459311284956,
+                "upper95": 0.016635906549579187
+              },
+              "crps": 0.673344241532121,
+              "crps_improvement": {
+                "mean": -0.017427891639563615,
+                "lower95": -0.04976693452654596,
+                "upper95": 0.014919892935714248
+              },
+              "train_seconds": 1.8,
+              "best_epoch": 2,
+              "inner_valid_mae": 0.7795382268169553,
+              "parameters": 1697
+            },
+            {
+              "seed": 3,
+              "mae": 0.9141244419187239,
+              "improvement_over_climatology": {
+                "mean": -0.007435519983781657,
+                "lower95": -0.05361057417909312,
+                "upper95": 0.04120009903585416
+              },
+              "rps": 0.24661077450856791,
+              "rpss": -0.057577042553874636,
+              "rps_improvement": {
+                "mean": -0.01342608480213908,
+                "lower95": -0.036327913205072476,
+                "upper95": 0.009853251649741972
+              },
+              "crps": 0.6828829048257199,
+              "crps_improvement": {
+                "mean": -0.026966554933162617,
+                "lower95": -0.05965997417232581,
+                "upper95": 0.005632464583326302
+              },
+              "train_seconds": 1.8,
+              "best_epoch": 2,
+              "inner_valid_mae": 0.7716243131218115,
+              "parameters": 1697
+            },
+            {
+              "seed": 4,
+              "mae": 0.8946939858805785,
+              "improvement_over_climatology": {
+                "mean": 0.011994936054363775,
+                "lower95": -0.03392780141858531,
+                "upper95": 0.06415516270892879
+              },
+              "rps": 0.2386837324316241,
+              "rpss": -0.023582348961753707,
+              "rps_improvement": {
+                "mean": -0.005499042725195296,
+                "lower95": -0.03039134607046398,
+                "upper95": 0.018851218441787103
+              },
+              "crps": 0.6692170274532265,
+              "crps_improvement": {
+                "mean": -0.01330067756066921,
+                "lower95": -0.049104783799256056,
+                "upper95": 0.02056898236894552
+              },
+              "train_seconds": 1.8,
+              "best_epoch": 2,
+              "inner_valid_mae": 0.7834362137176866,
+              "parameters": 1697
+            }
+          ],
+          "summary": {
+            "mae_mean": 0.9021171931187528,
+            "mae_sd": 0.007388172333022004,
+            "rpss_mean": -0.03363229486215067,
+            "rpss_sd": 0.014408452789895946,
+            "crps_mean": 0.6728631577912408,
+            "crps_sd": 0.00588343291517858,
+            "mae_min": 0.8946939858805785,
+            "mae_max": 0.9141244419187239,
+            "improvement_lower95_min": -0.05361057417909312,
+            "improvement_lower95_max": -0.03392780141858531
+          },
+          "seed_mean": {
+            "mean": 0.0045717288161894265,
+            "lower95": -0.044230766205815515,
+            "upper95": 0.05713048802782489
+          },
+          "improvement_over_best_classical": {
+            "mean": -0.024515999091757418,
+            "lower95": -0.06228293409121641,
+            "upper95": 0.01298670664989724
+          }
+        },
+        "gcn_gru": {
+          "seeds": [
+            {
+              "seed": 0,
+              "mae": 0.9006832836779551,
+              "improvement_over_climatology": {
+                "mean": 0.006005638256987026,
+                "lower95": -0.05146574575061336,
+                "upper95": 0.06411089123024723
+              },
+              "rps": 0.23966084399845272,
+              "rpss": -0.027772639362288798,
+              "rps_improvement": {
+                "mean": -0.006476154292023877,
+                "lower95": -0.022950085160136406,
+                "upper95": 0.009041304305361738
+              },
+              "crps": 0.6689521050459116,
+              "crps_improvement": {
+                "mean": -0.013035755153354266,
+                "lower95": -0.03980058979669866,
+                "upper95": 0.012401890696216797
+              },
+              "train_seconds": 27.0,
+              "best_epoch": 24,
+              "inner_valid_mae": 0.7628453562409139,
+              "parameters": 5233
+            },
+            {
+              "seed": 1,
+              "mae": 0.91979589294346,
+              "improvement_over_climatology": {
+                "mean": -0.01310697100851787,
+                "lower95": -0.08601832070214817,
+                "upper95": 0.060802261002381904
+              },
+              "rps": 0.24881120987788313,
+              "rpss": -0.06701349128507328,
+              "rps_improvement": {
+                "mean": -0.015626520171454283,
+                "lower95": -0.04152738920896068,
+                "upper95": 0.01051342767503266
+              },
+              "crps": 0.6848675623675456,
+              "crps_improvement": {
+                "mean": -0.02895121247498829,
+                "lower95": -0.07150213564045725,
+                "upper95": 0.012639183882041523
+              },
+              "train_seconds": 25.8,
+              "best_epoch": 22,
+              "inner_valid_mae": 0.7571246138100304,
+              "parameters": 5233
+            },
+            {
+              "seed": 2,
+              "mae": 0.9119042160063632,
+              "improvement_over_climatology": {
+                "mean": -0.0052152940714210285,
+                "lower95": -0.06270195627115703,
+                "upper95": 0.05260481793467379
+              },
+              "rps": 0.2452451902130825,
+              "rpss": -0.051720807750446296,
+              "rps_improvement": {
+                "mean": -0.012060500506653667,
+                "lower95": -0.035922317058156544,
+                "upper95": 0.010185517412767128
+              },
+              "crps": 0.6739727578621949,
+              "crps_improvement": {
+                "mean": -0.01805640796963747,
+                "lower95": -0.05529004977238645,
+                "upper95": 0.017769288855926463
+              },
+              "train_seconds": 29.7,
+              "best_epoch": 26,
+              "inner_valid_mae": 0.7627901700112616,
+              "parameters": 5233
+            },
+            {
+              "seed": 3,
+              "mae": 0.8971321708450782,
+              "improvement_over_climatology": {
+                "mean": 0.009556751089864075,
+                "lower95": -0.04872627466129535,
+                "upper95": 0.07457546529492236
+              },
+              "rps": 0.24019157795149845,
+              "rpss": -0.030048663374473872,
+              "rps_improvement": {
+                "mean": -0.007006888245069594,
+                "lower95": -0.03141809825056315,
+                "upper95": 0.016958055460400967
+              },
+              "crps": 0.6703177680966194,
+              "crps_improvement": {
+                "mean": -0.014401418204061867,
+                "lower95": -0.05313593551071054,
+                "upper95": 0.02150152549773468
+              },
+              "train_seconds": 16.1,
+              "best_epoch": 11,
+              "inner_valid_mae": 0.7650038936828959,
+              "parameters": 5233
+            },
+            {
+              "seed": 4,
+              "mae": 0.9030811369640245,
+              "improvement_over_climatology": {
+                "mean": 0.003607784970917679,
+                "lower95": -0.0708037524122093,
+                "upper95": 0.08442910348034922
+              },
+              "rps": 0.23956011768610766,
+              "rpss": -0.02734067998934786,
+              "rps_improvement": {
+                "mean": -0.006375427979678817,
+                "lower95": -0.021723442922903426,
+                "upper95": 0.007461502371404162
+              },
+              "crps": 0.6645891989782902,
+              "crps_improvement": {
+                "mean": -0.008672849085732777,
+                "lower95": -0.031759493241493596,
+                "upper95": 0.014065500048112327
+              },
+              "train_seconds": 11.1,
+              "best_epoch": 5,
+              "inner_valid_mae": 0.7694216253581182,
+              "parameters": 5233
+            }
+          ],
+          "summary": {
+            "mae_mean": 0.9065193400873761,
+            "mae_sd": 0.009209553272528849,
+            "rpss_mean": -0.04077925635232602,
+            "rpss_sd": 0.017838621550933628,
+            "crps_mean": 0.6725398784701124,
+            "crps_sd": 0.007665639742780101,
+            "mae_min": 0.8971321708450782,
+            "mae_max": 0.91979589294346,
+            "improvement_lower95_min": -0.08601832070214817,
+            "improvement_lower95_max": -0.04872627466129535
+          },
+          "seed_mean": {
+            "mean": 0.00016958184756597896,
+            "lower95": -0.059310843330219166,
+            "upper95": 0.06494778726227061
+          },
+          "improvement_over_best_classical": {
+            "mean": -0.028918146060380866,
+            "lower95": -0.06369020947473607,
+            "upper95": 0.007266999899508157
+          }
+        },
+        "gcn_gru_identity": {
+          "seeds": [
+            {
+              "seed": 0,
+              "mae": 0.8878970496486666,
+              "improvement_over_climatology": {
+                "mean": 0.01879187228627562,
+                "lower95": -0.031759342016639686,
+                "upper95": 0.07363059307709738
+              },
+              "rps": 0.23765126779970724,
+              "rpss": -0.019154679918744533,
+              "rps_improvement": {
+                "mean": -0.0044665780932784,
+                "lower95": -0.02450039908022993,
+                "upper95": 0.014842769210685981
+              },
+              "crps": 0.6623935569498269,
+              "crps_improvement": {
+                "mean": -0.006477207057269454,
+                "lower95": -0.039578488541792536,
+                "upper95": 0.02237840965657198
+              },
+              "train_seconds": 13.9,
+              "best_epoch": 5,
+              "inner_valid_mae": 0.7660483499271619,
+              "parameters": 5233
+            },
+            {
+              "seed": 1,
+              "mae": 0.8901973286619863,
+              "improvement_over_climatology": {
+                "mean": 0.016491593272955896,
+                "lower95": -0.04136492357345674,
+                "upper95": 0.07855824921413944
+              },
+              "rps": 0.23926377085368142,
+              "rpss": -0.02606981253746099,
+              "rps_improvement": {
+                "mean": -0.006079081147252596,
+                "lower95": -0.03084790662345647,
+                "upper95": 0.01670878906325698
+              },
+              "crps": 0.6651074164593089,
+              "crps_improvement": {
+                "mean": -0.00919106656675162,
+                "lower95": -0.04886360321766221,
+                "upper95": 0.02697781288460048
+              },
+              "train_seconds": 28.4,
+              "best_epoch": 22,
+              "inner_valid_mae": 0.7593492772158812,
+              "parameters": 5233
+            },
+            {
+              "seed": 2,
+              "mae": 0.8932301745140839,
+              "improvement_over_climatology": {
+                "mean": 0.01345874742085821,
+                "lower95": -0.0383850339488272,
+                "upper95": 0.07146408225699044
+              },
+              "rps": 0.2372335350789529,
+              "rpss": -0.01736325561348573,
+              "rps_improvement": {
+                "mean": -0.00404884537252406,
+                "lower95": -0.021485370210086726,
+                "upper95": 0.013276038545340775
+              },
+              "crps": 0.6620407168550422,
+              "crps_improvement": {
+                "mean": -0.006124366962484704,
+                "lower95": -0.03304731741031825,
+                "upper95": 0.019194732359574872
+              },
+              "train_seconds": 32.4,
+              "best_epoch": 22,
+              "inner_valid_mae": 0.7664795534825672,
+              "parameters": 5233
+            },
+            {
+              "seed": 3,
+              "mae": 0.8926502534221283,
+              "improvement_over_climatology": {
+                "mean": 0.014038668512813865,
+                "lower95": -0.039796418031429984,
+                "upper95": 0.07308010296792264
+              },
+              "rps": 0.23777839729444292,
+              "rpss": -0.01969986791927636,
+              "rps_improvement": {
+                "mean": -0.004593707588014096,
+                "lower95": -0.026033858340591878,
+                "upper95": 0.0164204275011366
+              },
+              "crps": 0.6642664744828003,
+              "crps_improvement": {
+                "mean": -0.008350124590242947,
+                "lower95": -0.04269149654811615,
+                "upper95": 0.022943498065310514
+              },
+              "train_seconds": 22.4,
+              "best_epoch": 17,
+              "inner_valid_mae": 0.7674725895021713,
+              "parameters": 5233
+            },
+            {
+              "seed": 4,
+              "mae": 0.8924942157837266,
+              "improvement_over_climatology": {
+                "mean": 0.014194706151215567,
+                "lower95": -0.021845848345752043,
+                "upper95": 0.05197797815306984
+              },
+              "rps": 0.23906725950046587,
+              "rpss": -0.02522708416853181,
+              "rps_improvement": {
+                "mean": -0.0058825697940370235,
+                "lower95": -0.03153383779360151,
+                "upper95": 0.01831816180649751
+              },
+              "crps": 0.6672150832415285,
+              "crps_improvement": {
+                "mean": -0.011298733348971125,
+                "lower95": -0.04860948151720559,
+                "upper95": 0.02431316742270173
+              },
+              "train_seconds": 37.7,
+              "best_epoch": 33,
+              "inner_valid_mae": 0.7628961012183042,
+              "parameters": 5233
+            }
+          ],
+          "summary": {
+            "mae_mean": 0.8912938044061184,
+            "mae_sd": 0.0022232112215942075,
+            "rpss_mean": -0.021502940031499884,
+            "rpss_sd": 0.0038931977768563828,
+            "crps_mean": 0.6642046495977014,
+            "crps_sd": 0.0021121187549861882,
+            "mae_min": 0.8878970496486666,
+            "mae_max": 0.8932301745140839,
+            "improvement_lower95_min": -0.04136492357345674,
+            "improvement_lower95_max": -0.021845848345752043
+          },
+          "seed_mean": {
+            "mean": 0.015395117528823832,
+            "lower95": -0.033974085463899566,
+            "upper95": 0.06902277105698587
+          },
+          "improvement_over_best_classical": {
+            "mean": -0.01369261037912301,
+            "lower95": -0.045632519701405055,
+            "upper95": 0.019669005607235494
+          }
+        }
+      },
+      "graph_over_identity": {
+        "mean": -0.015225535681257854,
+        "lower95": -0.032568221873620545,
+        "upper95": 0.0016469672614624529
+      },
+      "dataset_sha256": "7035ecaa7a2b674395119f4986fabb813cef93805c82af30842591f7351353f3",
+      "split_sha256": "a4092dd453c691ad40198208f55d7c8d97357942b2e3b83adb504c116e28c8c0",
+      "git_sha": "e904e36978296bff158a559370f9b406033feaf3",
+      "mlflow_run_ids": {
+        "mlp": [
+          "4d0d233b6f204f7abe8940c9f7fefe91",
+          "8277b7db88294cf59d16c429f3b07dc9",
+          "17503517cfd54bfdb1ffb706afa78a3e",
+          "81d04d9defb441c79a802e8a4a8e5281",
+          "4f55eed3ad9e4e78a1c10ad3635faf0b"
+        ],
+        "gcn_gru": [
+          "c237eec1591846309a7840d4e2771230",
+          "2032ccaf3ec2481b861a8fe571e1c285",
+          "1fc8d7e41aa143eca39ba965d45e3307",
+          "d25b116fb22749719b8d126447d2c244",
+          "b53611e2a6b14cb48b03f0b2afdc7e17"
+        ],
+        "gcn_gru_identity": [
+          "9bfe80bf7ff049c6ac295e5c52041a12",
+          "b39507f692e24ef68fad7d6f0b240343",
+          "cd3cfed097174cdca54136dc7910ff3b",
+          "898b6508641a466cbeb5a9ba802fc8df",
+          "8165a5a1376d4b8994b9969d1dcc1dfa"
+        ]
+      },
+      "total_seconds": 281.3
     }
   }
 }

@@ -1,6 +1,6 @@
 # M21 classical models on the tune years (T281)
 
-**Tune only (2015-2017). Calibrate (2018-2019) and the locked test (2020-2025) are not scored, and no candidate is named** (T283 adds networks; T284 names the candidate before the test is opened). Hindcast (D39).
+**Tune only (2015-2017). Calibrate (2018-2019) and the locked test (2020-2025) are not scored. T281 named no candidate**; T283 (below) adds networks and names it, and T284 opens the test once. Hindcast (D39).
 
 Every choice was made inside train (1982-01 to 2014-11): SARIMA order by AIC per district, ridge alpha by mean MAE over ten yearly rolling origins (31-day purge), LightGBM by a seeded random search of 30 configs with early stopping on an inner validation slice (2012-01 to 2014-11), then refitted on all train rows. Tune was scored once.
 
@@ -37,3 +37,34 @@ MLflow experiment M21 in `data/models/mlflow.db` (local), git 68133a16c1c4 (the 
 - SARIMA forecasts are one step ahead with train parameters held fixed; the filter reads anomalies up to month t-1, the same information as the lag features. ETS was not fitted: dry months leave gaps that SARIMA's state-space filter handles and ETS does not.
 - Probabilistic scores use pooled residuals (anomalies are already standardised per district and month).
 - Tercile edges in anomaly units are midpoints between the 1982-2010 classes in train; 1981 has no row (lags need a year).
+
+# M21 networks on the tune years (T283)
+
+**Tune only. Calibrate and the locked test are not scored.** Plain torch on CPU, 5 seeds each (seeds [0, 1, 2, 3, 4]). Each seed: fit on inner train (to 2011-11), early stopping on the inner validation slice of train (2012-01 to 2014-11, patience 15, at most 150 epochs), refit on all train rows for the early-stopped number of epochs, tune scored once. Sizes, dropout 0.1, weight decay 0.0001 and learning rate 0.003 were fixed in advance; L1 loss.
+
+- MLP: the ridge features (12 anomaly lags, SPI-1/3/6, state anomaly at t-1, month sin and cos), two hidden layers of 32.
+- GCN-GRU: per month, the 30 districts' anomaly, observed flag, SPI-1/3/6 and month sin and cos; two graph convolutions relu(A H W) of width 16 with A the row-normalised queen adjacency plus self loops; a GRU of width 32 over the past 12 months; a linear head per district.
+- Ablation: the same GCN-GRU with A = identity (no neighbour information).
+
+Mean over seeds, seed sd in brackets. MAE improvement: climatology minus model, paired block bootstrap by month on the seed-mean errors. Lower bounds per seed: lowest and highest over the seeds.
+
+| Model | Tune MAE (sd) | MAE range | MAE improvement over climatology (95% interval) | Lower bounds per seed | RPSS (sd) | CRPS (sd) | Parameters | Seconds per seed |
+|---|---|---|---|---|---|---|---|---|
+| MLP (tabular features) | 0.902 (0.007) | 0.895-0.914 | +0.005 [-0.044, +0.057] | -0.054 to -0.034 | -0.034 (0.014) | 0.673 (0.006) | 1697 | 2.8 |
+| GCN-GRU (queen adjacency) | 0.907 (0.009) | 0.897-0.920 | +0.000 [-0.059, +0.065] | -0.086 to -0.049 | -0.041 (0.018) | 0.673 (0.008) | 5233 | 21.9 |
+| GCN-GRU, identity ablation | 0.891 (0.002) | 0.888-0.893 | +0.015 [-0.034, +0.069] | -0.041 to -0.022 | -0.022 (0.004) | 0.664 (0.002) | 5233 | 27.0 |
+
+## Reading
+
+- Against the best classical model (LightGBM (pooled)), MAE improvement (95% interval): MLP (tabular features) -0.025 [-0.062, +0.013]; GCN-GRU (queen adjacency) -0.029 [-0.064, +0.007].
+- Ablation, identity minus adjacency (positive means the neighbours help): -0.015 [-0.033, +0.002].
+
+## Candidate
+
+Rule (written into the gate before the networks were scored): Fixed before the networks were scored on tune. Eligible: SARIMA, ridge, LightGBM, MLP and GCN-GRU (the identity-matrix GCN-GRU is an ablation, not eligible). The default candidate is the classical model with the lowest tune MAE. A network replaces it only if the sd of its tune MAE over the five seeds is at most 0.01 and the lower 95% bound of its MAE improvement over that classical model (seed-mean errors, paired block bootstrap by month) is above 0; among such networks the lowest mean tune MAE wins. If the candidate's lower 95% bound of MAE improvement over climatology is not above 0, it is still named for the single test opening in T284 and is expected to be research-only.
+
+**Named candidate: lightgbm.** lowest classical tune MAE; no network beat it with a lower 95% bound above 0; tune MAE 0.878, lower 95% bound vs climatology -0.029, so expected research-only.
+
+## Runs
+
+MLflow experiment M21, 15 runs (one per network and seed, with the inner-validation loss curve), git e904e3697829 (the commit before T283).
