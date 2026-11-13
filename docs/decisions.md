@@ -2,6 +2,21 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D218 — Spatial lags, spatial cross-validation and residual Moran's I, research-only (T282, 13 Nov 2026).**
+  `src/atlas/models/spatial_ml.py`, notebook 15, `reports/eda/15_ka_spatial_ml/`. Lags are
+  queen-neighbour means of the anomaly, SPI-1 and SPI-3 at t-1 only. M21 LightGBM refitted with the
+  T281 procedure (`m21_fit` gained an optional `features` argument; the 0.878 refit reproduces):
+  tune MAE 0.878 without lags, 0.870 with, gain +0.008 [-0.020, +0.037], so lags do not help;
+  candidate unchanged, results under gate key `tune.spatial`. Residual Moran's I median 0.52 before,
+  0.50 after; intra-month correlation 0.49 (about 2 independent values per month), which is why
+  every interval resamples whole months. CV inside train 2005-01..2014-11, improvement over
+  climatology: random 5-fold +0.039 [+0.020, +0.061]; leave one region out +0.024; yearly rolling
+  origins -0.034; region out plus rolling origins -0.038 [-0.066, -0.008]: leaky CV overstates
+  skill by about 0.08 MAE. Regions: 5 contiguous Ward blocks with queen connectivity, rule fixed
+  before scoring (an eigenvector rule gave a one-district region and was dropped unscored). M05
+  spatial challenger (ridge, D97 rolling origins, 2000-2019 only): MAE 0.611 with and without lags;
+  research-only. Module and test names follow the plan; amendments T282 updated to match.
+
 - **D217 — M21 neural networks on train/tune; LightGBM named as the candidate (T283, 13 Nov 2026).**
   `src/atlas/models/nn_graph.py`, plain torch on CPU: an MLP on the ridge features and a GCN-GRU
   (two graph convolutions with the row-normalised queen adjacency plus self loops, a GRU over 12

@@ -89,13 +89,13 @@ new_tasks:
     phase: P2
     state: KA
     depends_on: [T281]
-    files: [notebooks/15_spatial_ml.ipynb, src/atlas/models/spatial.py, tests/models/test_spatial.py]
+    files: [notebooks/15_spatial_ml.ipynb, src/atlas/models/spatial_ml.py, tests/models/test_spatial_ml.py]
     steps:
       - "Add spatial lag features and a leave-one-region-out check"
       - "Compute Moran's I of tune residuals before and after"
       - "Run an M05 spatial challenger on pre-2020 rolling origins, research-only"
     acceptance:
-      command: '.\.venv\Scripts\python -m pytest tests/models/test_spatial.py -q'
+      command: '.\.venv\Scripts\python -m pytest tests/models/test_spatial_ml.py -q'
   - id: T281
     title: "M21 SARIMA/ETS, ridge and LightGBM on train and tune"
     phase: P2
