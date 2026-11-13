@@ -2,12 +2,15 @@
 # release from the hot Worker plus committed static inputs and the warning archive, archives it to
 # the owner's private Hugging Face dataset with read-back, refreshes Ask, and deploys the site to
 # Cloudflare Pages (free plan). Account values are secrets; the archive repository name is masked
-# because Actions logs are public.
+# because Actions logs are public. D204: it also runs on every push to main, so a merged PR goes
+# live without waiting for GitHub's irregular schedule.
 name: daily
 
 on:
   schedule:
     - cron: "17 2 * * *"
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:

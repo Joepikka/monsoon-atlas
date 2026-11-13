@@ -2,6 +2,13 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D204 — Merge when CI passes; deploy on every merge (13 Nov 2026).**
+  Owner, in chat: chose standing approval to merge each PR once CI passes ("a"), then "turn on"
+  auto-merge. `main` now requires the four CI checks (`test` and `web` on Ubuntu and Windows;
+  admins not enforced, no review rule), so GitHub auto-merge can wait for them. `daily.yml` also
+  runs on every push to `main`, so a merged PR deploys without waiting for GitHub's irregular
+  schedule (feeds ran on schedule only twice in 12 hours on 12-13 Nov).
+
 - **D203 — H15 Copernicus account done; S3 keys verified (13 Nov 2026).**
   The owner registered a Copernicus Data Space Ecosystem account in their own browser (the
   built-in browser failed the site's Captcha.eu check) and created S3 keys, saved in `.env` as
