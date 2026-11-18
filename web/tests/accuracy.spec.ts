@@ -53,3 +53,19 @@ test('the map header links to the accuracy page', async ({ page }) => {
   await expect(page).toHaveURL(/page=accuracy/);
   await expect(page.getByRole('heading', { name: 'Model accuracy' })).toBeVisible();
 });
+
+test('working models lead; blocked models sit in a collapsed roadmap per state', async ({ page }) => {
+  await page.goto('/?page=accuracy');
+  await expect(page.getByRole('heading', { name: /M05 Karnataka drought outlook/ })).toBeVisible();
+  await expect(page.getByText('Research only')).toBeVisible();
+  const roadmap = page.locator('details.acc-roadmap');
+  await expect(roadmap).not.toHaveAttribute('open', '');
+  await roadmap.locator('summary').click();
+  await expect(roadmap.getByTestId('model-M01')).toBeVisible();
+  await page.getByRole('button', { name: 'Kerala' }).click();
+  await expect(page.getByText('Kerala work has not started yet')).toBeVisible();
+  await expect(roadmap.getByTestId('model-M07')).toBeVisible();
+  await expect(roadmap.getByTestId('model-M01')).toHaveCount(0);
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(results.violations).toEqual([]);
+});

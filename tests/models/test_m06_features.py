@@ -24,8 +24,10 @@ def test_gate_reports_real_source_failures_and_evidence_hashes():
     assert gate["prediction_rows"] == 0
     assert gate["sources"]["S22"]["outcome"] == "blocked"
     assert gate["sources"]["S23"]["licence"] == "open"
-    assert gate["sources"]["S23"]["units"] == "unlabelled"
-    assert gate["sources"]["S23"]["earliest_date"] == "2026-11-05"
+    # T270: S23 onion rows are ingested, but labels and the model wait for T273.
+    assert gate["sources"]["S23"]["outcome"] == "available"
+    assert gate["sources"]["S23"]["units"] == "onion_only"
+    assert "S23 onion rows ingested (T270); labels and model in T273" in gate["reason"]
     assert gate["split_manifest"] is None
     for name, sha in gate["evidence"].items():
         assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == sha

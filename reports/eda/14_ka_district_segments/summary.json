@@ -1,0 +1,103 @@
+{
+ "task": "T285",
+ "n_districts": 30,
+ "features_used": [
+  "sw_rain_level",
+  "sw_rain_cv",
+  "ne_share",
+  "rain_trend",
+  "hospital_km",
+  "log_people"
+ ],
+ "features_dropped_collinear": [],
+ "scaling": "robust (median, IQR); population as log10",
+ "k_rule": "highest silhouette over k=2..6 among k whose smallest segment has >= 3 districts; tie goes to the smaller k (fixed before results were seen)",
+ "silhouette_by_k": [
+  {
+   "k": 2,
+   "silhouette": 0.6856,
+   "smallest_segment": 5
+  },
+  {
+   "k": 3,
+   "silhouette": 0.6315,
+   "smallest_segment": 1
+  },
+  {
+   "k": 4,
+   "silhouette": 0.2402,
+   "smallest_segment": 1
+  },
+  {
+   "k": 5,
+   "silhouette": 0.226,
+   "smallest_segment": 1
+  },
+  {
+   "k": 6,
+   "silhouette": 0.1939,
+   "smallest_segment": 1
+  }
+ ],
+ "k_excluded_small_segment": [
+  3,
+  4,
+  5,
+  6
+ ],
+ "k": 2,
+ "silhouette": 0.6856,
+ "bootstrap": {
+  "runs": 1000,
+  "median_ari": 1.0,
+  "p10_ari": 0.829,
+  "p90_ari": 1.0,
+  "bar": 0.6
+ },
+ "ward_comparison": {
+  "silhouette": 0.6856,
+  "ari_vs_kmeans": 1.0
+ },
+ "without_bangalore_ari_vs_kmeans": 1.0,
+ "segments": [
+  {
+   "segment": 1,
+   "name": "close to the state middle on every feature",
+   "centroid": {
+    "sw_rain_level": 548.99,
+    "sw_rain_cv": 0.26,
+    "ne_share": 0.24,
+    "rain_trend": 6.23,
+    "hospital_km": 5.34,
+    "log_people": 6.31
+   },
+   "districts": 25
+  },
+  {
+   "segment": 2,
+   "name": "wet, steady rain",
+   "centroid": {
+    "sw_rain_level": 2115.02,
+    "sw_rain_cv": 0.17,
+    "ne_share": 0.13,
+    "rain_trend": 3.78,
+    "hospital_km": 4.85,
+    "log_people": 6.35
+   },
+   "districts": 5
+  }
+ ],
+ "publish_decision": "descriptive typology",
+ "decision_rule": "median bootstrap ARI >= 0.6 -> descriptive typology; otherwise exploratory, no stable clusters claimed",
+ "input_sha256_16": {
+  "monsoon-normals.json": "fc1119a33aab7eea",
+  "climate.json": "24896ee2bfe01613",
+  "district_access.csv": "b4de76646c61dd73"
+ },
+ "limits": [
+  "n = 30 districts: a typology for orientation, not a discovery or a forecast.",
+  "Rain level, variability and autumn share are ERA5 reanalysis at one grid point per district (2001-2025), not gauge counts; the trend is the IMD-based Sen slope index (1981-2025). No IMD mm value is published.",
+  "Hospital distance is straight-line to the nearest OSM hospital (D195); OSM is thinner in rural areas.",
+  "Segment names describe each centroid against the state middle; they are not causes."
+ ]
+}

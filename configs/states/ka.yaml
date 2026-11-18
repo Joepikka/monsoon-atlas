@@ -178,11 +178,12 @@ sources:
     enabled: false
   - source_id: S23
     name: "data.gov.in mandi prices"
-    verify_task: T025
+    verify_task: T269
     cost: free_with_key
     secret_env: DATA_GOV_IN_API_KEY
     schedule: "daily"
-    enabled: false
+    verified_by: configs/sources/s23.yaml
+    enabled: true
   - source_id: S25
     name: "NASA FIRMS active fires"
     verify_task: T075

@@ -2,6 +2,141 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D220 - S23 per-day onion adapter; history backfilled; S23 available and enabled (T270, 18 Nov 2026).**
+  `src/atlas/ingest/s23.py` fetches one `filters[Arrival_Date]` request per day for Karnataka
+  onion (offset paging is unreliable, D212), at least 2 s apart, and checks each day's rows against
+  the API `total`. Other commodities are refused until H16. A day on or after the resource's
+  `updated_date` is provisional and not checkpointed. The backfill is resumable from
+  `data/raw/S23/checkpoint.jsonl`; a network outage stopped the first run at 2015-12-11 and the
+  resumed run finished the rest. Result: 9,442 days from 2001-01-10 to 2026-11-16, 8,732 with rows,
+  103,500 rows, 0 mismatched days, 0 failed requests. `build` writes `data/clean/S23/onion.parquet`
+  plus `manifest.json` (git-ignored) with no cleaning beyond schema validity; T271 cleans and
+  quarantines. S23 is now `outcome: available`, `enabled`, verify_task T269; the frozen release
+  notes (`ka-v1.md`, `dl.md`), README and resume counts were updated to match. M06/M10 stay blocked
+  and M16 research-only until their own tasks (T273-T278).
+
+- **D212 - S23 variety-wise history verified for Karnataka onion; S23 stays blocked until the T270 adapter (13 Nov 2026).**
+  T269 re-ran the S23 verify for data.gov.in resource 35985678-0d79-46b4-9ed6-6f13308a1d24 (same
+  catalogue 6141ea17 and publisher as 9ef84268, so GODL applies). Evidence e07-e27 in
+  `tests/fixtures/s23/manifest.json`: 103,423 Karnataka onion rows from 10/01/2001 to 12/11/2026,
+  about one day behind the daily resource. Verified scope: State=Karnataka, Commodity=Onion, in
+  Rs./Quintal (AGMARKNET Price Unit read by the owner, D201); other commodities need H16. Limits
+  1000-10000 work; about 150 requests at one per 2 s met no refusal. Offset paging is unstable
+  (11 pages gave 93,423 distinct rows), so T270 back-fills one `filters[Arrival_Date]` request per
+  day and matches each day's `total`. Quality findings become T271 rules (20 rows with
+  min/modal/max out of order, 31 zero bounds, per-kg-looking Shimoga rows, 41 district spellings,
+  an APMC market-name change in Nov 2025, string prices before Nov 2025). S23 stays
+  `outcome: blocked` until an adapter can fetch a row; the frozen discovery contract is unchanged.
+  M06 and M10 stay blocked, M16 research-only; their gates were regenerated with the new reason.
+
+- **D219 - M21 locked test opened once; research-only; 80% intervals pass (T284, 18 Nov 2026).**
+  Before opening, rules were written into `models/gates/m21.json` (`test_protocol`, 06:28:02Z):
+  every model refitted once with frozen configs on 1982-01..2017-11 (train+tune, 31-day purge), no
+  re-tuning. Interval method chosen on pre-test years only (2018-2019 coverage: pooled 0.860,
+  seasonal 0.853): seasonal split conformal with offsets from the refit's 2018-2019 residuals.
+  Test 2020-2025 opened once at 06:28:12Z (git f7d075e0): 1,794 rows, 72 months; climatology MAE
+  1.059 is the strongest baseline. LightGBM (candidate) MAE 1.088, improvement -0.029
+  [-0.061, +0.003], so research_only; RPS gain +0.019 [+0.001, +0.036] reported only. Comparisons,
+  not eligible for promotion: SARIMA 1.048 (+0.011 [+0.001, +0.021]), ridge 1.041, spatial-lag
+  LightGBM 1.104, MLP 1.099, GCN-GRU 1.127, identity 1.086. Interval coverage 0.754 (width 2.71)
+  passes 75-85%, but only 15 of 30 districts are inside. Files: `models/registry/M21/v1.json` and
+  `reports/models/m21-card.md` (amendments updated to match). Hindcast (D39); 2025 provisional.
+
+- **D218 — Spatial lags, spatial cross-validation and residual Moran's I, research-only (T282, 13 Nov 2026).**
+  `src/atlas/models/spatial_ml.py`, notebook 15, `reports/eda/15_ka_spatial_ml/`. Lags are
+  queen-neighbour means of the anomaly, SPI-1 and SPI-3 at t-1 only. M21 LightGBM refitted with the
+  T281 procedure (`m21_fit` gained an optional `features` argument; the 0.878 refit reproduces):
+  tune MAE 0.878 without lags, 0.870 with, gain +0.008 [-0.020, +0.037], so lags do not help;
+  candidate unchanged, results under gate key `tune.spatial`. Residual Moran's I median 0.52 before,
+  0.50 after; intra-month correlation 0.49 (about 2 independent values per month), which is why
+  every interval resamples whole months. CV inside train 2005-01..2014-11, improvement over
+  climatology: random 5-fold +0.039 [+0.020, +0.061]; leave one region out +0.024; yearly rolling
+  origins -0.034; region out plus rolling origins -0.038 [-0.066, -0.008]: leaky CV overstates
+  skill by about 0.08 MAE. Regions: 5 contiguous Ward blocks with queen connectivity, rule fixed
+  before scoring (an eigenvector rule gave a one-district region and was dropped unscored). M05
+  spatial challenger (ridge, D97 rolling origins, 2000-2019 only): MAE 0.611 with and without lags;
+  research-only. Module and test names follow the plan; amendments T282 updated to match.
+
+- **D217 — M21 neural networks on train/tune; LightGBM named as the candidate (T283, 13 Nov 2026).**
+  `src/atlas/models/nn_graph.py`, plain torch on CPU: an MLP on the ridge features and a GCN-GRU
+  (two graph convolutions with the row-normalised queen adjacency plus self loops, a GRU over 12
+  months, about 5.2k parameters), plus the same GCN-GRU with the identity matrix as an ablation;
+  five seeds each. Departures from plan item 8: early stopping on the inner train slice
+  2012-01..2014-11 (stricter than tune), then a refit on all train; dropout, weight decay and sizes
+  fixed in advance; tune scored once per seed. Tune MAE (5-seed mean, sd): MLP 0.902 (0.007),
+  GCN-GRU 0.907 (0.009), identity 0.891 (0.002), against climatology 0.907 and LightGBM 0.878; no
+  lower 95% bound above 0 against either. Ablation, identity minus graph: -0.015 [-0.033, +0.002],
+  so the adjacency adds nothing here. A rule written into the gate before scoring named LightGBM
+  as the M21 candidate for T284's single test opening; it is expected to be research-only.
+
+- **D216 — M21 classical models on train/tune, no candidate (T281, 13 Nov 2026).**
+  `src/atlas/models/m21_fit.py`: per-district SARIMA (6 small orders, AIC on train), ridge for all
+  districts (alpha by 10 yearly rolling origins inside train) and LightGBM for all districts (30
+  seeded configs, early stopping on an inner 2012-01..2014-11 slice of train, refit on train). Tune
+  2015-2017 scored once (897 rows, 36 months); calibrate and test refused; candidate still null.
+  Tune MAE: climatology 0.907, train median 0.900, SARIMA 0.911, ridge 0.914, LightGBM 0.878
+  (+0.029 [-0.029, +0.086]). No lower bound above 0 on MAE, RPS or CRPS, so nothing beats
+  climatology on tune. ETS not fitted (dry-month gaps); added baselines: train median per district
+  and month (MAE), terciles at 1/3 (RPS), train anomalies (CRPS). MLflow experiment M21 in
+  `data/models/mlflow.db`. T281's acceptance file is `tests/models/test_m21_models.py`.
+
+- **D214 — M21 rain-anomaly dataset, split and baselines, no fit (T280, 13 Nov 2026).**
+  Target: z-score of month t district rain against the 1981-2010 mean and sd for that district and
+  calendar month; tercile class secondary. Dry rule, fixed on 1981-2010 only: a district-month with
+  reference sd below 10 mm has no anomaly and is left out, never scored as 0 (61 of 360: Jan 28,
+  Feb 27, Dec 6), so the locked test has 1,794 rows, not the plan's 2,160. Train 1982-01 to 2014-11
+  (31-day purge), tune 2015-2017, calibrate 2018-2019, locked test 2020-2025 (not scored; gate
+  `models/gates/m21.json`, candidate not yet named). Tune MAE: climatology 0.907, persistence
+  1.114, last year 1.351, so climatology is the bar. Persistence falls back to 0 when t-1 is dry.
+  Hindcast (D39); 2025 provisional (D98). `tests/test_monitor.py` now counts 21 model configs.
+
+- **D215 — Karnataka hospital siting, illustrative (T286, 13 Nov 2026).**
+  `src/atlas/analysis/siting.py` and notebook 16: greedy maximal coverage over the S16 1 km cells
+  inside the S17 districts; a pick covers cells within 10 km (straight line) that are more than
+  10 km from every S18 OSM hospital (D195 distances). Greedy guarantees at least (1 - 1/e), about
+  63%, of the best possible coverage; it is not proven optimal. Ten sites bring 0.96 M of the
+  8.17 M people beyond 10 km within reach (11.8%); the people-weighted mean falls from 4.75 to
+  4.63 km. That is 2.1 times the 10 most populous uncovered cells (0.45 M) and one site in each
+  of the 10 worst districts (0.46 M), and above all 200 random draws (best 0.32 M); greedy also
+  wins at 5/10/20 sites and 5/10/15 km. Dropping 10% of OSM hospitals keeps only 3 to 7 of the
+  ten picks within 10 km, so the cells show gap areas, not sites. No district-headquarters
+  baseline (no place points in the local inputs). `access.py` was split into `load_inputs()` and
+  `build()` for reuse; notebook 11 outputs are byte-identical. Not a recommendation.
+
+- **D213 — District segmentation, Karnataka (T285, 13 Nov 2026).**
+  Six committed per-district features: ERA5 southwest-season rain level, variability and
+  northeast share (S02), the IMD Sen trend as an index, hospital mean km (D195) and log
+  population; robust-scaled, no pair above |r| 0.9. Rule fixed before looking: k-means for
+  k = 2..6, highest silhouette among k whose smallest segment has at least 3 districts; publish as
+  a descriptive typology only if the median bootstrap ARI over 1,000 resamples is at least 0.6.
+  Result: k = 2, silhouette 0.686, median ARI 1.0 (p10 0.83), Ward ARI 1.0, ARI 1.0 without
+  Bangalore, so published as a descriptive typology: 5 "wet, steady rain" districts (Dakshina
+  Kannada, Kodagu, Shimoga, Udupi, Uttara Kannada) and 25 near the state middle. k = 3..6 each
+  leave a one-district segment and are excluded. Limits: n = 30, ERA5 reanalysis at one point
+  per district, straight-line OSM distance; rain level drives the split. Outputs in
+  `reports/eda/14_ka_district_segments/`; no IMD mm is published.
+
+- **D211 — Karnataka ML showcase plan registered (13 Nov 2026).**
+  Owner, in chat: "plan using fable and do using opus for hard task and sonnet for simple task";
+  the goal is to show data, ML and neural-network skills on real Karnataka data. The plan is
+  `docs/plans/karnataka-ml-showcase.md` and its tasks T268 to T289 are in amendments A51. Five
+  deviations from plan section 5: (1) new models M21 and M22 and tasks T268 to T289 sit outside the
+  4 Nov plan and amendments v1; (2) M06 starts with onion in all Karnataka markets, not Kolar
+  tomato, until H16 confirms tomato's unit, and its training window may start before 2021 (decided
+  in T273 before any fit); (3) small networks train locally on CPU with the `dl` lock, which
+  `dl.in` describes as for export and inference checks; (4) S23 is enabled per commodity on a
+  second resource of the same catalogue, not the resource the original record describes; (5) a
+  new owner step H16 (read price units on AGMARKNET) is added. Honest-ML rules are unchanged.
+
+- **D210 — Model accuracy page leads with working models (13 Nov 2026).**
+  Owner, in chat: 18 of 20 cards said BLOCKED and read as weakness. The Model accuracy page
+  now opens with one framing line (a model counts as working only if it beats the strongest simple
+  baseline on held-out data; no labels means roadmap, never invented data), a state switch
+  (Karnataka default, Kerala, Delhi, All; Kerala and Delhi say their phase has not started), a hero
+  card for M05 with every number read from `dashboards.json`, and M16 labelled research-only.
+  Blocked models move, unchanged, into a collapsed "Roadmap: models waiting for data" list with
+  their reasons and report links; none is removed or scored. The approved table stays below.
+
 - **D209 — Redesign step 2: Overview landing page with a 3D district map (13 Nov 2026).**
   Owner, in chat: "Start step 2". A bare address now opens `Overview` (hero, four headline
   numbers, a 3D map, district panel, links to every analysis); the map workspace moves to

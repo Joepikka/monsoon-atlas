@@ -21,13 +21,17 @@ FOLDER = re.search(
 ).group(1)
 
 
+NOT_CLEANED = {"S23"}  # T270 ingested onion rows; never used as data before T271 cleans them
+
+
 def blocked_sources() -> set[str]:
+    """Sources that are blocked or ingested but not yet cleaned: never used as data."""
     out = set()
     for p in (ROOT / "configs/sources").glob("s*.yaml"):
         record = yaml.safe_load(p.read_text("utf-8"))
         if record.get("outcome") == "blocked":
             out.add(record["source_id"])
-    return out
+    return out | NOT_CLEANED
 
 
 def files(base: Path) -> set[str]:

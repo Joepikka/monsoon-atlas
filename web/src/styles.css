@@ -1123,6 +1123,30 @@ h1,h2,h3,p{
   .map-panel{ position:sticky; top:0; align-self:start; height:100vh; min-height:560px }
 }
 
+/* D210: Model accuracy page leads with working models */
+.acc-frame{ max-width:78ch; color:#33423c }
+.acc-hero{ margin:18px 0; padding:26px 24px; color:#e8f3f1; border-radius:var(--radius); box-shadow:var(--shadow);
+  background:radial-gradient(circle at 85% 20%,#1f6672 0%,transparent 55%),linear-gradient(160deg,var(--night) 0%,var(--night-2) 100%) }
+.site-page>main .acc-hero h3{ margin:4px 0 8px; font-size:clamp(22px,3vw,30px); color:#fff }
+.acc-hero .ov-kpis{ margin:18px 0 0 }
+.acc-hero .ov-kpis dd{ font-size:26px }
+.acc-detail{ font-size:14px; color:#cfe2de; max-width:90ch }
+.acc-links{ display:flex; flex-wrap:wrap; gap:8px 18px; margin:8px 0 0 }
+.acc-links a{ display:inline-flex; align-items:center; min-height:44px; color:var(--teal); font-weight:600 }
+.acc-hero .acc-links a{ color:var(--sky) }
+.acc-research{ margin:18px 0; padding:18px 22px; background:var(--paper); border:1px solid var(--line); border-left:6px solid var(--amber); border-radius:var(--radius); box-shadow:var(--shadow) }
+.site-page>main .acc-research h3{ margin:4px 0; font-size:19px; color:var(--night) }
+.acc-tag{ color:#7a4b00 }
+.acc-roadmap{ margin:18px 0; background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow) }
+.acc-roadmap summary{ cursor:pointer; min-height:44px; display:flex; align-items:center; padding:0 18px; font-weight:600; color:var(--night) }
+.acc-roadmap summary:focus-visible,.acc-links a:focus-visible{ outline:3px solid var(--amber); outline-offset:2px }
+.acc-roadmap ul{ list-style:none; margin:0; padding:0 18px 8px }
+.acc-roadmap li{ display:flex; flex-direction:column; gap:2px; padding:10px 0; border-top:1px solid var(--line) }
+.acc-pad{ padding:0 18px; margin:0 }
+.acc-why{ font-size:14px; color:#33423c }
+.acc-roadmap .acc-links{ margin:0 }
+@media(max-width:900px){ .acc-hero{ padding:20px 16px } }
+
 /* T188: wall mode. State is always also written as text, never by colour alone. */
 .wall-mode { position: fixed; inset: 0; z-index: 50; overflow: auto; padding: 32px 48px; background: var(--paper); color: var(--teal); }
 .wall-head { display: flex; justify-content: space-between; align-items: center; gap: 24px; }

@@ -275,6 +275,7 @@ Open steps with an H number, from [ka.md](ka.md), [ka-v1.md](ka-v1.md), [kl.md](
 | H13 | Reviews at least 20% of every news batch and every held-out item | T189 to T211, M18, F017 | amendments.md, D155, D156 |
 | H14 | Reads each core case study and rewrites its summary | Portfolio case studies (M05, M07, Ask) | ka.md, README.md |
 | H15 | (proposed in T127, not in amendments A5) Registers a Copernicus Data Space account | S42, M09, M17, F029, F041 | kl.md |
+| H16 | Reads the AGMARKNET Price Unit for tomato, potato, maize, ragi, tur, dry chillies and copra in Karnataka and tells the agent | S23 beyond onion, T269 to T279 | amendments.md A51, D211 |
 
 Other open owner items without an H number (from the same pages):
 

@@ -120,8 +120,9 @@ EXTRA_EVIDENCE = ("reports/models/m16-flag-counts.json", "eval/anomalies/blocked
 REASON = (
     "M16 is research-only: the rule runs on the held S08 daily grids and flag counts are "
     "reported (reports/models/m16-flag-counts.json), but 0 of 100 flags are adjudicated (T212, "
-    "T213 blocked, D159), so precision is not measured and no quality claim is made. S22 and S23 "
-    "hold zero price rows and S32 has no 28-day window. No IsolationForest challenger was run."
+    "T213 blocked, D159), so precision is not measured and no quality claim is made. S22 is "
+    "blocked and S23 onion rows ingested (T270); labels and model in T273, so the rule reads "
+    "zero price rows, and S32 has no 28-day window. No IsolationForest challenger was run."
 )
 
 

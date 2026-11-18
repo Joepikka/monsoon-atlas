@@ -12,8 +12,9 @@ from atlas.ingest.discovery import Discovery
 
 ROOT = Path(__file__).resolve().parents[3]
 REASON = (
-    "M06 blocked: verified Karnataka price history, price units and publication timing "
-    "are required before implementing labels, features or predictions (T035)."
+    "M06 blocked: S23 onion rows ingested (T270); labels and model in T273. Karnataka onion is "
+    "the only verified commodity (Rs./Quintal, T269); labels, features and predictions wait for "
+    "the T271 cleaning and the T273 data gate (T035)."
 )
 
 

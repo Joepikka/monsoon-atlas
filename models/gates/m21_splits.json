@@ -1,0 +1,32 @@
+{
+  "sha256": "a4092dd453c691ad40198208f55d7c8d97357942b2e3b83adb504c116e28c8c0",
+  "splits": [
+    {
+      "name": "tune",
+      "train_start": "1982-01-01",
+      "train_end": "2014-11-30",
+      "test_start": "2015-01-01",
+      "test_end": "2017-12-31",
+      "purge_days": 31,
+      "test_blocks": []
+    },
+    {
+      "name": "calibrate",
+      "train_start": "1982-01-01",
+      "train_end": "2014-11-30",
+      "test_start": "2018-01-01",
+      "test_end": "2019-12-31",
+      "purge_days": 31,
+      "test_blocks": []
+    },
+    {
+      "name": "test",
+      "train_start": "1982-01-01",
+      "train_end": "2014-11-30",
+      "test_start": "2020-01-01",
+      "test_end": "2025-12-31",
+      "purge_days": 31,
+      "test_blocks": []
+    }
+  ]
+}

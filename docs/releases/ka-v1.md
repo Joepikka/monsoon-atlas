@@ -15,7 +15,7 @@ synthetic rows.
 
 ## Sources
 
-25 of 33 sources enabled; 8 blocked and disabled (outcome `blocked`, retry
+26 of 33 sources enabled; 7 blocked and disabled (outcome `blocked`, retry
 condition recorded in each `configs/sources/sNN.yaml`). Every row has a
 discovery record that passes the discovery contract
 (`atlas.ingest.discovery.check`), a manifest of stored evidence, and a source
@@ -46,7 +46,7 @@ adapter by design: T008 ended at discovery.
 | S20 | USGS earthquakes | available | yes | restricted | [s20](../sources/s20.md) |  |
 | S21 | Datameet railway schedules | available | yes | open | [s21](../sources/s21.md) |  |
 | S22 | India Data Portal Agmarknet / existing price data | blocked | no | unverified | [s22](../sources/s22.md) | Working browser render of the Agmarknet page, or owner notes the download button, format and licence. |
-| S23 | data.gov.in mandi prices | blocked | no | open | [s23](../sources/s23.md) | Publisher statement of the min/modal/max price denominator for the resource; GODL is already verified. |
+| S23 | data.gov.in mandi prices | available | yes | open | [s23](../sources/s23.md) |  |
 | S25 | NASA FIRMS active fires | available | yes | open | [s25](../sources/s25.md) |  |
 | S27 | KSNDMC gauges | blocked | no | unverified | [s27](../sources/s27.md) | KSNDMC serves gauge data over HTTPS with station list, units and terms, or an equivalent open dataset appears. |
 | S28 | KWRIS reservoirs and rainfall | blocked | no | restricted | [s28](../sources/s28.md) | KWRIS account (owner step) with API terms allowing research, or ACIWRM sends daily history with units and licence, or the site publishes an export. |
@@ -150,7 +150,7 @@ Each waits for history that does not exist. None is faked or inferred.
 | M02 | Daily reservoir level and storage with units and datum (S28) | KWRIS account or ACIWRM data with units and licence, or a published export; then re-run T008 |
 | M03 | Daily reported reservoir inflow with units (S28); never inferred from levels | Same as M02 |
 | M04 | Daily gauge rainfall with coordinates (S27; S29 is annual only) | KSNDMC publishes gauge data over HTTPS with station list, units and terms; then re-run T077 |
-| M06 | Karnataka price history, price units and publication timing (S22, S23) | S23 price denominator statement, or a working S22 render; then re-run T025 or T023 |
+| M06 | Cleaned Karnataka price history with labels (S23 onion rows ingested in T270; S22 blocked) | T271 cleaning, then the T273 data gate for labels and the model |
 
 Feeds that only have history from the day they are first stored (S01, S05,
 S09, S10, S12) cannot support a trained model until the archive has grown; M05
@@ -165,8 +165,8 @@ From `docs/HANDOFF.md` section 8, "Pending human-only steps" (not edited here):
   map guidance, OpenFreeMap 18+ confirmation, WorldPop undercount label.
 - H05 and H06 tokens (deferred by the owner on 6 Nov); T045 needs them.
 - H08 Telegram bot (S39), K-RERA permission (S31), OpenSky
-  terms (S11), KWRIS request (S28), S23 denominator
-  statement.
+  terms (S11), KWRIS request (S28), S23 units for commodities
+  beyond onion (H16).
 - H04 Delhi Open Transit Data registration (needed in P4).
 
 T046 (the Karnataka MVP release) remains open and waits for H11. C1 (Kerala

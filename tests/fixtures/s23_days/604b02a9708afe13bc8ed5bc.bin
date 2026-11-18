@@ -1,0 +1,319 @@
+{
+    "index_name": "35985678-0d79-46b4-9ed6-6f13308a1d24",
+    "title": "Variety-wise Daily Market Prices Data of Commodity",
+    "desc": "Variety-wise Daily Market Prices Data of Commodity",
+    "org_type": "Central",
+    "org": [
+        "Ministry of Agriculture and Farmers Welfare",
+        "Department of Agriculture and Farmers Welfare",
+        "Directorate of Marketing and Inspection (DMI)"
+    ],
+    "sector": [
+        "Agriculture",
+        "Agricultural Marketing"
+    ],
+    "source": "data.gov.in",
+    "catalog_uuid": "6141ea17-a69d-4713-b600-0a43c8fd9a6c",
+    "visualizable": "0",
+    "active": "1",
+    "created": 1695098583,
+    "updated": 1794526492,
+    "created_date": "2023-09-19T06:43:03Z",
+    "updated_date": "2026-11-12T23:34:52Z",
+    "external_ws": 0,
+    "external_ws_url": "",
+    "target_bucket": {
+        "index": "agmarknet_new",
+        "type": "6141ea17-a69d-4713-b600-0a43c8fd9a6c",
+        "field": "35985678-0d79-46b4-9ed6-6f13308a1d24"
+    },
+    "field": [
+        {
+            "name": "Arrival_Date",
+            "id": "Arrival_Date",
+            "type": "date"
+        },
+        {
+            "name": "Commodity",
+            "id": "Commodity",
+            "type": "keyword"
+        },
+        {
+            "name": "Commodity_Code",
+            "id": "Commodity_Code",
+            "type": "keyword"
+        },
+        {
+            "name": "District",
+            "id": "District",
+            "type": "keyword"
+        },
+        {
+            "name": "Grade",
+            "id": "Grade",
+            "type": "keyword"
+        },
+        {
+            "name": "Market",
+            "id": "Market",
+            "type": "keyword"
+        },
+        {
+            "name": "Max_Price",
+            "id": "Max_Price",
+            "type": "keyword"
+        },
+        {
+            "name": "Min_Price",
+            "id": "Min_Price",
+            "type": "keyword"
+        },
+        {
+            "name": "Modal_Price",
+            "id": "Modal_Price",
+            "type": "keyword"
+        },
+        {
+            "name": "State",
+            "id": "State",
+            "type": "keyword"
+        },
+        {
+            "name": "Variety",
+            "id": "Variety",
+            "type": "keyword"
+        }
+    ],
+    "field_dependent": {
+        "State": {
+            "parent": "State",
+            "child": "District"
+        }
+    },
+    "order": [
+        {
+            "name": "Market",
+            "id": "Market"
+        },
+        {
+            "name": "Commodity",
+            "id": "Commodity"
+        }
+    ],
+    "field_exposed": [
+        {
+            "name": "State",
+            "id": "State",
+            "type": "keyword",
+            "mandatory": true
+        },
+        {
+            "name": "District",
+            "id": "District",
+            "type": "keyword",
+            "mandatory": true
+        },
+        {
+            "name": "Commodity",
+            "id": "Commodity",
+            "type": "keyword"
+        },
+        {
+            "name": "Arrival Date",
+            "format": "dd-MM-yyyy",
+            "id": "Arrival_Date",
+            "type": "date"
+        }
+    ],
+    "message": "Resource lists",
+    "version": "2.2.0",
+    "status": "ok",
+    "total": 14,
+    "count": 14,
+    "limit": "1000",
+    "offset": "0",
+    "records": [
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Dharwad",
+            "Grade": "FAQ",
+            "Market": "Hubli (Amaragol)",
+            "Max_Price": "1100",
+            "Min_Price": "180",
+            "Modal_Price": "560",
+            "State": "Karnataka",
+            "Variety": "Telagi"
+        },
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Gadag",
+            "Grade": "FAQ",
+            "Market": "Gadag",
+            "Max_Price": "900",
+            "Min_Price": "100",
+            "Modal_Price": "450",
+            "State": "Karnataka",
+            "Variety": "Onion"
+        },
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Hassan",
+            "Grade": "FAQ",
+            "Market": "Hassan",
+            "Max_Price": "1100",
+            "Min_Price": "600",
+            "Modal_Price": "990",
+            "State": "Karnataka",
+            "Variety": "Other"
+        },
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Dharwad",
+            "Grade": "FAQ",
+            "Market": "Hubli (Amaragol)",
+            "Max_Price": "1000",
+            "Min_Price": "100",
+            "Modal_Price": "540",
+            "State": "Karnataka",
+            "Variety": "Local"
+        },
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Bellary",
+            "Grade": "FAQ",
+            "Market": "Hospet",
+            "Max_Price": "950",
+            "Min_Price": "500",
+            "Modal_Price": "800",
+            "State": "Karnataka",
+            "Variety": "Local"
+        },
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Bangalore",
+            "Grade": "FAQ",
+            "Market": "Bangalore",
+            "Max_Price": "800",
+            "Min_Price": "600",
+            "Modal_Price": "700",
+            "State": "Karnataka",
+            "Variety": "Local"
+        },
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Udupi",
+            "Grade": "FAQ",
+            "Market": "Udupi",
+            "Max_Price": "1300",
+            "Min_Price": "1100",
+            "Modal_Price": "1200",
+            "State": "Karnataka",
+            "Variety": "Onion"
+        },
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Bangalore",
+            "Grade": "FAQ",
+            "Market": "Bangalore",
+            "Max_Price": "1400",
+            "Min_Price": "800",
+            "Modal_Price": "1100",
+            "State": "Karnataka",
+            "Variety": "Puna"
+        },
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Dharwad",
+            "Grade": "FAQ",
+            "Market": "Hubli (Amaragol)",
+            "Max_Price": "1500",
+            "Min_Price": "200",
+            "Modal_Price": "840",
+            "State": "Karnataka",
+            "Variety": "Puna"
+        },
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Belgaum",
+            "Grade": "FAQ",
+            "Market": "Belgaum",
+            "Max_Price": "1500",
+            "Min_Price": "600",
+            "Modal_Price": "1100",
+            "State": "Karnataka",
+            "Variety": "Pusa-Red"
+        },
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Belgaum",
+            "Grade": "FAQ",
+            "Market": "Belgaum",
+            "Max_Price": "1600",
+            "Min_Price": "700",
+            "Modal_Price": "1200",
+            "State": "Karnataka",
+            "Variety": "White"
+        },
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Chikmagalur",
+            "Grade": "FAQ",
+            "Market": "Bagepalli",
+            "Max_Price": "1100",
+            "Min_Price": "800",
+            "Modal_Price": "980",
+            "State": "Karnataka",
+            "Variety": "Onion"
+        },
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Davangere",
+            "Grade": "FAQ",
+            "Market": "Davangere",
+            "Max_Price": "1200",
+            "Min_Price": "300",
+            "Modal_Price": "750",
+            "State": "Karnataka",
+            "Variety": "Onion"
+        },
+        {
+            "Arrival_Date": "02\/01\/2019",
+            "Commodity": "Onion",
+            "Commodity_Code": "23",
+            "District": "Bangalore",
+            "Grade": "FAQ",
+            "Market": "Doddaballa Pur",
+            "Max_Price": "1800",
+            "Min_Price": "1200",
+            "Modal_Price": "1500",
+            "State": "Karnataka",
+            "Variety": "Onion"
+        }
+    ]
+}

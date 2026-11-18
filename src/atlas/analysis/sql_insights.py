@@ -37,7 +37,8 @@ NOT_ANSWERABLE = [
     (
         "How many of the rain-flood events were followed by a price spike in the nearest market?",
         "S22, S23 (market prices), flood labels",
-        "S22 and S23 are blocked, so there are no price rows, and flood labels are blocked.",
+        "S22 is blocked and the S23 Karnataka onion rows ingested in T270 are not cleaned "
+        "until T271, so there are no usable price rows; flood labels are blocked.",
     ),
 ]
 

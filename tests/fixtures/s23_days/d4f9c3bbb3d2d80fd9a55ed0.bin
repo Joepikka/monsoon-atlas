@@ -1,0 +1,371 @@
+{
+    "index_name": "35985678-0d79-46b4-9ed6-6f13308a1d24",
+    "title": "Variety-wise Daily Market Prices Data of Commodity",
+    "desc": "Variety-wise Daily Market Prices Data of Commodity",
+    "org_type": "Central",
+    "org": [
+        "Ministry of Agriculture and Farmers Welfare",
+        "Department of Agriculture and Farmers Welfare",
+        "Directorate of Marketing and Inspection (DMI)"
+    ],
+    "sector": [
+        "Agriculture",
+        "Agricultural Marketing"
+    ],
+    "source": "data.gov.in",
+    "catalog_uuid": "6141ea17-a69d-4713-b600-0a43c8fd9a6c",
+    "visualizable": "0",
+    "active": "1",
+    "created": 1695098583,
+    "updated": 1794526492,
+    "created_date": "2023-09-19T06:43:03Z",
+    "updated_date": "2026-11-12T23:34:52Z",
+    "external_ws": 0,
+    "external_ws_url": "",
+    "target_bucket": {
+        "index": "agmarknet_new",
+        "type": "6141ea17-a69d-4713-b600-0a43c8fd9a6c",
+        "field": "35985678-0d79-46b4-9ed6-6f13308a1d24"
+    },
+    "field": [
+        {
+            "name": "Arrival_Date",
+            "id": "Arrival_Date",
+            "type": "date"
+        },
+        {
+            "name": "Commodity",
+            "id": "Commodity",
+            "type": "keyword"
+        },
+        {
+            "name": "Commodity_Code",
+            "id": "Commodity_Code",
+            "type": "keyword"
+        },
+        {
+            "name": "District",
+            "id": "District",
+            "type": "keyword"
+        },
+        {
+            "name": "Grade",
+            "id": "Grade",
+            "type": "keyword"
+        },
+        {
+            "name": "Market",
+            "id": "Market",
+            "type": "keyword"
+        },
+        {
+            "name": "Max_Price",
+            "id": "Max_Price",
+            "type": "keyword"
+        },
+        {
+            "name": "Min_Price",
+            "id": "Min_Price",
+            "type": "keyword"
+        },
+        {
+            "name": "Modal_Price",
+            "id": "Modal_Price",
+            "type": "keyword"
+        },
+        {
+            "name": "State",
+            "id": "State",
+            "type": "keyword"
+        },
+        {
+            "name": "Variety",
+            "id": "Variety",
+            "type": "keyword"
+        }
+    ],
+    "field_dependent": {
+        "State": {
+            "parent": "State",
+            "child": "District"
+        }
+    },
+    "order": [
+        {
+            "name": "Market",
+            "id": "Market"
+        },
+        {
+            "name": "Commodity",
+            "id": "Commodity"
+        }
+    ],
+    "field_exposed": [
+        {
+            "name": "State",
+            "id": "State",
+            "type": "keyword",
+            "mandatory": true
+        },
+        {
+            "name": "District",
+            "id": "District",
+            "type": "keyword",
+            "mandatory": true
+        },
+        {
+            "name": "Commodity",
+            "id": "Commodity",
+            "type": "keyword"
+        },
+        {
+            "name": "Arrival Date",
+            "format": "dd-MM-yyyy",
+            "id": "Arrival_Date",
+            "type": "date"
+        }
+    ],
+    "message": "Resource lists",
+    "version": "2.2.0",
+    "status": "ok",
+    "total": 18,
+    "count": 18,
+    "limit": "1000",
+    "offset": "0",
+    "records": [
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Kolar",
+            "Grade": "Local",
+            "Market": "Bangarpet APMC",
+            "Max_Price": 5000,
+            "Min_Price": 4000,
+            "Modal_Price": 4600,
+            "State": "Karnataka",
+            "Variety": "Onion"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Vijayapura",
+            "Grade": "Local",
+            "Market": "Vijayapura APMC",
+            "Max_Price": 4000,
+            "Min_Price": 1000,
+            "Modal_Price": 2500,
+            "State": "Karnataka",
+            "Variety": "Onion"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Chikkaballapur",
+            "Grade": "Local",
+            "Market": "Gauribidanur APMC",
+            "Max_Price": 4500,
+            "Min_Price": 3800,
+            "Modal_Price": 4300,
+            "State": "Karnataka",
+            "Variety": "Onion"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Gadag",
+            "Grade": "Medium",
+            "Market": "Gadag APMC",
+            "Max_Price": 4550,
+            "Min_Price": 1100,
+            "Modal_Price": 3500,
+            "State": "Karnataka",
+            "Variety": "Onion"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Udupi",
+            "Grade": "Local",
+            "Market": "Udupi APMC",
+            "Max_Price": 4000,
+            "Min_Price": 3500,
+            "Modal_Price": 3800,
+            "State": "Karnataka",
+            "Variety": "Onion"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Dharwad",
+            "Grade": "Local",
+            "Market": "APMC Hubballi",
+            "Max_Price": 4900,
+            "Min_Price": 1500,
+            "Modal_Price": 4500,
+            "State": "Karnataka",
+            "Variety": "Puna"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Belagavi",
+            "Grade": "Large",
+            "Market": "Belgaum APMC",
+            "Max_Price": 5000,
+            "Min_Price": 2000,
+            "Modal_Price": 4000,
+            "State": "Karnataka",
+            "Variety": "Pusa-Red"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Bengaluru",
+            "Grade": "Large",
+            "Market": "Bengaluru APMC",
+            "Max_Price": 5500,
+            "Min_Price": 4000,
+            "Modal_Price": 4500,
+            "State": "Karnataka",
+            "Variety": "Onion"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Davangere",
+            "Grade": "Local",
+            "Market": "Davangere APMC",
+            "Max_Price": 4700,
+            "Min_Price": 3000,
+            "Modal_Price": 4200,
+            "State": "Karnataka",
+            "Variety": "Onion"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Chikkamagaluru",
+            "Grade": "Medium",
+            "Market": "Kadur APMC",
+            "Max_Price": 3330,
+            "Min_Price": 3330,
+            "Modal_Price": 3330,
+            "State": "Karnataka",
+            "Variety": "Onion"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Shivamogga",
+            "Grade": "Local",
+            "Market": "Shimoga APMC",
+            "Max_Price": 6000,
+            "Min_Price": 3000,
+            "Modal_Price": 4500,
+            "State": "Karnataka",
+            "Variety": "Onion"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Mysuru",
+            "Grade": "Medium",
+            "Market": "Hunsur APMC",
+            "Max_Price": 4165,
+            "Min_Price": 4165,
+            "Modal_Price": 4165,
+            "State": "Karnataka",
+            "Variety": "Bombay (U.P.)"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Bengaluru",
+            "Grade": "Medium",
+            "Market": "Bengaluru APMC",
+            "Max_Price": 4000,
+            "Min_Price": 3000,
+            "Modal_Price": 3500,
+            "State": "Karnataka",
+            "Variety": "Local"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Dharwad",
+            "Grade": "Local",
+            "Market": "APMC Hubballi",
+            "Max_Price": 5100,
+            "Min_Price": 500,
+            "Modal_Price": 4300,
+            "State": "Karnataka",
+            "Variety": "Local"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Bengaluru",
+            "Grade": "Small",
+            "Market": "Bengaluru APMC",
+            "Max_Price": 2500,
+            "Min_Price": 1000,
+            "Modal_Price": 1500,
+            "State": "Karnataka",
+            "Variety": "Bangalore-Samall"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Haveri",
+            "Grade": "Medium",
+            "Market": "Ranebennur APMC",
+            "Max_Price": 1000,
+            "Min_Price": 1000,
+            "Modal_Price": 1000,
+            "State": "Karnataka",
+            "Variety": "Local"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Bengaluru",
+            "Grade": "Local",
+            "Market": "Bengaluru APMC",
+            "Max_Price": 5400,
+            "Min_Price": 3000,
+            "Modal_Price": 4500,
+            "State": "Karnataka",
+            "Variety": "Puna"
+        },
+        {
+            "Arrival_Date": "12\/11\/2026",
+            "Commodity": "Onion",
+            "Commodity_Code": 23,
+            "District": "Bengaluru Rural",
+            "Grade": "Medium",
+            "Market": "Doddaballapur APMC",
+            "Max_Price": 5000,
+            "Min_Price": 4000,
+            "Modal_Price": 4500,
+            "State": "Karnataka",
+            "Variety": "Onion"
+        }
+    ]
+}

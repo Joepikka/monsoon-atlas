@@ -1,0 +1,1434 @@
+{
+  "model_id": "M21",
+  "task": "T280",
+  "status": "ok",
+  "reasons": [],
+  "unit": "district (no verified taluk polygons; geoBoundaries 2021 lines)",
+  "years": [
+    1981,
+    2025
+  ],
+  "evidence": "hindcast (D39); 2025 is provisional (D98)",
+  "target": "z-score of month t district rain vs 1981-2010 mean and sd per calendar month",
+  "dry_rule": {
+    "rule": "1981-2010 sd of monthly rain below 10 mm: no anomaly, not scored",
+    "excluded_district_months": 61,
+    "by_calendar_month": {
+      "1": 28,
+      "2": 27,
+      "12": 6
+    }
+  },
+  "features": [
+    "anom_lag1",
+    "anom_lag2",
+    "anom_lag3",
+    "anom_lag4",
+    "anom_lag5",
+    "anom_lag6",
+    "anom_lag7",
+    "anom_lag8",
+    "anom_lag9",
+    "anom_lag10",
+    "anom_lag11",
+    "anom_lag12",
+    "spi1_lag1",
+    "spi3_lag1",
+    "spi6_lag1",
+    "state_anom_lag1",
+    "month_of_year"
+  ],
+  "dataset_sha256": "7035ecaa7a2b674395119f4986fabb813cef93805c82af30842591f7351353f3",
+  "split_sha256": "a4092dd453c691ad40198208f55d7c8d97357942b2e3b83adb504c116e28c8c0",
+  "source_sha256": "09d3c89a084f13f3,0b8f4b5884f6e9e5,0c5cd53892cbea7e,1023548bcc409d95,1db12d8eb5a471d3,1e89531d9772acbd,1f656dc6498b8bcb,23119ee55f78cd4b,28ddc49f8af38bd9,2f2b20a58c883e11,34445bd00b098c85,3f007292029a212e,405e89cc3c835b39,5542e3441278325c,5b8f542bd1ae1792,6056e795aaa11f26,72a9c97f58fb12d8,73eb61027f0373e4,78060465e12dacbf,78ae74184b0ece2a,79d1d9acb4da5614,7d47dd937eb68d3e,7f5128e82aa6d362,81bbab9f686bcd0c,83185ebbab190a95,8c22bbde0d4753cd,8d671a7b4eeeb218,8e22a50a30c92d9c,9cd1654631ed918f,a13672034666d04b,a3cf9d4dd08ac504,acf30d074c16b440,ae11b700154013b3,b138efce173261e6,b1cb4b43da4434b8,b41b0c095335638f,b4fa5ffb389496c0,bd24f975f5d2c64f,dc9109fc3c4c2dbc,dfb714184e16624c,e19532760221e687,ea431a0940e329e7,eaed86f9bfd2e65f,f308b916a4a2a57a,f481d8619e164381",
+  "rows": {
+    "train": 9843,
+    "tune": 897,
+    "calibrate": 598,
+    "test": 1794
+  },
+  "baselines": {
+    "train": {
+      "rows": 9843,
+      "months": 395,
+      "mae": {
+        "climatology": 0.7556398514346923,
+        "persistence": 1.0072342009148547,
+        "last_year": 1.0160134631331375
+      },
+      "improvement_over_climatology": {
+        "persistence": {
+          "mean": -0.2515943494801626,
+          "lower95": -0.3072137139709327,
+          "upper95": -0.20133159029466072
+        },
+        "last_year": {
+          "mean": -0.2603736116984453,
+          "lower95": -0.318383035218293,
+          "upper95": -0.20859296179397488
+        }
+      },
+      "strongest": "climatology"
+    },
+    "tune": {
+      "rows": 897,
+      "months": 36,
+      "mae": {
+        "climatology": 0.9066889219349421,
+        "persistence": 1.1135212217268136,
+        "last_year": 1.3512095053395943
+      },
+      "improvement_over_climatology": {
+        "persistence": {
+          "mean": -0.20683229979187148,
+          "lower95": -0.3838963795071226,
+          "upper95": -0.0393529221113051
+        },
+        "last_year": {
+          "mean": -0.444520583404652,
+          "lower95": -0.6466873762904296,
+          "upper95": -0.25654892126498985
+        }
+      },
+      "strongest": "climatology"
+    }
+  },
+  "candidate": {
+    "model": "lightgbm",
+    "reason": "lowest classical tune MAE; no network beat it with a lower 95% bound above 0; tune MAE 0.878, lower 95% bound vs climatology -0.029, so expected research-only.",
+    "expected": "research-only",
+    "named_by": "T283"
+  },
+  "candidate_rule": "Fixed before the networks were scored on tune. Eligible: SARIMA, ridge, LightGBM, MLP and GCN-GRU (the identity-matrix GCN-GRU is an ablation, not eligible). The default candidate is the classical model with the lowest tune MAE. A network replaces it only if the sd of its tune MAE over the five seeds is at most 0.01 and the lower 95% bound of its MAE improvement over that classical model (seed-mean errors, paired block bootstrap by month) is above 0; among such networks the lowest mean tune MAE wins. If the candidate's lower 95% bound of MAE improvement over climatology is not above 0, it is still named for the single test opening in T284 and is expected to be research-only.",
+  "test_opened": true,
+  "tune": {
+    "task": "T281",
+    "dataset_sha256": "7035ecaa7a2b674395119f4986fabb813cef93805c82af30842591f7351353f3",
+    "split_sha256": "a4092dd453c691ad40198208f55d7c8d97357942b2e3b83adb504c116e28c8c0",
+    "git_sha": "68133a16c1c4abb0e31f0d94c19a00177dcbc689",
+    "rows": 897,
+    "months": 36,
+    "models": {
+      "climatology": {
+        "mae": 0.9066889219349421,
+        "rps": 0.23318468970642883,
+        "crps": 0.6559163498925573
+      },
+      "climatology_median": {
+        "mae": 0.8999125666963372,
+        "improvement_over_climatology": {
+          "mean": 0.006776355238604991,
+          "lower95": -0.0448940313693556,
+          "upper95": 0.06232668910921642
+        }
+      },
+      "persistence": {
+        "mae": 1.1135212217268136,
+        "improvement_over_climatology": {
+          "mean": -0.20683229979187148,
+          "lower95": -0.3838963795071226,
+          "upper95": -0.0393529221113051
+        }
+      },
+      "last_year": {
+        "mae": 1.3512095053395943,
+        "improvement_over_climatology": {
+          "mean": -0.444520583404652,
+          "lower95": -0.6466873762904296,
+          "upper95": -0.25654892126498985
+        }
+      },
+      "sarima": {
+        "mae": 0.9107980201707412,
+        "improvement_over_climatology": {
+          "mean": -0.0041090982357990646,
+          "lower95": -0.016442864734234182,
+          "upper95": 0.007389180350221019
+        },
+        "improvement_over_median": {
+          "mean": -0.010885453474404054,
+          "lower95": -0.07312623325801404,
+          "upper95": 0.04658963146764941
+        },
+        "rps": 0.2354118801497913,
+        "rpss": -0.009551186427232627,
+        "rps_improvement": {
+          "mean": -0.002227190443362465,
+          "lower95": -0.011797702922118847,
+          "upper95": 0.007311328129543217
+        },
+        "crps": 0.6593737789396743,
+        "crps_improvement": {
+          "mean": -0.00345742904711688,
+          "lower95": -0.020784820312768244,
+          "upper95": 0.014697891814837275
+        },
+        "train_seconds": 12.6,
+        "params": {
+          "selection": "AIC on train",
+          "orders": {
+            "(0, 0, 0)": 21,
+            "(1, 0, 1)": 3,
+            "(0, 0, 1)": 1,
+            "(2, 0, 0)": 3,
+            "(1, 0, 0)x(1, 0, 0, 12)": 2
+          }
+        }
+      },
+      "ridge": {
+        "mae": 0.9139939355276697,
+        "improvement_over_climatology": {
+          "mean": -0.007305013592727444,
+          "lower95": -0.02952068578628243,
+          "upper95": 0.013119998142783725
+        },
+        "improvement_over_median": {
+          "mean": -0.014081368831332437,
+          "lower95": -0.07881291631983021,
+          "upper95": 0.04777127522990492
+        },
+        "rps": 0.2410510924328913,
+        "rpss": -0.03373464499906054,
+        "rps_improvement": {
+          "mean": -0.00786640272646244,
+          "lower95": -0.03748187753485493,
+          "upper95": 0.021950793146777666
+        },
+        "crps": 0.6735350870601707,
+        "crps_improvement": {
+          "mean": -0.017618737167613384,
+          "lower95": -0.06530508517673227,
+          "upper95": 0.031059620923666476
+        },
+        "train_seconds": 3.2,
+        "params": {
+          "alpha": 10000.0,
+          "cv_folds": 10
+        }
+      },
+      "lightgbm": {
+        "mae": 0.8776011940269953,
+        "improvement_over_climatology": {
+          "mean": 0.02908772790794684,
+          "lower95": -0.028866248677502343,
+          "upper95": 0.08643405470312236
+        },
+        "improvement_over_median": {
+          "mean": 0.022311372669341852,
+          "lower95": -0.025858193343199505,
+          "upper95": 0.06191349484451103
+        },
+        "rps": 0.23372054412152213,
+        "rpss": -0.0022979828382725387,
+        "rps_improvement": {
+          "mean": -0.0005358544150932803,
+          "lower95": -0.027911881543873907,
+          "upper95": 0.025024834427929094
+        },
+        "crps": 0.6580670135965075,
+        "crps_improvement": {
+          "mean": -0.0021506637039501995,
+          "lower95": -0.04811673383929461,
+          "upper95": 0.03896451397478163
+        },
+        "train_seconds": 2.8,
+        "params": {
+          "learning_rate": 0.1,
+          "num_leaves": 31,
+          "max_depth": 8,
+          "min_child_samples": 50,
+          "feature_fraction": 1.0,
+          "lambda_l2": 0.0,
+          "objective": "regression_l1",
+          "seed": 42,
+          "deterministic": true,
+          "num_threads": 4,
+          "verbose": -1,
+          "num_boost_round": 21,
+          "trials": 30,
+          "inner_valid_mae": 0.7688684953179528
+        }
+      }
+    },
+    "beat_climatology_mae": [],
+    "mlflow_run_ids": {
+      "sarima": "12579710acde4baebbf8db2d1abcc2a2",
+      "ridge": "1d0a69ec859a41d1a910965cd86d8c7f",
+      "lightgbm": "99b78376d18f452db770586a53caf693"
+    },
+    "networks": {
+      "task": "T283",
+      "rows": 897,
+      "months": 36,
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "best_classical": "lightgbm",
+      "settings": {
+        "window": 12,
+        "node_features": [
+          "anom",
+          "observed",
+          "spi1",
+          "spi3",
+          "spi6",
+          "month_sin",
+          "month_cos"
+        ],
+        "gcn_hidden": 16,
+        "gru_hidden": 32,
+        "mlp_hidden": 32,
+        "dropout": 0.1,
+        "weight_decay": 0.0001,
+        "lr": 0.003,
+        "max_epochs": 150,
+        "patience": 15,
+        "batch": {
+          "mlp": 256,
+          "gcn": 16
+        },
+        "loss": "L1"
+      },
+      "models": {
+        "mlp": {
+          "seeds": [
+            {
+              "seed": 0,
+              "mae": 0.8977717583369165,
+              "improvement_over_climatology": {
+                "mean": 0.008917163598025633,
+                "lower95": -0.04410230442463527,
+                "upper95": 0.06724693429717898
+              },
+              "rps": 0.23812395717211898,
+              "rpss": -0.021181782868800347,
+              "rps_improvement": {
+                "mean": -0.00493926746569016,
+                "lower95": -0.025996133247147658,
+                "upper95": 0.015484090538535023
+              },
+              "crps": 0.6687130926272825,
+              "crps_improvement": {
+                "mean": -0.012796742734725202,
+                "lower95": -0.04493306037252153,
+                "upper95": 0.01655428276549716
+              },
+              "train_seconds": 6.8,
+              "best_epoch": 2,
+              "inner_valid_mae": 0.7824808769760827,
+              "parameters": 1697
+            },
+            {
+              "seed": 1,
+              "mae": 0.9022727189516746,
+              "improvement_over_climatology": {
+                "mean": 0.004416202983267653,
+                "lower95": -0.0485767984162444,
+                "upper95": 0.06320545594571676
+              },
+              "rps": 0.24084913787239087,
+              "rpss": -0.03286857372845242,
+              "rps_improvement": {
+                "mean": -0.007664448165962032,
+                "lower95": -0.028240611784392435,
+                "upper95": 0.012169595306868092
+              },
+              "crps": 0.6701585225178542,
+              "crps_improvement": {
+                "mean": -0.014242172625296826,
+                "lower95": -0.045594178528288995,
+                "upper95": 0.015390604217957744
+              },
+              "train_seconds": 1.7,
+              "best_epoch": 1,
+              "inner_valid_mae": 0.7791667433775229,
+              "parameters": 1697
+            },
+            {
+              "seed": 2,
+              "mae": 0.9017230605058705,
+              "improvement_over_climatology": {
+                "mean": 0.004965861429071733,
+                "lower95": -0.04184047628843681,
+                "upper95": 0.05313688690695809
+              },
+              "rps": 0.24086852775517087,
+              "rpss": -0.03295172619787223,
+              "rps_improvement": {
+                "mean": -0.007683838048742042,
+                "lower95": -0.031061459311284956,
+                "upper95": 0.016635906549579187
+              },
+              "crps": 0.673344241532121,
+              "crps_improvement": {
+                "mean": -0.017427891639563615,
+                "lower95": -0.04976693452654596,
+                "upper95": 0.014919892935714248
+              },
+              "train_seconds": 1.8,
+              "best_epoch": 2,
+              "inner_valid_mae": 0.7795382268169553,
+              "parameters": 1697
+            },
+            {
+              "seed": 3,
+              "mae": 0.9141244419187239,
+              "improvement_over_climatology": {
+                "mean": -0.007435519983781657,
+                "lower95": -0.05361057417909312,
+                "upper95": 0.04120009903585416
+              },
+              "rps": 0.24661077450856791,
+              "rpss": -0.057577042553874636,
+              "rps_improvement": {
+                "mean": -0.01342608480213908,
+                "lower95": -0.036327913205072476,
+                "upper95": 0.009853251649741972
+              },
+              "crps": 0.6828829048257199,
+              "crps_improvement": {
+                "mean": -0.026966554933162617,
+                "lower95": -0.05965997417232581,
+                "upper95": 0.005632464583326302
+              },
+              "train_seconds": 1.8,
+              "best_epoch": 2,
+              "inner_valid_mae": 0.7716243131218115,
+              "parameters": 1697
+            },
+            {
+              "seed": 4,
+              "mae": 0.8946939858805785,
+              "improvement_over_climatology": {
+                "mean": 0.011994936054363775,
+                "lower95": -0.03392780141858531,
+                "upper95": 0.06415516270892879
+              },
+              "rps": 0.2386837324316241,
+              "rpss": -0.023582348961753707,
+              "rps_improvement": {
+                "mean": -0.005499042725195296,
+                "lower95": -0.03039134607046398,
+                "upper95": 0.018851218441787103
+              },
+              "crps": 0.6692170274532265,
+              "crps_improvement": {
+                "mean": -0.01330067756066921,
+                "lower95": -0.049104783799256056,
+                "upper95": 0.02056898236894552
+              },
+              "train_seconds": 1.8,
+              "best_epoch": 2,
+              "inner_valid_mae": 0.7834362137176866,
+              "parameters": 1697
+            }
+          ],
+          "summary": {
+            "mae_mean": 0.9021171931187528,
+            "mae_sd": 0.007388172333022004,
+            "rpss_mean": -0.03363229486215067,
+            "rpss_sd": 0.014408452789895946,
+            "crps_mean": 0.6728631577912408,
+            "crps_sd": 0.00588343291517858,
+            "mae_min": 0.8946939858805785,
+            "mae_max": 0.9141244419187239,
+            "improvement_lower95_min": -0.05361057417909312,
+            "improvement_lower95_max": -0.03392780141858531
+          },
+          "seed_mean": {
+            "mean": 0.0045717288161894265,
+            "lower95": -0.044230766205815515,
+            "upper95": 0.05713048802782489
+          },
+          "improvement_over_best_classical": {
+            "mean": -0.024515999091757418,
+            "lower95": -0.06228293409121641,
+            "upper95": 0.01298670664989724
+          }
+        },
+        "gcn_gru": {
+          "seeds": [
+            {
+              "seed": 0,
+              "mae": 0.9006832836779551,
+              "improvement_over_climatology": {
+                "mean": 0.006005638256987026,
+                "lower95": -0.05146574575061336,
+                "upper95": 0.06411089123024723
+              },
+              "rps": 0.23966084399845272,
+              "rpss": -0.027772639362288798,
+              "rps_improvement": {
+                "mean": -0.006476154292023877,
+                "lower95": -0.022950085160136406,
+                "upper95": 0.009041304305361738
+              },
+              "crps": 0.6689521050459116,
+              "crps_improvement": {
+                "mean": -0.013035755153354266,
+                "lower95": -0.03980058979669866,
+                "upper95": 0.012401890696216797
+              },
+              "train_seconds": 27.0,
+              "best_epoch": 24,
+              "inner_valid_mae": 0.7628453562409139,
+              "parameters": 5233
+            },
+            {
+              "seed": 1,
+              "mae": 0.91979589294346,
+              "improvement_over_climatology": {
+                "mean": -0.01310697100851787,
+                "lower95": -0.08601832070214817,
+                "upper95": 0.060802261002381904
+              },
+              "rps": 0.24881120987788313,
+              "rpss": -0.06701349128507328,
+              "rps_improvement": {
+                "mean": -0.015626520171454283,
+                "lower95": -0.04152738920896068,
+                "upper95": 0.01051342767503266
+              },
+              "crps": 0.6848675623675456,
+              "crps_improvement": {
+                "mean": -0.02895121247498829,
+                "lower95": -0.07150213564045725,
+                "upper95": 0.012639183882041523
+              },
+              "train_seconds": 25.8,
+              "best_epoch": 22,
+              "inner_valid_mae": 0.7571246138100304,
+              "parameters": 5233
+            },
+            {
+              "seed": 2,
+              "mae": 0.9119042160063632,
+              "improvement_over_climatology": {
+                "mean": -0.0052152940714210285,
+                "lower95": -0.06270195627115703,
+                "upper95": 0.05260481793467379
+              },
+              "rps": 0.2452451902130825,
+              "rpss": -0.051720807750446296,
+              "rps_improvement": {
+                "mean": -0.012060500506653667,
+                "lower95": -0.035922317058156544,
+                "upper95": 0.010185517412767128
+              },
+              "crps": 0.6739727578621949,
+              "crps_improvement": {
+                "mean": -0.01805640796963747,
+                "lower95": -0.05529004977238645,
+                "upper95": 0.017769288855926463
+              },
+              "train_seconds": 29.7,
+              "best_epoch": 26,
+              "inner_valid_mae": 0.7627901700112616,
+              "parameters": 5233
+            },
+            {
+              "seed": 3,
+              "mae": 0.8971321708450782,
+              "improvement_over_climatology": {
+                "mean": 0.009556751089864075,
+                "lower95": -0.04872627466129535,
+                "upper95": 0.07457546529492236
+              },
+              "rps": 0.24019157795149845,
+              "rpss": -0.030048663374473872,
+              "rps_improvement": {
+                "mean": -0.007006888245069594,
+                "lower95": -0.03141809825056315,
+                "upper95": 0.016958055460400967
+              },
+              "crps": 0.6703177680966194,
+              "crps_improvement": {
+                "mean": -0.014401418204061867,
+                "lower95": -0.05313593551071054,
+                "upper95": 0.02150152549773468
+              },
+              "train_seconds": 16.1,
+              "best_epoch": 11,
+              "inner_valid_mae": 0.7650038936828959,
+              "parameters": 5233
+            },
+            {
+              "seed": 4,
+              "mae": 0.9030811369640245,
+              "improvement_over_climatology": {
+                "mean": 0.003607784970917679,
+                "lower95": -0.0708037524122093,
+                "upper95": 0.08442910348034922
+              },
+              "rps": 0.23956011768610766,
+              "rpss": -0.02734067998934786,
+              "rps_improvement": {
+                "mean": -0.006375427979678817,
+                "lower95": -0.021723442922903426,
+                "upper95": 0.007461502371404162
+              },
+              "crps": 0.6645891989782902,
+              "crps_improvement": {
+                "mean": -0.008672849085732777,
+                "lower95": -0.031759493241493596,
+                "upper95": 0.014065500048112327
+              },
+              "train_seconds": 11.1,
+              "best_epoch": 5,
+              "inner_valid_mae": 0.7694216253581182,
+              "parameters": 5233
+            }
+          ],
+          "summary": {
+            "mae_mean": 0.9065193400873761,
+            "mae_sd": 0.009209553272528849,
+            "rpss_mean": -0.04077925635232602,
+            "rpss_sd": 0.017838621550933628,
+            "crps_mean": 0.6725398784701124,
+            "crps_sd": 0.007665639742780101,
+            "mae_min": 0.8971321708450782,
+            "mae_max": 0.91979589294346,
+            "improvement_lower95_min": -0.08601832070214817,
+            "improvement_lower95_max": -0.04872627466129535
+          },
+          "seed_mean": {
+            "mean": 0.00016958184756597896,
+            "lower95": -0.059310843330219166,
+            "upper95": 0.06494778726227061
+          },
+          "improvement_over_best_classical": {
+            "mean": -0.028918146060380866,
+            "lower95": -0.06369020947473607,
+            "upper95": 0.007266999899508157
+          }
+        },
+        "gcn_gru_identity": {
+          "seeds": [
+            {
+              "seed": 0,
+              "mae": 0.8878970496486666,
+              "improvement_over_climatology": {
+                "mean": 0.01879187228627562,
+                "lower95": -0.031759342016639686,
+                "upper95": 0.07363059307709738
+              },
+              "rps": 0.23765126779970724,
+              "rpss": -0.019154679918744533,
+              "rps_improvement": {
+                "mean": -0.0044665780932784,
+                "lower95": -0.02450039908022993,
+                "upper95": 0.014842769210685981
+              },
+              "crps": 0.6623935569498269,
+              "crps_improvement": {
+                "mean": -0.006477207057269454,
+                "lower95": -0.039578488541792536,
+                "upper95": 0.02237840965657198
+              },
+              "train_seconds": 13.9,
+              "best_epoch": 5,
+              "inner_valid_mae": 0.7660483499271619,
+              "parameters": 5233
+            },
+            {
+              "seed": 1,
+              "mae": 0.8901973286619863,
+              "improvement_over_climatology": {
+                "mean": 0.016491593272955896,
+                "lower95": -0.04136492357345674,
+                "upper95": 0.07855824921413944
+              },
+              "rps": 0.23926377085368142,
+              "rpss": -0.02606981253746099,
+              "rps_improvement": {
+                "mean": -0.006079081147252596,
+                "lower95": -0.03084790662345647,
+                "upper95": 0.01670878906325698
+              },
+              "crps": 0.6651074164593089,
+              "crps_improvement": {
+                "mean": -0.00919106656675162,
+                "lower95": -0.04886360321766221,
+                "upper95": 0.02697781288460048
+              },
+              "train_seconds": 28.4,
+              "best_epoch": 22,
+              "inner_valid_mae": 0.7593492772158812,
+              "parameters": 5233
+            },
+            {
+              "seed": 2,
+              "mae": 0.8932301745140839,
+              "improvement_over_climatology": {
+                "mean": 0.01345874742085821,
+                "lower95": -0.0383850339488272,
+                "upper95": 0.07146408225699044
+              },
+              "rps": 0.2372335350789529,
+              "rpss": -0.01736325561348573,
+              "rps_improvement": {
+                "mean": -0.00404884537252406,
+                "lower95": -0.021485370210086726,
+                "upper95": 0.013276038545340775
+              },
+              "crps": 0.6620407168550422,
+              "crps_improvement": {
+                "mean": -0.006124366962484704,
+                "lower95": -0.03304731741031825,
+                "upper95": 0.019194732359574872
+              },
+              "train_seconds": 32.4,
+              "best_epoch": 22,
+              "inner_valid_mae": 0.7664795534825672,
+              "parameters": 5233
+            },
+            {
+              "seed": 3,
+              "mae": 0.8926502534221283,
+              "improvement_over_climatology": {
+                "mean": 0.014038668512813865,
+                "lower95": -0.039796418031429984,
+                "upper95": 0.07308010296792264
+              },
+              "rps": 0.23777839729444292,
+              "rpss": -0.01969986791927636,
+              "rps_improvement": {
+                "mean": -0.004593707588014096,
+                "lower95": -0.026033858340591878,
+                "upper95": 0.0164204275011366
+              },
+              "crps": 0.6642664744828003,
+              "crps_improvement": {
+                "mean": -0.008350124590242947,
+                "lower95": -0.04269149654811615,
+                "upper95": 0.022943498065310514
+              },
+              "train_seconds": 22.4,
+              "best_epoch": 17,
+              "inner_valid_mae": 0.7674725895021713,
+              "parameters": 5233
+            },
+            {
+              "seed": 4,
+              "mae": 0.8924942157837266,
+              "improvement_over_climatology": {
+                "mean": 0.014194706151215567,
+                "lower95": -0.021845848345752043,
+                "upper95": 0.05197797815306984
+              },
+              "rps": 0.23906725950046587,
+              "rpss": -0.02522708416853181,
+              "rps_improvement": {
+                "mean": -0.0058825697940370235,
+                "lower95": -0.03153383779360151,
+                "upper95": 0.01831816180649751
+              },
+              "crps": 0.6672150832415285,
+              "crps_improvement": {
+                "mean": -0.011298733348971125,
+                "lower95": -0.04860948151720559,
+                "upper95": 0.02431316742270173
+              },
+              "train_seconds": 37.7,
+              "best_epoch": 33,
+              "inner_valid_mae": 0.7628961012183042,
+              "parameters": 5233
+            }
+          ],
+          "summary": {
+            "mae_mean": 0.8912938044061184,
+            "mae_sd": 0.0022232112215942075,
+            "rpss_mean": -0.021502940031499884,
+            "rpss_sd": 0.0038931977768563828,
+            "crps_mean": 0.6642046495977014,
+            "crps_sd": 0.0021121187549861882,
+            "mae_min": 0.8878970496486666,
+            "mae_max": 0.8932301745140839,
+            "improvement_lower95_min": -0.04136492357345674,
+            "improvement_lower95_max": -0.021845848345752043
+          },
+          "seed_mean": {
+            "mean": 0.015395117528823832,
+            "lower95": -0.033974085463899566,
+            "upper95": 0.06902277105698587
+          },
+          "improvement_over_best_classical": {
+            "mean": -0.01369261037912301,
+            "lower95": -0.045632519701405055,
+            "upper95": 0.019669005607235494
+          }
+        }
+      },
+      "graph_over_identity": {
+        "mean": -0.015225535681257854,
+        "lower95": -0.032568221873620545,
+        "upper95": 0.0016469672614624529
+      },
+      "dataset_sha256": "7035ecaa7a2b674395119f4986fabb813cef93805c82af30842591f7351353f3",
+      "split_sha256": "a4092dd453c691ad40198208f55d7c8d97357942b2e3b83adb504c116e28c8c0",
+      "git_sha": "e904e36978296bff158a559370f9b406033feaf3",
+      "mlflow_run_ids": {
+        "mlp": [
+          "4d0d233b6f204f7abe8940c9f7fefe91",
+          "8277b7db88294cf59d16c429f3b07dc9",
+          "17503517cfd54bfdb1ffb706afa78a3e",
+          "81d04d9defb441c79a802e8a4a8e5281",
+          "4f55eed3ad9e4e78a1c10ad3635faf0b"
+        ],
+        "gcn_gru": [
+          "c237eec1591846309a7840d4e2771230",
+          "2032ccaf3ec2481b861a8fe571e1c285",
+          "1fc8d7e41aa143eca39ba965d45e3307",
+          "d25b116fb22749719b8d126447d2c244",
+          "b53611e2a6b14cb48b03f0b2afdc7e17"
+        ],
+        "gcn_gru_identity": [
+          "9bfe80bf7ff049c6ac295e5c52041a12",
+          "b39507f692e24ef68fad7d6f0b240343",
+          "cd3cfed097174cdca54136dc7910ff3b",
+          "898b6508641a466cbeb5a9ba802fc8df",
+          "8165a5a1376d4b8994b9969d1dcc1dfa"
+        ]
+      },
+      "total_seconds": 281.3
+    },
+    "spatial": {
+      "task": "T282",
+      "role": "comparison only; never the candidate",
+      "dataset_sha256": "7035ecaa7a2b674395119f4986fabb813cef93805c82af30842591f7351353f3",
+      "split_sha256": "a4092dd453c691ad40198208f55d7c8d97357942b2e3b83adb504c116e28c8c0",
+      "git_sha": "58cc74c9f7852e95ad579586457f598f8d99ffea",
+      "tune": {
+        "rows": 897,
+        "months": 36,
+        "climatology_mae": 0.9066889219349421,
+        "models": {
+          "base": {
+            "mae": 0.8776011940269953,
+            "improvement_over_climatology": {
+              "mean": 0.02908772790794684,
+              "lower95": -0.028866248677502343,
+              "upper95": 0.08643405470312236
+            },
+            "params": {
+              "learning_rate": 0.1,
+              "num_leaves": 31,
+              "max_depth": 8,
+              "min_child_samples": 50,
+              "feature_fraction": 1.0,
+              "lambda_l2": 0.0,
+              "objective": "regression_l1",
+              "seed": 42,
+              "deterministic": true,
+              "num_threads": 4,
+              "verbose": -1,
+              "num_boost_round": 21,
+              "trials": 30,
+              "inner_valid_mae": 0.7688684953179528
+            }
+          },
+          "lags": {
+            "mae": 0.8699530378770488,
+            "improvement_over_climatology": {
+              "mean": 0.03673588405789349,
+              "lower95": -0.01405529352693506,
+              "upper95": 0.09229403631751569
+            },
+            "params": {
+              "learning_rate": 0.1,
+              "num_leaves": 31,
+              "max_depth": 8,
+              "min_child_samples": 20,
+              "feature_fraction": 1.0,
+              "lambda_l2": 1.0,
+              "objective": "regression_l1",
+              "seed": 42,
+              "deterministic": true,
+              "num_threads": 4,
+              "verbose": -1,
+              "num_boost_round": 20,
+              "trials": 30,
+              "inner_valid_mae": 0.7663848351977806
+            }
+          }
+        },
+        "lags_over_base": {
+          "mean": 0.007648156149946641,
+          "lower95": -0.0196030885559577,
+          "upper95": 0.03705265489333758
+        },
+        "lag_helps": false
+      },
+      "moran": {
+        "before": {
+          "months": 36,
+          "months_tested": 27,
+          "significant_bh": 25,
+          "significant_bh_positive": 25,
+          "moran_i_median": 0.5206046904468921,
+          "moran_i_min": -0.050634403290056446,
+          "moran_i_max": 0.840391568800196
+        },
+        "after": {
+          "months": 36,
+          "months_tested": 27,
+          "significant_bh": 26,
+          "significant_bh_positive": 26,
+          "moran_i_median": 0.4959190242446388,
+          "moran_i_min": 0.022806560220603418,
+          "moran_i_max": 0.8353858100521507
+        },
+        "effective_size": {
+          "months": 27,
+          "districts": 30,
+          "icc": 0.4868830687377406,
+          "n_eff_per_month": 1.984178295424606
+        }
+      },
+      "cv": {
+        "random": {
+          "base": {
+            "mae": 0.7625612075817182,
+            "improvement_over_climatology": {
+              "mean": 0.039220985683935325,
+              "lower95": 0.019553501939499472,
+              "upper95": 0.061443061701025085
+            }
+          },
+          "lags": {
+            "mae": 0.75804269572624,
+            "improvement_over_climatology": {
+              "mean": 0.043739497539413544,
+              "lower95": 0.02281587004895488,
+              "upper95": 0.06624517643003082
+            }
+          },
+          "overstatement": {
+            "base": 0.07713652312114684,
+            "lags": 0.07969840929263897
+          }
+        },
+        "region": {
+          "base": {
+            "mae": 0.7779307345895753,
+            "improvement_over_climatology": {
+              "mean": 0.023851458676078144,
+              "lower95": 0.004147049852753375,
+              "upper95": 0.044709846847279945
+            }
+          },
+          "lags": {
+            "mae": 0.7764063074681707,
+            "improvement_over_climatology": {
+              "mean": 0.02537588579748283,
+              "lower95": 0.006515142162634085,
+              "upper95": 0.04605382056993398
+            }
+          },
+          "overstatement": {
+            "base": 0.06176699611328966,
+            "lags": 0.06133479755070826
+          }
+        },
+        "temporal": {
+          "base": {
+            "mae": 0.8359822678899619,
+            "improvement_over_climatology": {
+              "mean": -0.03420007462430827,
+              "lower95": -0.06480681289719795,
+              "upper95": -0.0018807714583906423
+            }
+          },
+          "lags": {
+            "mae": 0.8362568427836258,
+            "improvement_over_climatology": {
+              "mean": -0.03447464951797228,
+              "lower95": -0.06281329679930185,
+              "upper95": -0.002179534693439891
+            }
+          },
+          "overstatement": {
+            "base": 0.0037154628129032474,
+            "lags": 0.0014842622352531504
+          }
+        },
+        "region_temporal": {
+          "base": {
+            "mae": 0.839697730702865,
+            "improvement_over_climatology": {
+              "mean": -0.037915537437211516,
+              "lower95": -0.06589638958285118,
+              "upper95": -0.007593671471396724
+            }
+          },
+          "lags": {
+            "mae": 0.837741105018879,
+            "improvement_over_climatology": {
+              "mean": -0.03595891175322543,
+              "lower95": -0.06349646356230214,
+              "upper95": -0.005701251147083371
+            }
+          },
+          "overstatement": {
+            "base": 0.0,
+            "lags": 0.0
+          }
+        }
+      },
+      "mlflow_run_ids": {
+        "m21": "c556aea57e78425982e8e5ade5db116e",
+        "m05": "7f373cc52f114891be8c5bead53bb72f"
+      }
+    }
+  },
+  "test_protocol": {
+    "task": "T284",
+    "refit_rule": "Fixed before the test was opened (T284). Every model, the candidate and each comparison, keeps the configuration frozen on train and tune (LightGBM parameters and rounds; ridge alpha; SARIMA order per district by AIC on train; network sizes and each seed's early-stopped epoch count) and is refitted once on train + tune, target months 1982-01 to 2017-11 (31-day purge before calibrate). Nothing is re-tuned. Each refit's calibrate (2018-2019) residuals give its probabilistic ensemble (RPS, CRPS) and the candidate's interval offsets. The locked test 2020-2025 is scored once.",
+    "refit_rows": 10740,
+    "interval_rule": "80% nominal, D97 style. Methods: pooled split conformal (forecast plus the 10th and 90th percentiles of calibration residuals, y - forecast) and seasonal (the same, separately for June-September and the rest of the year). Chosen before the test on pre-test years only: offsets from the tune (2015-2017) residuals of the train fit, coverage checked on calibrate (2018-2019) with the same fit; the method whose coverage is closest to 80% wins (ties: narrower mean width). The chosen method's offsets are then taken from the calibrate residuals of the train + tune refit and applied unchanged to the test. Intervals are shown only if test coverage is within 75-85%.",
+    "promotion_rule": "candidate_eligible only if the lower 95% bound of the MAE improvement over the strongest simple baseline on the test rows (climatology, persistence or last year; paired block bootstrap by month, 1,000 resamples, seed 42) is above 0, and then served only after owner approval (D38); otherwise research_only, published with its scores.",
+    "intervals": {
+      "method": "seasonal",
+      "coverage": 0.8,
+      "show_if": [
+        0.75,
+        0.85
+      ],
+      "selection": [
+        {
+          "method": "pooled",
+          "calibrate_coverage": 0.8595317725752508,
+          "calibrate_width": 2.867740033968723
+        },
+        {
+          "method": "seasonal",
+          "calibrate_coverage": 0.8528428093645485,
+          "calibrate_width": 2.752586385427336
+        }
+      ],
+      "offsets": {
+        "monsoon (Jun-Sep)": [
+          -0.9058664284327395,
+          2.0665959358626456
+        ],
+        "rest of year": [
+          -0.5734163378650521,
+          1.9531178332381784
+        ]
+      },
+      "calibrate_rows": 598,
+      "calibrate_mae": {
+        "lightgbm": 0.7989283185249918,
+        "climatology": 0.812080076306294
+      }
+    },
+    "written_at": "2026-11-18T06:28:02.172347+00:00"
+  },
+  "test_opened_at": "2026-11-18T06:28:12.258126+00:00",
+  "test_git_sha": "f7d075e0881246584833e179973c7d38aff03520",
+  "test": {
+    "task": "T284",
+    "period": [
+      "2020-01-01",
+      "2025-12-31"
+    ],
+    "rows": 1794,
+    "months": 72,
+    "strongest_baseline": "climatology",
+    "candidate": "lightgbm",
+    "models": {
+      "climatology": {
+        "mae": 1.0587375197520923,
+        "improvement_over_baseline": {
+          "mean": 0.0,
+          "lower95": 0.0,
+          "upper95": 0.0
+        },
+        "improvement_over_climatology": {
+          "mean": 0.0,
+          "lower95": 0.0,
+          "upper95": 0.0
+        },
+        "rps": 0.23532144184318093,
+        "crps": 0.788627404439965
+      },
+      "persistence": {
+        "mae": 1.3881772277181788,
+        "improvement_over_baseline": {
+          "mean": -0.32943970796608635,
+          "lower95": -0.5111815256527374,
+          "upper95": -0.1534490539334634
+        },
+        "improvement_over_climatology": {
+          "mean": -0.32943970796608635,
+          "lower95": -0.5111815256527374,
+          "upper95": -0.1534490539334634
+        }
+      },
+      "last_year": {
+        "mae": 1.3269006146010127,
+        "improvement_over_baseline": {
+          "mean": -0.26816309484892037,
+          "lower95": -0.459992078377254,
+          "upper95": -0.11068695347393515
+        },
+        "improvement_over_climatology": {
+          "mean": -0.26816309484892037,
+          "lower95": -0.459992078377254,
+          "upper95": -0.11068695347393515
+        }
+      },
+      "climatology_median": {
+        "mae": 1.0922377747767584,
+        "improvement_over_baseline": {
+          "mean": -0.0335002550246661,
+          "lower95": -0.07076790743131901,
+          "upper95": 0.008775048515559035
+        },
+        "improvement_over_climatology": {
+          "mean": -0.0335002550246661,
+          "lower95": -0.07076790743131901,
+          "upper95": 0.008775048515559035
+        }
+      },
+      "lightgbm": {
+        "mae": 1.0881026915215726,
+        "improvement_over_baseline": {
+          "mean": -0.02936517176948045,
+          "lower95": -0.060757072763335626,
+          "upper95": 0.003087748837973306
+        },
+        "improvement_over_climatology": {
+          "mean": -0.02936517176948045,
+          "lower95": -0.060757072763335626,
+          "upper95": 0.003087748837973306
+        },
+        "improvement_over_median": {
+          "mean": 0.0041350832551856525,
+          "lower95": -0.02501881963121786,
+          "upper95": 0.03040615087248348
+        },
+        "rps": 0.2159837541066863,
+        "rpss": 0.08217563000222194,
+        "rps_improvement": {
+          "mean": 0.019337687736494677,
+          "lower95": 0.0010121594934619424,
+          "upper95": 0.03599111236932941
+        },
+        "crps": 0.7701128738467372,
+        "crps_improvement": {
+          "mean": 0.0185145305932277,
+          "lower95": -0.014000107934984863,
+          "upper95": 0.048727089098617025
+        },
+        "calibrate_mae": 0.7989283185249918
+      },
+      "sarima": {
+        "mae": 1.0477752447024338,
+        "improvement_over_baseline": {
+          "mean": 0.010962275049658488,
+          "lower95": 0.0009729352091677087,
+          "upper95": 0.02083374212414557
+        },
+        "improvement_over_climatology": {
+          "mean": 0.010962275049658488,
+          "lower95": 0.0009729352091677087,
+          "upper95": 0.02083374212414557
+        },
+        "improvement_over_median": {
+          "mean": 0.044462530074324595,
+          "lower95": -0.004195180973103369,
+          "upper95": 0.08713077312852091
+        },
+        "rps": 0.21774701551065181,
+        "rpss": 0.07468263918015927,
+        "rps_improvement": {
+          "mean": 0.01757442633252917,
+          "lower95": 0.004599569419827331,
+          "upper95": 0.02894642845759266
+        },
+        "crps": 0.777777021250052,
+        "crps_improvement": {
+          "mean": 0.010850383189913038,
+          "lower95": -0.013052548193285756,
+          "upper95": 0.031994415213588256
+        },
+        "calibrate_mae": 0.8109881400927648
+      },
+      "ridge": {
+        "mae": 1.0408209542219902,
+        "improvement_over_baseline": {
+          "mean": 0.017916565530101916,
+          "lower95": -0.002647203881736458,
+          "upper95": 0.03904795828164598
+        },
+        "improvement_over_climatology": {
+          "mean": 0.017916565530101916,
+          "lower95": -0.002647203881736458,
+          "upper95": 0.03904795828164598
+        },
+        "improvement_over_median": {
+          "mean": 0.05141682055476802,
+          "lower95": -0.002705747788950312,
+          "upper95": 0.10056750145030598
+        },
+        "rps": 0.21298113109352093,
+        "rpss": 0.09493529605579953,
+        "rps_improvement": {
+          "mean": 0.02234031074966008,
+          "lower95": 0.007374221556649949,
+          "upper95": 0.035472584708960704
+        },
+        "crps": 0.7699656465956998,
+        "crps_improvement": {
+          "mean": 0.018661757844265246,
+          "lower95": -0.007696534187382283,
+          "upper95": 0.04415978902537782
+        },
+        "calibrate_mae": 0.8106659793789408
+      },
+      "lightgbm_lags": {
+        "mae": 1.1040151949599741,
+        "improvement_over_baseline": {
+          "mean": -0.045277675207881764,
+          "lower95": -0.07799279929379266,
+          "upper95": -0.011077597852295467
+        },
+        "improvement_over_climatology": {
+          "mean": -0.045277675207881764,
+          "lower95": -0.07799279929379266,
+          "upper95": -0.011077597852295467
+        },
+        "improvement_over_median": {
+          "mean": -0.01177742018321566,
+          "lower95": -0.05087618733073174,
+          "upper95": 0.022226671753486815
+        },
+        "rps": 0.22311721072306623,
+        "rpss": 0.051861959643472066,
+        "rps_improvement": {
+          "mean": 0.012204231120114756,
+          "lower95": -0.0066631447058994086,
+          "upper95": 0.02904643123689498
+        },
+        "crps": 0.7839383099792483,
+        "crps_improvement": {
+          "mean": 0.004689094460716741,
+          "lower95": -0.0321853512117201,
+          "upper95": 0.03729131579367443
+        },
+        "calibrate_mae": 0.8032815723675676
+      },
+      "mlp": {
+        "mae": 1.099027969043277,
+        "improvement_over_baseline": {
+          "mean": -0.04029044929118484,
+          "lower95": -0.07419743026316733,
+          "upper95": -0.004028201104187909
+        },
+        "improvement_over_climatology": {
+          "mean": -0.04029044929118484,
+          "lower95": -0.07419743026316733,
+          "upper95": -0.004028201104187909
+        },
+        "improvement_over_median": {
+          "mean": -0.006790194266518736,
+          "lower95": -0.026622718211857226,
+          "upper95": 0.012618419701604017
+        },
+        "rps": 0.22041307654860393,
+        "rpss": 0.06335319543262019,
+        "rps_improvement": {
+          "mean": 0.014908365294577052,
+          "lower95": 0.0006816410378908234,
+          "upper95": 0.02855365329072073
+        },
+        "crps": 0.7785864314993696,
+        "crps_improvement": {
+          "mean": 0.010040972940595387,
+          "lower95": -0.01733272802504543,
+          "upper95": 0.03702746559336799
+        },
+        "calibrate_mae": 0.789270971082772,
+        "seed_mae": [
+          1.1016642057020687,
+          1.0925631585127802,
+          1.0988745692307693,
+          1.0865296945689704,
+          1.1155082172017963
+        ]
+      },
+      "gcn_gru": {
+        "mae": 1.1266221408255432,
+        "improvement_over_baseline": {
+          "mean": -0.0678846210734509,
+          "lower95": -0.1067281459476105,
+          "upper95": -0.026341621811053754
+        },
+        "improvement_over_climatology": {
+          "mean": -0.0678846210734509,
+          "lower95": -0.1067281459476105,
+          "upper95": -0.026341621811053754
+        },
+        "improvement_over_median": {
+          "mean": -0.03438436604878478,
+          "lower95": -0.054048284354092306,
+          "upper95": -0.014598449226633567
+        },
+        "rps": 0.2258943905141387,
+        "rpss": 0.04006031603071869,
+        "rps_improvement": {
+          "mean": 0.009427051329042261,
+          "lower95": -0.0041534394518277775,
+          "upper95": 0.022071207570604597
+        },
+        "crps": 0.7868828447549149,
+        "crps_improvement": {
+          "mean": 0.001744559685050138,
+          "lower95": -0.022587374349131405,
+          "upper95": 0.02657419855902908
+        },
+        "calibrate_mae": 0.8110443753835941,
+        "seed_mae": [
+          1.1321002692296631,
+          1.1097686449164132,
+          1.1482444279940818,
+          1.1114193186802714,
+          1.1315780433072857
+        ]
+      },
+      "gcn_gru_identity": {
+        "mae": 1.085956499277802,
+        "improvement_over_baseline": {
+          "mean": -0.027218979525709876,
+          "lower95": -0.05725636021387936,
+          "upper95": 0.004722831523011668
+        },
+        "improvement_over_climatology": {
+          "mean": -0.027218979525709876,
+          "lower95": -0.05725636021387936,
+          "upper95": 0.004722831523011668
+        },
+        "improvement_over_median": {
+          "mean": 0.006281275498956229,
+          "lower95": -0.01483305847153744,
+          "upper95": 0.024689865100880084
+        },
+        "rps": 0.21803350824452258,
+        "rpss": 0.07346518644135747,
+        "rps_improvement": {
+          "mean": 0.017287933598658406,
+          "lower95": 0.002677356105509074,
+          "upper95": 0.03037984044299328
+        },
+        "crps": 0.7741572134418163,
+        "crps_improvement": {
+          "mean": 0.014470190998148738,
+          "lower95": -0.013231773356193206,
+          "upper95": 0.04028446220305688
+        },
+        "calibrate_mae": 0.7896208335622987,
+        "seed_mae": [
+          1.091282452000159,
+          1.0870095828022304,
+          1.0899546187171487,
+          1.0931364476309975,
+          1.0683993952384747
+        ]
+      }
+    },
+    "by_season": {
+      "winter (Jan-Feb)": {
+        "rows": 30,
+        "months": 12,
+        "mae": {
+          "lightgbm": 0.2707854093506485,
+          "climatology": 0.4585860923873568,
+          "persistence": 0.4585860923873568,
+          "last_year": 0.40712610521102
+        },
+        "improvement_over_baseline": {
+          "mean": 0.18780068303670827,
+          "lower95": 0.04465026816382757,
+          "upper95": 0.29355452265321114
+        },
+        "interval_coverage": 0.9666666666666667,
+        "interval_width": 2.526534171103231
+      },
+      "pre-monsoon (Mar-May)": {
+        "rows": 540,
+        "months": 18,
+        "mae": {
+          "lightgbm": 1.1487458152039853,
+          "climatology": 1.1332163079500088,
+          "persistence": 1.041726491337041,
+          "last_year": 1.1761402579720968
+        },
+        "improvement_over_baseline": {
+          "mean": -0.01552950725397653,
+          "lower95": -0.05782079912845992,
+          "upper95": 0.028444575168507406
+        },
+        "interval_coverage": 0.7444444444444445,
+        "interval_width": 2.52653417110323
+      },
+      "monsoon (Jun-Sep)": {
+        "rows": 720,
+        "months": 24,
+        "mae": {
+          "lightgbm": 1.1162234616912525,
+          "climatology": 1.0899020958248282,
+          "persistence": 1.699591524016862,
+          "last_year": 1.3210921048071393
+        },
+        "improvement_over_baseline": {
+          "mean": -0.026321365866424164,
+          "lower95": -0.04510822101450381,
+          "upper95": -0.008446284175506523
+        },
+        "interval_coverage": 0.7527777777777778,
+        "interval_width": 2.9724623642953856
+      },
+      "post-monsoon (Oct-Dec)": {
+        "rows": 504,
+        "months": 18,
+        "mae": {
+          "lightgbm": 1.0316052255581905,
+          "climatology": 0.9701412943983164,
+          "persistence": 1.3698296848028746,
+          "last_year": 1.5514759219678835
+        },
+        "improvement_over_baseline": {
+          "mean": -0.06146393115987392,
+          "lower95": -0.15639668938281936,
+          "upper95": 0.034916763044728634
+        },
+        "interval_coverage": 0.751984126984127,
+        "interval_width": 2.52653417110323
+      }
+    },
+    "intervals": {
+      "method": "seasonal",
+      "coverage": 0.7536231884057971,
+      "width": 2.705502007835867,
+      "shown": true,
+      "by_district": {
+        "districts": 30,
+        "min": 0.6333333333333333,
+        "max": 0.8833333333333333,
+        "inside_75_85": 15
+      }
+    },
+    "promotion": {
+      "baseline": "climatology",
+      "lower95": -0.060757072763335626,
+      "status": "research_only",
+      "reason": "lower 95% bound of the MAE improvement over climatology is -0.061, not above 0; published research-only with its scores"
+    },
+    "mlflow_run_id": "be5da0f3dfdb4c3b9af30158ae3c0e69"
+  }
+}

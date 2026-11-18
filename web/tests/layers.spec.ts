@@ -27,7 +27,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('layer toggles update the same map and list while official links remain', async ({ page }) => {
-  await expect(page.getByTestId('record-list').locator('li')).toHaveCount(2);
+  await expect(page.getByTestId('record-list').locator('li')).toHaveCount(2, { timeout: 15000 }); // first data load is slow on Windows CI
   await page.getByRole('checkbox', { name: 'Weather', exact: true }).uncheck();
   await expect(page.getByTestId('record-list').locator('li')).toHaveCount(1);
   await expect(page.locator('.map-pin')).toHaveCount(1);

@@ -37,12 +37,13 @@ describe('dashboard rules', () => {
 
 describe('dashboard pages render the committed data', () => {
   it('shows only M05 with a score, its interval and denominator, and every card links its report', () => {
-    const out = html(() => createElement(ModelCards));
+    const out = html(() => createElement(ModelCards, { initial: 'all' }));
     for (const model of data.models) expect(out).toContain(`data-testid="model-${model.id}"`);
     expect(out).toContain('95% CI 0.003 to 0.150');
     expect(out).toContain('Over 60 months, 1800 district-months');
     expect(out).toContain('Vintage: hindcast');
-    expect(out.match(/No score\./g)?.length).toBe(data.models.length - 1);
+    expect(out.match(/No score./g)?.length).toBe(data.models.length - 1);
+    expect(out).toContain('Roadmap: models waiting for data (18)');
     expect(out.match(/href="https:\/\/github\.com\/[^"]+reports\/models\/m\d\d(-card)?\.md"/g)?.length).toBe(data.models.length + 1);
     expect(out).not.toContain('NaN');
   });
@@ -63,7 +64,7 @@ describe('dashboard pages render the committed data', () => {
   it('compares nothing it cannot compare and ranks no state', () => {
     const out = html(() => createElement(Compare));
     expect(out).toContain('KA and KL: unavailable. At least one of the two states has no released metric.');
-    expect(out).toContain('(coverage 0.758)');
+    expect(out).toContain('(coverage 0.788)');
     expect(out).not.toMatch(/rank(ed)? (first|1)|best state/i);
   });
 });

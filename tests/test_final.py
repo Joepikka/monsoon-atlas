@@ -228,7 +228,7 @@ def test_owner_tasks_name_every_open_h_step():
     for name in GATE_PAGES:
         open_in_pages |= set(H_STEP.findall(read(f"docs/releases/{name}.md")))
     amendments = set(re.findall(r"^\| (H\d\d) \|", read("docs/amendments.md"), re.M))
-    assert len(amendments) == 14
+    assert len(amendments) == 15
     owner = section(PAGE, "Owner tasks")
     open_ids = {r[0] for r in table_rows(owner.split("### Done", 1)[0]) if H_STEP.fullmatch(r[0])}
     done_ids = {r[0] for r in table_rows(owner.split("### Done", 1)[1]) if H_STEP.fullmatch(r[0])}
