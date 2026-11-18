@@ -575,7 +575,7 @@ new_tasks:
     phase: P2
     state: KA
     depends_on: [T282, T283]
-    files: [reports/models/m21.md, models/registry/m21.json, docs/model_cards/m21.md, tests/models/test_m21_test.py]
+    files: [reports/models/m21.md, models/registry/M21/v1.json, reports/models/m21-card.md, tests/models/test_m21_test.py]
     steps:
       - "Open the test once for the named candidate; score the others as comparisons"
       - "Add conformal intervals, shown only if coverage is 75-85%"

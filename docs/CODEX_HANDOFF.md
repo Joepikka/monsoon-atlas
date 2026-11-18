@@ -27,7 +27,7 @@ Read in this order: `AGENTS.md` (hard rules), this file, `docs/plans/karnataka-m
     false, write the interval method into the gate first, then open the test exactly once.
   - **T269 final full-suite run** (S23 stays `blocked` until the T270 adapter; option B). Its last
     commit is 58cc74c. Re-run the full suite yourself and fix what remains (see section 4).
-- Decision numbers: next free is **D219**. **D212** is reserved for T269 (text in section 5).
+- **T284 is done** (ee81006, D219): M21 research-only; 80% intervals pass. Next free decision is **D220**. **D212** is reserved for T269 (text in section 5).
 
 ## 2. What is done for Karnataka (do not redo)
 
@@ -42,7 +42,7 @@ Read in this order: `AGENTS.md` (hard rules), this file, `docs/plans/karnataka-m
 
 ## 3. Next tasks, Karnataka only, in order
 
-1. Finish **T284** (above), record **D219**, run the full suite, refresh the release manifest, push,
+1. T284 is done (D219). Record **D212** if not yet present, run the full suite, refresh the release manifest, push,
    let PR 15 auto-merge.
 2. **T270**: S23 adapter and resumable Karnataka **onion** backfill, **one request per
    `filters[Arrival_Date]` day** (offset paging is unreliable, D212), 1 request per 2 s, check each

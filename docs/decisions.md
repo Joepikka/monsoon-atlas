@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D219 - M21 locked test opened once; research-only; 80% intervals pass (T284, 18 Nov 2026).**
+  Before opening, rules were written into `models/gates/m21.json` (`test_protocol`, 06:28:02Z):
+  every model refitted once with frozen configs on 1982-01..2017-11 (train+tune, 31-day purge), no
+  re-tuning. Interval method chosen on pre-test years only (2018-2019 coverage: pooled 0.860,
+  seasonal 0.853): seasonal split conformal with offsets from the refit's 2018-2019 residuals.
+  Test 2020-2025 opened once at 06:28:12Z (git f7d075e0): 1,794 rows, 72 months; climatology MAE
+  1.059 is the strongest baseline. LightGBM (candidate) MAE 1.088, improvement -0.029
+  [-0.061, +0.003], so research_only; RPS gain +0.019 [+0.001, +0.036] reported only. Comparisons,
+  not eligible for promotion: SARIMA 1.048 (+0.011 [+0.001, +0.021]), ridge 1.041, spatial-lag
+  LightGBM 1.104, MLP 1.099, GCN-GRU 1.127, identity 1.086. Interval coverage 0.754 (width 2.71)
+  passes 75-85%, but only 15 of 30 districts are inside. Files: `models/registry/M21/v1.json` and
+  `reports/models/m21-card.md` (amendments updated to match). Hindcast (D39); 2025 provisional.
+
 - **D218 — Spatial lags, spatial cross-validation and residual Moran's I, research-only (T282, 13 Nov 2026).**
   `src/atlas/models/spatial_ml.py`, notebook 15, `reports/eda/15_ka_spatial_ml/`. Lags are
   queen-neighbour means of the anomaly, SPI-1 and SPI-3 at t-1 only. M21 LightGBM refitted with the
