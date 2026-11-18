@@ -2,6 +2,19 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D220 - S23 per-day onion adapter; history backfilled; S23 available and enabled (T270, 18 Nov 2026).**
+  `src/atlas/ingest/s23.py` fetches one `filters[Arrival_Date]` request per day for Karnataka
+  onion (offset paging is unreliable, D212), at least 2 s apart, and checks each day's rows against
+  the API `total`. Other commodities are refused until H16. A day on or after the resource's
+  `updated_date` is provisional and not checkpointed. The backfill is resumable from
+  `data/raw/S23/checkpoint.jsonl`; a network outage stopped the first run at 2015-12-11 and the
+  resumed run finished the rest. Result: 9,442 days from 2001-01-10 to 2026-11-16, 8,732 with rows,
+  103,500 rows, 0 mismatched days, 0 failed requests. `build` writes `data/clean/S23/onion.parquet`
+  plus `manifest.json` (git-ignored) with no cleaning beyond schema validity; T271 cleans and
+  quarantines. S23 is now `outcome: available`, `enabled`, verify_task T269; the frozen release
+  notes (`ka-v1.md`, `dl.md`), README and resume counts were updated to match. M06/M10 stay blocked
+  and M16 research-only until their own tasks (T273-T278).
+
 - **D212 - S23 variety-wise history verified for Karnataka onion; S23 stays blocked until the T270 adapter (13 Nov 2026).**
   T269 re-ran the S23 verify for data.gov.in resource 35985678-0d79-46b4-9ed6-6f13308a1d24 (same
   catalogue 6141ea17 and publisher as 9ef84268, so GODL applies). Evidence e07-e27 in
