@@ -2,6 +2,20 @@
 
 ## Continuation review (5 Nov 2026)
 
+- **D212 - S23 variety-wise history verified for Karnataka onion; S23 stays blocked until the T270 adapter (13 Nov 2026).**
+  T269 re-ran the S23 verify for data.gov.in resource 35985678-0d79-46b4-9ed6-6f13308a1d24 (same
+  catalogue 6141ea17 and publisher as 9ef84268, so GODL applies). Evidence e07-e27 in
+  `tests/fixtures/s23/manifest.json`: 103,423 Karnataka onion rows from 10/01/2001 to 12/11/2026,
+  about one day behind the daily resource. Verified scope: State=Karnataka, Commodity=Onion, in
+  Rs./Quintal (AGMARKNET Price Unit read by the owner, D201); other commodities need H16. Limits
+  1000-10000 work; about 150 requests at one per 2 s met no refusal. Offset paging is unstable
+  (11 pages gave 93,423 distinct rows), so T270 back-fills one `filters[Arrival_Date]` request per
+  day and matches each day's `total`. Quality findings become T271 rules (20 rows with
+  min/modal/max out of order, 31 zero bounds, per-kg-looking Shimoga rows, 41 district spellings,
+  an APMC market-name change in Nov 2025, string prices before Nov 2025). S23 stays
+  `outcome: blocked` until an adapter can fetch a row; the frozen discovery contract is unchanged.
+  M06 and M10 stay blocked, M16 research-only; their gates were regenerated with the new reason.
+
 - **D219 - M21 locked test opened once; research-only; 80% intervals pass (T284, 18 Nov 2026).**
   Before opening, rules were written into `models/gates/m21.json` (`test_protocol`, 06:28:02Z):
   every model refitted once with frozen configs on 1982-01..2017-11 (train+tune, 31-day purge), no

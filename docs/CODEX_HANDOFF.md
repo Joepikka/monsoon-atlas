@@ -42,7 +42,7 @@ Read in this order: `AGENTS.md` (hard rules), this file, `docs/plans/karnataka-m
 
 ## 3. Next tasks, Karnataka only, in order
 
-1. T284 is done (D219). Record **D212** if not yet present, run the full suite, refresh the release manifest, push,
+1. T284 is done (D219). D212 is recorded; the full suite passed (only the manifest test needed regenerating), and everything is pushed. Next: T270, refresh the release manifest, push,
    let PR 15 auto-merge.
 2. **T270**: S23 adapter and resumable Karnataka **onion** backfill, **one request per
    `filters[Arrival_Date]` day** (offset paging is unreliable, D212), 1 request per 2 s, check each
