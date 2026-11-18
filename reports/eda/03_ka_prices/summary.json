@@ -20,26 +20,26 @@
     "S23": {
       "source": "S23",
       "discovered_at": "2026-11-13T10:03:51.323987Z",
-      "outcome": "blocked",
+      "outcome": "available",
       "licence": "open",
       "history": "available",
       "earliest_date": "2001-01-10",
       "latest_date": "2026-11-12",
       "units": "onion_only",
-      "retry_condition": "T270: adapter and per-day backfill for Karnataka onion; other commodities need H16. The backfill must query one Arrival_Date per request (offset paging duplicates and drops rows) and match each day's API total.",
+      "retry_condition": "",
       "fields": 5,
       "fields_by_unit_status": {
         "absent": 1,
         "labelled": 2,
         "not_applicable": 2
       },
-      "adapter_error": "S23 is blocked for ingestion until the T270 adapter: only Onion has a verified price unit (Rs./Quintal, T269); other commodities stay disabled until H16 (configs/sources/s23.yaml)"
+      "adapter_error": "S23: only per-day queries of resource 35985678-0d79-46b4-9ed6-6f13308a1d24 are verified (T269, D212)"
     }
   },
   "market_season": {
     "n": 0,
     "by_month": null,
-    "status": "not computable: source blocked, no price rows (S22, S23)"
+    "status": "not computable: no committed price rows (S22, S23)"
   },
   "measures": [
     {
@@ -47,24 +47,24 @@
       "count": 0,
       "n": 0,
       "share": null,
-      "status": "not computable: source blocked, no price rows (S22, S23)"
+      "status": "not computable: no committed price rows (S22, S23)"
     },
     {
       "measure": "spike_prevalence",
       "count": 0,
       "n": 0,
       "share": null,
-      "status": "not computable: source blocked, no price rows (S22, S23)"
+      "status": "not computable: no committed price rows (S22, S23)"
     }
   ],
   "charts": [
     "field_unit_status.png"
   ],
-  "caption": "S22 and S23 discovery records (price sources, blocked): price fields by unit status (fields), 2026-11-05 to 2026-11-13; coverage 10 fields; 0 price rows.",
+  "caption": "S22 and S23 discovery records (price sources): price fields by unit status (fields), 2026-11-05 to 2026-11-13; coverage 10 fields; 0 price rows.",
   "limits": [
-    "Zero price rows: S22 is blocked and S23 is blocked until the T270 adapter, so no market, season or spike is measured.",
+    "Zero price rows here: S22 is blocked and the S23 onion rows (T270) are local-only and uncleaned until T271, so no market, season or spike is measured in this notebook.",
     "S23 units are verified for Karnataka onion only (Rs./Quintal, T269); every other commodity needs H16.",
-    "S23 publishes onion history from 2001, but offset paging drops rows; T270 must query one Arrival_Date per request.",
+    "S23 publishes onion history from 2001, but offset paging drops rows; T270 queries one Arrival_Date per request.",
     "Measures with n = 0 are not computable; no 0% share and no label is filled.",
     "No feature is built, so none can use data after the frozen discovery dates."
   ]

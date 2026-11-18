@@ -1,0 +1,136 @@
+{
+    "index_name": "35985678-0d79-46b4-9ed6-6f13308a1d24",
+    "title": "Variety-wise Daily Market Prices Data of Commodity",
+    "desc": "Variety-wise Daily Market Prices Data of Commodity",
+    "org_type": "Central",
+    "org": [
+        "Ministry of Agriculture and Farmers Welfare",
+        "Department of Agriculture and Farmers Welfare",
+        "Directorate of Marketing and Inspection (DMI)"
+    ],
+    "sector": [
+        "Agriculture",
+        "Agricultural Marketing"
+    ],
+    "source": "data.gov.in",
+    "catalog_uuid": "6141ea17-a69d-4713-b600-0a43c8fd9a6c",
+    "visualizable": "0",
+    "active": "1",
+    "created": 1695098583,
+    "updated": 1794526492,
+    "created_date": "2023-09-19T06:43:03Z",
+    "updated_date": "2026-11-12T23:34:52Z",
+    "external_ws": 0,
+    "external_ws_url": "",
+    "target_bucket": {
+        "index": "agmarknet_new",
+        "type": "6141ea17-a69d-4713-b600-0a43c8fd9a6c",
+        "field": "35985678-0d79-46b4-9ed6-6f13308a1d24"
+    },
+    "field": [
+        {
+            "name": "Arrival_Date",
+            "id": "Arrival_Date",
+            "type": "date"
+        },
+        {
+            "name": "Commodity",
+            "id": "Commodity",
+            "type": "keyword"
+        },
+        {
+            "name": "Commodity_Code",
+            "id": "Commodity_Code",
+            "type": "keyword"
+        },
+        {
+            "name": "District",
+            "id": "District",
+            "type": "keyword"
+        },
+        {
+            "name": "Grade",
+            "id": "Grade",
+            "type": "keyword"
+        },
+        {
+            "name": "Market",
+            "id": "Market",
+            "type": "keyword"
+        },
+        {
+            "name": "Max_Price",
+            "id": "Max_Price",
+            "type": "keyword"
+        },
+        {
+            "name": "Min_Price",
+            "id": "Min_Price",
+            "type": "keyword"
+        },
+        {
+            "name": "Modal_Price",
+            "id": "Modal_Price",
+            "type": "keyword"
+        },
+        {
+            "name": "State",
+            "id": "State",
+            "type": "keyword"
+        },
+        {
+            "name": "Variety",
+            "id": "Variety",
+            "type": "keyword"
+        }
+    ],
+    "field_dependent": {
+        "State": {
+            "parent": "State",
+            "child": "District"
+        }
+    },
+    "order": [
+        {
+            "name": "Market",
+            "id": "Market"
+        },
+        {
+            "name": "Commodity",
+            "id": "Commodity"
+        }
+    ],
+    "field_exposed": [
+        {
+            "name": "State",
+            "id": "State",
+            "type": "keyword",
+            "mandatory": true
+        },
+        {
+            "name": "District",
+            "id": "District",
+            "type": "keyword",
+            "mandatory": true
+        },
+        {
+            "name": "Commodity",
+            "id": "Commodity",
+            "type": "keyword"
+        },
+        {
+            "name": "Arrival Date",
+            "format": "dd-MM-yyyy",
+            "id": "Arrival_Date",
+            "type": "date"
+        }
+    ],
+    "message": "Resource lists",
+    "version": "2.2.0",
+    "status": "ok",
+    "total": 0,
+    "count": 0,
+    "limit": "1000",
+    "offset": "0",
+    "records": []
+}

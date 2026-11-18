@@ -19,7 +19,7 @@ def test_gate_reports_the_blocked_sources_with_evidence_hashes():
     assert (gate["model_id"], gate["status"], gate["prediction_rows"]) == ("M10", "blocked", 0)
     assert gate["sources"]["S22"]["outcome"] == "blocked"
     assert gate["sources"]["S23"]["units"] == "onion_only" and gate["split_manifest"] is None
-    assert "blocked until the T270 adapter" in gate["reason"]
+    assert "S23 onion rows ingested (T270); labels and model in T273" in gate["reason"]
     for name, sha in gate["evidence"].items():
         assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == sha
     assert json.loads((ROOT / "reports/models/m10-data-gate.json").read_text("utf-8")) == gate

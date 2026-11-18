@@ -207,4 +207,4 @@ Query: `sql/insights/q10_busiest_karnataka_stations_2016.sql`
 ## Not answerable
 
 - **Which reservoirs filled fastest after the heaviest 3-day rain?** Blocked by S28 (KWRIS daily reservoir levels), S43. No daily reservoir history: S28 is blocked (D105) and the S32 KSEB reports we hold are sampled about every 15 days, so a 3-day rain window cannot be paired with a fill rate.
-- **How many of the rain-flood events were followed by a price spike in the nearest market?** Blocked by S22, S23 (market prices), flood labels. S22 is blocked and S23 is blocked until the T270 adapter (Karnataka onion verified, T269), so there are no price rows; flood labels are blocked.
+- **How many of the rain-flood events were followed by a price spike in the nearest market?** Blocked by S22, S23 (market prices), flood labels. S22 is blocked and the S23 Karnataka onion rows ingested in T270 are not cleaned until T271, so there are no usable price rows; flood labels are blocked.

@@ -2,15 +2,15 @@
   "model_id": "M06",
   "state": "ka",
   "status": "blocked",
-  "reason": "M06 blocked: no price rows yet. S23 is blocked until the T270 adapter; Karnataka onion is verified (Rs./Quintal, T269). Labels, features and predictions wait for the backfilled rows and the T273 data gate (T035).",
+  "reason": "M06 blocked: S23 onion rows ingested (T270); labels and model in T273. Karnataka onion is the only verified commodity (Rs./Quintal, T269); labels, features and predictions wait for the T271 cleaning and the T273 data gate (T035).",
   "evidence": {
     "configs/sources/s22.yaml": "9d17a637c742ee4c5a4742c063efa7e3ee35ba864f9920138564b523304f4ee7",
     "tests/fixtures/s22/manifest.json": "5af6a2af8b22ef168abe8c68728c66271367231e46c6e0a5b3d288b7ef967f09",
-    "configs/sources/s23.yaml": "cec1cb7978578426b90ed5561e7416a8cd7d4604daeb0b2809096fb477682e45",
+    "configs/sources/s23.yaml": "97562c58f9689a1a4ceee8204f7d082f9f7798c8db06279d125af6248bf443ee",
     "tests/fixtures/s23/manifest.json": "25d4a3fc4da61b308dd2e00001e2c77efd92a41a85e7fc1c1e6b24676138f58d",
     "configs/models/m06.yaml": "e6e13c5ace1a0be4663f5e45b9fd10d101bd2ea1f9ff8a24d199931ef9809606"
   },
-  "source_gate_sha256": "8d4758264e0900ad81501fac5ff27c29b12f2d87d1dbf11b295efd1a9e878618",
+  "source_gate_sha256": "2f05edf7f2eb74c72cd45db5c9eb54c4db6998cd716a54f785873df04f7e41bd",
   "dataset_sha256": null,
   "split_sha256": null,
   "weights": null,

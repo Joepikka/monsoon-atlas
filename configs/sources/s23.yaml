@@ -1,21 +1,21 @@
 # Discovery record for S23 (plan task T025, re-run as T269 for the variety-wise history resource;
-# verify_task stays T025 to match configs/states/ka.yaml).
+# verify_task is T269, matching configs/states/ka.yaml since the T270 adapter enabled S23).
 # Evidence IDs refer to tests/fixtures/s23/manifest.json; the files stay in data/raw/S23. The API key
 # is sent only in requests (secret parameter), never stored. e01 to e06 are the T025 evidence for
 # the one-day resource 9ef84268; e07 onwards are T269. See docs/sources/s23.md.
 source_id: S23
 state: ka
 name: "data.gov.in mandi prices"
-verify_task: T025
+verify_task: T269
 discovered_at: "2026-11-13T10:03:51.323987Z"
-outcome: blocked
+outcome: available
 landing_url: "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24"
 publisher: "Ministry of Agriculture and Farmers Welfare, Department of Agriculture and Farmers Welfare, Directorate of Marketing and Inspection (DMI), on data.gov.in"
 no_card: true
 account_required: true
 
 # Verified scope (T269): State=Karnataka, Commodity=Onion, prices in Rs./Quintal (owner-observed,
-# D201). S23 stays blocked until the T270 adapter can fetch rows; other commodities need H16.
+# D201). Enabled by the T270 adapter (one request per Arrival_Date); other commodities need H16.
 
 access:
   status: api_key
@@ -79,10 +79,9 @@ units:
     The owner read AGMARKNET's daily price and arrival report
     for Onion, Karnataka on 12 Nov 2026: its "Price Unit" column says "Rs./Quintal" (owner-observed,
     decision D201). Units are per commodity, so only Onion is verified, at Rs./Quintal; every
-    other commodity stays unverified until owner step H16 records its unit. S23 stays blocked
-    until the T270 adapter; no row is ingested yet. Within onion,
-    some rows look like per-kg entries (for example Shimoga 2023-24 modal 15 to 50, e09 to e19);
-    these are a cleaning rule for T271, not a second unit.
+    other commodity stays unverified until owner step H16 records its unit, and the T270 adapter
+    refuses them. Within onion, some rows look like per-kg entries (for example Shimoga 2023-24
+    modal 15 to 50, e09 to e19); these are a cleaning rule for T271, not a second unit.
   evidence: [e09, e19]
 
 source_check:
@@ -131,10 +130,7 @@ field_map:
     evidence: [e09]
 
 dependents: [T026, T035, T036, T037, T270]
-retry_condition: >-
-  T270: adapter and per-day backfill for Karnataka onion; other commodities need H16. The backfill
-  must query one Arrival_Date per request (offset paging duplicates and drops rows) and match each
-  day's API total.
+retry_condition: null
 
 failed_fetches:
   - url: "https://www.data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi"

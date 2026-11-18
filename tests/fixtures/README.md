@@ -47,3 +47,13 @@ original report URLs, fetch times, relative raw paths, hashes and row counts;
 it contains no raw HTML or invented observations. Attribution: KSEB, daily water
 level reports; the source and licence information above applies. Full results
 and limits are in `docs/sources/s32-history.md`.
+
+`s23_days/` holds four unmodified data.gov.in per-day responses for resource
+35985678-0d79-46b4-9ed6-6f13308a1d24 (S23 T269 evidence e20, e21, e23 and e24,
+retrieved 2026-11-13), stored in the `FixtureTransport` layout (`<key>.bin` body
+plus `<key>.json` with the public URL, status and headers; the key is the hash of
+the URL without `api-key`). Days: 02/01/2019 (14 rows), 15/07/2004 (no report),
+04/11/2026 (23 rows) and 12/11/2026, all State=Karnataka, Commodity=Onion. No
+API key is stored. GODL-India: credit the Directorate of Marketing and
+Inspection, data.gov.in. Changed copies (a dropped record, an empty price) are
+made inside `tests/sources/test_s23_adapter.py` only.

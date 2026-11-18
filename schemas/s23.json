@@ -1,6 +1,23 @@
 {
+  "$comment": "S23 data.gov.in variety-wise mandi prices (T270), resource 35985678-0d79-46b4-9ed6-6f13308a1d24. Measure columns added to the common envelope (common.json). Field map: configs/sources/s23.yaml. Scope: State=Karnataka, Commodity=Onion only (other commodities need H16).",
   "source_id": "S23",
-  "status": "disabled",
-  "reason": "T025: price units/denominator unverified; GODL licence verified",
-  "fields": []
+  "status": "enabled",
+  "schema_version": 1,
+  "mapping_version": "s23-v1",
+  "fields": [
+    {"name": "market_id", "type": "string", "nullable": false, "meaning": "karnataka/<district>/<market> as published, lowercased; spelling variants stay separate until the T271 crosswalk"},
+    {"name": "district_name", "type": "string", "nullable": false, "meaning": "District as published (whitespace collapsed)"},
+    {"name": "market_name", "type": "string", "nullable": false, "meaning": "Market as published (whitespace collapsed)"},
+    {"name": "commodity", "type": "string", "nullable": false, "meaning": "Always Onion"},
+    {"name": "commodity_code", "type": "string", "nullable": true, "meaning": "Commodity_Code as text (string before Nov 2025, integer after)"},
+    {"name": "variety", "type": "string", "nullable": true, "meaning": "Variety as published"},
+    {"name": "grade", "type": "string", "nullable": true, "meaning": "Grade as published"},
+    {"name": "date_local", "type": "date32", "nullable": false, "meaning": "Arrival_Date (DD/MM/YYYY), equal to the per-day request filter"},
+    {"name": "min_inr_quintal", "type": "float64", "nullable": true, "meaning": "Min_Price in Rs./Quintal as given; null if empty or not a number"},
+    {"name": "max_inr_quintal", "type": "float64", "nullable": true, "meaning": "Max_Price in Rs./Quintal as given; null if empty or not a number"},
+    {"name": "modal_inr_quintal", "type": "float64", "nullable": true, "meaning": "Modal_Price in Rs./Quintal as given; null with missing_reason not_reported (empty) or quality_rejected (not a number)"},
+    {"name": "price_unit", "type": "string", "nullable": false, "meaning": "Rs./Quintal (owner-observed AGMARKNET Price Unit for onion, D201)"}
+  ],
+  "excluded": "No cleaning beyond schema validity: zero, out-of-order and per-kg-looking prices are kept as published for T271 to quarantine",
+  "record_id": "SHA256 of the published record plus its occurrence number within the day, so identical rows are never merged"
 }

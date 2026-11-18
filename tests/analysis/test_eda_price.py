@@ -1,5 +1,6 @@
 """T108 acceptance: the price helpers report exact denominators and never a 0% or filled value for
-zero rows, the unit audit equals the frozen S22/S23 discovery records, both adapters refuse, and
+zero rows, the unit audit equals the frozen S22/S23 discovery records, both adapters refuse the
+frozen evidence (S22 blocked; S23 reads only per-day onion queries since T270), and
 the notebook re-run from a fresh process reproduces the committed outputs byte for byte, with
 discovery dates and no date after them. The notebook needs no local-only data, so it runs in CI."""
 
@@ -16,6 +17,7 @@ import pytest
 
 from atlas.analysis.prices import audit_rows, label_summary, load_record, measure, month_counts
 from atlas.config import load_state
+from atlas.contracts import RawArtifact
 from atlas.ingest.base import SourceUnavailable
 from atlas.ingest.s22 import S22
 from atlas.ingest.s23 import S23
@@ -61,20 +63,32 @@ def test_audit_rows_equal_the_discovery_field_map(sid):
         )["evidence"]
     }
     assert all(set(r["evidence"].split()) <= ids for r in rows)
-    assert rec["outcome"] == "blocked"
+    assert rec["outcome"] == {"S22": "blocked", "S23": "available"}[sid]
 
 
 def test_s23_modal_price_unit_is_verified_for_onion_only():
     modal = next(r for r in audit_rows(RECORDS["S23"]) if r["canonical"] == "modal_inr_quintal")
     assert modal["unit_status"] == "labelled" and "Onion only" in modal["detail"]
-    assert RECORDS["S23"]["retry_condition"].startswith("T270: adapter")
+    assert RECORDS["S23"]["retry_condition"] is None  # enabled for onion by T270
+    assert "H16" in RECORDS["S23"]["units"]["detail"]
 
 
-@pytest.mark.parametrize("adapter, sid", [(S22, "S22"), (S23, "S23")])
-def test_blocked_adapters_raise_before_returning_rows(adapter, sid):
+def test_adapters_raise_before_returning_rows():
     ka = load_state(ROOT / "configs/states/ka.yaml")
-    with pytest.raises(SourceUnavailable, match=f"{sid} is blocked"):
-        adapter().parse(None, ka.source(sid))
+    with pytest.raises(SourceUnavailable, match="S22 is blocked"):
+        S22().parse(None, ka.source("S22"))
+    e01 = json.loads((ROOT / "tests/fixtures/s23/manifest.json").read_text("utf-8"))["evidence"][0]
+    raw = RawArtifact(
+        sha256=e01["sha256"],
+        path=ROOT / "data/raw" / e01["raw_path"],
+        fetched_at=e01["fetched_at"],
+        media_type=e01["media_type"],
+        response_status=e01["status"],
+        source_url=e01["url"],
+        schema_mapping_version="s23-v1",
+    )
+    with pytest.raises(SourceUnavailable, match="per-day"):
+        S23().parse(raw, ka.source("S23"))
 
 
 def test_notebook_reproduces_from_a_clean_process(tmp_path):

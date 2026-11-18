@@ -1,6 +1,6 @@
 """T025 and T269 acceptance: the S23 (data.gov.in mandi prices) discovery record passes the
-discovery contract only with cited evidence; T269 verifies Karnataka onion only and S23 stays
-blocked until the T270 adapter."""
+discovery contract only with cited evidence; T269 verifies Karnataka onion only and the T270
+adapter enables S23 for that scope."""
 
 import json
 from datetime import datetime
@@ -23,7 +23,8 @@ def test_s23_discovery_contract(record):
 def test_s23_status_and_no_key_in_evidence(record):
     rec = record("S23")
     d = rec.discovery
-    assert d.outcome == "blocked" and d.licence.status == "open" and d.source_check.status == "pass"
+    assert d.outcome == "available" and d.licence.status == "open"
+    assert d.source_check.status == "pass"
     assert (
         d.units.status == "onion_only"
         and "Rs./Quintal" in d.units.detail
@@ -39,12 +40,12 @@ def test_s23_status_and_no_key_in_evidence(record):
             assert b"api-key" not in path.read_bytes(), e.id
 
 
-def test_only_karnataka_onion_is_verified_and_s23_stays_blocked(record):
+def test_only_karnataka_onion_is_verified_and_enabled_by_t270(record):
     """Units are per commodity; nothing but Onion may be read until H16 records another unit."""
     d = record("S23").discovery
-    assert d.outcome == "blocked" and d.retry_condition.startswith("T270: adapter")
+    assert d.outcome == "available" and d.retry_condition is None and d.verify_task == "T269"
     assert "State=Karnataka, Commodity=Onion only" in d.units.detail
-    assert "H16" in d.units.detail and "H16" in d.retry_condition
+    assert "H16" in d.units.detail and "T270 adapter refuses them" in d.units.detail
     assert "T270" in d.dependents
 
 
@@ -151,7 +152,7 @@ def test_offset_paging_duplicates_rows(record):
     first, third = {key(r) for r in rows(rec, "e09")}, {key(r) for r in rows(rec, "e11")}
     assert len(first & third) == 9271
     assert not {key(r) for r in rows(rec, "e07")} & first  # limit 1000 vs 10000 first pages
-    assert "Arrival_Date per request" in rec.discovery.retry_condition
+    assert "query one Arrival_Date per request" in rec.discovery.history.detail
 
 
 def test_date_filter_is_complete_and_stable(record):

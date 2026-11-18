@@ -5,8 +5,8 @@
       "verify_task": "T023"
     },
     "S23": {
-      "enabled": false,
-      "verify_task": "T025"
+      "enabled": true,
+      "verify_task": "T269"
     }
   },
   "n_price_rows": 0,
