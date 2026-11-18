@@ -173,7 +173,7 @@ def test_candidate_rule():
 
 def test_report_and_gate_agree():
     net = GATE["tune"]["networks"]
-    assert GATE["test_opened"] is False and GATE["candidate_rule"] == nn.CANDIDATE_RULE
+    assert GATE["test_opened"] is True and GATE["candidate_rule"] == nn.CANDIDATE_RULE
     assert GATE["candidate"] == nn.name_candidate(GATE["tune"]["models"], net["models"])
     assert GATE["candidate"]["model"] in nn.ELIGIBLE
     assert net["task"] == "T283" and net["rows"] == GATE["rows"]["tune"] == 897

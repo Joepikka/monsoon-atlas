@@ -240,6 +240,7 @@ def fit_sarima(train: pa.Table) -> dict:
         "predict": predict,
         "residuals": np.concatenate(resid),
         "params": {"selection": "AIC on train", "orders": orders},
+        "orders_by_place": {p: (order, seasonal) for p, (order, seasonal, _) in fits.items()},
         "coef": {p: res.params.tolist() for p, (_, _, res) in fits.items()},
     }
 

@@ -1,6 +1,6 @@
 # M21 Karnataka monthly district rain-anomaly forecast (plan docs/plans/karnataka-ml-showcase.md
 # item 3). Planned definition written by T280: dataset, split manifest, data gate and baselines
-# only; no model is fitted yet (T281 to T284).
+# only. T281 to T283 fitted on train/tune; T284 opened the locked test once (src/atlas/models/m21_test.py).
 model_id: M21
 state: ka
 enabled: false
@@ -34,4 +34,6 @@ split_manifest: models/gates/m21_splits.json
 data_gate: models/gates/m21.json
 promotion: lower 95% paired block bootstrap bound (blocks = months) of the MAE improvement above 0
 evidence: hindcast        # D39; 2025 is provisional (D98); M05 was tested on 2020-2024, so choices are fixed on tune only
-status: planned
+status: research_only  # T284: locked test opened once; lower 95% bound -0.061 vs climatology
+release: models/registry/M21/v1.json
+report: reports/models/m21.md

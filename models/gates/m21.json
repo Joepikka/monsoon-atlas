@@ -100,7 +100,7 @@
     "named_by": "T283"
   },
   "candidate_rule": "Fixed before the networks were scored on tune. Eligible: SARIMA, ridge, LightGBM, MLP and GCN-GRU (the identity-matrix GCN-GRU is an ablation, not eligible). The default candidate is the classical model with the lowest tune MAE. A network replaces it only if the sd of its tune MAE over the five seeds is at most 0.01 and the lower 95% bound of its MAE improvement over that classical model (seed-mean errors, paired block bootstrap by month) is above 0; among such networks the lowest mean tune MAE wins. If the candidate's lower 95% bound of MAE improvement over climatology is not above 0, it is still named for the single test opening in T284 and is expected to be research-only.",
-  "test_opened": false,
+  "test_opened": true,
   "tune": {
     "task": "T281",
     "dataset_sha256": "7035ecaa7a2b674395119f4986fabb813cef93805c82af30842591f7351353f3",
@@ -984,5 +984,451 @@
         "m05": "7f373cc52f114891be8c5bead53bb72f"
       }
     }
+  },
+  "test_protocol": {
+    "task": "T284",
+    "refit_rule": "Fixed before the test was opened (T284). Every model, the candidate and each comparison, keeps the configuration frozen on train and tune (LightGBM parameters and rounds; ridge alpha; SARIMA order per district by AIC on train; network sizes and each seed's early-stopped epoch count) and is refitted once on train + tune, target months 1982-01 to 2017-11 (31-day purge before calibrate). Nothing is re-tuned. Each refit's calibrate (2018-2019) residuals give its probabilistic ensemble (RPS, CRPS) and the candidate's interval offsets. The locked test 2020-2025 is scored once.",
+    "refit_rows": 10740,
+    "interval_rule": "80% nominal, D97 style. Methods: pooled split conformal (forecast plus the 10th and 90th percentiles of calibration residuals, y - forecast) and seasonal (the same, separately for June-September and the rest of the year). Chosen before the test on pre-test years only: offsets from the tune (2015-2017) residuals of the train fit, coverage checked on calibrate (2018-2019) with the same fit; the method whose coverage is closest to 80% wins (ties: narrower mean width). The chosen method's offsets are then taken from the calibrate residuals of the train + tune refit and applied unchanged to the test. Intervals are shown only if test coverage is within 75-85%.",
+    "promotion_rule": "candidate_eligible only if the lower 95% bound of the MAE improvement over the strongest simple baseline on the test rows (climatology, persistence or last year; paired block bootstrap by month, 1,000 resamples, seed 42) is above 0, and then served only after owner approval (D38); otherwise research_only, published with its scores.",
+    "intervals": {
+      "method": "seasonal",
+      "coverage": 0.8,
+      "show_if": [
+        0.75,
+        0.85
+      ],
+      "selection": [
+        {
+          "method": "pooled",
+          "calibrate_coverage": 0.8595317725752508,
+          "calibrate_width": 2.867740033968723
+        },
+        {
+          "method": "seasonal",
+          "calibrate_coverage": 0.8528428093645485,
+          "calibrate_width": 2.752586385427336
+        }
+      ],
+      "offsets": {
+        "monsoon (Jun-Sep)": [
+          -0.9058664284327395,
+          2.0665959358626456
+        ],
+        "rest of year": [
+          -0.5734163378650521,
+          1.9531178332381784
+        ]
+      },
+      "calibrate_rows": 598,
+      "calibrate_mae": {
+        "lightgbm": 0.7989283185249918,
+        "climatology": 0.812080076306294
+      }
+    },
+    "written_at": "2026-11-18T06:28:02.172347+00:00"
+  },
+  "test_opened_at": "2026-11-18T06:28:12.258126+00:00",
+  "test_git_sha": "f7d075e0881246584833e179973c7d38aff03520",
+  "test": {
+    "task": "T284",
+    "period": [
+      "2020-01-01",
+      "2025-12-31"
+    ],
+    "rows": 1794,
+    "months": 72,
+    "strongest_baseline": "climatology",
+    "candidate": "lightgbm",
+    "models": {
+      "climatology": {
+        "mae": 1.0587375197520923,
+        "improvement_over_baseline": {
+          "mean": 0.0,
+          "lower95": 0.0,
+          "upper95": 0.0
+        },
+        "improvement_over_climatology": {
+          "mean": 0.0,
+          "lower95": 0.0,
+          "upper95": 0.0
+        },
+        "rps": 0.23532144184318093,
+        "crps": 0.788627404439965
+      },
+      "persistence": {
+        "mae": 1.3881772277181788,
+        "improvement_over_baseline": {
+          "mean": -0.32943970796608635,
+          "lower95": -0.5111815256527374,
+          "upper95": -0.1534490539334634
+        },
+        "improvement_over_climatology": {
+          "mean": -0.32943970796608635,
+          "lower95": -0.5111815256527374,
+          "upper95": -0.1534490539334634
+        }
+      },
+      "last_year": {
+        "mae": 1.3269006146010127,
+        "improvement_over_baseline": {
+          "mean": -0.26816309484892037,
+          "lower95": -0.459992078377254,
+          "upper95": -0.11068695347393515
+        },
+        "improvement_over_climatology": {
+          "mean": -0.26816309484892037,
+          "lower95": -0.459992078377254,
+          "upper95": -0.11068695347393515
+        }
+      },
+      "climatology_median": {
+        "mae": 1.0922377747767584,
+        "improvement_over_baseline": {
+          "mean": -0.0335002550246661,
+          "lower95": -0.07076790743131901,
+          "upper95": 0.008775048515559035
+        },
+        "improvement_over_climatology": {
+          "mean": -0.0335002550246661,
+          "lower95": -0.07076790743131901,
+          "upper95": 0.008775048515559035
+        }
+      },
+      "lightgbm": {
+        "mae": 1.0881026915215726,
+        "improvement_over_baseline": {
+          "mean": -0.02936517176948045,
+          "lower95": -0.060757072763335626,
+          "upper95": 0.003087748837973306
+        },
+        "improvement_over_climatology": {
+          "mean": -0.02936517176948045,
+          "lower95": -0.060757072763335626,
+          "upper95": 0.003087748837973306
+        },
+        "improvement_over_median": {
+          "mean": 0.0041350832551856525,
+          "lower95": -0.02501881963121786,
+          "upper95": 0.03040615087248348
+        },
+        "rps": 0.2159837541066863,
+        "rpss": 0.08217563000222194,
+        "rps_improvement": {
+          "mean": 0.019337687736494677,
+          "lower95": 0.0010121594934619424,
+          "upper95": 0.03599111236932941
+        },
+        "crps": 0.7701128738467372,
+        "crps_improvement": {
+          "mean": 0.0185145305932277,
+          "lower95": -0.014000107934984863,
+          "upper95": 0.048727089098617025
+        },
+        "calibrate_mae": 0.7989283185249918
+      },
+      "sarima": {
+        "mae": 1.0477752447024338,
+        "improvement_over_baseline": {
+          "mean": 0.010962275049658488,
+          "lower95": 0.0009729352091677087,
+          "upper95": 0.02083374212414557
+        },
+        "improvement_over_climatology": {
+          "mean": 0.010962275049658488,
+          "lower95": 0.0009729352091677087,
+          "upper95": 0.02083374212414557
+        },
+        "improvement_over_median": {
+          "mean": 0.044462530074324595,
+          "lower95": -0.004195180973103369,
+          "upper95": 0.08713077312852091
+        },
+        "rps": 0.21774701551065181,
+        "rpss": 0.07468263918015927,
+        "rps_improvement": {
+          "mean": 0.01757442633252917,
+          "lower95": 0.004599569419827331,
+          "upper95": 0.02894642845759266
+        },
+        "crps": 0.777777021250052,
+        "crps_improvement": {
+          "mean": 0.010850383189913038,
+          "lower95": -0.013052548193285756,
+          "upper95": 0.031994415213588256
+        },
+        "calibrate_mae": 0.8109881400927648
+      },
+      "ridge": {
+        "mae": 1.0408209542219902,
+        "improvement_over_baseline": {
+          "mean": 0.017916565530101916,
+          "lower95": -0.002647203881736458,
+          "upper95": 0.03904795828164598
+        },
+        "improvement_over_climatology": {
+          "mean": 0.017916565530101916,
+          "lower95": -0.002647203881736458,
+          "upper95": 0.03904795828164598
+        },
+        "improvement_over_median": {
+          "mean": 0.05141682055476802,
+          "lower95": -0.002705747788950312,
+          "upper95": 0.10056750145030598
+        },
+        "rps": 0.21298113109352093,
+        "rpss": 0.09493529605579953,
+        "rps_improvement": {
+          "mean": 0.02234031074966008,
+          "lower95": 0.007374221556649949,
+          "upper95": 0.035472584708960704
+        },
+        "crps": 0.7699656465956998,
+        "crps_improvement": {
+          "mean": 0.018661757844265246,
+          "lower95": -0.007696534187382283,
+          "upper95": 0.04415978902537782
+        },
+        "calibrate_mae": 0.8106659793789408
+      },
+      "lightgbm_lags": {
+        "mae": 1.1040151949599741,
+        "improvement_over_baseline": {
+          "mean": -0.045277675207881764,
+          "lower95": -0.07799279929379266,
+          "upper95": -0.011077597852295467
+        },
+        "improvement_over_climatology": {
+          "mean": -0.045277675207881764,
+          "lower95": -0.07799279929379266,
+          "upper95": -0.011077597852295467
+        },
+        "improvement_over_median": {
+          "mean": -0.01177742018321566,
+          "lower95": -0.05087618733073174,
+          "upper95": 0.022226671753486815
+        },
+        "rps": 0.22311721072306623,
+        "rpss": 0.051861959643472066,
+        "rps_improvement": {
+          "mean": 0.012204231120114756,
+          "lower95": -0.0066631447058994086,
+          "upper95": 0.02904643123689498
+        },
+        "crps": 0.7839383099792483,
+        "crps_improvement": {
+          "mean": 0.004689094460716741,
+          "lower95": -0.0321853512117201,
+          "upper95": 0.03729131579367443
+        },
+        "calibrate_mae": 0.8032815723675676
+      },
+      "mlp": {
+        "mae": 1.099027969043277,
+        "improvement_over_baseline": {
+          "mean": -0.04029044929118484,
+          "lower95": -0.07419743026316733,
+          "upper95": -0.004028201104187909
+        },
+        "improvement_over_climatology": {
+          "mean": -0.04029044929118484,
+          "lower95": -0.07419743026316733,
+          "upper95": -0.004028201104187909
+        },
+        "improvement_over_median": {
+          "mean": -0.006790194266518736,
+          "lower95": -0.026622718211857226,
+          "upper95": 0.012618419701604017
+        },
+        "rps": 0.22041307654860393,
+        "rpss": 0.06335319543262019,
+        "rps_improvement": {
+          "mean": 0.014908365294577052,
+          "lower95": 0.0006816410378908234,
+          "upper95": 0.02855365329072073
+        },
+        "crps": 0.7785864314993696,
+        "crps_improvement": {
+          "mean": 0.010040972940595387,
+          "lower95": -0.01733272802504543,
+          "upper95": 0.03702746559336799
+        },
+        "calibrate_mae": 0.789270971082772,
+        "seed_mae": [
+          1.1016642057020687,
+          1.0925631585127802,
+          1.0988745692307693,
+          1.0865296945689704,
+          1.1155082172017963
+        ]
+      },
+      "gcn_gru": {
+        "mae": 1.1266221408255432,
+        "improvement_over_baseline": {
+          "mean": -0.0678846210734509,
+          "lower95": -0.1067281459476105,
+          "upper95": -0.026341621811053754
+        },
+        "improvement_over_climatology": {
+          "mean": -0.0678846210734509,
+          "lower95": -0.1067281459476105,
+          "upper95": -0.026341621811053754
+        },
+        "improvement_over_median": {
+          "mean": -0.03438436604878478,
+          "lower95": -0.054048284354092306,
+          "upper95": -0.014598449226633567
+        },
+        "rps": 0.2258943905141387,
+        "rpss": 0.04006031603071869,
+        "rps_improvement": {
+          "mean": 0.009427051329042261,
+          "lower95": -0.0041534394518277775,
+          "upper95": 0.022071207570604597
+        },
+        "crps": 0.7868828447549149,
+        "crps_improvement": {
+          "mean": 0.001744559685050138,
+          "lower95": -0.022587374349131405,
+          "upper95": 0.02657419855902908
+        },
+        "calibrate_mae": 0.8110443753835941,
+        "seed_mae": [
+          1.1321002692296631,
+          1.1097686449164132,
+          1.1482444279940818,
+          1.1114193186802714,
+          1.1315780433072857
+        ]
+      },
+      "gcn_gru_identity": {
+        "mae": 1.085956499277802,
+        "improvement_over_baseline": {
+          "mean": -0.027218979525709876,
+          "lower95": -0.05725636021387936,
+          "upper95": 0.004722831523011668
+        },
+        "improvement_over_climatology": {
+          "mean": -0.027218979525709876,
+          "lower95": -0.05725636021387936,
+          "upper95": 0.004722831523011668
+        },
+        "improvement_over_median": {
+          "mean": 0.006281275498956229,
+          "lower95": -0.01483305847153744,
+          "upper95": 0.024689865100880084
+        },
+        "rps": 0.21803350824452258,
+        "rpss": 0.07346518644135747,
+        "rps_improvement": {
+          "mean": 0.017287933598658406,
+          "lower95": 0.002677356105509074,
+          "upper95": 0.03037984044299328
+        },
+        "crps": 0.7741572134418163,
+        "crps_improvement": {
+          "mean": 0.014470190998148738,
+          "lower95": -0.013231773356193206,
+          "upper95": 0.04028446220305688
+        },
+        "calibrate_mae": 0.7896208335622987,
+        "seed_mae": [
+          1.091282452000159,
+          1.0870095828022304,
+          1.0899546187171487,
+          1.0931364476309975,
+          1.0683993952384747
+        ]
+      }
+    },
+    "by_season": {
+      "winter (Jan-Feb)": {
+        "rows": 30,
+        "months": 12,
+        "mae": {
+          "lightgbm": 0.2707854093506485,
+          "climatology": 0.4585860923873568,
+          "persistence": 0.4585860923873568,
+          "last_year": 0.40712610521102
+        },
+        "improvement_over_baseline": {
+          "mean": 0.18780068303670827,
+          "lower95": 0.04465026816382757,
+          "upper95": 0.29355452265321114
+        },
+        "interval_coverage": 0.9666666666666667,
+        "interval_width": 2.526534171103231
+      },
+      "pre-monsoon (Mar-May)": {
+        "rows": 540,
+        "months": 18,
+        "mae": {
+          "lightgbm": 1.1487458152039853,
+          "climatology": 1.1332163079500088,
+          "persistence": 1.041726491337041,
+          "last_year": 1.1761402579720968
+        },
+        "improvement_over_baseline": {
+          "mean": -0.01552950725397653,
+          "lower95": -0.05782079912845992,
+          "upper95": 0.028444575168507406
+        },
+        "interval_coverage": 0.7444444444444445,
+        "interval_width": 2.52653417110323
+      },
+      "monsoon (Jun-Sep)": {
+        "rows": 720,
+        "months": 24,
+        "mae": {
+          "lightgbm": 1.1162234616912525,
+          "climatology": 1.0899020958248282,
+          "persistence": 1.699591524016862,
+          "last_year": 1.3210921048071393
+        },
+        "improvement_over_baseline": {
+          "mean": -0.026321365866424164,
+          "lower95": -0.04510822101450381,
+          "upper95": -0.008446284175506523
+        },
+        "interval_coverage": 0.7527777777777778,
+        "interval_width": 2.9724623642953856
+      },
+      "post-monsoon (Oct-Dec)": {
+        "rows": 504,
+        "months": 18,
+        "mae": {
+          "lightgbm": 1.0316052255581905,
+          "climatology": 0.9701412943983164,
+          "persistence": 1.3698296848028746,
+          "last_year": 1.5514759219678835
+        },
+        "improvement_over_baseline": {
+          "mean": -0.06146393115987392,
+          "lower95": -0.15639668938281936,
+          "upper95": 0.034916763044728634
+        },
+        "interval_coverage": 0.751984126984127,
+        "interval_width": 2.52653417110323
+      }
+    },
+    "intervals": {
+      "method": "seasonal",
+      "coverage": 0.7536231884057971,
+      "width": 2.705502007835867,
+      "shown": true,
+      "by_district": {
+        "districts": 30,
+        "min": 0.6333333333333333,
+        "max": 0.8833333333333333,
+        "inside_75_85": 15
+      }
+    },
+    "promotion": {
+      "baseline": "climatology",
+      "lower95": -0.060757072763335626,
+      "status": "research_only",
+      "reason": "lower 95% bound of the MAE improvement over climatology is -0.061, not above 0; published research-only with its scores"
+    },
+    "mlflow_run_id": "be5da0f3dfdb4c3b9af30158ae3c0e69"
   }
 }

@@ -113,7 +113,7 @@ def test_seeds_make_runs_repeatable():
 
 def test_report_and_gate_agree():
     tune = GATE["tune"]
-    assert GATE["test_opened"] is False  # the candidate is named by T283 (test_nn_graph.py)
+    assert GATE["test_opened"] is True  # candidate named by T283, test opened once by T284
     assert tune["task"] == "T281" and tune["rows"] == GATE["rows"]["tune"] == 897
     assert tune["dataset_sha256"] == GATE["dataset_sha256"]
     assert tune["split_sha256"] == GATE["split_sha256"]

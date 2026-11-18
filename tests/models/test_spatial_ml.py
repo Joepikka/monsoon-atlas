@@ -161,7 +161,7 @@ def test_summary_gate_and_report_agree():
     assert t["models"]["base"]["mae"] == pytest.approx(GATE["tune"]["models"]["lightgbm"]["mae"])
     assert t["lag_helps"] == (t["lags_over_base"]["lower95"] > 0)
     assert t["rows"] == GATE["rows"]["tune"] == 897 and t["months"] == 36
-    assert GATE["candidate"]["model"] == "lightgbm" and GATE["test_opened"] is False
+    assert GATE["candidate"]["model"] == "lightgbm" and GATE["test_opened"] is True
     mo = s["moran"]
     assert len(mo["by_month"]) == 36 == mo["before"]["months"]
     assert mo["before"]["months_tested"] == sum("before_i" in r for r in mo["by_month"])

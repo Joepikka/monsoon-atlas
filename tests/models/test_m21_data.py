@@ -41,7 +41,7 @@ def test_split_manifest_matches_the_plan_and_the_gate(tmp_path):
 
 def test_gate_keeps_the_test_closed_and_scores_train_and_tune_only():
     assert GATE["status"] == "ok" and GATE["years"] == [1981, 2025]
-    assert GATE["test_opened"] is False  # T283 names the candidate; the test stays closed
+    assert GATE["test_opened"] is True  # opened once by T284 (test_m21_test.py)
     assert set(GATE["baselines"]) == {"train", "tune"}
     assert GATE["rows"]["test"] == 6 * (360 - GATE["dry_rule"]["excluded_district_months"])
     assert len(GATE["dataset_sha256"]) == 64 and "hindcast" in GATE["evidence"]
